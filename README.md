@@ -35,6 +35,7 @@ const [user, setUser] = useState<User | null>(null);
 
 6. Types should be added @typs/<package-name> while installing thirdparty libraries.
 
+
 ---
 
 ## Techstack
@@ -47,3 +48,33 @@ const [user, setUser] = useState<User | null>(null);
 -   prettier config and .vscode/autosave settings added for improved DX.
 -   integrate storybook for dumb component testing
 -   finally service worker => not for now but finally
+
+---
+
+## Atomic components directory structuring
+
+```yaml
+
+src:
+	components:
+		- contains all the components which are common to use anywhere within the project scope
+		- it can component in base / dir which holds component and its specific logic itself
+		- Button.tsx - component in base
+		- Button: - dir
+			Button.tsx - component
+
+	layouts:  // note - layouts should be access only inside index.tsx at src root dir and all route handled only in layouts
+		- which holds the core container of the app which, (hint,
+			only the components in this folder is allowed to use out of the components folder i.e, in index.tsx file.
+		- ALayout: - dir
+			- components:
+				- components specific to this layouts
+			- ALayout.tsx - expose outside this folder
+
+	pages:   // note - pages should be only access inside layouts
+		- APage:
+			- components:
+				- components only related to this pages/
+			- APage.tsx - exposes outside this folder
+
+```
