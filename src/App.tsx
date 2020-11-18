@@ -1,5 +1,10 @@
-import React from 'react';
+import { Core } from './layouts/Core/Core';
+import React, { FC } from 'react';
 
-export default function App(): React.ReactElement {
-    return <div>Hello</div>;
-}
+export const App: FC = (): JSX.Element => {
+    return (
+        <div>
+            <Core />
+        </div>
+    );
+};
