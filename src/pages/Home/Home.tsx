@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Sample } from '../../components';
+import { Sample } from '../../components/Sample/Sample';
 import { coreSelector, initiateHandshake } from '../../store/models/core';
 import { HomeTab } from './components/HomeTab';
 

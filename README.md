@@ -35,6 +35,8 @@ const [user, setUser] = useState<User | null>(null);
 
 6. Types should be added @typs/<package-name> while installing thirdparty libraries.
 
+7. Install vscode extension css modules for modular css intellisense support https://github.com/clinyong/vscode-css-modules
+
 
 ---
 
