@@ -16,7 +16,7 @@ module.exports = {
     rules: {
         'no-console': 2,
         'prettier/prettier': 2,
-        'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
+        // '@typescript-eslint/no-unused-vars': 0,
     },
     settings: {
         react: {
