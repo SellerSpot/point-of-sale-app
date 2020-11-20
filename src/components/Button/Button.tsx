@@ -35,7 +35,12 @@ const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], s
     return classNames;
 };
 
-export const Button: React.FC<PropsType> = ({ label, variant, type, shape }: PropsType): JSX.Element => {
+export const Button: React.FC<PropsType> = ({
+    label = 'Button Label',
+    variant = 'default',
+    type = 'solid',
+    shape = 'default',
+}: PropsType): JSX.Element => {
     return (
         <div>
             <button className={getClassNames(variant, type, shape)}>{label}</button>
