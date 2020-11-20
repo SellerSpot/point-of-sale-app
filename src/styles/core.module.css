@@ -24,5 +24,6 @@
     --default-color: #657ed4;
     --default-light-color: #849ce9;
     --border-radius: 0.2rem;
+    --rounded-border-radius: 50px;
     --transition-duration: 0.3s;
 }

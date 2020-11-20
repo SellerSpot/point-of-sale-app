@@ -4,14 +4,16 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import { Button, PropsType } from '../components/Button/Button';
 
 export default {
-    title: 'Components/Button',
+    title: 'Components',
     component: Button,
 } as Meta;
 
 const Template: Story<PropsType> = (args: PropsType) => <Button {...args} />;
 
-export const PrimaryButton = Template.bind({});
-PrimaryButton.args = {
-    label: 'Primary Button',
+export const Buttons = Template.bind({});
+Buttons.args = {
+    label: 'Button Label',
     variant: 'default',
+    type: 'solid',
+    shape: 'default',
 } as PropsType;

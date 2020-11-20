@@ -1,51 +1,80 @@
 button {
     padding: 0.8em 1em;
     text-decoration: none;
-    color: var(--white-color);
     transition: all var(--transition-duration);
     border: 1px solid;
     border-radius: var(--border-radius);
 }
 
 /* BUTTON VARIANTS */
-.defaultButton {
+.default {
+    color: var(--default-color);
     background-color: var(--default-color);
     border-color: var(--default-color);
 }
-.defaultButton:hover {
+.default:hover {
+    color: var(--default-light-color);
     background-color: var(--default-light-color);
     border-color: var(--default-light-color);
 }
-.successButton {
+.success {
+    color: var(--success-color);
     background-color: var(--success-color);
     border-color: var(--success-color);
 }
-.successButton:hover {
+.success:hover {
+    color: var(--success-light-color);
     background-color: var(--success-light-color);
     border-color: var(--success-light-color);
 }
-.warningButton {
-    color: var(--black-color);
+.warning {
+    color: var(--warning-color);
     background-color: var(--warning-color);
     border-color: var(--warning-color);
 }
-.warningButton:hover {
+.warning:hover {
+    color: var(--warning-light-color);
     background-color: var(--warning-light-color);
     border-color: var(--warning-light-color);
 }
-.dangerButton {
+.danger {
+    color: var(--danger-color);
     background-color: var(--danger-color);
     border-color: var(--danger-color);
 }
-.dangerButton:hover {
+.danger:hover {
+    color: var(--danger-light-color);
     background-color: var(--danger-light-color);
     border-color: var(--danger-light-color);
 }
 
 /* BUTTON TYPES */
-.secondaryButton {
+.solid {
+    color: var(--white-color);
+}
+.solid:hover {
+    color: var(--white-color);
+}
+.line {
     background-color: var(--white-color);
 }
-.secondaryButton:hover {
+.line:hover {
     background-color: var(--white-color);
+}
+
+/* SHAPE TYPES */
+.rounded {
+    border-radius: var(--rounded-border-radius);
+}
+
+/* TEXT TYPES */
+.lightText {
+    color: var(--white-color);
+}
+
+.darkText {
+    color: var(--black-color);
+}
+.darkText:hover {
+    color: var(--black-color);
 }

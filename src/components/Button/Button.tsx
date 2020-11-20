@@ -4,30 +4,41 @@ import styles from './button.module.css';
 export type PropsType = {
     label: string;
     variant: 'success' | 'warning' | 'danger' | 'default';
-    action: 'primary' | 'secondary' | 'link';
+    type: 'solid' | 'line';
+    shape: 'default' | 'rounded';
 };
 
 // used to get the classnames
-const getClassNames = (variant: PropsType['variant']): string => {
-    let classNames = styles.defaultButton;
+const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], shape: PropsType['shape']): string => {
+    let classNames = styles.default;
     switch (variant) {
         case 'success':
-            classNames = styles.successButton;
+            classNames = styles.success;
             break;
         case 'danger':
-            classNames = styles.dangerButton;
+            classNames = styles.danger;
             break;
         case 'warning':
-            classNames = styles.warningButton;
+            classNames = styles.warning;
+            if (type !== 'line') classNames += ' ' + styles.darkText;
             break;
     }
+    switch (type) {
+        case 'solid':
+            classNames += ' ' + styles.solid;
+            break;
+        case 'line':
+            classNames += ' ' + styles.line;
+            break;
+    }
+    if (shape === 'rounded') classNames += ' ' + styles.rounded;
     return classNames;
 };
 
-export const Button: React.FC<PropsType> = ({ label, variant }: PropsType): JSX.Element => {
+export const Button: React.FC<PropsType> = ({ label, variant, type, shape }: PropsType): JSX.Element => {
     return (
         <div>
-            <button className={getClassNames(variant)}>{label}</button>
+            <button className={getClassNames(variant, type, shape)}>{label}</button>
         </div>
     );
 };
