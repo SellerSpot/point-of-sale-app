@@ -4,6 +4,7 @@ import styles from './button.module.css';
 export type PropsType = {
     label: string;
     variant: 'success' | 'warning' | 'danger' | 'default';
+    action: 'primary' | 'secondary' | 'link';
 };
 
 // used to get the classnames
@@ -15,6 +16,9 @@ const getClassNames = (variant: PropsType['variant']): string => {
             break;
         case 'danger':
             classNames = styles.dangerButton;
+            break;
+        case 'warning':
+            classNames = styles.warningButton;
             break;
     }
     return classNames;

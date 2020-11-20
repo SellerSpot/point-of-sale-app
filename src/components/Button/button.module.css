@@ -1,36 +1,51 @@
 button {
     padding: 0.8em 1em;
     text-decoration: none;
-    transition: background-color var(--transition-duration);
+    color: var(--white-color);
+    transition: all var(--transition-duration);
+    border: 1px solid;
     border-radius: var(--border-radius);
 }
 
+/* BUTTON VARIANTS */
 .defaultButton {
-    color: #fafffdff;
     background-color: var(--default-color);
-    border: 1px solid var(--default-color);
+    border-color: var(--default-color);
 }
 .defaultButton:hover {
     background-color: var(--default-light-color);
-    border: 1px solid var(--default-light-color);
+    border-color: var(--default-light-color);
 }
-
 .successButton {
-    color: #fafffdff;
     background-color: var(--success-color);
-    border: 1px solid var(--success-color);
+    border-color: var(--success-color);
 }
 .successButton:hover {
     background-color: var(--success-light-color);
-    border: 1px solid var(--success-light-color);
+    border-color: var(--success-light-color);
 }
-
+.warningButton {
+    color: var(--black-color);
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+.warningButton:hover {
+    background-color: var(--warning-light-color);
+    border-color: var(--warning-light-color);
+}
 .dangerButton {
-    color: #fafffdff;
     background-color: var(--danger-color);
-    border: 1px solid var(--danger-color);
+    border-color: var(--danger-color);
 }
 .dangerButton:hover {
     background-color: var(--danger-light-color);
-    border: 1px solid var(--danger-light-color);
+    border-color: var(--danger-light-color);
+}
+
+/* BUTTON TYPES */
+.secondaryButton {
+    background-color: var(--white-color);
+}
+.secondaryButton:hover {
+    background-color: var(--white-color);
 }

@@ -10,20 +10,8 @@ export default {
 
 const Template: Story<PropsType> = (args: PropsType) => <Button {...args} />;
 
-export const DefaultButton = Template.bind({});
-DefaultButton.args = {
-    label: 'Default Button',
+export const PrimaryButton = Template.bind({});
+PrimaryButton.args = {
+    label: 'Primary Button',
     variant: 'default',
-} as PropsType;
-
-export const SuccessButton = Template.bind({});
-SuccessButton.args = {
-    label: 'Success Button',
-    variant: 'success',
-} as PropsType;
-
-export const DangerButton = Template.bind({});
-DangerButton.args = {
-    label: 'Danger Button',
-    variant: 'danger',
 } as PropsType;
