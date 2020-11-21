@@ -18,4 +18,5 @@ TextFields.args = {
     disabled: false,
     label: 'Sample Label',
     value: '55865',
+    helperText: 'Sample Helper Text',
 } as PropsType;

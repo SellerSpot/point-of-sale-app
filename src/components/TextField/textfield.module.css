@@ -4,6 +4,7 @@ label {
 }
 label {
     font-size: small;
+    font-weight: 500;
     margin-bottom: 5px;
 }
 .textField {
@@ -37,4 +38,11 @@ label {
 }
 .warningField {
     border: 1px solid var(--warning-color);
+}
+
+.helperText {
+    font-size: 0.7em;
+    margin-top: 2px;
+    font-weight: 400;
+    color: var(--disabled-darker-color);
 }

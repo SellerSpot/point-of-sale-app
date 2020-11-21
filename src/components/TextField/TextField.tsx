@@ -7,6 +7,7 @@ export type PropsType = {
     disabled?: boolean;
     variant?: 'success' | 'warning' | 'danger' | 'default';
     label?: string;
+    helperText?: string;
     value?: string;
 };
 
@@ -28,18 +29,28 @@ const getClassNames = (props: PropsType): string => {
     return classNames;
 };
 
+// used to get the name for the textfield (and for the labels to attach to)
+const getTextFieldName = (props: PropsType): string => {
+    return props.label === undefined ? (props.helperText === undefined ? 'nolable' : props.helperText) : props.label;
+};
+
 export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            {props.label !== undefined ? <label htmlFor={props.label}>{props.label}</label> : null}
+            {props.label !== undefined ? <label htmlFor={getTextFieldName(props)}>{props.label}</label> : null}
             <input
-                name={props.label}
+                name={getTextFieldName(props)}
                 className={getClassNames(props)}
                 disabled={props.disabled}
                 placeholder={props.placeHolder}
                 type="text"
                 value={props.value}
             />
+            {props.helperText !== undefined ? (
+                <label className={styles.helperText} htmlFor={getTextFieldName(props)}>
+                    {props.helperText}
+                </label>
+            ) : null}
         </div>
     );
 };
