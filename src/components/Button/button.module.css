@@ -84,3 +84,10 @@ button {
 .icon {
     padding-right: 10px;
 }
+
+.disabled,
+.disabled:hover {
+    background-color: var(--disabled-color);
+    color: var(--white-color);
+    border-color: var(--disabled-color);
+}

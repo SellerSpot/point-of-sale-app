@@ -16,4 +16,5 @@ Buttons.args = {
     variant: 'default',
     type: 'solid',
     shape: 'default',
+    disabled: false,
 } as PropsType;

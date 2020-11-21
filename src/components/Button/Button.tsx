@@ -6,12 +6,13 @@ export type PropsType = {
     variant: 'success' | 'warning' | 'danger' | 'default';
     type: 'solid' | 'line' | 'link' | 'icon';
     shape: 'default' | 'rounded';
+    disabled?: boolean;
 };
 
 // used to get the classnames
-const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], shape: PropsType['shape']): string => {
+const getClassNames = (props: PropsType): string => {
     let classNames = styles.default;
-    switch (variant) {
+    switch (props.variant) {
         case 'success':
             classNames = styles.success;
             break;
@@ -20,10 +21,10 @@ const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], s
             break;
         case 'warning':
             classNames = styles.warning;
-            if (type === 'solid') classNames += ' ' + styles.darkText;
+            if (props.type === 'solid') classNames += ' ' + styles.darkText;
             break;
     }
-    switch (type) {
+    switch (props.type) {
         case 'solid':
             classNames += ' ' + styles.solid;
             break;
@@ -36,19 +37,17 @@ const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], s
         case 'icon':
             classNames += ' ' + styles.icon;
     }
-    if (shape === 'rounded') classNames += ' ' + styles.rounded;
+    if (props.shape === 'rounded') classNames += ' ' + styles.rounded;
+    if (props.disabled) classNames += ' ' + styles.disabled;
     return classNames;
 };
 
-export const Button: React.FC<PropsType> = ({
-    label = 'Button Label',
-    variant = 'default',
-    type = 'solid',
-    shape = 'default',
-}: PropsType): JSX.Element => {
+export const Button: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            <button className={getClassNames(variant, type, shape)}>{label}</button>
+            <button disabled={props.disabled} className={getClassNames(props)}>
+                {props.label}
+            </button>
         </div>
     );
 };
