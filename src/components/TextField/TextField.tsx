@@ -9,6 +9,7 @@ export type PropsType = {
     label?: string;
     helperText?: string;
     value?: string;
+    inputType?: 'number' | 'text' | 'email' | 'password';
 };
 
 // used to assemble classnames for the textfield
@@ -43,7 +44,7 @@ export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element =>
                 className={getClassNames(props)}
                 disabled={props.disabled}
                 placeholder={props.placeHolder}
-                type="text"
+                type={props.inputType}
                 value={props.value}
             />
             {props.helperText !== undefined ? (

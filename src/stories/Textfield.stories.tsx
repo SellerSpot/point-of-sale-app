@@ -19,4 +19,5 @@ TextFields.args = {
     label: 'Sample Label',
     value: '55865',
     helperText: 'Sample Helper Text',
+    inputType: 'text',
 } as PropsType;
