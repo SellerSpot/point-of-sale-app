@@ -15,4 +15,5 @@ TextFields.args = {
     placeHolder: 'Sample Text Field',
     fullWidth: false,
     variant: 'default',
+    disabled: false,
 } as PropsType;

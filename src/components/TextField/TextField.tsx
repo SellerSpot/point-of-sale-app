@@ -4,6 +4,7 @@ import styles from './textfield.module.css';
 export type PropsType = {
     placeHolder: string;
     fullWidth?: boolean;
+    disabled?: boolean;
     variant: 'success' | 'warning' | 'danger' | 'default';
 };
 
@@ -28,7 +29,12 @@ const getClassNames = (props: PropsType): string => {
 export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            <input className={getClassNames(props)} placeholder={props.placeHolder} type="text" />
+            <input
+                className={getClassNames(props)}
+                disabled={props.disabled}
+                placeholder={props.placeHolder}
+                type="text"
+            />
         </div>
     );
 };
