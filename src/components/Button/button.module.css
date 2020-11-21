@@ -49,17 +49,25 @@ button {
 }
 
 /* BUTTON TYPES */
-.solid {
-    color: var(--white-color);
-}
+.solid,
 .solid:hover {
     color: var(--white-color);
 }
-.line {
-    background-color: var(--white-color);
-}
+
+.line,
 .line:hover {
-    background-color: var(--white-color);
+    background-color: transparent;
+}
+
+.link,
+.link:hover {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.icon,
+.icon:hover {
+    color: var(--white-color);
 }
 
 /* SHAPE TYPES */
@@ -68,13 +76,11 @@ button {
 }
 
 /* TEXT TYPES */
-.lightText {
-    color: var(--white-color);
-}
-
-.darkText {
-    color: var(--black-color);
-}
+.darkText,
 .darkText:hover {
     color: var(--black-color);
+}
+
+.icon {
+    padding-right: 10px;
 }

@@ -4,7 +4,7 @@ import styles from './button.module.css';
 export type PropsType = {
     label: string;
     variant: 'success' | 'warning' | 'danger' | 'default';
-    type: 'solid' | 'line';
+    type: 'solid' | 'line' | 'link' | 'icon';
     shape: 'default' | 'rounded';
 };
 
@@ -20,7 +20,7 @@ const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], s
             break;
         case 'warning':
             classNames = styles.warning;
-            if (type !== 'line') classNames += ' ' + styles.darkText;
+            if (type === 'solid') classNames += ' ' + styles.darkText;
             break;
     }
     switch (type) {
@@ -30,6 +30,11 @@ const getClassNames = (variant: PropsType['variant'], type: PropsType['type'], s
         case 'line':
             classNames += ' ' + styles.line;
             break;
+        case 'link':
+            classNames += ' ' + styles.link;
+            break;
+        case 'icon':
+            classNames += ' ' + styles.icon;
     }
     if (shape === 'rounded') classNames += ' ' + styles.rounded;
     return classNames;
