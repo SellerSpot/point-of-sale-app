@@ -7,6 +7,7 @@ export type PropsType = {
     disabled?: boolean;
     variant?: 'success' | 'warning' | 'danger' | 'default';
     label?: string;
+    value?: string;
 };
 
 // used to assemble classnames for the textfield
@@ -37,6 +38,7 @@ export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element =>
                 disabled={props.disabled}
                 placeholder={props.placeHolder}
                 type="text"
+                value={props.value}
             />
         </div>
     );

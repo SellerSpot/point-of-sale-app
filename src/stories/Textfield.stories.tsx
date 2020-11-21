@@ -17,4 +17,5 @@ TextFields.args = {
     variant: 'default',
     disabled: false,
     label: 'Sample Label',
+    value: '55865',
 } as PropsType;
