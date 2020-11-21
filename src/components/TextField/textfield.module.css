@@ -1,0 +1,28 @@
+.textField {
+    padding: 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--disabled-color);
+    transition: all 0.5s;
+}
+.textField:focus {
+    border: 1px solid var(--default-color);
+    outline: none;
+}
+::placeholder {
+    /* Most modern browsers support this now. */
+    color: var(--disabled-color);
+}
+.fullWidth {
+    width: 100%;
+}
+
+/* TEXTFIELD VARIANTS */
+.successField {
+    border: 1px solid var(--success-color);
+}
+.dangerField {
+    border: 1px solid var(--danger-color);
+}
+.warningField {
+    border: 1px solid var(--warning-color);
+}
