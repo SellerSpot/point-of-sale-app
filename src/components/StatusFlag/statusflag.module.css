@@ -1,0 +1,29 @@
+.statusFlagDiv {
+    width: 120px;
+    height: 30px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+.spot {
+    height: 15px;
+    width: 15px;
+    background-color: var(--success-color);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.successSpot {
+    background-color: var(--success-color);
+}
+
+.pendingSpot {
+    background-color: var(--warning-color);
+}
+
+.failedSpot {
+    background-color: var(--danger-color);
+}
