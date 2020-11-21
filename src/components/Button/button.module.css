@@ -4,6 +4,7 @@ button {
     transition: all var(--transition-duration);
     border: 1px solid;
     border-radius: var(--border-radius);
+    cursor: pointer;
 }
 
 /* BUTTON VARIANTS */
