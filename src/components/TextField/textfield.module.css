@@ -7,10 +7,14 @@ label {
     margin-bottom: 5px;
 }
 .textField {
+    height: 40px;
     padding: 10px;
     border-radius: var(--border-radius);
     border: 1px solid var(--disabled-color);
-    transition: all 0.5s;
+    transition: all var(--transition-duration);
+}
+.textField:hover {
+    border-color: var(--disabled-darker-color);
 }
 .textField:focus {
     border: 1px solid var(--default-color);

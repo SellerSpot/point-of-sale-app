@@ -1,0 +1,24 @@
+.caretIcon {
+    color: var(--disabled-darker-color);
+}
+
+.dropDownBox {
+    height: 40px;
+    width: 200px;
+    border: 1px solid var(--disabled-color);
+    border-radius: var(--border-radius);
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all var(--transition-duration);
+    cursor: pointer;
+}
+
+.dropDownBox:hover {
+    border-color: var(--disabled-darker-color);
+}
+
+.dropDownBox > p {
+    font-size: 14px;
+}
