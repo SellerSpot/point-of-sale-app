@@ -1,3 +1,11 @@
+input,
+label {
+    display: block;
+}
+label {
+    font-size: small;
+    margin-bottom: 5px;
+}
 .textField {
     padding: 10px;
     border-radius: var(--border-radius);

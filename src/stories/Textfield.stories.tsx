@@ -16,4 +16,5 @@ TextFields.args = {
     fullWidth: false,
     variant: 'default',
     disabled: false,
+    label: 'Sample Label',
 } as PropsType;

@@ -2,10 +2,11 @@ import React from 'react';
 import styles from './textfield.module.css';
 
 export type PropsType = {
-    placeHolder: string;
+    placeHolder?: string;
     fullWidth?: boolean;
     disabled?: boolean;
-    variant: 'success' | 'warning' | 'danger' | 'default';
+    variant?: 'success' | 'warning' | 'danger' | 'default';
+    label?: string;
 };
 
 // used to assemble classnames for the textfield
@@ -29,7 +30,9 @@ const getClassNames = (props: PropsType): string => {
 export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
+            {props.label !== undefined ? <label htmlFor={props.label}>{props.label}</label> : null}
             <input
+                name={props.label}
                 className={getClassNames(props)}
                 disabled={props.disabled}
                 placeholder={props.placeHolder}
