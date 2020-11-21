@@ -32,15 +32,22 @@ const getClassNames = (props: PropsType): string => {
 
 // used to get the name for the textfield (and for the labels to attach to)
 const getTextFieldName = (props: PropsType): string => {
-    return props.label === undefined ? (props.helperText === undefined ? 'nolable' : props.helperText) : props.label;
+    return (
+        (props.label === undefined ? (props.helperText === undefined ? 'nolable' : props.helperText) : props.label) +
+        btoa(Math.random().toString()).substr(10, 5)
+    );
 };
 
 export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            {props.label !== undefined ? <label htmlFor={getTextFieldName(props)}>{props.label}</label> : null}
+            {props.label !== undefined ? (
+                <label className={styles.label} htmlFor={getTextFieldName(props)}>
+                    {props.label}
+                </label>
+            ) : null}
             <input
-                name={getTextFieldName(props)}
+                id={getTextFieldName(props)}
                 className={getClassNames(props)}
                 disabled={props.disabled}
                 placeholder={props.placeHolder}
@@ -48,7 +55,7 @@ export const TextField: React.FC<PropsType> = (props: PropsType): JSX.Element =>
                 value={props.value}
             />
             {props.helperText !== undefined ? (
-                <label className={styles.helperText} htmlFor={getTextFieldName(props)}>
+                <label className={styles.label + ' ' + styles.helperText} htmlFor={getTextFieldName(props)}>
                     {props.helperText}
                 </label>
             ) : null}

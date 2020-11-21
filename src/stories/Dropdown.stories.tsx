@@ -13,5 +13,6 @@ const Template: Story<PropsType> = (args: PropsType) => <Dropdown {...args} />;
 export const Dropdowns = Template.bind({});
 Dropdowns.args = {
     label: 'Sample Label',
-    options: ['Option 1', 'Option 2', 'Option 3'],
+    options: ['Automobiles', 'Art', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music'],
+    helperText: 'Sample Helper Text',
 } as PropsType;

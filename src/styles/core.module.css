@@ -19,7 +19,8 @@
     --warning-light-color: #ffda85;
     --success-color: #3ab795ff;
     --success-light-color: #4bc8a6;
-    --white-color: #fafffd;
+    --white-color: #ffffff;
+    --accent-white-color: #edeeef;
     --black-color: #000000;
     --disabled-color: #d3d3d3;
     --disabled-darker-color: #a0a0a0;
@@ -28,4 +29,14 @@
     --border-radius: 0.2rem;
     --rounded-border-radius: 50px;
     --transition-duration: 0.3s;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--disabled-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--disabled-darker-color);
+    border-radius: var(--border-radius) var(--border-radius);
 }
