@@ -1,56 +1,42 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import styles from './dropdown.module.css';
 import { FaCaretDown } from 'react-icons/fa';
 
 export type PropsType = {
     label?: string;
-    options: string[];
+    options: (string | number | JSX.Element)[];
     helperText?: string;
-};
-
-type stateType = {
-    showOptions: boolean;
-    selectedOption: string;
 };
 
 // used to generate the list of options to show
 const generateOptions = (
     options: PropsType['options'],
-    setSelectedOption: React.Dispatch<React.SetStateAction<stateType>>,
+    setSelectedOption: React.Dispatch<React.SetStateAction<number>>,
+    shouldShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
 ): ReactNode => {
-    return options.map((option) => {
-        const safeKey = option.replaceAll(' ', '') + btoa(Math.random().toString()).substr(10, 5);
+    return options.map((option, index) => {
         return (
             <li
-                onClick={() => setSelectedOption({ showOptions: false, selectedOption: option })}
-                key={safeKey}
+                onClick={() => {
+                    setSelectedOption(index);
+                    shouldShowOptions(false);
+                }}
+                key={index}
                 className={styles.dropDownItem}
             >
-                <input type="radio" className={styles.radio} id={safeKey} />
-                <label htmlFor={option.replaceAll(' ', '')}>{option}</label>
+                {option}
             </li>
         );
     });
 };
 
 // used to get the dropdown list classnames
-const getDropDownListClassNames = (optionsState: stateType): string => {
+const getDropDownListClassNames = (showOptions: boolean): string => {
     let classNames = styles.dropDownList;
-    if (optionsState.showOptions) classNames += ' ' + styles.active;
+    if (showOptions) classNames += ' ' + styles.active;
     else classNames += ' ' + styles.inactive;
     return classNames;
 };
-
-// const handleClickOutside = (
-//     event: MouseEvent,
-//     setOptionsState: React.Dispatch<React.SetStateAction<stateType>>,
-//     optionsState: stateType,
-// ) => {
-//     const target = event.target as HTMLElement;
-//     // // eslint-disable-next-line no-console
-//     // console.log('Here it is');
-//     setOptionsState({ ...optionsState, showOptions: false });
-// };
 
 // used to get the name for the dropDown (and for the labels to attach to)
 const getDropdownId = (props: PropsType): string => {
@@ -61,22 +47,18 @@ const getDropdownId = (props: PropsType): string => {
 };
 
 export const Dropdown: React.FC<PropsType> = (props: PropsType): JSX.Element => {
-    const [optionsState, setOptionsState] = useState<stateType>({
-        showOptions: false,
-        selectedOption: 'Select Video Category',
-    });
+    const [showOptions, shouldShowOptions] = useState<boolean>(false);
+    const [selectedOption, setSelectedOption] = useState<number>(-0);
 
-    // // to detect clicks outside
-    // useEffect(() => {
-    //     document.addEventListener('click', (event) => handleClickOutside(event, setOptionsState, optionsState), true);
-    //     return () => {
-    //         document.removeEventListener(
-    //             'click',
-    //             (event) => handleClickOutside(event, setOptionsState, optionsState),
-    //             true,
-    //         );
-    //     };
-    // }, []);
+    const handleClickOutsideHandler = () => shouldShowOptions(!showOptions);
+
+    useEffect(() => {
+        if (showOptions) document.addEventListener('click', handleClickOutsideHandler);
+        return () => {
+            document.removeEventListener('click', handleClickOutsideHandler);
+        };
+    }, [showOptions]);
+
     return (
         <div>
             {props.label !== undefined ? (
@@ -85,15 +67,12 @@ export const Dropdown: React.FC<PropsType> = (props: PropsType): JSX.Element => 
                 </label>
             ) : null}
             <div className={styles.dropDownBox}>
-                <div
-                    onClick={() => setOptionsState({ ...optionsState, showOptions: !optionsState.showOptions })}
-                    className={styles.dropDownSelect}
-                >
-                    <p>{optionsState.selectedOption}</p>
+                <div onClick={() => shouldShowOptions(!showOptions)} className={styles.dropDownSelect}>
+                    <p>{props.options[selectedOption]}</p>
                     <FaCaretDown className={styles.caretIcon} />
                 </div>
-                <div className={getDropDownListClassNames(optionsState)}>
-                    <ul>{generateOptions(props.options, setOptionsState)}</ul>
+                <div className={getDropDownListClassNames(showOptions)}>
+                    <ul>{generateOptions(props.options, setSelectedOption, shouldShowOptions)}</ul>
                 </div>
             </div>
             {props.helperText !== undefined ? (
