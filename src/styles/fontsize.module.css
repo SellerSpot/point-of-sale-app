@@ -1,0 +1,20 @@
+/* font-size - only used in stories to feel the */
+.masterFontSize {
+    font-size: var(--font-size-master);
+}
+
+.headerFontSize {
+    font-size: var(--font-size-header);
+}
+
+.defaultFontSize {
+    font-size: var(--font-size-default);
+}
+
+.secondaryFontSize {
+    font-size: var(--font-size-secondary);
+}
+
+.tertiaryFontSize {
+    font-size: var(--font-size-tertiary);
+}

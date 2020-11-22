@@ -9,8 +9,11 @@
 }
 
 :root {
+    /* colors */
     --primary-color: #172b4d;
     --primary-light-color: #283c5e;
+    --primary-background-color: #ffffff;
+    --secondary-background-color: #f3f3f3;
     --secondary-color: #007ea7;
     --seconday-light-color: #128fb8;
     --danger-color: #9e4770;
@@ -26,6 +29,15 @@
     --disabled-darker-color: #a0a0a0;
     --default-color: #657ed4;
     --default-light-color: #849ce9;
+
+    /* font-size variables - goes from large to small - use this var in all font related content inside components */
+    --font-size-master: 28px;
+    --font-size-header: 20px;
+    --font-size-default: 16px;
+    --font-size-secondary: 14px;
+    --font-size-tertiary: 12px;
+
+    /* values */
     --border-radius: 0.2rem;
     --rounded-border-radius: 50px;
     --transition-duration: 0.3s;
