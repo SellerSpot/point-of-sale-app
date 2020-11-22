@@ -1,4 +1,4 @@
-button {
+.button {
     padding: 0.8em 1em;
     text-decoration: none;
     transition: all var(--transition-duration);

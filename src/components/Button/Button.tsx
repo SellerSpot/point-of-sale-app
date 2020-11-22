@@ -7,11 +7,12 @@ export type PropsType = {
     type: 'solid' | 'line' | 'link' | 'icon';
     shape: 'default' | 'rounded';
     disabled?: boolean;
+    onClickCallback?: () => void;
 };
 
 // used to get the classnames
 const getClassNames = (props: PropsType): string => {
-    let classNames = styles.default;
+    let classNames = styles.button + ' ' + styles.default;
     switch (props.variant) {
         case 'success':
             classNames = styles.success;
@@ -45,7 +46,7 @@ const getClassNames = (props: PropsType): string => {
 export const Button: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            <button disabled={props.disabled} className={getClassNames(props)}>
+            <button onClick={props.onClickCallback} disabled={props.disabled} className={getClassNames(props)}>
                 {props.label}
             </button>
         </div>
