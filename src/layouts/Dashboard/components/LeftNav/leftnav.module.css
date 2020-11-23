@@ -42,7 +42,7 @@
 .navIcon {
     font-size: var(--font-size-master-sub);
     margin-right: 15px;
-
+    margin-top: 3px;
 }
 
 .navTitle {

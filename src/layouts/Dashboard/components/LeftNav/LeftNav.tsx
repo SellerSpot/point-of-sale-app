@@ -26,19 +26,19 @@ export const LeftNav = (): JSX.Element => {
     const history = useHistory();
     const navItem: INavItem[] = [
         {
-            Icon: FaBoxOpen,
+            Icon: IoMdCart,
             color: COLORS['sales-icon-color'],
             onClick: () => history.push('/'),
             title: 'sales',
         },
         {
-            Icon: FaCashRegister,
+            Icon: FaBoxOpen,
             color: COLORS['inventory-icon-color'],
             onClick: () => history.push('/inventory'),
             title: 'inventory',
         },
         {
-            Icon: IoMdCart,
+            Icon: FaCashRegister,
             color: COLORS['cashregister-icon-color'],
             onClick: () => history.push('/cashregister'),
             title: 'cash register',
