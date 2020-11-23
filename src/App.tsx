@@ -8,6 +8,7 @@ export const App: FC = (): JSX.Element => {
     return (
         <div>
             <Switch>
+                {/* all other routes should be nested above this route because it is '/' route hence should be placed atlast */}
                 <Route path={ROUTES.DASHBOARD}>
                     <Dashboard />
                 </Route>
