@@ -1,0 +1,15 @@
+.table {
+    height: 500px;
+    width: 100%;
+    background-color: var(--default-color);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr;
+}
+
+.tableHeader {
+    height: 50px;
+    width: 100%;
+    background-color: var(--success-color);
+    display: flex;
+}
