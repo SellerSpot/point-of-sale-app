@@ -14,14 +14,13 @@ export const TabBar: React.FC<PropsType> = (props: PropsType): JSX.Element => {
             {props.tabs.map((tab, index) => {
                 let tabLineClasses = styles.tabLine;
                 if (index !== props.selectedTab) tabLineClasses += ' ' + styles.invisibleTabLine;
-                // setting the length of the tabLine based on the length of the string
-                const tabLineStyle: React.CSSProperties = {
-                    width: tab.length * 10,
-                };
+
                 return (
                     <div onClick={() => props.onClickHandler(index)} key={nanoid()} className={styles.tab}>
-                        <div>{tab}</div>
-                        <div className={tabLineClasses} style={tabLineStyle} />
+                        <div className={styles.tabTitle}>{tab}</div>
+                        <div className={styles.tabLineHolder}>
+                            <div className={tabLineClasses} />
+                        </div>
                     </div>
                 );
             })}
