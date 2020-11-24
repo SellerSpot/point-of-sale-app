@@ -10,4 +10,13 @@ export default {
 const Template: Story<PropsType> = (args: PropsType) => <Table {...args} />;
 
 export const Tables = Template.bind({});
-Tables.args = {};
+Tables.args = {
+    headings: ['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4'],
+    values: [
+        ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+        ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+        ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+        ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+        ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+    ],
+} as PropsType;
