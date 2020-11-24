@@ -1,0 +1,36 @@
+.tabBar {
+    height: 60px;
+    width: 100%;
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 20px;
+    color: var(--light-font-color);
+    padding: 10px;
+}
+
+.tab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    font-weight: 800;
+    font-size: var(--font-size-default);
+}
+
+.tabLine {
+    height: 4px;
+    width: 40px;
+    border-radius: var(--rounded-border-radius);
+    background-color: var(--light-font-color);
+}
+
+.invisibleTabLine {
+    height: 0px;
+    background-color: transparent;
+}

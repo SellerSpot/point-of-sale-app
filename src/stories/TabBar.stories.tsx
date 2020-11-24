@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/core.module.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { TabBar, PropsType } from '../components/TabBar/TabBar';
 
@@ -11,5 +12,10 @@ const Template: Story<PropsType> = (args: PropsType) => <TabBar {...args} />;
 
 export const TabBars = Template.bind({});
 TabBars.args = {
-    tabs: ['Sample Header'],
+    tabs: ['Sales', 'Manager', 'Stock', 'Customers'],
+    selectedTab: 0,
+    onClickHandler: () => {
+        // eslint-disable-next-line no-console
+        // console.log(selectedIndex);
+    },
 } as PropsType;
