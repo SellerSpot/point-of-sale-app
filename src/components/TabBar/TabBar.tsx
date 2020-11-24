@@ -16,7 +16,7 @@ export const TabBar: React.FC<PropsType> = (props: PropsType): JSX.Element => {
                 if (index !== props.selectedTab) tabLineClasses += ' ' + styles.invisibleTabLine;
                 // setting the length of the tabLine based on the length of the string
                 const tabLineStyle: React.CSSProperties = {
-                    width: tab.length * 9,
+                    width: tab.length * 10,
                 };
                 return (
                     <div onClick={() => props.onClickHandler(index)} key={nanoid()} className={styles.tab}>

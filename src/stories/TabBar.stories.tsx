@@ -13,7 +13,7 @@ const Template: Story<PropsType> = (args: PropsType) => <TabBar {...args} />;
 export const TabBars = Template.bind({});
 TabBars.args = {
     tabs: ['Sales', 'Manager', 'Stock', 'Customers'],
-    selectedTab: 0,
+    selectedTab: 1,
     onClickHandler: () => {
         // eslint-disable-next-line no-console
         // console.log(selectedIndex);
