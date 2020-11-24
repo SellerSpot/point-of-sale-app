@@ -31,13 +31,12 @@
     /* backgrounds */
     --primary-background-color: #ffffff;
     --secondary-background-color: #f3f3f3;
-    --tertiary-background-color: #F6F9FC;
+    --tertiary-background-color: #f1f3f9;
 
     /* icons color */
-    --sales-icon-color: #7764E4;
-    --inventory-icon-color: #F53C56;
-    --cashregister-icon-color: #11CDEF;
-
+    --sales-icon-color: #7764e4;
+    --inventory-icon-color: #f53c56;
+    --cashregister-icon-color: #11cdef;
 
     /* font-size variables - goes from large to small - use this var in all font related content inside components */
     --font-size-master: 26px;
@@ -46,6 +45,10 @@
     --font-size-default: 16px;
     --font-size-secondary: 14px;
     --font-size-tertiary: 12px;
+
+    /* font colors */
+    --primary-font-color: #000;
+    --secondary-font-color: #8898aa;
 
     /* values */
     --border-radius: 0.2rem;
