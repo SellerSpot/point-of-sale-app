@@ -9,11 +9,8 @@ export const Sales = (): JSX.Element => {
     return (
         <div>
             <div className={styles.tabBarHolder}>
-                <TabBar
-                    tabs={['Current Sales', 'More Tabs', 'Even More']}
-                    onClickHandler={setcurrTab}
-                    selectedTab={currTab}
-                />
+                <TabBar tabs={['Current Sales']} onClickHandler={setcurrTab} selectedTab={currTab} />
+                <div className={styles.metaCard}></div>
             </div>
         </div>
     );
