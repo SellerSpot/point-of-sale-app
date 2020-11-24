@@ -1,17 +1,16 @@
-import { Core } from './layouts/Core/Core';
 import React, { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from './config/routes';
 import './styles/core.module.css';
-import commonStyles from './styles/common.module.css';
+import { Dashboard } from './layouts/Dashboard/Dashboard';
 
 export const App: FC = (): JSX.Element => {
     return (
         <div>
-            <button className={commonStyles.disableButton}>Custom Button</button>
             <Switch>
-                <Route path={ROUTES.HOME}>
-                    <Core />
+                {/* all other routes should be nested above this route because it is '/' route hence should be placed atlast */}
+                <Route path={ROUTES.DASHBOARD}>
+                    <Dashboard />
                 </Route>
             </Switch>
         </div>
