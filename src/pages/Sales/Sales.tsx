@@ -12,7 +12,11 @@ export const Sales = (): JSX.Element => {
     return (
         <div>
             <div className={styles.tabBarHolder}>
-                <TabBar tabs={['Current Sales']} onClickHandler={tabSelectedCallback} selectedTab={0} />
+                <TabBar
+                    tabs={['Current Sales', 'More Tabs', 'Even More']}
+                    onClickHandler={tabSelectedCallback}
+                    selectedTab={0}
+                />
             </div>
         </div>
     );
