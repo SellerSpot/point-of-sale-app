@@ -15,13 +15,13 @@ const getClassNames = (props: PropsType): string => {
     let classNames = styles.button + ' ' + styles.default;
     switch (props.variant) {
         case 'success':
-            classNames = styles.success;
+            classNames += ' ' + styles.success;
             break;
         case 'danger':
-            classNames = styles.danger;
+            classNames += ' ' + styles.danger;
             break;
         case 'warning':
-            classNames = styles.warning;
+            classNames += ' ' + styles.warning;
             if (props.type === 'solid') classNames += ' ' + styles.darkText;
             break;
     }

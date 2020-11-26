@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { LoadingSpinner, PropsType } from '../components/LoadingSpinner/LoadingSpinner';
 

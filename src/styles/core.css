@@ -9,36 +9,27 @@
 }
 
 :root {
-    /* colors */
-    --primary-color: #172b4d;
-    --primary-light-color: #283c5e;
-    --secondary-color: #007ea7;
-    --seconday-light-color: #128fb8;
-    --danger-color: #9e4770;
-    --danger-light-color: #af5881;
-    --warning-color: #ffd166ff;
-    --warning-light-color: #ffda85;
-    --success-color: #3ab795ff;
-    --success-light-color: #4bc8a6;
-    --white-color: #ffffff;
-    --accent-white-color: #edeeef;
-    --black-color: #000000;
-    --disabled-color: #d3d3d3;
-    --disabled-darker-color: #a0a0a0;
-    --default-color: #657ed4;
-    --default-light-color: #849ce9;
+    /* section colors */
+    --sales-color: #3f51b5;
+    --inventory-color: #ff5722;
+    --cashregister-color: #2196f3;
+
+    /* mood colors */
+    --success-color: #4caf50;
+    --success-accent-color: #5dbf61;
+    --danger-color: #f44336;
+    --danger-accent-color: #f55447;
+    --disabled-color: #a0a0a0;
+
+    /* element colors */
+    --border-color: #a0a0a0;
 
     /* backgrounds */
     --primary-background-color: #ffffff;
-    --secondary-background-color: #f3f3f3;
-    --tertiary-background-color: #f1f3f9;
+    --secondary-background-color: rgba(160, 160, 160, 0.1);
 
-    /* icons color */
-    --sales-icon-color: #7764e4;
-    --inventory-icon-color: #f53c56;
-    --cashregister-icon-color: #11cdef;
-
-    /* font-size variables - goes from large to small - use this var in all font related content inside components */
+    /* font-sizes */
+    --font-size-extra-large: 40px;
     --font-size-master: 26px;
     --font-size-master-sub: 24px;
     --font-size-header: 20px;
@@ -47,8 +38,8 @@
     --font-size-tertiary: 12px;
 
     /* font colors */
-    --primary-font-color: #000;
-    --secondary-font-color: #8898aa;
+    --primary-font-color: #00000;
+    --secondary-font-color: #a0a0a0;
     --light-font-color: #ffffff;
 
     /* values */

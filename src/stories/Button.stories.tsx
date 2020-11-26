@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/core.module.css';
+import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { Button, PropsType } from '../components/Button/Button';
 
