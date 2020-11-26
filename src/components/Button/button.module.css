@@ -5,6 +5,7 @@
     border: 1px solid;
     border-radius: var(--border-radius);
     cursor: pointer;
+    background-color: var(--secondary-font-color);
 }
 
 /* BUTTON VARIANTS */

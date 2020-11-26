@@ -4,7 +4,7 @@ import styles from './button.module.css';
 export type PropsType = {
     label: string;
     variant: 'success' | 'warning' | 'danger' | 'default';
-    type: 'solid' | 'line' | 'link' | 'icon';
+    type: 'solid' | 'line' | 'link';
     shape: 'default' | 'rounded';
     disabled?: boolean;
     onClickCallback?: () => void;
