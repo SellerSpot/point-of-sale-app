@@ -4,15 +4,31 @@ import { FaCaretDown } from 'react-icons/fa';
 
 export type PropsType = {
     label?: string;
-    options: (string | number | JSX.Element)[];
+    options: string[];
     helperText?: string;
+    onSelect: (option: string) => void;
+    footerButtons?: number | undefined;
+    footerCallbacks?: (() => void)[];
 };
+
+// // used to generate the footer buttons
+// const generateFooterButtons = (footerButtons: PropsType['footerButtons'],
+//     footerCallbacks:PropsType['footerCallbacks']):ReactNode =>{
+//     return (
+//         <div>
+//             {
+//               ()
+//             }
+//         </div>
+//     );
+// }
 
 // used to generate the list of options to show
 const generateOptions = (
     options: PropsType['options'],
     setSelectedOption: React.Dispatch<React.SetStateAction<number>>,
     shouldShowOptions: React.Dispatch<React.SetStateAction<boolean>>,
+    onSelect: (option: string) => void,
 ): ReactNode => {
     return options.map((option, index) => {
         return (
@@ -20,6 +36,7 @@ const generateOptions = (
                 onClick={() => {
                     setSelectedOption(index);
                     shouldShowOptions(false);
+                    onSelect(option);
                 }}
                 key={index}
                 className={styles.dropDownItem}
@@ -72,7 +89,7 @@ export const Dropdown: React.FC<PropsType> = (props: PropsType): JSX.Element => 
                     <FaCaretDown className={styles.caretIcon} />
                 </div>
                 <div className={getDropDownListClassNames(showOptions)}>
-                    <ul>{generateOptions(props.options, setSelectedOption, shouldShowOptions)}</ul>
+                    <ul>{generateOptions(props.options, setSelectedOption, shouldShowOptions, props.onSelect)}</ul>
                 </div>
             </div>
             {props.helperText !== undefined ? (

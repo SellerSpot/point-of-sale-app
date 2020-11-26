@@ -15,4 +15,8 @@ Dropdowns.args = {
     label: 'Sample Label',
     options: ['Automobiles', 'Art', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music', 'Music'],
     helperText: 'Sample Helper Text',
+    onSelect: (option: string) => {
+        // eslint-disable-next-line no-console
+        console.log(option);
+    },
 } as PropsType;
