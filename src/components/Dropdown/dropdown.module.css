@@ -1,5 +1,5 @@
 .caretIcon {
-    color: var(--disabled-darker-color);
+    color: var(--border-color);
 }
 
 .dropDownBox,
@@ -7,30 +7,29 @@
     display: block;
 }
 .label {
-    font-size: small;
+    font-size: var(--font-size-secondary);
     font-weight: 500;
     margin-bottom: 5px;
 }
 
 .helperText {
-    font-size: 0.7em;
+    font-size: var(--font-size-tertiary);
     margin-top: 2px;
     font-weight: 400;
-    color: var(--disabled-darker-color);
+    color: var(--border-color);
 }
 
 .dropDownBox {
     height: var(--textfield-height);
     width: 100%;
-    border: 1px solid var(--disabled-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     transition: all var(--transition-duration);
     cursor: pointer;
-    box-sizing: border-box;
 }
 
 .dropDownBox:hover {
-    border-color: var(--disabled-darker-color);
+    border-color: var(--disabled-accent-color);
 }
 
 .dropDownSelect {
@@ -43,25 +42,26 @@
 }
 
 .dropDownSelect > p {
-    font-size: 14px;
+    font-size: var(--font-size-secondary);
 }
 
 .dropDownList {
     margin-top: 5px;
-    border: 1px solid var(--disabled-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     user-select: none;
     max-height: 0px;
     z-index: 2;
     visibility: hidden;
+    resize: vertical;
     overflow-y: auto;
-    background-color: var(--white-color);
-    transition: all var(--transition-duration);
+    background-color: var(--primary-background-color);
 }
 
 .dropDownList.active {
     animation: fade_in_show var(--transition-duration);
     visibility: visible;
+    height: 140px;
     max-height: 240px;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .dropDownItem:hover {
-    background-color: var(--accent-white-color);
+    background-color: var(--secondary-background-color);
 }
 
 .radio {
