@@ -35,8 +35,6 @@ const getClassNames = (props: PropsType): string => {
         case 'link':
             classNames += ' ' + styles.link;
             break;
-        case 'icon':
-            classNames += ' ' + styles.icon;
     }
     if (props.shape === 'rounded') classNames += ' ' + styles.rounded;
     if (props.disabled) classNames += ' ' + styles.disabled;
