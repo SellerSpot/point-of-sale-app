@@ -7,6 +7,7 @@ export type PropsType = {
     type: 'solid' | 'line' | 'link';
     shape: 'default' | 'rounded';
     disabled?: boolean;
+    size?: 'small' | 'default';
     onClickCallback?: () => void;
 };
 
@@ -38,6 +39,7 @@ const getClassNames = (props: PropsType): string => {
     }
     if (props.shape === 'rounded') classNames += ' ' + styles.rounded;
     if (props.disabled) classNames += ' ' + styles.disabled;
+    if (props.size === 'small') classNames += ' ' + styles.smallButton;
     return classNames;
 };
 

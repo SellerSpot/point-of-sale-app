@@ -40,7 +40,7 @@
     --font-size-tertiary: 12px;
 
     /* font colors */
-    --primary-font-color: #00000;
+    --primary-font-color: #000000;
     --secondary-font-color: #a0a0a0;
     --light-font-color: #ffffff;
 
@@ -48,6 +48,7 @@
     --border-radius: 0.2rem;
     --rounded-border-radius: 50px;
     --transition-duration: 0.3s;
+    --textfield-height: 40px;
 }
 
 ::-webkit-scrollbar {

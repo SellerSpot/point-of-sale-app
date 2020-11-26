@@ -20,8 +20,8 @@
 }
 
 .dropDownBox {
-    height: 40px;
-    width: 350px;
+    height: var(--textfield-height);
+    width: 100%;
     border: 1px solid var(--disabled-color);
     border-radius: var(--border-radius);
     transition: all var(--transition-duration);

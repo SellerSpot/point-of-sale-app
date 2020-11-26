@@ -13,10 +13,11 @@ const Template: Story<PropsType> = (args: PropsType) => <Button {...args} />;
 export const Buttons = Template.bind({});
 Buttons.args = {
     label: 'Button Label',
-    variant: 'default',
+    variant: 'success',
     type: 'solid',
     shape: 'default',
     disabled: false,
+    size: 'default',
     onClickCallback: () => {
         // eslint-disable-next-line no-console
         console.log('Hello there!');
