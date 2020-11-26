@@ -8,25 +8,15 @@
 }
 
 /* BUTTON VARIANTS */
-.default {
-    color: var(--default-color);
-    background-color: var(--default-color);
-    border-color: var(--default-color);
-}
-.default:hover {
-    color: var(--default-light-color);
-    background-color: var(--default-light-color);
-    border-color: var(--default-light-color);
-}
 .success {
     color: var(--success-color);
     background-color: var(--success-color);
     border-color: var(--success-color);
 }
 .success:hover {
-    color: var(--success-light-color);
-    background-color: var(--success-light-color);
-    border-color: var(--success-light-color);
+    color: var(--success-accent-color);
+    background-color: var(--success-accent-color);
+    border-color: var(--success-accent-color);
 }
 .warning {
     color: var(--warning-color);
@@ -34,9 +24,9 @@
     border-color: var(--warning-color);
 }
 .warning:hover {
-    color: var(--warning-light-color);
-    background-color: var(--warning-light-color);
-    border-color: var(--warning-light-color);
+    color: var(--warning-accent-color);
+    background-color: var(--warning-accent-color);
+    border-color: var(--warning-accent-color);
 }
 .danger {
     color: var(--danger-color);
@@ -44,15 +34,15 @@
     border-color: var(--danger-color);
 }
 .danger:hover {
-    color: var(--danger-light-color);
-    background-color: var(--danger-light-color);
-    border-color: var(--danger-light-color);
+    color: var(--danger-accent-color);
+    background-color: var(--danger-accent-color);
+    border-color: var(--danger-accent-color);
 }
 
 /* BUTTON TYPES */
 .solid,
 .solid:hover {
-    color: var(--white-color);
+    color: var(--light-font-color);
 }
 
 .line,
@@ -66,11 +56,6 @@
     border-color: transparent;
 }
 
-.icon,
-.icon:hover {
-    color: var(--white-color);
-}
-
 /* SHAPE TYPES */
 .rounded {
     border-radius: var(--rounded-border-radius);
@@ -79,11 +64,7 @@
 /* TEXT TYPES */
 .darkText,
 .darkText:hover {
-    color: var(--black-color);
-}
-
-.icon {
-    padding-right: 10px;
+    color: var(--primary-font-color);
 }
 
 .disabled,
