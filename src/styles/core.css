@@ -54,10 +54,10 @@
 
 ::-webkit-scrollbar {
     width: 8px;
-    background-color: var(--disabled-color);
+    background-color: var(--secondary-background-color);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--disabled-darker-color);
+    background-color: var(--disabled-color);
     border-radius: var(--border-radius) var(--border-radius);
 }
