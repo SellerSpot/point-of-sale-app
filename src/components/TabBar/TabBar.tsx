@@ -12,15 +12,12 @@ export const TabBar: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div className={styles.tabBar}>
             {props.tabs.map((tab, index) => {
-                let tabLineClasses = styles.tabLine;
-                if (index !== props.selectedTab) tabLineClasses += ' ' + styles.invisibleTabLine;
+                let tabItemClasses = styles.tabTitle;
+                if (index === props.selectedTab) tabItemClasses += ' ' + styles.selectedTab;
 
                 return (
                     <div onClick={() => props.onClickHandler(index)} key={nanoid()} className={styles.tab}>
-                        <div className={styles.tabTitle}>{tab}</div>
-                        <div className={styles.tabLineHolder}>
-                            <div className={tabLineClasses} />
-                        </div>
+                        <div className={tabItemClasses}>{tab}</div>
                     </div>
                 );
             })}
