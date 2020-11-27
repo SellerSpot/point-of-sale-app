@@ -1,19 +1,18 @@
 import React from 'react';
 import leftNavStyles from './leftnav.module.css';
 import { FaBoxOpen, FaCashRegister, IoMdCart } from 'react-icons/all';
-import { COLORS } from '../../../../config/colors';
 import { useHistory } from 'react-router-dom';
 
 interface INavItem {
-    color: string;
+    style: React.CSSProperties;
     Icon: React.ComponentType;
     title: string;
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, color, onClick, title }: INavItem): JSX.Element => {
+const NavItem = ({ Icon, style, onClick, title }: INavItem): JSX.Element => {
     return (
-        <div className={leftNavStyles.navItem} style={{ color: color }} onClick={onClick}>
+        <div className={leftNavStyles.navItem} style={style} onClick={onClick}>
             <div className={leftNavStyles.navIcon}>
                 <Icon />
             </div>
@@ -27,19 +26,25 @@ export const LeftNav = (): JSX.Element => {
     const navItem: INavItem[] = [
         {
             Icon: IoMdCart,
-            color: COLORS['sales-icon-color'],
+            style: {
+                color: 'var(--sales-color)',
+            },
             onClick: () => history.push('/'),
             title: 'sales',
         },
         {
             Icon: FaBoxOpen,
-            color: COLORS['inventory-icon-color'],
+            style: {
+                color: 'var(--inventory-color)',
+            },
             onClick: () => history.push('/inventory'),
             title: 'inventory',
         },
         {
             Icon: FaCashRegister,
-            color: COLORS['cashregister-icon-color'],
+            style: {
+                color: 'var(--cashregister-color)',
+            },
             onClick: () => history.push('/cashregister'),
             title: 'cash register',
         },
@@ -49,7 +54,7 @@ export const LeftNav = (): JSX.Element => {
             <div className={leftNavStyles.contentWrapper}>
                 <div className={leftNavStyles.storeNameHolder}>Store Name</div>
                 {navItem.map((item, key) => (
-                    <NavItem key={key} Icon={item.Icon} color={item.color} onClick={item.onClick} title={item.title} />
+                    <NavItem key={key} Icon={item.Icon} style={item.style} onClick={item.onClick} title={item.title} />
                 ))}
             </div>
         </div>
