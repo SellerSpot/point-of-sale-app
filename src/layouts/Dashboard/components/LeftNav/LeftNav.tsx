@@ -46,10 +46,12 @@ export const LeftNav = (): JSX.Element => {
     ];
     return (
         <div className={leftNavStyles.leftNavWrapper}>
-            <div className={leftNavStyles.storeNameHolder}>Store Name</div>
-            {navItem.map((item, key) => (
-                <NavItem key={key} Icon={item.Icon} color={item.color} onClick={item.onClick} title={item.title} />
-            ))}
+            <div className={leftNavStyles.contentWrapper}>
+                <div className={leftNavStyles.storeNameHolder}>Store Name</div>
+                {navItem.map((item, key) => (
+                    <NavItem key={key} Icon={item.Icon} color={item.color} onClick={item.onClick} title={item.title} />
+                ))}
+            </div>
         </div>
     );
 };
