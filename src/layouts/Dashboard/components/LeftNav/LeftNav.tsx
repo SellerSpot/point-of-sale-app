@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import leftNavStyles from './leftnav.module.css';
 import { FaBoxOpen, FaCashRegister, IoMdCart } from 'react-icons/all';
 import { COLORS } from '../../../../config/colors';
 import { useHistory } from 'react-router-dom';
+import { ROUTES } from '../../../../config/routes';
 
 interface INavItem {
     color: string;
     Icon: React.ComponentType;
     title: string;
+    active: boolean;
+    route: string;
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, color, onClick, title }: INavItem): JSX.Element => {
+const NavItem = ({ Icon, color, onClick, title, active }: INavItem): JSX.Element => {
     return (
-        <div className={leftNavStyles.navItem} style={{ color: color }} onClick={onClick}>
+        <div
+            className={`${leftNavStyles.navItem} ${active ? leftNavStyles.navItemActive : ''}`}
+            style={{ color: color }}
+            onClick={onClick}
+        >
             <div className={leftNavStyles.navIcon}>
                 <Icon />
             </div>
@@ -24,31 +31,44 @@ const NavItem = ({ Icon, color, onClick, title }: INavItem): JSX.Element => {
 
 export const LeftNav = (): JSX.Element => {
     const history = useHistory();
-    const navItem: INavItem[] = [
+    const [currentNavRoute, setCurrentNavRoute] = useState(history.location.pathname);
+    history.listen((location) => {
+        setCurrentNavRoute(location.pathname);
+    });
+
+    const navItem: Omit<INavItem, 'active' | 'onClick'>[] = [
         {
             Icon: IoMdCart,
             color: COLORS['sales-icon-color'],
-            onClick: () => history.push('/'),
             title: 'sales',
+            route: ROUTES.SALES,
         },
         {
             Icon: FaBoxOpen,
             color: COLORS['inventory-icon-color'],
-            onClick: () => history.push('/inventory'),
             title: 'inventory',
+            route: ROUTES.INVENTORY,
         },
         {
             Icon: FaCashRegister,
             color: COLORS['cashregister-icon-color'],
-            onClick: () => history.push('/cashregister'),
             title: 'cash register',
+            route: ROUTES.CASH_REGISTER,
         },
     ];
     return (
         <div className={leftNavStyles.leftNavWrapper}>
             <div className={leftNavStyles.storeNameHolder}>Store Name</div>
             {navItem.map((item, key) => (
-                <NavItem key={key} Icon={item.Icon} color={item.color} onClick={item.onClick} title={item.title} />
+                <NavItem
+                    key={key}
+                    Icon={item.Icon}
+                    color={item.color}
+                    onClick={() => history.push(item.route)}
+                    title={item.title}
+                    route={item.route}
+                    active={item.route === currentNavRoute}
+                />
             ))}
         </div>
     );
