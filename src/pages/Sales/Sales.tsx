@@ -9,7 +9,7 @@ export const Sales = (): JSX.Element => {
 
     return (
         <div>
-            <TabBar tabs={['Current Sales']} onClickHandler={setcurrTab} selectedTab={currTab} />
+            <TabBar tabs={['Current Sales', 'Other Tabs']} onClickHandler={setcurrTab} selectedTab={currTab} />
             <div className={styles.metaCard}></div>
             <Table
                 headings={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4']}
