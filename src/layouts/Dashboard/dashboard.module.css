@@ -1,11 +1,8 @@
 .dashboardWrapper {
-    width: auto;
-    max-width: 100vw;
+    height: 100vw;
     overflow-x: hidden;
-    height: auto;
-    min-height: 100vh;
-    max-height: 100vh;
-    overflow-y: auto;
+    height: 100vh;
+    overflow-y: hidden;
     display: grid;
     grid-template-columns: 240px 1fr;
 }
@@ -20,7 +17,7 @@
 .mainBodyWrapper {
     width: 100%;
     height: 100%;
+    padding: 5px;
     overflow-x: auto;
     overflow-y: auto;
-    padding: 5px;
 }
