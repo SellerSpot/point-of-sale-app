@@ -31,7 +31,7 @@
     /* backgrounds */
     --primary-background-color: #ffffff;
     --secondary-background-color: rgba(160, 160, 160, 0.1);
-    --tertiary-background-color: #eeeeee;
+    --tertiary-background-color: rgba(160, 160, 160, 0.1);
 
     /* font-sizes */
     --font-size-extra-large: 40px;

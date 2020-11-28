@@ -8,6 +8,7 @@ export type PropsType = {
     shape: 'default' | 'rounded';
     disabled?: boolean;
     size?: 'small' | 'default';
+    style?: React.CSSProperties;
     onClickCallback?: () => void;
 };
 
@@ -46,7 +47,12 @@ const getClassNames = (props: PropsType): string => {
 export const Button: React.FC<PropsType> = (props: PropsType): JSX.Element => {
     return (
         <div>
-            <button onClick={props.onClickCallback} disabled={props.disabled} className={getClassNames(props)}>
+            <button
+                onClick={props.onClickCallback}
+                disabled={props.disabled}
+                className={getClassNames(props)}
+                style={props.style}
+            >
                 {props.label}
             </button>
         </div>
