@@ -39,11 +39,11 @@
 }
 
 .navItem:hover {
-    background-color: var(--secondary-background-color);
+    background-color: var(--tertiary-background-color);
 }
 
 .navItemActive {
-    background-color: var(--secondary-background-color);
+    background-color: var(--tertiary-background-color);
 }
 
 .navIcon {
