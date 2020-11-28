@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './sales.module.css';
 import { TabBar } from '../../components/TabBar/TabBar';
+import { MetaCard } from '../../components/MetaCard/MetaCard';
 import { Table } from '../../components/Table/Table';
 
 export const Sales = (): JSX.Element => {
@@ -8,9 +9,17 @@ export const Sales = (): JSX.Element => {
     const [currTab, setcurrTab] = useState(0);
 
     return (
-        <div>
+        <div className={styles.salesPage}>
             <TabBar tabs={['Current Sales', 'Other Tabs']} onClickHandler={setcurrTab} selectedTab={currTab} />
-            <div className={styles.metaCard}></div>
+            <MetaCard
+                pageDescription="Sample Description"
+                shortcuts={[
+                    {
+                        name: 'Open Sales',
+                        keys: 'F4',
+                    },
+                ]}
+            />
             <Table
                 headings={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4']}
                 values={[
