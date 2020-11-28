@@ -10,7 +10,9 @@ export const Sales = (): JSX.Element => {
 
     return (
         <div className={styles.salesPage}>
-            <TabBar tabs={['Current Sales', 'Other Tabs']} onClickHandler={setcurrTab} selectedTab={currTab} />
+            <div className={styles.tabBarWrapper}>
+                <TabBar tabs={['Current Sales', 'Other Tabs']} onClickHandler={setcurrTab} selectedTab={currTab} />
+            </div>
             <MetaCard
                 pageDescription="Sample Description"
                 shortcuts={[
@@ -20,13 +22,39 @@ export const Sales = (): JSX.Element => {
                     },
                 ]}
             />
-            <Table
-                headings={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4']}
-                values={[
-                    ['value 1', 'value 2', 'value 3', 'value 4'],
-                    ['value 1', 'value 2', 'value 3', 'value 4'],
-                ]}
-            />
+            <div className={styles.tableWrapper}>
+                <Table
+                    headings={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4']}
+                    values={[
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                    ]}
+                />
+            </div>
         </div>
     );
 };

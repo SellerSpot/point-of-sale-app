@@ -14,6 +14,7 @@ const tableHeaderFactory = (props: PropsType): ReactNode => {
         gridTemplateRows: '1fr',
         position: 'sticky',
         top: 0,
+        width: '100%',
         height: '40px',
         fontWeight: 'bold',
     };
@@ -39,8 +40,11 @@ const tableRowFactory = (props: PropsType): ReactNode => {
     const rowStyle: React.CSSProperties = {
         gridTemplateColumns: 'repeat(' + props.headings.length + ',1fr)',
         gridTemplateRows: 'auto',
+        height: '70px',
     };
-
+    const cellStyle: React.CSSProperties = {
+        height: '70px',
+    };
     return props.values.map((row, index) => {
         let classNames = styles.row;
         if (index % 2 !== 0) {
@@ -50,7 +54,7 @@ const tableRowFactory = (props: PropsType): ReactNode => {
             <div key={nanoid()} className={classNames} style={rowStyle}>
                 {row.map((cell: string) => {
                     return (
-                        <div key={nanoid()} className={styles.bodyCell}>
+                        <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
                             {cell}
                         </div>
                     );

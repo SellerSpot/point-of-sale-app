@@ -55,11 +55,11 @@
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
     background-color: var(--secondary-background-color);
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: var(--disabled-color);
-    border-radius: var(--border-radius) var(--border-radius);
+    border-radius: var(--border-radius);
 }

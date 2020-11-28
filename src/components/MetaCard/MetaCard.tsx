@@ -17,28 +17,26 @@ export type propsType = {
 
 export const MetaCard: React.FC<propsType> = (props: propsType): JSX.Element => {
     return (
-        <div className={styles.metaCardWrapper}>
-            <div className={styles.metaCard}>
-                <div className={styles.pageInformationSection}>
-                    <div className={styles.pageDescription}>{props.pageDescription}</div>
-                    <div className={styles.pageShortcuts}>
-                        {props.shortcuts.map((shortcut) => {
-                            return shortcut.name + ' (' + shortcut.keys + ')   ';
-                        })}
-                    </div>
+        <div className={styles.metaCard}>
+            <div className={styles.pageInformationSection}>
+                <div className={styles.pageDescription}>{props.pageDescription}</div>
+                <div className={styles.pageShortcuts}>
+                    {props.shortcuts.map((shortcut) => {
+                        return shortcut.name + ' (' + shortcut.keys + ')   ';
+                    })}
                 </div>
-                {props.primaryButton !== undefined ? (
-                    <Button
-                        label={props.primaryButton?.label}
-                        type="line"
-                        variant="default"
-                        size="default"
-                        onClickCallback={props.primaryButton.onClickCallback}
-                        style={props.primaryButton.style}
-                        shape="default"
-                    />
-                ) : null}
             </div>
+            {props.primaryButton !== undefined ? (
+                <Button
+                    label={props.primaryButton?.label}
+                    type="line"
+                    variant="default"
+                    size="default"
+                    onClickCallback={props.primaryButton.onClickCallback}
+                    style={props.primaryButton.style}
+                    shape="default"
+                />
+            ) : null}
         </div>
     );
 };
