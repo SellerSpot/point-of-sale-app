@@ -1,9 +1,10 @@
 .table {
     height: 100%;
     width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     overflow-x: auto;
     overflow-y: auto;
-    background-color: aqua;
 }
 
 .row {
