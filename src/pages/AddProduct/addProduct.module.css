@@ -1,0 +1,71 @@
+.addProductWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    transition: background-color 0.2s ease-in-out 0s;
+    visibility: hidden;
+}
+
+.addProductWrapperBackdrop {
+    visibility: visible;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+.sliderWrapper {
+    position: absolute;
+    width: 45%;
+    height: 100%;
+    background: var(--primary-background-color);
+    right: -100%;
+    transition: right 0.4s ease-in-out 0s;
+    overflow-y: auto;
+    display: grid;
+    grid-template-rows: 70px 1fr 70px;
+    padding: 0 30px;
+}
+
+.sliderActive {
+    right: 0;
+}
+
+.sliderHeader {
+    color: var(--primary-font-color);
+    font-size: var(--font-size-header);
+    background-color: var(--primary-background-color);
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sliderBody {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-Y: auto;
+    padding-right: 5px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroupSplitEqual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.sliderFooter {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

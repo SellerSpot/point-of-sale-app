@@ -9,7 +9,7 @@ export type PropsType = {
     label?: string;
     helperText?: string;
     value?: string;
-    inputType?: 'number' | 'text' | 'email' | 'password';
+    inputType: 'number' | 'text' | 'email' | 'password';
 };
 
 // used to assemble classnames for the textfield
