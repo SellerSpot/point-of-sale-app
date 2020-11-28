@@ -63,18 +63,20 @@ export const LeftNav = (): JSX.Element => {
     ];
     return (
         <div className={leftNavStyles.leftNavWrapper}>
-            <div className={leftNavStyles.storeNameHolder}>Store Name</div>
-            {navItem.map((item, key) => (
-                <NavItem
-                    key={key}
-                    Icon={item.Icon}
-                    style={item.style}
-                    onClick={() => history.push(item.route)}
-                    title={item.title}
-                    route={item.route}
-                    active={item.route === currentNavRoute}
-                />
-            ))}
+            <div className={leftNavStyles.contentWrapper}>
+                <div className={leftNavStyles.storeNameHolder}>Store Name</div>
+                {navItem.map((item, key) => (
+                    <NavItem
+                        key={key}
+                        Icon={item.Icon}
+                        style={item.style}
+                        onClick={() => history.push(item.route)}
+                        title={item.title}
+                        route={item.route}
+                        active={item.route === currentNavRoute}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
