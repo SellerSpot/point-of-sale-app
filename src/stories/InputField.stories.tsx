@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { TextField, PropsType } from '../components/TextField/TextField';
+import { InputField, IInputFieldProps } from '../components/InputField/InputField';
 import { loadCSSValues } from '../config/cssVariables';
 
 // used to load css variables in ts object into the :root context
@@ -9,19 +9,19 @@ loadCSSValues();
 
 export default {
     title: 'Components',
-    component: TextField,
+    component: InputField,
 } as Meta;
 
-const Template: Story<PropsType> = (args: PropsType) => <TextField {...args} />;
+const Template: Story<IInputFieldProps> = (args: IInputFieldProps) => <InputField {...args} />;
 
-export const TextFields = Template.bind({});
-TextFields.args = {
+export const InputFields = Template.bind({});
+InputFields.args = {
     placeHolder: 'Sample Text Field',
     fullWidth: false,
-    variant: 'default',
     disabled: false,
     label: 'Sample Label',
     value: '55865',
     helperText: 'Sample Helper Text',
-    inputType: 'text',
-} as PropsType;
+    type: 'text',
+    onChange: () => void 0,
+} as IInputFieldProps;

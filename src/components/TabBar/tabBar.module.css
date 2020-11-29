@@ -4,13 +4,13 @@
     min-height: 50px;
     max-height: 50px;
     background-color: var(--primary-background-color);
-    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    padding: 10px;
+    padding: 0px 25px;
 }
 
 .tabTitle {
@@ -25,5 +25,4 @@
 
 .selectedTab {
     color: var(--sales-color);
-    font-weight: 700;
 }

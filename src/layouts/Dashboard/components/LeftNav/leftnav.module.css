@@ -1,18 +1,17 @@
 .leftNavWrapper {
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 5px;
-    padding-right: 0;
     user-select: none;
 }
 
 .contentWrapper {
     width: 100%;
     height: 100%;
-    border: 1px solid var(--border-color);
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
+    background-color: var(--primary-background-color);
 }
 
 .storeNameHolder {

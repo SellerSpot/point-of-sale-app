@@ -6,15 +6,15 @@ export const cssColors = {
 
     /* mood colors */
     '--success-color': '#4caf50',
-    '--success-accent-color': '#5dbf61',
     '--warning-color': '#ffc107',
-    '--warning-accent-color': '#ffd218',
     '--danger-color': '#f44336',
-    '--danger-accent-color': '#f55447',
+    '--disabled-color': '#808080',
 
     /* element colors */
     '--border-color': '#f2f2f2',
-    '--border-accent-color': '#e1e1e1',
+    '--border-darker-color': '#a0a0a0',
+    '--border-accent-color': '#000000',
+    '--shadow-color': 'rgba(0,0,0,0.15)',
 
     /* backgrounds */
     /* card" backgrounds */
@@ -27,7 +27,8 @@ export const cssColors = {
     /* font colors */
     '--primary-font-color': '#000000',
     '--secondary-font-color': '#808080',
-    '--light-font-color': '#a0a0a0',
+    '--tertiary-font-color': '#a0a0a0',
+    '--light-font-color': '#ffffff',
 };
 
 export const cssVariables = {
@@ -45,7 +46,8 @@ export const cssVariables = {
     '--border-radius': '0.2rem',
     '--rounded-border-radius': '50px',
     '--transition-duration': '0.3s',
-    '--textfield-height': '40px',
+    '--input-field-height': '40px',
+    '--shadow': '0px 0px 8px 0px var(--shadow-color)',
 };
 
 // used to load css variables in ts object into the :root context
