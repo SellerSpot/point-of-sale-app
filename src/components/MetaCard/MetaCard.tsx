@@ -1,42 +1,42 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styles from './metacard.module.css';
 import { Button } from '../Button/Button';
+import { nanoid } from 'nanoid';
 
-export type propsType = {
-    pageDescription: string;
-    shortcuts: {
-        name: string;
-        keys: string;
-    }[];
-    primaryButton?: {
-        label: string;
-        onClickCallback: () => void;
-        style: React.CSSProperties;
-    };
+export interface IMetaCardProps {
+    title?: string;
+    secondaryText?: string;
+    buttons?: ReactNode[];
+}
+
+const defaultProps: IMetaCardProps = {
+    title: 'This is sample description',
+    secondaryText: 'This is sample secondary text',
+    buttons: [
+        <Button
+            key={nanoid()}
+            label="Sample Button 1"
+            variant="outline"
+            labelColor="--sales-color"
+            backgroundColor="--sales-color"
+        />,
+    ],
 };
 
-export const MetaCard: React.FC<propsType> = (props: propsType): JSX.Element => {
+export const MetaCard: React.FC<IMetaCardProps> = (props: IMetaCardProps): JSX.Element => {
+    // seasoning the props
+    const sProps: IMetaCardProps = {
+        ...defaultProps,
+        ...props,
+    };
+
     return (
         <div className={styles.metaCard}>
             <div className={styles.pageInformationSection}>
-                <div className={styles.pageDescription}>{props.pageDescription}</div>
-                <div className={styles.pageShortcuts}>
-                    {props.shortcuts.map((shortcut) => {
-                        return shortcut.name + ' (' + shortcut.keys + ')   ';
-                    })}
-                </div>
+                <div className={styles.cardTitle}>{sProps.title}</div>
+                <div className={styles.cardSecondaryText}>{sProps.secondaryText}</div>
             </div>
-            {props.primaryButton !== undefined ? (
-                <Button
-                    label={props.primaryButton?.label}
-                    type="line"
-                    variant="default"
-                    size="default"
-                    onClickCallback={props.primaryButton.onClickCallback}
-                    style={props.primaryButton.style}
-                    shape="default"
-                />
-            ) : null}
+            <div className={styles.cardActions}>{sProps.buttons}</div>
         </div>
     );
 };

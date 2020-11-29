@@ -14,6 +14,7 @@ export const cssColors = {
     '--border-color': '#f2f2f2',
     '--border-darker-color': '#a0a0a0',
     '--border-accent-color': '#000000',
+    '--shadow-color': 'rgba(0,0,0,0.15)',
 
     /* backgrounds */
     /* card" backgrounds */
