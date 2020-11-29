@@ -1,59 +1,57 @@
 import React from 'react';
 import styles from './button.module.css';
+import { cssColorsType } from '../../config/cssVariables';
 
-export type PropsType = {
+export interface IButtonProps {
     label: string;
-    variant: 'success' | 'warning' | 'danger' | 'default';
-    type: 'solid' | 'line' | 'link';
-    shape: 'default' | 'rounded';
+    shape?: 'rectangle' | 'rounded';
     disabled?: boolean;
-    size?: 'small' | 'default';
+    size?: 'small' | 'medium';
+    variant?: 'solid' | 'line' | 'link';
+    type?: 'button' | 'submit' | 'reset';
+    color?: keyof cssColorsType;
+    labelColor?: keyof cssColorsType;
     style?: React.CSSProperties;
-    onClickCallback?: () => void;
+    onClick?: () => void;
+}
+
+const defaultProps: IButtonProps = {
+    label: 'Button',
+    shape: 'rectangle',
+    disabled: false,
+    size: 'medium',
+    variant: 'solid',
+    color: '--success-color',
+    labelColor: '--light-font-color',
+    type: 'button',
+    style: {},
+    onClick: () => {
+        return null;
+    },
 };
 
-// used to get the classnames
-const getClassNames = (props: PropsType): string => {
-    let classNames = styles.button + ' ' + styles.default;
-    switch (props.variant) {
-        case 'success':
-            classNames += ' ' + styles.success;
-            break;
-        case 'danger':
-            classNames += ' ' + styles.danger;
-            break;
-        case 'warning':
-            classNames += ' ' + styles.warning;
-            if (props.type === 'solid') classNames += ' ' + styles.darkText;
-            break;
-    }
-    switch (props.type) {
-        case 'solid':
-            classNames += ' ' + styles.solid;
-            break;
-        case 'line':
-            classNames += ' ' + styles.line;
-            break;
-        case 'link':
-            classNames += ' ' + styles.link;
-            break;
-    }
-    if (props.shape === 'rounded') classNames += ' ' + styles.rounded;
-    if (props.disabled) classNames += ' ' + styles.disabled;
-    if (props.size === 'small') classNames += ' ' + styles.smallButton;
-    return classNames;
+const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
+    return {
+        backgroundColor: sProps.color,
+    };
 };
 
-export const Button: React.FC<PropsType> = (props: PropsType): JSX.Element => {
+export const Button: React.FC<IButtonProps> = (props: IButtonProps): JSX.Element => {
+    // seasoning the props
+    const sProps: IButtonProps = {
+        ...defaultProps,
+        ...props,
+    };
+
     return (
         <div>
             <button
-                onClick={props.onClickCallback}
-                disabled={props.disabled}
-                className={getClassNames(props)}
-                style={props.style}
+                className={styles.button}
+                onClick={sProps.onClick}
+                disabled={sProps.disabled}
+                style={getButtonStyle(sProps)}
             >
-                {props.label}
+                {sProps.label}
             </button>
         </div>
     );

@@ -11,6 +11,7 @@ export const cssColors = {
     '--warning-accent-color': '#ffd218',
     '--danger-color': '#f44336',
     '--danger-accent-color': '#f55447',
+    '--disabled-color': '#808080',
 
     /* element colors */
     '--border-color': '#f2f2f2',
@@ -27,8 +28,11 @@ export const cssColors = {
     /* font colors */
     '--primary-font-color': '#000000',
     '--secondary-font-color': '#808080',
-    '--light-font-color': '#a0a0a0',
+    '--tertiary-font-color': '#a0a0a0',
+    '--light-font-color': '#ffffff',
 };
+
+export type cssColorsType = typeof cssColors;
 
 export const cssVariables = {
     /* font-sizes */
