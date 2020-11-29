@@ -21,34 +21,33 @@
     --warning-accent-color: #ffd218;
     --danger-color: #f44336;
     --danger-accent-color: #f55447;
-    --disabled-color: #a0a0a0;
-    --disabled-accent-color: #b1b1b1;
 
     /* element colors */
-    --border-color: #a0a0a0;
-    --border-accent-color: #b1b1b1;
+    --border-color: #f2f2f2;
+    --border-accent-color: #e1e1e1;
 
     /* backgrounds */
-    --primary-background-color: #ffffff;
-    --secondary-background-color: rgba(160, 160, 160, 0.1);
-    --tertiary-background-color: rgba(160, 160, 160, 0.1);
+    --primary-background-color: #ffffff; /* card backgrounds */
+    --secondary-background-color: ##f5f5f5; /* page background, selected tab */
+    --tertiary-background-color: #f6f6f6; /* table header background */
 
     /* font-sizes */
     --font-size-extra-large: 40px;
     --font-size-master: 26px;
     --font-size-master-sub: 24px;
     --font-size-header: 20px;
+    --font-size-small-heading: 18px;
     --font-size-default: 16px;
     --font-size-secondary: 14px;
     --font-size-tertiary: 12px;
 
     /* font colors */
     --primary-font-color: #000000;
-    --secondary-font-color: #a0a0a0;
-    --light-font-color: #ffffff;
+    --secondary-font-color: #808080;
+    --light-font-color: #a0a0a0;
 
     /* values */
-    --border-radius: 0.2rem;
+    --border-radius: 5px;
     --rounded-border-radius: 50px;
     --transition-duration: 0.3s;
     --textfield-height: 40px;
