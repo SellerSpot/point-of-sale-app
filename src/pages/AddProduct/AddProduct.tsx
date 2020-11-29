@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
 import { HorizontalRule } from '../../components/HorizontalRule/HorizontalRule';
-import { TextField } from '../../components/TextField/TextField';
+import { TextField } from '../../components/InputField/InputField';
 import addProductStyles from './addProduct.module.css';
 
 interface IAddProductProps {
