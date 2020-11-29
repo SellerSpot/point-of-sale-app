@@ -7,9 +7,10 @@
     cursor: pointer;
     background-color: var(--secondary-font-color);
     font-size: var(--font-size-secondary);
+    font-weight: 500;
     opacity: 1;
 }
 
 .button:hover {
-    opacity: 0.85;
+    opacity: 0.9;
 }

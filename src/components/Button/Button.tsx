@@ -55,6 +55,7 @@ const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
     cssProps.fontSize =
         sProps.size === 'small' ? cssVariables['--font-size-tertiary'] : cssVariables['--font-size-secondary'];
     if (sProps.disabled) {
+        cssProps.cursor = 'not-allowed';
         cssProps.color = cssColors['--light-font-color'];
         cssProps.backgroundColor = cssColors['--disabled-color'];
         cssProps.border = '1px solid ' + cssColors['--disabled-color'];
