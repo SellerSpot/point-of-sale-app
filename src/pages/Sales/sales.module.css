@@ -4,6 +4,7 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 55px 95px 1fr;
+    gap: 5px;
 }
 
 .tabBarWrapper {

@@ -7,10 +7,14 @@
     cursor: pointer;
     background-color: var(--secondary-font-color);
     font-size: var(--font-size-secondary);
-    font-weight: 500;
+    font-weight: 600;
     opacity: 1;
 }
 
 .button:hover {
     opacity: 0.9;
+}
+
+.button:focus {
+    outline: 0;
 }

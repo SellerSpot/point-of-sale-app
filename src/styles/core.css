@@ -10,10 +10,10 @@
 
 ::-webkit-scrollbar {
     width: 6px;
-    background-color: var(--secondary-background-color);
+    background-color: var(--border-color);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--disabled-color);
+    background-color: var(--border-darker-color);
     border-radius: var(--border-radius);
 }

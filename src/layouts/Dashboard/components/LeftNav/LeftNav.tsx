@@ -3,6 +3,7 @@ import leftNavStyles from './leftnav.module.css';
 import { FaBoxOpen, FaCashRegister, IoMdCart } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../config/routes';
+import { cssColors } from '../../../../config/cssVariables';
 
 interface INavItem {
     color: string;
@@ -40,25 +41,19 @@ export const LeftNav = (): JSX.Element => {
     const navItem: Omit<INavItem, 'active' | 'onClick'>[] = [
         {
             Icon: IoMdCart,
-
-            color: 'var(--sales-color)',
-
+            color: cssColors['--sales-color'],
             title: 'sales',
             route: ROUTES.SALES,
         },
         {
             Icon: FaBoxOpen,
-
-            color: 'var(--inventory-color)',
-
+            color: cssColors['--inventory-color'],
             title: 'inventory',
             route: ROUTES.INVENTORY,
         },
         {
             Icon: FaCashRegister,
-
-            color: 'var(--cashregister-color)',
-
+            color: cssColors['--cashregister-color'],
             title: 'cash register',
             route: ROUTES.CASH_REGISTER,
         },

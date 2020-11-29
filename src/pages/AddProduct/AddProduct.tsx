@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Button } from '../../components/Button/Button';
 import { Dropdown } from '../../components/Dropdown/Dropdown';
 import { HorizontalRule } from '../../components/HorizontalRule/HorizontalRule';
-import { TextField } from '../../components/InputField/InputField';
+import { InputField } from '../../components/InputField/InputField';
 import addProductStyles from './addProduct.module.css';
 
 interface IAddProductProps {
@@ -22,19 +22,19 @@ export const AddProduct = (props: IAddProductProps): ReactElement => {
                 <div className={addProductStyles.sliderHeader}>Add Product</div>
                 <div className={addProductStyles.sliderBody}>
                     <div className={`${addProductStyles.formGroup}`}>
-                        <TextField
-                            inputType={'text'}
+                        <InputField
+                            type={'text'}
                             label={'Product Name'}
                             placeHolder={'Product Name'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
                     </div>
                     <div className={`${addProductStyles.formGroup}`}>
-                        <TextField
-                            inputType={'text'}
+                        <InputField
+                            type={'text'}
                             label={'Product GTIN'}
                             placeHolder={'Product Code'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
                     </div>
                     <div className={`${addProductStyles.formGroup} ${addProductStyles.formGroupSplitEqual}`}>
@@ -55,50 +55,51 @@ export const AddProduct = (props: IAddProductProps): ReactElement => {
                     </div>
                     <HorizontalRule style={{ paddingTop: 10, paddingBottom: 30 }} />
                     <div className={`${addProductStyles.formGroup} ${addProductStyles.formGroupSplitEqual}`}>
-                        <TextField
-                            inputType={'number'}
+                        <InputField
+                            type={'number'}
                             label={'Cost Price'}
                             placeHolder={'Cost Price'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
-                        <TextField
-                            inputType={'number'}
+                        <InputField
+                            type={'number'}
                             label={'Markup %'}
                             placeHolder={'Markup Percent'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
                     </div>
                     <div className={`${addProductStyles.formGroup} ${addProductStyles.formGroupSplitEqual}`}>
-                        <TextField
-                            inputType={'number'}
+                        <InputField
+                            type={'number'}
                             label={'Selling Price'}
                             placeHolder={'Selling Price'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
                     </div>
                     <HorizontalRule style={{ paddingTop: 10, paddingBottom: 30 }} />
                     <div className={`${addProductStyles.formGroup} ${addProductStyles.formGroupSplitEqual}`}>
-                        <TextField
-                            inputType={'number'}
+                        <InputField
+                            type={'number'}
                             label={'Stock Level'}
                             placeHolder={'Stock Level'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
-                        <TextField
-                            inputType={'number'}
+                        <InputField
+                            type={'number'}
                             label={'Stock Unit'}
                             placeHolder={'Stock Unit'}
-                            fullWidth={true}
+                            onChange={() => void 0}
                         />
                     </div>
                 </div>
                 <div className={addProductStyles.sliderFooter}>
                     <Button
-                        type={'solid'}
-                        shape={'default'}
-                        label={'Add Product'}
-                        variant={'warning'}
-                        style={{ backgroundColor: 'var(--inventory-color)', color: 'var(--light-font-color)' }}
+                        type="button"
+                        shape="rectangle"
+                        label="Add Product"
+                        variant="solid"
+                        backgroundColor="--warning-color"
+                        labelColor="--light-font-color"
                     />
                 </div>
             </div>
