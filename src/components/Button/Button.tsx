@@ -54,13 +54,11 @@ const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
         sProps.shape === 'rounded' ? cssVariables['--rounded-border-radius'] : cssVariables['--border-radius'];
     cssProps.fontSize =
         sProps.size === 'small' ? cssVariables['--font-size-tertiary'] : cssVariables['--font-size-secondary'];
-
     if (sProps.disabled) {
         cssProps.color = cssColors['--light-font-color'];
         cssProps.backgroundColor = cssColors['--disabled-color'];
-        cssProps.border = '1px solid --disabled-color';
+        cssProps.border = '1px solid ' + cssColors['--disabled-color'];
     }
-
     return {
         ...cssProps,
         ...sProps.style,
