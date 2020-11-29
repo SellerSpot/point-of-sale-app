@@ -1,4 +1,4 @@
-.salesPage {
+.inventoryPage {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -10,10 +10,6 @@
 .tabBarWrapper {
     width: 100%;
     height: 50px;
-}
-
-.searchBarWrapper {
-    width: 40%;
 }
 
 .metaCardWrapper {
