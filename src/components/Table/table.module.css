@@ -1,7 +1,7 @@
 .table {
     height: 100%;
     width: 100%;
-    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     overflow-x: auto;
     overflow-y: auto;
@@ -10,21 +10,21 @@
 .row {
     background-color: var(--white-color);
     display: grid;
+    padding: 0 25px;
 }
 
 .bodyCell {
     width: 100%;
+    min-width: 80px;
     height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: default;
+    text-overflow: ellipsis;
+    color: var(--secondary-font-color);
     font-size: var(--font-size-secondary);
-}
-
-.greyBackground {
-    background-color: var(--secondary-background-color);
-}
-
-.whiteBackground {
-    background-color: var(--tertiary-background-color);
 }
