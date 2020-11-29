@@ -32,8 +32,6 @@ export const cssColors = {
     '--light-font-color': '#ffffff',
 };
 
-export type cssColorsType = typeof cssColors;
-
 export const cssVariables = {
     /* font-sizes */
     '--font-size-extra-large': '40px',

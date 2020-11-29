@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './button.module.css';
-import { cssColorsType } from '../../config/cssVariables';
+import { cssColors } from '../../config/cssVariables';
 
 export interface IButtonProps {
     label: string;
@@ -9,8 +9,8 @@ export interface IButtonProps {
     size?: 'small' | 'medium';
     variant?: 'solid' | 'line' | 'link';
     type?: 'button' | 'submit' | 'reset';
-    color?: keyof cssColorsType;
-    labelColor?: keyof cssColorsType;
+    color?: keyof typeof cssColors;
+    labelColor?: keyof typeof cssColors;
     style?: React.CSSProperties;
     onClick?: () => void;
 }
