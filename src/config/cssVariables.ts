@@ -13,7 +13,7 @@ export const cssColors = {
     /* element colors */
     '--border-color': '#f2f2f2',
     '--border-darker-color': '#a0a0a0',
-    '--border-accent-color': '#e1e1e1',
+    '--border-accent-color': '#000000',
 
     /* backgrounds */
     /* card" backgrounds */

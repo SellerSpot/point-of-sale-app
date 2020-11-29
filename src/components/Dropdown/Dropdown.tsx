@@ -54,7 +54,7 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
                     {props.label}
                 </label>
             ) : null}
-            <div className={styles.dropDownBox} id={dropdownBoxId}>
+            <div className={styles.dropDownBox} id={dropdownBoxId} style={sProps.style}>
                 <div onClick={() => shouldShowOptions(!showOptions)} className={styles.dropDownSelect}>
                     <p>{sProps.options[selectedOption]}</p>
                     <FaCaretDown className={styles.caretIcon} />
