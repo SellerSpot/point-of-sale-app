@@ -2,15 +2,16 @@
     width: 120px;
     height: 30px;
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: flex-start;
     align-items: center;
-    transition: all 0.5s;
+    font-size: var(--font-size-default);
+    font-weight: 500;
 }
 
 .spot {
-    height: 15px;
-    width: 15px;
+    height: 14px;
+    width: 14px;
     background-color: var(--success-color);
     border-radius: 50%;
     display: inline-block;
