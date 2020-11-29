@@ -1,4 +1,4 @@
-export const cssVariables = {
+export const cssColors = {
     /* section colors */
     '--sales-color': '#3f51b5',
     '--inventory-color': '#ff5722',
@@ -24,6 +24,13 @@ export const cssVariables = {
     /* table header" background */
     '--tertiary-background-color': '#f6f6f6',
 
+    /* font colors */
+    '--primary-font-color': '#000000',
+    '--secondary-font-color': '#808080',
+    '--light-font-color': '#a0a0a0',
+};
+
+export const cssVariables = {
     /* font-sizes */
     '--font-size-extra-large': '40px',
     '--font-size-master': '26px',
@@ -34,11 +41,6 @@ export const cssVariables = {
     '--font-size-secondary': '14px',
     '--font-size-tertiary': '12px',
 
-    /* font colors */
-    '--primary-font-color': '#000000',
-    '--secondary-font-color': '#808080',
-    '--light-font-color': '#a0a0a0',
-
     /* values */
     '--border-radius': '0.2rem',
     '--rounded-border-radius': '50px',
@@ -47,9 +49,12 @@ export const cssVariables = {
 };
 
 // used to load css variables in ts object into the :root context
-export function loadCSSVariables(): void {
+export function loadCSSValues(): void {
     const root = document.documentElement;
     for (const [key, value] of Object.entries(cssVariables)) {
+        root.style.setProperty(key, value);
+    }
+    for (const [key, value] of Object.entries(cssColors)) {
         root.style.setProperty(key, value);
     }
 }
