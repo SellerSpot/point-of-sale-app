@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../config/routes';
 
 interface INavItem {
-    style: React.CSSProperties;
+    color: string;
     Icon: React.ComponentType;
     title: string;
     active: boolean;
@@ -13,11 +13,13 @@ interface INavItem {
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, style, onClick, title, active }: INavItem): JSX.Element => {
+const NavItem = ({ Icon, color, onClick, title, active }: INavItem): JSX.Element => {
     return (
         <div
             className={`${leftNavStyles.navItem} ${active ? leftNavStyles.navItemActive : ''}`}
-            style={style}
+            style={{
+                color,
+            }}
             onClick={onClick}
         >
             <div className={leftNavStyles.navIcon}>
@@ -38,25 +40,25 @@ export const LeftNav = (): JSX.Element => {
     const navItem: Omit<INavItem, 'active' | 'onClick'>[] = [
         {
             Icon: IoMdCart,
-            style: {
-                color: 'var(--sales-color)',
-            },
+
+            color: 'var(--sales-color)',
+
             title: 'sales',
             route: ROUTES.SALES,
         },
         {
             Icon: FaBoxOpen,
-            style: {
-                color: 'var(--inventory-color)',
-            },
+
+            color: 'var(--inventory-color)',
+
             title: 'inventory',
             route: ROUTES.INVENTORY,
         },
         {
             Icon: FaCashRegister,
-            style: {
-                color: 'var(--cashregister-color)',
-            },
+
+            color: 'var(--cashregister-color)',
+
             title: 'cash register',
             route: ROUTES.CASH_REGISTER,
         },
@@ -69,7 +71,7 @@ export const LeftNav = (): JSX.Element => {
                     <NavItem
                         key={key}
                         Icon={item.Icon}
-                        style={item.style}
+                        color={item.color}
                         onClick={() => history.push(item.route)}
                         title={item.title}
                         route={item.route}
