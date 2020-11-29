@@ -12,6 +12,7 @@ export const cssColors = {
 
     /* element colors */
     '--border-color': '#f2f2f2',
+    '--border-darker-color': '#a0a0a0',
     '--border-accent-color': '#e1e1e1',
 
     /* backgrounds */
@@ -44,7 +45,7 @@ export const cssVariables = {
     '--border-radius': '0.2rem',
     '--rounded-border-radius': '50px',
     '--transition-duration': '0.3s',
-    '--textfield-height': '40px',
+    '--input-field-height': '40px',
 };
 
 // used to load css variables in ts object into the :root context
