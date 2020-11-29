@@ -7,6 +7,7 @@ export interface IMetaCardProps {
     title?: string;
     secondaryText?: string;
     buttons?: ReactNode[];
+    style?: React.CSSProperties;
 }
 
 const defaultProps: IMetaCardProps = {
@@ -21,6 +22,7 @@ const defaultProps: IMetaCardProps = {
             backgroundColor="--sales-color"
         />,
     ],
+    style: {},
 };
 
 export const MetaCard: React.FC<IMetaCardProps> = (props: IMetaCardProps): JSX.Element => {
@@ -31,7 +33,7 @@ export const MetaCard: React.FC<IMetaCardProps> = (props: IMetaCardProps): JSX.E
     };
 
     return (
-        <div className={styles.metaCard}>
+        <div className={styles.metaCard} style={sProps.style}>
             <div className={styles.pageInformationSection}>
                 <div className={styles.cardTitle}>{sProps.title}</div>
                 <div className={styles.cardSecondaryText}>{sProps.secondaryText}</div>
