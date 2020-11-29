@@ -2,6 +2,10 @@ import React from 'react';
 import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { TabBar, PropsType } from '../components/TabBar/TabBar';
+import { loadCSSVariables } from '../config/cssVariables';
+
+// used to load css variables in ts object into the :root context
+loadCSSVariables();
 
 export default {
     title: 'Components',

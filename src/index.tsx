@@ -4,6 +4,10 @@ import { App } from './App';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { BrowserRouter } from 'react-router-dom';
+import { loadCSSVariables } from './config/cssVariables';
+
+// used to load css variables in ts object into the :root context
+loadCSSVariables();
 
 ReactDOM.render(
     <React.StrictMode>

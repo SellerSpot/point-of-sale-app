@@ -2,6 +2,10 @@ import React from 'react';
 import '../styles/core.css';
 import fontSize from '../styles/fontsize.module.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
+import { loadCSSVariables } from '../config/cssVariables';
+
+// used to load css variables in ts object into the :root context
+loadCSSVariables();
 
 const FontSizeComponent = (): JSX.Element => (
     <div>

@@ -2,6 +2,10 @@ import React from 'react';
 import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { StatusFlag, PropsType } from '../components/StatusFlag/StatusFlag';
+import { loadCSSVariables } from '../config/cssVariables';
+
+// used to load css variables in ts object into the :root context
+loadCSSVariables();
 
 export default {
     title: 'Components',
