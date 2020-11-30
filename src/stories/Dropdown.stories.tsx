@@ -17,7 +17,7 @@ const Template: Story<IDropdownProps> = (args: IDropdownProps) => <Dropdown {...
 export const Dropdowns = Template.bind({});
 Dropdowns.args = {
     label: 'Sample Label',
-    options: ['Automobiles', 'Art', 'Music', 'Dance', 'Paper', 'Tailwind'],
+    options: ['Automobiles', 'Art'],
     helperText: 'Sample Helper Text',
     onSelect: (option: string) => {
         // eslint-disable-next-line no-console
