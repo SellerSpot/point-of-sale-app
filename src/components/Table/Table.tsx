@@ -94,11 +94,9 @@ export const Table: React.FC<ITableProps> = (props: ITableProps): JSX.Element =>
     };
 
     return (
-        <div>
-            <div className={styles.table} style={sProps.style}>
-                {tableHeaderFactory(sProps)}
-                {tableRowFactory(sProps)}
-            </div>
+        <div className={styles.table} style={sProps.style}>
+            {tableHeaderFactory(sProps)}
+            {tableRowFactory(sProps)}
         </div>
     );
 };
