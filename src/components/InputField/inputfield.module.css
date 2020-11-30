@@ -24,7 +24,6 @@
     border-color: var(--border-accent-color);
 }
 .inputField:focus {
-    border: 1px solid var(--border-accent-color);
     outline: none;
 }
 ::placeholder {
@@ -37,4 +36,20 @@
     margin-top: 2px;
     font-weight: 400;
     color: var(--tertiary-font-color);
+}
+
+.inputWrapper {
+    display: flex;
+}
+
+.prefix {
+    width: var(--input-field-height);
+    border: 1px solid var(--border-darker-color);
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--transition-duration);
 }

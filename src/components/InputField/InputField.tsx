@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
 
@@ -13,6 +13,7 @@ export interface IInputFieldProps {
     type?: 'number' | 'text' | 'email' | 'password';
     borderStyle?: 'border' | 'shadow' | 'noBorder';
     size?: 'compact' | 'default';
+    prefix?: ReactNode;
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -44,7 +45,23 @@ const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
         componentStyles.padding = '0px';
         componentStyles.border = '1px solid transparent';
     }
+
+    if (sProps.prefix !== undefined) {
+        componentStyles.borderTopLeftRadius = '0px';
+        componentStyles.borderBottomLeftRadius = '0px';
+        componentStyles.borderLeftColor = 'transparent';
+    }
+
     return componentStyles;
+};
+
+// used to get the prefix and suffix styles
+const getPrefixSufficStyles = (sProps: IInputFieldProps): React.CSSProperties => {
+    const prefixSuffixStyles: React.CSSProperties = {};
+    if (sProps.size === 'compact') {
+        prefixSuffixStyles.borderColor = 'transparent';
+    }
+    return prefixSuffixStyles;
 };
 
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
@@ -64,16 +81,25 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     {sProps.label}
                 </label>
             ) : null}
-            <input
-                id={fieldId}
-                className={styles.inputField}
-                disabled={sProps.disabled}
-                placeholder={sProps.placeHolder}
-                type={sProps.type}
-                value={sProps.value}
-                onChange={(event) => sProps.onChange(event.target.value)}
-                style={getComponentStyles(sProps)}
-            />
+
+            <div className={styles.inputWrapper}>
+                {sProps.prefix ?? false ? (
+                    <div style={getPrefixSufficStyles(sProps)} className={styles.prefix}>
+                        {sProps.prefix}
+                    </div>
+                ) : null}
+                <input
+                    id={fieldId}
+                    className={styles.inputField}
+                    disabled={sProps.disabled}
+                    placeholder={sProps.placeHolder}
+                    type={sProps.type}
+                    value={sProps.value}
+                    onChange={(event) => sProps.onChange(event.target.value)}
+                    style={getComponentStyles(sProps)}
+                />
+            </div>
+
             {sProps.helperText !== undefined ? (
                 <label className={styles.label + ' ' + styles.helperText} htmlFor={fieldId}>
                     {sProps.helperText}

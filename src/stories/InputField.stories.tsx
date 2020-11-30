@@ -23,6 +23,7 @@ InputFields.args = {
     helperText: 'Sample Helper Text',
     type: 'text',
     size: 'default',
+    prefix: <p>₹</p>,
     borderStyle: 'border',
     onChange: () => void 0,
 } as IInputFieldProps;
