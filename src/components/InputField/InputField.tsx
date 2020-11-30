@@ -11,6 +11,7 @@ export interface IInputFieldProps {
     label?: string;
     value?: string;
     type?: 'number' | 'text' | 'email' | 'password';
+    borderStyle?: 'border' | 'shadow';
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -20,8 +21,16 @@ const defaultProps: IInputFieldProps = {
     disabled: false,
     borderColor: '--border-accent-color',
     type: 'text',
+    borderStyle: 'border',
     onChange: () => void 0,
     style: {},
+};
+
+// used to get the classNames for the InputField
+const getClassNames = (sProps: IInputFieldProps): string => {
+    let classNames = styles.inputField;
+    if (sProps.borderStyle === 'shadow') classNames += ' ' + styles.shadowBorderField;
+    return classNames;
 };
 
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
@@ -35,7 +44,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
     };
 
     return (
-        <div>
+        <div className={styles.inputFieldWrapper}>
             {sProps.label !== undefined ? (
                 <label className={styles.label} htmlFor={fieldId}>
                     {sProps.label}
@@ -43,7 +52,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             ) : null}
             <input
                 id={fieldId}
-                className={styles.textField}
+                className={getClassNames(sProps)}
                 disabled={sProps.disabled}
                 placeholder={sProps.placeHolder}
                 type={sProps.type}
