@@ -4,17 +4,34 @@ import { TabBar } from '../../components/TabBar/TabBar';
 import { MetaCard } from '../../components/MetaCard/MetaCard';
 import { Table } from '../../components/Table/Table';
 import { InputField } from '../../components/InputField/InputField';
+import { Button } from '../../components/Button/Button';
+import { ROUTES } from '../../config/routes';
+import { useHistory } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 
 export const Sales = (): JSX.Element => {
     // to manage which tab is selected
     const [currTab, setcurrTab] = useState(0);
-
+    const history = useHistory();
     return (
         <div className={styles.salesPage}>
             <div className={styles.tabBarWrapper}>
                 <TabBar tabs={['Current Sales', 'Other Tabs']} onClick={setcurrTab} selectedTab={currTab} />
             </div>
-            <MetaCard title="Sample Description" secondaryText={'Sample Data'} />
+            <MetaCard
+                title="Sample Description"
+                secondaryText={'Sample Data'}
+                buttons={[
+                    <Button
+                        key={nanoid()}
+                        label="New Sale (F3)"
+                        variant="outline"
+                        backgroundColor="--sales-color"
+                        labelColor="--sales-color"
+                        onClick={() => history.push(ROUTES.NEW_SALE)}
+                    />,
+                ]}
+            />
             <div className={styles.searchBarWrapper}>
                 <InputField placeHolder="Search" onChange={() => void 0} />
             </div>
