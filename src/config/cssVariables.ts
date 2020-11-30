@@ -13,7 +13,7 @@ export const cssColors = {
     /* element colors */
     '--border-color': '#f2f2f2',
     '--border-darker-color': '#a0a0a0',
-    '--border-accent-color': '#000000',
+    '--border-accent-color': '#909090',
     '--shadow-color': 'rgba(0,0,0,0.15)',
 
     /* backgrounds */
