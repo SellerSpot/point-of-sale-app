@@ -76,7 +76,7 @@ const tableRowFactory = (sProps: ITableProps): ReactNode => {
                     })}
                 </div>
                 <HorizontalRule
-                    ruleColor={cssColors['--border-color']}
+                    ruleColor={'--border-color'}
                     ruleWidth="100%"
                     style={{ paddingBottom: 0, paddingLeft: 0, paddingRight: 0, paddingTop: 0 }}
                     alignment="center"
