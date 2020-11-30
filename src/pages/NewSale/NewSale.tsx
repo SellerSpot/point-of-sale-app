@@ -11,14 +11,8 @@ export const NewSale = (): JSX.Element => {
             <div className={styles.leftPanel}>
                 <InputField borderStyle="shadow" placeHolder="Product Name / Code" onChange={() => void 0} />
                 <Table
-                    headers={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5']}
-                    rowData={[
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                    ]}
+                    headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
+                    rowData={[['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04', 'Data 05']]}
                 />
                 <div className={styles.extraControlsCard}>
                     <Button
@@ -32,13 +26,13 @@ export const NewSale = (): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <Table
-                    headers={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5']}
+                    headers={['Item Name', 'Quantity', 'Sub-Total', 'Discount']}
                     rowData={[
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04'],
+                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
+                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
+                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
+                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
+                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
                     ]}
                 />
                 <div className={styles.calculationCard}>
