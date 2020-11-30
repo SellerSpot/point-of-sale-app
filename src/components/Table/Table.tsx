@@ -3,7 +3,6 @@ import styles from './table.module.css';
 import { nanoid } from 'nanoid';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import { HorizontalRule } from '../HorizontalRule/HorizontalRule';
-import ReactTooltip from 'react-tooltip';
 
 export interface ITableProps {
     headers: string[];
@@ -43,7 +42,7 @@ const tableHeaderFactory = (sProps: ITableProps): ReactNode => {
         <div key={nanoid()} className={classNames} style={rowStyle}>
             {sProps.headers.map((heading) => {
                 return (
-                    <div data-tip={heading} key={nanoid()} className={styles.bodyCell} style={cellStyle}>
+                    <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
                         {heading}
                     </div>
                 );
@@ -100,7 +99,6 @@ export const Table: React.FC<ITableProps> = (props: ITableProps): JSX.Element =>
                 {tableHeaderFactory(sProps)}
                 {tableRowFactory(sProps)}
             </div>
-            <ReactTooltip effect="solid" />
         </div>
     );
 };

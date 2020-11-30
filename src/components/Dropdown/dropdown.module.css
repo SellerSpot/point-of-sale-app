@@ -28,6 +28,7 @@
     cursor: pointer;
     font-size: var(--font-size-secondary);
     font-weight: 400;
+    position: relative;
 }
 
 .dropDownBox:hover {
@@ -44,7 +45,9 @@
 }
 
 .dropDownList {
-    margin-top: 5px;
+    width: 100%;
+    position: absolute;
+    top: var(--input-field-height);
     border: 1px solid var(--border-darker-color);
     border-radius: var(--border-radius);
     user-select: none;

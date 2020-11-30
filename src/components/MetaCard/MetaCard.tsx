@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import styles from './metacard.module.css';
-import { Button } from '../Button/Button';
-import { nanoid } from 'nanoid';
 
 export interface IMetaCardProps {
     title?: string;
@@ -13,15 +11,7 @@ export interface IMetaCardProps {
 const defaultProps: IMetaCardProps = {
     title: 'This is sample description',
     secondaryText: 'This is sample secondary text',
-    buttons: [
-        <Button
-            key={nanoid()}
-            label="Sample Button 1"
-            variant="outline"
-            labelColor="--sales-color"
-            backgroundColor="--sales-color"
-        />,
-    ],
+    buttons: [],
     style: {},
 };
 

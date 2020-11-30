@@ -11,7 +11,7 @@ export const Inventory = (): JSX.Element => {
     const [currTab, setcurrTab] = useState(0);
 
     return (
-        <div className={styles.salesPage}>
+        <div className={styles.inventoryPage}>
             <div className={styles.tabBarWrapper}>
                 <TabBar tabs={['All Products', 'Other Tabs']} onClick={setcurrTab} selectedTab={currTab} />
             </div>
