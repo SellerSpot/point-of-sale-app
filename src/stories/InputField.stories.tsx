@@ -22,7 +22,7 @@ InputFields.args = {
     value: '55865',
     helperText: 'Sample Helper Text',
     type: 'text',
-    size: 'medium',
+    size: 'default',
     borderStyle: 'border',
     onChange: () => void 0,
 } as IInputFieldProps;

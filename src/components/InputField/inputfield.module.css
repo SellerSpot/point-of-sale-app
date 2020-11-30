@@ -38,12 +38,3 @@
     font-weight: 400;
     color: var(--tertiary-font-color);
 }
-
-.shadowBorderField {
-    border: 1px solid transparent;
-    box-shadow: var(--shadow);
-}
-
-.noBorderField {
-    border: 1px solid transparent;
-}

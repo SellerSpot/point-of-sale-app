@@ -12,7 +12,7 @@ export interface IInputFieldProps {
     value?: string;
     type?: 'number' | 'text' | 'email' | 'password';
     borderStyle?: 'border' | 'shadow' | 'noBorder';
-    size?: 'small' | 'medium';
+    size?: 'compact' | 'default';
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -22,7 +22,7 @@ const defaultProps: IInputFieldProps = {
     disabled: false,
     borderColor: '--border-accent-color',
     type: 'text',
-    size: 'medium',
+    size: 'default',
     borderStyle: 'border',
     onChange: () => void 0,
     style: {},
@@ -39,7 +39,7 @@ const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
             componentStyles.border = '1px solid transparent';
             componentStyles.boxShadow = cssVariables['--shadow'];
     }
-    if (sProps.size === 'small') {
+    if (sProps.size === 'compact') {
         componentStyles.height = cssVariables['--small-input-field-height'];
         componentStyles.padding = '0px';
         componentStyles.border = '1px solid transparent';
