@@ -14,6 +14,7 @@ export interface IInputFieldProps {
     borderStyle?: 'border' | 'shadow' | 'noBorder';
     size?: 'compact' | 'default';
     prefix?: ReactNode;
+    suffix?: ReactNode;
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -50,6 +51,12 @@ const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
         componentStyles.borderTopLeftRadius = '0px';
         componentStyles.borderBottomLeftRadius = '0px';
         componentStyles.borderLeftColor = 'transparent';
+    }
+
+    if (sProps.suffix !== undefined) {
+        componentStyles.borderTopRightRadius = '0px';
+        componentStyles.borderBottomRightRadius = '0px';
+        componentStyles.borderRightColor = 'transparent';
     }
 
     return componentStyles;
@@ -98,6 +105,11 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     onChange={(event) => sProps.onChange(event.target.value)}
                     style={getComponentStyles(sProps)}
                 />
+                {sProps.suffix ?? false ? (
+                    <div style={getPrefixSufficStyles(sProps)} className={styles.suffix}>
+                        {sProps.suffix}
+                    </div>
+                ) : null}
             </div>
 
             {sProps.helperText !== undefined ? (

@@ -48,6 +48,25 @@
     border-radius: var(--border-radius);
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--transition-duration);
+}
+
+.prefix:hover,
+.suffix:hover {
+    border-color: var(--border-accent-color);
+}
+
+.suffix {
+    border: 1px solid var(--border-darker-color);
+    border-radius: var(--border-radius);
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding: 4px;
+    font-size: var(--font-size-secondary);
     display: flex;
     justify-content: center;
     align-items: center;
