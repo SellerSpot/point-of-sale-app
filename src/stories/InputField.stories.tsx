@@ -17,11 +17,12 @@ const Template: Story<IInputFieldProps> = (args: IInputFieldProps) => <InputFiel
 export const InputFields = Template.bind({});
 InputFields.args = {
     placeHolder: 'Sample Text Field',
-    fullWidth: false,
     disabled: false,
     label: 'Sample Label',
     value: '55865',
     helperText: 'Sample Helper Text',
     type: 'text',
+    size: 'medium',
+    borderStyle: 'border',
     onChange: () => void 0,
 } as IInputFieldProps;

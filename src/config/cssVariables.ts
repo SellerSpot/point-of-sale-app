@@ -47,6 +47,7 @@ export const cssVariables = {
     '--rounded-border-radius': '50px',
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
+    '--small-input-field-height': '20px',
     '--shadow': '0px 0px 8px 0px var(--shadow-color)',
 };
 
