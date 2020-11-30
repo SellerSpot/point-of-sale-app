@@ -28,14 +28,16 @@ const tableHeaderFactory = (sProps: ITableProps): ReactNode => {
         position: 'sticky',
         top: 0,
         width: '100%',
-        height: '35px',
+        height: '40px',
+        zIndex: 999,
+        boxShadow: '0px 0px 5px 0px var(--shadow-color)',
         backgroundColor: cssColors['--tertiary-background-color'],
     };
     const cellStyle: React.CSSProperties = {
         color: cssColors['--primary-font-color'],
         fontWeight: 600,
         fontSize: cssVariables['--font-size-secondary'],
-        height: '35px',
+        height: '40px',
     };
     const classNames = styles.row + ' ' + styles.greyBackground;
     return (
