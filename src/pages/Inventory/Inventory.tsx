@@ -30,16 +30,16 @@ export const Inventory = (): JSX.Element => {
             />
             <div className={styles.tableWrapper}>
                 <Table
-                    headers={['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4']}
+                    headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
                     rowData={[
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
-                        ['value 1', 'value 2', 'value 3', 'value 4'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
                     ]}
                 />
             </div>

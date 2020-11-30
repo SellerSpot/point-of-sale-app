@@ -33,7 +33,7 @@ export const cssColors = {
 
 export const cssVariables = {
     /* font-sizes */
-    '--font-size-extra-large': '40px',
+    '--font-size-extra-large': '36px',
     '--font-size-master': '26px',
     '--font-size-master-sub': '24px',
     '--font-size-header': '20px',

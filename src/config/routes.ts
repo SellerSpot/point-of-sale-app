@@ -5,4 +5,5 @@ export const ROUTES = inferRouteTypes({
     SALES: '/',
     INVENTORY: '/inventory',
     CASH_REGISTER: '/cashregister',
+    NEW_SALE: '/newsale',
 });
