@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import React from 'react';
-import { cssColors } from '../../config/cssVariables';
+import { cssColors, cssVariables } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
 
 export interface IInputFieldProps {
@@ -11,7 +11,8 @@ export interface IInputFieldProps {
     label?: string;
     value?: string;
     type?: 'number' | 'text' | 'email' | 'password';
-    borderStyle?: 'border' | 'shadow';
+    borderStyle?: 'border' | 'shadow' | 'noBorder';
+    size?: 'small' | 'medium';
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -21,16 +22,29 @@ const defaultProps: IInputFieldProps = {
     disabled: false,
     borderColor: '--border-accent-color',
     type: 'text',
+    size: 'medium',
     borderStyle: 'border',
     onChange: () => void 0,
     style: {},
 };
 
-// used to get the classNames for the InputField
-const getClassNames = (sProps: IInputFieldProps): string => {
-    let classNames = styles.inputField;
-    if (sProps.borderStyle === 'shadow') classNames += ' ' + styles.shadowBorderField;
-    return classNames;
+// used to get the styles for the component
+const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
+    const componentStyles: React.CSSProperties = {};
+    switch (sProps.borderStyle) {
+        case 'noBorder':
+            componentStyles.border = '1px solid transparent';
+            break;
+        case 'shadow':
+            componentStyles.border = '1px solid transparent';
+            componentStyles.boxShadow = cssVariables['--shadow'];
+    }
+    if (sProps.size === 'small') {
+        componentStyles.height = cssVariables['--small-input-field-height'];
+        componentStyles.padding = '0px';
+        componentStyles.border = '1px solid transparent';
+    }
+    return componentStyles;
 };
 
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
@@ -52,12 +66,13 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             ) : null}
             <input
                 id={fieldId}
-                className={getClassNames(sProps)}
+                className={styles.inputField}
                 disabled={sProps.disabled}
                 placeholder={sProps.placeHolder}
                 type={sProps.type}
                 value={sProps.value}
                 onChange={(event) => sProps.onChange(event.target.value)}
+                style={getComponentStyles(sProps)}
             />
             {sProps.helperText !== undefined ? (
                 <label className={styles.label + ' ' + styles.helperText} htmlFor={fieldId}>
