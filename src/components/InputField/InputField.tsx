@@ -39,6 +39,11 @@ const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
             componentStyles.border = '1px solid transparent';
             componentStyles.boxShadow = cssVariables['--shadow'];
     }
+    if (sProps.size === 'small') {
+        componentStyles.height = cssVariables['--small-input-field-height'];
+        componentStyles.padding = '0px';
+        componentStyles.border = '1px solid transparent';
+    }
     return componentStyles;
 };
 
