@@ -6,6 +6,7 @@
 .label {
     display: block;
 }
+
 .label {
     font-size: var(--font-size-secondary);
     font-weight: 600;
@@ -57,12 +58,14 @@
     visibility: hidden;
     overflow-y: auto;
     background-color: var(--primary-background-color);
+    box-shadow: 0 0 15px 2px var(--tertiary-background-color);
 }
 
 .dropDownList.active {
     animation: fade_in_show var(--transition-duration);
     visibility: visible;
-    height: 140px;
+    height: auto;
+    max-height: 140px;
 }
 
 .dropDownList.inactive {

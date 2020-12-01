@@ -29,7 +29,7 @@ const tableHeaderFactory = (sProps: ITableProps): ReactNode => {
         top: 0,
         width: '100%',
         height: '40px',
-        zIndex: 999,
+        zIndex: 1, // to keep the header above from all the body comps
         boxShadow: '0px 0px 5px 0px var(--shadow-color)',
         backgroundColor: cssColors['--tertiary-background-color'],
     };
