@@ -33,7 +33,7 @@ export const cssColors = {
 
 export const cssVariables = {
     /* font-sizes */
-    '--font-size-extra-large': '40px',
+    '--font-size-extra-large': '36px',
     '--font-size-master': '26px',
     '--font-size-master-sub': '24px',
     '--font-size-header': '20px',
@@ -47,6 +47,7 @@ export const cssVariables = {
     '--rounded-border-radius': '50px',
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
+    '--small-input-field-height': '20px',
     '--shadow': '0px 0px 8px 0px var(--shadow-color)',
 };
 

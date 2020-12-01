@@ -1,4 +1,8 @@
-.textField,
+.inputFieldWrapper {
+    width: 100%;
+}
+
+.inputField,
 .label {
     display: block;
 }
@@ -7,7 +11,7 @@
     font-weight: 600;
     margin-bottom: 5px;
 }
-.textField {
+.inputField {
     height: var(--input-field-height);
     width: 100%;
     padding: 10px;
@@ -16,11 +20,10 @@
     border: 1px solid var(--border-darker-color);
     transition: all var(--transition-duration);
 }
-.textField:hover {
+.inputField:hover {
     border-color: var(--border-accent-color);
 }
-.textField:focus {
-    border: 1px solid var(--border-accent-color);
+.inputField:focus {
     outline: none;
 }
 ::placeholder {
@@ -33,4 +36,39 @@
     margin-top: 2px;
     font-weight: 400;
     color: var(--tertiary-font-color);
+}
+
+.inputWrapper {
+    display: flex;
+}
+
+.prefix {
+    width: var(--input-field-height);
+    border: 1px solid var(--border-darker-color);
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--transition-duration);
+}
+
+.prefix:hover,
+.suffix:hover {
+    border-color: var(--border-accent-color);
+}
+
+.suffix {
+    border: 1px solid var(--border-darker-color);
+    border-radius: var(--border-radius);
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding: 4px;
+    font-size: var(--font-size-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--transition-duration);
 }

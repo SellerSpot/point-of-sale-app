@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
+import { cssColors } from '../../config/cssVariables';
 import horizontalRuleStyles from './horizontalRule.module.css';
 
 interface IHorizontalRuleProps {
     // check defaultProps for default values
     alignment?: 'left' | 'center' | 'right';
-    ruleColor?: string;
+    ruleColor?: keyof typeof cssColors;
     ruleSize?: number;
     ruleWidth?: '100%' | '75%' | '50%' | '25%';
     style?: {
@@ -18,7 +19,7 @@ interface IHorizontalRuleProps {
 
 const defaultProps: IHorizontalRuleProps = {
     alignment: 'center',
-    ruleColor: 'var(--secondary-font-color)',
+    ruleColor: '--secondary-font-color',
     ruleSize: 1,
     ruleWidth: '75%',
     style: {
@@ -48,7 +49,7 @@ export const HorizontalRule = (props: IHorizontalRuleProps): ReactElement => {
                 className={horizontalRuleStyles.horizontalRule}
                 style={{
                     height: ruleSize,
-                    borderColor: ruleColor,
+                    borderColor: cssColors[ruleColor ?? '--border-color'],
                     borderWidth: ruleSize,
                     opacity: ruleOpacity,
                     width: ruleWidth,

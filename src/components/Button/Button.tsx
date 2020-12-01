@@ -74,15 +74,13 @@ export const Button: React.FC<IButtonProps> = (props: IButtonProps): JSX.Element
     };
 
     return (
-        <div>
-            <button
-                className={styles.button}
-                onClick={sProps.onClick}
-                disabled={sProps.disabled}
-                style={getButtonStyle(sProps)}
-            >
-                {sProps.label}
-            </button>
-        </div>
+        <button
+            className={styles.button}
+            onClick={sProps.onClick}
+            disabled={sProps.disabled}
+            style={getButtonStyle(sProps)}
+        >
+            {sProps.label}
+        </button>
     );
 };

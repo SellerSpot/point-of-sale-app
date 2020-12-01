@@ -3,6 +3,7 @@ import '../styles/core.css';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { InputField, IInputFieldProps } from '../components/InputField/InputField';
 import { loadCSSValues } from '../config/cssVariables';
+import { FaBeer } from 'react-icons/fa';
 
 // used to load css variables in ts object into the :root context
 loadCSSValues();
@@ -17,11 +18,14 @@ const Template: Story<IInputFieldProps> = (args: IInputFieldProps) => <InputFiel
 export const InputFields = Template.bind({});
 InputFields.args = {
     placeHolder: 'Sample Text Field',
-    fullWidth: false,
     disabled: false,
     label: 'Sample Label',
     value: '55865',
     helperText: 'Sample Helper Text',
     type: 'text',
+    size: 'default',
+    prefix: <FaBeer />,
+    suffix: <p>pcs</p>,
+    borderStyle: 'border',
     onChange: () => void 0,
 } as IInputFieldProps;
