@@ -3,22 +3,19 @@
     height: 100%;
     overflow: hidden;
     display: grid;
-    grid-template-rows: 55px 95px 1fr;
-    gap: 5px;
+    grid-template-rows: 50px 90px 1fr;
+    gap: 10px;
 }
 
 .tabBarWrapper {
     width: 100%;
-    height: 50px;
+    height: 100%;
 }
 
-.searchBarWrapper {
-    width: 40%;
-}
 
 .metaCardWrapper {
     width: 100%;
-    height: 90px;
+    height: 100%;
 }
 
 .tableWrapper {
