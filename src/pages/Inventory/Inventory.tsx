@@ -1,13 +1,16 @@
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '../../components/Button/Button';
 import { MetaCard } from '../../components/MetaCard/MetaCard';
 import { TabBar } from '../../components/TabBar/TabBar';
 import { Table } from '../../components/Table/Table';
+import { toggleSliderModal } from '../../store/models/sliderModal';
 import styles from './inventory.module.css';
 
 export const Inventory = (): JSX.Element => {
     // to manage which tab is selected
+    const dispatch = useDispatch();
     const [currTab, setcurrTab] = useState(0);
 
     return (
@@ -25,6 +28,7 @@ export const Inventory = (): JSX.Element => {
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"
+                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'addProductSlider', active: true }))}
                     />,
                 ]}
             />

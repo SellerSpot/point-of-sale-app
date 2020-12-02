@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react';
-import { Button } from '../../components/Button/Button';
-import { Dropdown } from '../../components/Dropdown/Dropdown';
-import { HorizontalRule } from '../../components/HorizontalRule/HorizontalRule';
-import { InputField } from '../../components/InputField/InputField';
+import { Button } from '../../../../components/Button/Button';
+import { Dropdown } from '../../../../components/Dropdown/Dropdown';
+import { HorizontalRule } from '../../../../components/HorizontalRule/HorizontalRule';
+import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addproduct.module.css';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { toggleSliderModal } from '../../../../store/models/sliderModal';
 
 export const AddProduct = (): ReactElement => {
+    const dispatch = useDispatch();
     return (
         <div className={cn(styles.addProductWrapper)}>
             <div className={styles.addProductHeader}>Add Product</div>
@@ -91,6 +94,7 @@ export const AddProduct = (): ReactElement => {
                     backgroundColor="--danger-color"
                     labelColor="--light-font-color"
                     style={{ marginRight: 'auto' }}
+                    onClick={() => dispatch(toggleSliderModal({ sliderName: 'addProductSlider', active: false }))}
                 />
                 <Button
                     type="button"
