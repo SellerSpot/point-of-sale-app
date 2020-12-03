@@ -12,7 +12,7 @@ import dashboardStyles from './dashboard.module.css';
 export const Dashboard = (): JSX.Element => {
     const [isAddProductActive, setIsAddProductActive] = useState(false);
     useEffect(() => {
-        setIsAddProductActive(true);
+        setIsAddProductActive(false);
     }, []);
     return (
         <div className={dashboardStyles.dashboardWrapper}>
