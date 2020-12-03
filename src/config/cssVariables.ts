@@ -22,7 +22,7 @@ export const cssColors = {
     /* page background, selected" tab */
     '--secondary-background-color': '#f5f5f5',
     /* table header" background */
-    '--tertiary-background-color': '#e8e8e8',
+    '--tertiary-background-color': '#F2F2F2',
 
     /* font colors */
     '--primary-font-color': '#000000',

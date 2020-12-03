@@ -3,6 +3,7 @@ import styles from './table.module.css';
 import { nanoid } from 'nanoid';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import { HorizontalRule } from '../HorizontalRule/HorizontalRule';
+import cn from 'classnames';
 
 export interface ITableProps {
     headers: string[];
@@ -39,9 +40,8 @@ const tableHeaderFactory = (sProps: ITableProps): ReactNode => {
         fontSize: cssVariables['--font-size-secondary'],
         height: '40px',
     };
-    const classNames = styles.row + ' ' + styles.greyBackground;
     return (
-        <div key={nanoid()} className={classNames} style={rowStyle}>
+        <div key={nanoid()} className={cn(styles.row, styles.greyBackground)} style={rowStyle}>
             {sProps.headers.map((heading) => {
                 return (
                     <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
@@ -62,13 +62,12 @@ const tableRowFactory = (sProps: ITableProps): ReactNode => {
     };
     const cellStyle: React.CSSProperties = {};
     return sProps.rowData.map((row, index) => {
-        let classNames = styles.row;
-        if (index % 2 !== 0) {
-            classNames += ' ' + styles.greyBackground;
-        }
         return (
             <div key={nanoid()}>
-                <div className={classNames} style={rowStyle}>
+                <div
+                    className={cn(styles.row, { [styles.greyBackground]: index % 2 !== 0 ? true : false })}
+                    style={rowStyle}
+                >
                     {row.map((cell: string) => {
                         return (
                             <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>

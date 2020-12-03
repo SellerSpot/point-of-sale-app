@@ -113,7 +113,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             </div>
 
             {sProps.helperText !== undefined ? (
-                <label className={styles.label + ' ' + styles.helperText} htmlFor={fieldId}>
+                <label className={cn(styles.label, styles.helperText)} htmlFor={fieldId}>
                     {sProps.helperText}
                 </label>
             ) : null}
