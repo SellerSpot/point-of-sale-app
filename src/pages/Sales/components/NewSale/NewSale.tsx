@@ -1,11 +1,14 @@
 import React from 'react';
-import { Button } from '../../components/Button/Button';
-import { InputField } from '../../components/InputField/InputField';
-import { Table } from '../../components/Table/Table';
-import { cssVariables } from '../../config/cssVariables';
+import { useDispatch } from 'react-redux';
+import { Button } from '../../../../components/Button/Button';
+import { InputField } from '../../../../components/InputField/InputField';
+import { Table } from '../../../../components/Table/Table';
+import { cssVariables } from '../../../../config/cssVariables';
+import { toggleSliderModal } from '../../../../store/models/sliderModal';
 import styles from './newsale.module.css';
 
 export const NewSale = (): JSX.Element => {
+    const dispatch = useDispatch();
     return (
         <div className={styles.newSalePage}>
             <div className={styles.leftPanel}>
@@ -15,6 +18,16 @@ export const NewSale = (): JSX.Element => {
                     rowData={[['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04', 'Data 05']]}
                 />
                 <div className={styles.extraControlsCard}>
+                    <Button
+                        type="button"
+                        shape="rectangle"
+                        label="Return to Dashboard"
+                        variant="solid"
+                        backgroundColor="--danger-color"
+                        labelColor="--light-font-color"
+                        style={{ marginRight: 'auto' }}
+                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'newSaleSlider', active: false }))}
+                    />
                     <Button
                         label="Calculator"
                         size="small"
@@ -57,6 +70,7 @@ export const NewSale = (): JSX.Element => {
                         label="CHECKOUT"
                         labelColor="--light-font-color"
                         backgroundColor="--sales-color"
+                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: true }))}
                     />
                 </div>
             </div>

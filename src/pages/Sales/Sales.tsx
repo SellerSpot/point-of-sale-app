@@ -4,14 +4,14 @@ import { TabBar } from '../../components/TabBar/TabBar';
 import { MetaCard } from '../../components/MetaCard/MetaCard';
 import { Table } from '../../components/Table/Table';
 import { Button } from '../../components/Button/Button';
-import { ROUTES } from '../../config/routes';
-import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { toggleSliderModal } from '../../store/models/sliderModal';
 
 export const Sales = (): JSX.Element => {
     // to manage which tab is selected
+    const disptach = useDispatch();
     const [currTab, setcurrTab] = useState(0);
-    const history = useHistory();
     return (
         <div className={styles.salesPage}>
             <div className={styles.tabBarWrapper}>
@@ -27,7 +27,7 @@ export const Sales = (): JSX.Element => {
                         variant="outline"
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"
-                        onClick={() => history.push(ROUTES.NEW_SALE)}
+                        onClick={() => disptach(toggleSliderModal({ sliderName: 'newSaleSlider', active: true }))}
                     />,
                 ]}
             />
