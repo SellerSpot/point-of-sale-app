@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
+import cn from 'classnames';
 
 export interface IInputFieldProps {
     placeHolder: string;
