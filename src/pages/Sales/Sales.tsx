@@ -7,6 +7,7 @@ import { Button } from '../../components/Button/Button';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from '../../store/models/sliderModal';
+import { openConfirmDialog } from '../../store/models/confirmDialogModal';
 
 export const Sales = (): JSX.Element => {
     // to manage which tab is selected
@@ -28,6 +29,14 @@ export const Sales = (): JSX.Element => {
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"
                         onClick={() => disptach(toggleSliderModal({ sliderName: 'newSaleSlider', active: true }))}
+                    />,
+                    <Button
+                        key={nanoid()}
+                        label="Open Modal"
+                        variant="outline"
+                        backgroundColor="--sales-color"
+                        labelColor="--sales-color"
+                        onClick={() => disptach(openConfirmDialog({ active: true }))}
                     />,
                 ]}
             />

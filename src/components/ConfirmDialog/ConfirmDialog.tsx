@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import styles from './confirmdialog.module.css';
 import cn from 'classnames';
 import { Button } from '../Button/Button';
@@ -28,6 +28,12 @@ const defaultProps: IConfirmDialogProps = {
 };
 
 export const ConfirmDialog = (props: IConfirmDialogProps): ReactElement => {
+    useEffect(() => {
+        // eslint-disable-next-line no-console
+        console.log(props.active);
+        // return () => {};
+    }, [props.active]);
+
     // seasoning the props
     const sProps: IConfirmDialogProps = {
         ...defaultProps,
