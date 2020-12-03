@@ -9,6 +9,7 @@ export const cssColors = {
     '--warning-color': '#ffc107',
     '--danger-color': '#f44336',
     '--disabled-color': '#808080',
+    '--transparent-color': 'transparent',
 
     /* element colors */
     '--border-color': '#f2f2f2',
@@ -23,6 +24,8 @@ export const cssColors = {
     '--secondary-background-color': '#f5f5f5',
     /* table header" background */
     '--tertiary-background-color': '#F2F2F2',
+    /* used as overlay backgrounds */
+    '--overlay-color': 'rgb(0, 0, 0, 0.5)',
 
     /* font colors */
     '--primary-font-color': '#000000',
