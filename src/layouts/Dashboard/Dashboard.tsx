@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
-import { AddProduct } from '../../pages/AddProduct/AddProduct';
+import { AddProduct } from '../../pages/Inventory/components/AddProduct/AddProduct';
 import { CashRegister } from '../../pages/CashRegister/CashRegister';
 import { Inventory } from '../../pages/Inventory/Inventory';
 import { Sales } from '../../pages/Sales/Sales';
+import { sliderModalSelector } from '../../store/models/sliderModal';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import dashboardStyles from './dashboard.module.css';
+import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
+import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 
 export const Dashboard = (): JSX.Element => {
-    const [isAddProductActive, setIsAddProductActive] = useState(false);
-    useEffect(() => {
-        setIsAddProductActive(true);
-    }, []);
+    const { addProductSlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
     return (
         <div className={dashboardStyles.dashboardWrapper}>
             <div className={dashboardStyles.leftNavWrapper}>
@@ -34,8 +35,14 @@ export const Dashboard = (): JSX.Element => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
-            <SliderModal active={isAddProductActive}>
+            <SliderModal active={newSaleSlider} sliderSize={'100%'}>
+                <NewSale />
+            </SliderModal>
+            <SliderModal active={addProductSlider} sliderSize={'40%'}>
                 <AddProduct />
+            </SliderModal>
+            <SliderModal active={checkoutSlider} sliderSize={'70%'}>
+                <Checkout />
             </SliderModal>
         </div>
     );
