@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
+import cn from 'classnames';
 
 export interface IInputFieldProps {
     placeHolder: string;
@@ -113,7 +114,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             </div>
 
             {sProps.helperText !== undefined ? (
-                <label className={styles.label + ' ' + styles.helperText} htmlFor={fieldId}>
+                <label className={cn(styles.label, styles.helperText)} htmlFor={fieldId}>
                     {sProps.helperText}
                 </label>
             ) : null}

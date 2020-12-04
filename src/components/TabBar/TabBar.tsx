@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import React from 'react';
 import styles from './tabBar.module.css';
 import { cssColors } from '../../config/cssVariables';
+import cn from 'classnames';
 
 export interface ITabBarProps {
     tabs: string[];
@@ -34,15 +35,18 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
             }}
         >
             {sProps.tabs.map((tab, index) => {
-                let tabItemClasses = styles.tabTitle;
                 const tabStyle: React.CSSProperties = {};
                 if (index === sProps.selectedTab) {
-                    tabItemClasses += ' ' + styles.selectedTab;
                     tabStyle.color = cssColors[sProps.selectedColor ?? '--sales-color'];
                 }
                 return (
                     <div onClick={() => sProps.onClick(index)} key={nanoid()} className={styles.tab}>
-                        <div className={tabItemClasses} style={tabStyle}>
+                        <div
+                            className={cn(styles.tabTitle, {
+                                [styles.selectedTab]: index === sProps.selectedTab ? true : false,
+                            })}
+                            style={tabStyle}
+                        >
                             {tab}
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
 import { AddProduct } from '../../pages/Inventory/components/AddProduct/AddProduct';
@@ -15,6 +16,7 @@ import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 
 export const Dashboard = (): JSX.Element => {
     const { addProductSlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
+
     return (
         <div className={dashboardStyles.dashboardWrapper}>
             <div className={dashboardStyles.leftNavWrapper}>
@@ -44,6 +46,7 @@ export const Dashboard = (): JSX.Element => {
             <SliderModal active={checkoutSlider} sliderSize={'70%'}>
                 <Checkout />
             </SliderModal>
+            <ConfirmDialog />
         </div>
     );
 };

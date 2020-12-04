@@ -6,9 +6,15 @@ export const cssColors = {
 
     /* mood colors */
     '--success-color': '#4caf50',
+    '--success-accent-color': '#D9F7DA',
     '--warning-color': '#ffc107',
+    '--warning-accent-color': '#FFFFE6',
     '--danger-color': '#f44336',
+    '--danger-accent-color': '#ffdee3',
+    '--info-color': '#2196F3',
+    '--info-accent-color': '#CCEFFC',
     '--disabled-color': '#808080',
+    '--transparent-color': 'transparent',
 
     /* element colors */
     '--border-color': '#f2f2f2',
@@ -22,7 +28,9 @@ export const cssColors = {
     /* page background, selected" tab */
     '--secondary-background-color': '#f5f5f5',
     /* table header" background */
-    '--tertiary-background-color': '#e8e8e8',
+    '--tertiary-background-color': '#F2F2F2',
+    /* used as overlay backgrounds */
+    '--overlay-color': 'rgb(0, 0, 0, 0.5)',
 
     /* font colors */
     '--primary-font-color': '#000000',
