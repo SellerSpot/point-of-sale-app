@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from '../../store/models/sliderModal';
 import { openConfirmDialog } from '../../store/models/confirmDialogModal';
+import { InputField } from '../../components/InputField/InputField';
 
 export const Sales = (): JSX.Element => {
     // to manage which tab is selected
@@ -36,7 +37,29 @@ export const Sales = (): JSX.Element => {
                         variant="outline"
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"
-                        onClick={() => disptach(openConfirmDialog({ active: true }))}
+                        onClick={() =>
+                            disptach(
+                                openConfirmDialog({
+                                    active: true,
+                                    title: 'This is sample confirm dialog header?',
+                                    successActionLabel: 'Agree 1',
+                                    failureActionLabel: 'Disagree',
+                                    description:
+                                        'This is sample confirm dialog description. This is sample confirm dialog description. This is sample confirm dialog description.',
+                                    onFailure: () => void 0,
+                                    onSuccess: () => void 0,
+                                    inputFields: (
+                                        <InputField
+                                            key={nanoid()}
+                                            label={'Sample Label'}
+                                            placeHolder={'Sample Field'}
+                                            onChange={() => void 0}
+                                            helperText={'Sample Helper Text'}
+                                        />
+                                    ),
+                                }),
+                            )
+                        }
                     />,
                 ]}
             />

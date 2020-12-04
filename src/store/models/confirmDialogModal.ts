@@ -4,6 +4,13 @@ import { RootState } from '../store';
 
 const initialState: IConfirmDialogProps = {
     active: false,
+    title: 'This is sample confirm dialog header?',
+    successActionLabel: 'Agree',
+    failureActionLabel: 'Disagree',
+    description:
+        'This is sample confirm dialog description. This is sample confirm dialog description. This is sample confirm dialog description.',
+    onFailure: () => void 0,
+    onSuccess: () => void 0,
 };
 
 const confirmModalSlice = createSlice({
@@ -11,30 +18,11 @@ const confirmModalSlice = createSlice({
     initialState,
     reducers: {
         openConfirmDialog: (state, { payload }: PayloadAction<IConfirmDialogProps>) => {
-            state = {
-                ...payload,
-                active: true,
-            };
+            // state.active = payload.active;
+            Object.assign(state, payload);
         },
         closeConfirmDialog: (state) => {
-            // state = {
-            //     active: false,
-            //     description: '',
-            //     title: '',
-            //     failureActionLabel: '',
-            //     successActionLabel: '',
-            //     onFailure: () => void 0,
-            //     onSuccess: () => void 0,
-            //     style: {},
-            // };
-
-            state.active = false;
-            state.description = '';
-            state.title = '';
-            state.failureActionLabel = '';
-            state.successActionLabel = '';
-            state.onSuccess = () => void 0;
-            state.onFailure = () => void 0;
+            Object.assign(state, initialState);
         },
     },
 });
