@@ -1,6 +1,43 @@
 .checkoutWrapper {
     width: 100%;
     height: 100%;
-    background: black;
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background: var(--primary-background-color);
+}
+
+.checkoutBillPreviewWrapper {
+    padding: 20px;
+}
+
+.checkoutBillPreviewHolder {
+    width: 100%;
+    height: 100%;
+    background: var(--secondary-background-color);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: var(--font-size-header);
+}
+
+.checkoutBillingDetailsWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 30px;
+    gap: 25px;
+}
+
+.calculationEntry {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: var(--font-size-header);
 }
