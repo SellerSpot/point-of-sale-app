@@ -18,10 +18,18 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
     const { active, children, sliderSize } = { ...defaultProps, ...props };
 
     return (
-        <div className={cn(styles.sliderModalWrapper, { [styles.sliderModalWrapperBackdrop]: active })}>
+        <div
+            className={cn(styles.sliderModalWrapper, {
+                [styles.sliderModalWrapperBackdrop]: active,
+                [styles.sliderModalWrapperBackdropInActive]: !active,
+            })}
+        >
             <div
                 style={{ width: sliderSize }}
-                className={cn(styles.sliderContentWrapper, { [styles.sliderContentActive]: active })}
+                className={cn(styles.sliderContentWrapper, {
+                    [styles.sliderContentActive]: active,
+                    [styles.sliderContentInActive]: !active,
+                })}
             >
                 {children}
             </div>
