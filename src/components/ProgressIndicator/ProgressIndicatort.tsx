@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './progressindicator.module.css';
 import { cssColors } from '../../config/cssVariables';
+import cn from 'classnames';
 
 export interface IProgressIndicatorProps {
     size?: 'extraSmall' | 'small' | 'medium' | 'large';
@@ -16,26 +17,6 @@ const defaultProps: IProgressIndicatorProps = {
     trackColor: '--border-color',
     size: 'extraSmall',
     style: {},
-};
-
-// used to assemble the class names
-const getClassNames = (sProps: IProgressIndicatorProps): string => {
-    let classNames = styles.loader;
-    switch (sProps.size) {
-        case 'extraSmall':
-            classNames += ' ' + styles.loaderExtraSmall;
-            break;
-        case 'small':
-            classNames += ' ' + styles.loaderSmall;
-            break;
-        case 'medium':
-            classNames += ' ' + styles.loaderMedium;
-            break;
-        case 'large':
-            classNames += ' ' + styles.loaderLarge;
-            break;
-    }
-    return classNames;
 };
 
 export const ProgressIndicator: React.FC<IProgressIndicatorProps> = (props: IProgressIndicatorProps): JSX.Element => {
@@ -54,7 +35,13 @@ export const ProgressIndicator: React.FC<IProgressIndicatorProps> = (props: IPro
                         borderLeftColor: cssColors[sProps.indicatorColor ?? '--border-color'],
                         ...sProps.style,
                     }}
-                    className={getClassNames(sProps)}
+                    className={cn(
+                        styles.loader,
+                        { [styles.loaderExtraSmall]: sProps.size === 'extraSmall' ? true : false },
+                        { [styles.loaderSmall]: sProps.size === 'small' ? true : false },
+                        { [styles.loaderMedium]: sProps.size === 'medium' ? true : false },
+                        { [styles.loaderLarge]: sProps.size === 'large' ? true : false },
+                    )}
                 >
                     Loading Spinner
                 </div>

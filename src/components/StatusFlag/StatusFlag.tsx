@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './statusflag.module.css';
 import { cssColors } from '../../config/cssVariables';
+import cn from 'classnames';
 
 export interface IStatusFlagProps {
     status: 'completed' | 'pending' | 'failed';
@@ -11,22 +12,6 @@ const defaultProps: IStatusFlagProps = {
     status: 'completed',
     labelColor: '--tertiary-font-color',
     style: {},
-};
-
-// used to assemble the class name for the spot
-const getSpotClassNames = (sProps: IStatusFlagProps): string => {
-    let classNames = styles.spot;
-    switch (sProps.status) {
-        case 'completed':
-            classNames += ' ' + styles.successSpot;
-            break;
-        case 'pending':
-            classNames += ' ' + styles.pendingSpot;
-            break;
-        case 'failed':
-            classNames += ' ' + styles.failedSpot;
-    }
-    return classNames;
 };
 
 export const StatusFlag: React.FC<IStatusFlagProps> = (props: IStatusFlagProps): JSX.Element => {
@@ -41,7 +26,14 @@ export const StatusFlag: React.FC<IStatusFlagProps> = (props: IStatusFlagProps):
             className={styles.statusFlagDiv}
             style={{ color: cssColors[sProps.labelColor ?? '--tertiary-font-color'], ...sProps.style }}
         >
-            <div className={getSpotClassNames(sProps)}></div>
+            <div
+                className={cn(
+                    styles.spot,
+                    { [styles.successSpot]: sProps.status === 'completed' ? true : false },
+                    { [styles.pendingSpot]: sProps.status === 'pending' ? true : false },
+                    { [styles.failedSpot]: sProps.status === 'failed' ? true : false },
+                )}
+            ></div>
             <div>{sProps.status.charAt(0).toUpperCase() + sProps.status.slice(1)}</div>
         </div>
     );

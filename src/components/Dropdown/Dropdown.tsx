@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './dropdown.module.css';
 import { FaCaretDown } from 'react-icons/fa';
 import { nanoid } from 'nanoid';
+import cn from 'classnames';
 
 export interface IDropdownProps {
     options: string[];
@@ -14,14 +15,6 @@ export interface IDropdownProps {
 const defaultProps: IDropdownProps = {
     options: ['Sample Option 1', 'Sample Option 2'],
     onSelect: () => void 0,
-};
-
-// used to get the dropdown list classnames
-const getDropDownListClassNames = (showOptions: boolean): string => {
-    let classNames = styles.dropDownList;
-    if (showOptions) classNames += ' ' + styles.active;
-    else classNames += ' ' + styles.inactive;
-    return classNames;
 };
 
 export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.Element => {
@@ -59,7 +52,13 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
                     <p>{sProps.options[selectedOption]}</p>
                     <FaCaretDown className={styles.caretIcon} />
                 </div>
-                <div className={getDropDownListClassNames(showOptions)}>
+                <div
+                    className={cn(
+                        styles.dropDownList,
+                        { [styles.active]: showOptions },
+                        { [styles.inactive]: !showOptions },
+                    )}
+                >
                     <ul>
                         {sProps.options.map((option, index) => {
                             return (
@@ -80,7 +79,7 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
                 </div>
             </div>
             {props.helperText !== undefined ? (
-                <label className={styles.label + ' ' + styles.helperText} htmlFor={dropdownBoxId}>
+                <label className={cn(styles.label, styles.helperText)} htmlFor={dropdownBoxId}>
                     {props.helperText}
                 </label>
             ) : null}
