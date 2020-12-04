@@ -6,8 +6,11 @@ export const cssColors = {
 
     /* mood colors */
     '--success-color': '#4caf50',
+    '--success-accent-color': '#C8E6C9',
     '--warning-color': '#ffc107',
+    '--warning-accent-color': '#FFECB3',
     '--danger-color': '#f44336',
+    '--danger-accent-color': '#ffcdd2',
     '--disabled-color': '#808080',
     '--transparent-color': 'transparent',
 
