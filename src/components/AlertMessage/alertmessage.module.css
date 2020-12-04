@@ -12,9 +12,22 @@
     transition: all var(--transition-duration);
 }
 
+.infoAlert {
+    border-color: var(--info-color);
+    background-color: var(--info-accent-color);
+}
+
+.infoIcon {
+    color: var(--info-color);
+}
+
 .successAlert {
     border-color: var(--success-color);
     background-color: var(--success-accent-color);
+}
+
+.successIcon {
+    color: var(--success-color);
 }
 
 .warningAlert {
@@ -22,7 +35,22 @@
     background-color: var(--warning-accent-color);
 }
 
+.warningIcon {
+    color: var(--warning-color);
+}
+
 .dangerAlert {
     border-color: var(--danger-color);
     background-color: var(--danger-accent-color);
+}
+
+.dangerIcon {
+    color: var(--danger-color);
+}
+
+.alertContent {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
 }

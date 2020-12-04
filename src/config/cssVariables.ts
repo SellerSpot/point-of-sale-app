@@ -6,11 +6,13 @@ export const cssColors = {
 
     /* mood colors */
     '--success-color': '#4caf50',
-    '--success-accent-color': '#C8E6C9',
+    '--success-accent-color': '#D9F7DA',
     '--warning-color': '#ffc107',
-    '--warning-accent-color': '#FFECB3',
+    '--warning-accent-color': '#FFFFE6',
     '--danger-color': '#f44336',
-    '--danger-accent-color': '#ffcdd2',
+    '--danger-accent-color': '#ffdee3',
+    '--info-color': '#2196F3',
+    '--info-accent-color': '#CCEFFC',
     '--disabled-color': '#808080',
     '--transparent-color': 'transparent',
 

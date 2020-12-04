@@ -15,10 +15,10 @@ const Template: Story<IAlertMessageProps> = (args: IAlertMessageProps) => <Alert
 
 export const AlertMessages = Template.bind({});
 AlertMessages.args = {
-    label: 'Sample Message',
-    type: 'success',
-    // action: {
-    //     actionLabel: 'Sample Action',
-    //     onClick: () => void 0,
-    // },
+    label: 'This is sample alert message',
+    type: 'info',
+    action: {
+        actionLabel: 'Fix Issue',
+        onClick: () => void 0,
+    },
 } as IAlertMessageProps;
