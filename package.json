@@ -28,8 +28,7 @@
         "lint": "eslint ./src/**/*.{js,ts,tsx} --max-warnings=0",
         "storybook": "start-storybook -p 6006 -s public",
         "build-storybook": "build-storybook -s public",
-        "postinstall": "husky install",
-        "post-merge-install": "cross-env-shell ./scripts/post-merge.sh"
+        "postinstall": "husky install"
     },
     "eslintConfig": {
         "extends": [
