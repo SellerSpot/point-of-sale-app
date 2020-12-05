@@ -17,6 +17,7 @@ module.exports = {
         'no-console': 2,
         'prettier/prettier': 2,
         // '@typescript-eslint/no-unused-vars': 0,
+        '@typescript-eslint/no-namespace': 0,
     },
     settings: {
         react: {

@@ -70,3 +70,5 @@ export function loadCSSValues(): void {
         root.style.setProperty(key, value);
     }
 }
+
+export type TMajorColors = 'success' | 'danger' | 'warning' | 'info';
