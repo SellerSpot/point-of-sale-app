@@ -29,7 +29,7 @@
         "storybook": "start-storybook -p 6006 -s public",
         "build-storybook": "build-storybook -s public",
         "postinstall": "husky install",
-        "post-merge-install": "cross-env ./scripts/post-merge.sh"
+        "post-merge-install": "cross-env-shell ./scripts/post-merge.sh"
     },
     "eslintConfig": {
         "extends": [
