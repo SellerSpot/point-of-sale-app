@@ -13,7 +13,7 @@ const initialState: IConfirmDialogProps = {
     onSuccess: () => void 0,
 };
 
-const confirmModalSlice = createSlice({
+const confirmDialog = createSlice({
     name: 'confirmDialog',
     initialState,
     reducers: {
@@ -28,11 +28,11 @@ const confirmModalSlice = createSlice({
 });
 
 // exporting reducer
-export default confirmModalSlice.reducer;
+export default confirmDialog.reducer;
 
 // exporting actions
-export const { openConfirmDialog, closeConfirmDialog } = confirmModalSlice.actions;
+export const { openConfirmDialog, closeConfirmDialog } = confirmDialog.actions;
 
 // exporting selector - useful when using it in components to select particular state from global store
 export const confirmDialogSelector: Selector<RootState, IConfirmDialogProps> = (state: RootState) =>
-    state.confirmDialogModal;
+    state.confirmDialog;
