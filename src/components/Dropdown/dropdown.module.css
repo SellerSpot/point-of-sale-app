@@ -47,6 +47,8 @@
 
 .dropDownList {
     width: 100%;
+    max-height: 140px;
+    height: auto;
     position: absolute;
     top: var(--input-field-height);
     border: 1px solid var(--border-darker-color);
@@ -58,40 +60,14 @@
     visibility: hidden;
     overflow-y: auto;
     background-color: var(--primary-background-color);
-    box-shadow: 0 0 15px 2px var(--tertiary-background-color);
+    box-shadow: 0 0 5px 0px var(--overlay-color);
+    transition: var(--transition-duration);
+    opacity: 0;
 }
 
 .dropDownList.active {
-    animation: fade_in_show var(--transition-duration);
+    opacity: 1;
     visibility: visible;
-    height: auto;
-    max-height: 140px;
-}
-
-.dropDownList.inactive {
-    animation: fade_out_hide var(--transition-duration);
-}
-
-@keyframes fade_in_show {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
-@keyframes fade_out_hide {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        visibility: hidden;
-    }
 }
 
 .dropDownItem {
