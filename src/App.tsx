@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from './config/routes';
 import './styles/core.css';
 import { Dashboard } from './layouts/Dashboard/Dashboard';
+import { ConfirmDialog } from './components/ConfirmDialog/ConfirmDialog';
 
 export const App: FC = (): JSX.Element => {
     return (
@@ -13,6 +14,9 @@ export const App: FC = (): JSX.Element => {
                     <Dashboard />
                 </Route>
             </Switch>
+            {/* all globally available components (via store) should be nested below  */}
+            {/* confirm dialog */}
+            <ConfirmDialog />
         </div>
     );
 };
