@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
 import { AddProduct } from '../../pages/Inventory/components/AddProduct/AddProduct';
@@ -46,7 +45,6 @@ export const Dashboard = (): JSX.Element => {
             <SliderModal active={checkoutSlider} sliderSize={'70%'}>
                 <Checkout />
             </SliderModal>
-            <ConfirmDialog />
         </div>
     );
 };

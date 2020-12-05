@@ -17,9 +17,9 @@ const confirmModalSlice = createSlice({
     name: 'confirmDialog',
     initialState,
     reducers: {
-        openConfirmDialog: (state, { payload }: PayloadAction<IConfirmDialogProps>) => {
+        openConfirmDialog: (state, { payload }: PayloadAction<Omit<IConfirmDialogProps, 'active'>>) => {
             // state.active = payload.active;
-            Object.assign(state, payload);
+            Object.assign(state, { ...payload, active: true });
         },
         closeConfirmDialog: (state) => {
             Object.assign(state, initialState);

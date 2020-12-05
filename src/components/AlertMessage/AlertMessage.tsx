@@ -67,11 +67,11 @@ export const AlertMessage: React.FC<IAlertMessageProps> = (props: IAlertMessageP
                 { [styles.dangerAlert]: sProps.type === 'danger' },
             )}
         >
-            <div className={styles.alertContent}>
-                <span style={{ color: cssColors[getPrimaryColor(sProps)] }}>
+            <div>
+                <div className={cn(styles.alertContentItem)} style={{ color: cssColors[getPrimaryColor(sProps)] }}>
                     {sProps.showIcon ? getIcon(sProps) : null}
-                </span>
-                {sProps.label}
+                </div>
+                <div className={cn(styles.alertContentItem)}>{sProps.label}</div>
             </div>
             {sProps.action !== undefined ? (
                 <Button
