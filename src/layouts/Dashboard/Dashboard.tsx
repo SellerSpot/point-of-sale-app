@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
@@ -12,9 +12,26 @@ import { LeftNav } from './components/LeftNav/LeftNav';
 import dashboardStyles from './dashboard.module.css';
 import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
+import { openConfirmDialog } from '../../store/models/confirmDialog';
 
 export const Dashboard = (): JSX.Element => {
     const { addProductSlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(
+            openConfirmDialog({
+                description: 'Sample',
+                failureActionLabel: 'Cancel',
+                successActionLabel: 'Ok',
+                // eslint-disable-next-line no-console
+                onFailure: () => console.log('failure'),
+                // eslint-disable-next-line no-console
+                onSuccess: () => console.log('success'),
+                title: 'Sample',
+            }),
+        );
+    }, []);
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>

@@ -5,7 +5,7 @@ import { Button } from '../Button/Button';
 import { cssColors } from '../../config/cssVariables';
 import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeConfirmDialog, confirmDialogSelector } from '../../store/models/confirmDialogModal';
+import { closeConfirmDialog, confirmDialogSelector } from '../../store/models/confirmDialog';
 
 export interface IConfirmDialogProps {
     active: boolean;

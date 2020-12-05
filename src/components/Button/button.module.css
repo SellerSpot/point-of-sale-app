@@ -1,7 +1,8 @@
 .button {
     padding: 0.8em 1em;
     text-decoration: none;
-    transition: all var(--transition-duration);
+    /* don't apply transition all for bare metal child, it will affect the core components animaton transition where the it is used.. */
+    /* transition: all var(--transition-duration); */
     border: 1px solid;
     border-radius: var(--border-radius);
     cursor: pointer;
@@ -9,6 +10,7 @@
     font-size: var(--font-size-secondary);
     font-weight: 500;
     opacity: 1;
+    transition: opacity var(--transition-duration);
 }
 
 .button:hover {
