@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import leftNavStyles from './leftnav.module.css';
-import { FaBoxOpen, IoMdCart } from 'react-icons/all';
+import { FaBoxOpen, FaStore, IoMdCart } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../config/routes';
 import { cssColors } from '../../../../config/cssVariables';
+import { HorizontalRule } from '../../../../components/HorizontalRule/HorizontalRule';
 
 interface INavItem {
     color: string;
@@ -61,12 +62,23 @@ export const LeftNav = (): JSX.Element => {
     return (
         <div className={leftNavStyles.leftNavWrapper}>
             <div className={leftNavStyles.contentWrapper}>
-                <div className={leftNavStyles.storeNameHolder}>Store Name</div>
+                <div className={leftNavStyles.storeNameHolder}>
+                    <FaStore size={'40px'} />
+                    <div>
+                        {'Store Name'}
+                        <div className={leftNavStyles.storeNameHolderSubtitle}>{'Hi, Olivia Katz'}</div>
+                    </div>
+                </div>
+                <HorizontalRule
+                    ruleWidth="100%"
+                    style={{ paddingBottom: 30, paddingLeft: 0, paddingRight: 0, paddingTop: 0 }}
+                />
+                <div className={leftNavStyles.navSubHeading}>{'OPERATIONS'}</div>
                 {navItem.map((item, key) => (
                     <NavItem
                         key={key}
                         Icon={item.Icon}
-                        color={item.color}
+                        color={item.route === currentNavRoute ? item.color : cssColors['--tertiary-font-color']}
                         onClick={() => history.push(item.route)}
                         title={item.title}
                         route={item.route}

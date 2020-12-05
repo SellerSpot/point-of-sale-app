@@ -19,7 +19,7 @@ interface IHorizontalRuleProps {
 
 const defaultProps: IHorizontalRuleProps = {
     alignment: 'center',
-    ruleColor: '--secondary-font-color',
+    ruleColor: '--border-color',
     ruleSize: 1,
     ruleWidth: '75%',
     style: {

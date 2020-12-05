@@ -1,5 +1,6 @@
 export const cssColors = {
     /* section colors */
+    '--sellerspot-color': '#172B4D',
     '--sales-color': '#3f51b5',
     '--inventory-color': '#ff5722',
     '--cashregister-color': '#2196f3',
@@ -25,10 +26,10 @@ export const cssColors = {
     /* backgrounds */
     /* card" backgrounds */
     '--primary-background-color': '#ffffff',
-    /* page background, selected" tab */
-    '--secondary-background-color': '#f5f5f5',
-    /* table header" background */
-    '--tertiary-background-color': '#F2F2F2',
+    /* page background */
+    '--secondary-background-color': '#f3f4f6',
+    /* table header" background selected tab */
+    '--tertiary-background-color': '#F5F5F5',
     /* used as overlay backgrounds */
     '--overlay-color': 'rgb(0, 0, 0, 0.5)',
 
@@ -56,7 +57,7 @@ export const cssVariables = {
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
     '--small-input-field-height': '20px',
-    '--shadow': '0px 0px 8px 0px var(--shadow-color)',
+    '--shadow': '0px 0px 3px 0px var(--shadow-color)',
 };
 
 // used to load css variables in ts object into the :root context

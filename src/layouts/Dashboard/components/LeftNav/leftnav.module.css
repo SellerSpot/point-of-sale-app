@@ -16,25 +16,32 @@
 
 .storeNameHolder {
     width: 100%;
-    font-size: var(--font-size-master-sub);
-    font-weight: bold;
+    height: 70px;
+    font-size: var(--font-size-header);
+    font-weight: 700;
     pointer-events: none;
-    margin-top: 20px;
-    margin-bottom: 30px;
     padding-left: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.storeNameHolderSubtitle {
+    font-size: var(--font-size-tertiary);
+    font-weight: 500;
 }
 
 .navItem {
-    width: 90%;
+    width: 100%;
     height: 50px;
-    margin: 0 5% 20px 5%;
-    font-weight: bold;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-left: 10px;
-    border-radius: var(--border-radius);
+    padding-left: 20px;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .navItem:hover {
@@ -54,4 +61,12 @@
 .navTitle {
     font-size: var(--font-size-default);
     text-transform: capitalize;
+}
+
+.navSubHeading {
+    width: 100%;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    font-size: var(--font-size-secondary);
+    font-weight: 600;
 }
