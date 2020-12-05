@@ -4,6 +4,7 @@ import { ROUTES } from './config/routes';
 import './styles/core.css';
 import { Dashboard } from './layouts/Dashboard/Dashboard';
 import { ConfirmDialog } from './components/ConfirmDialog/ConfirmDialog';
+import { Notify } from './components/Notify/Notify';
 
 export const App: FC = (): JSX.Element => {
     return (
@@ -15,8 +16,8 @@ export const App: FC = (): JSX.Element => {
                 </Route>
             </Switch>
             {/* all globally available components (via store) should be nested below  */}
-            {/* confirm dialog */}
             <ConfirmDialog />
+            <Notify />
         </div>
     );
 };
