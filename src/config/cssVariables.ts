@@ -28,7 +28,7 @@ export const cssColors = {
     /* page background, selected" tab */
     '--secondary-background-color': '#f5f5f5',
     /* table header" background */
-    '--tertiary-background-color': '#F2F2F2',
+    '--tertiary-background-color': '#f1f4f9',
     /* used as overlay backgrounds */
     '--overlay-color': 'rgb(0, 0, 0, 0.5)',
 
@@ -56,7 +56,7 @@ export const cssVariables = {
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
     '--small-input-field-height': '20px',
-    '--shadow': '0px 0px 8px 0px var(--shadow-color)',
+    '--shadow': '0px 0px 3px 0px var(--shadow-color)',
 };
 
 // used to load css variables in ts object into the :root context
