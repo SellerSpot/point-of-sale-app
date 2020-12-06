@@ -61,13 +61,10 @@ const tableRowFactory = (sProps: ITableProps): ReactNode => {
         gap: '5px',
     };
     const cellStyle: React.CSSProperties = {};
-    return sProps.rowData.map((row, index) => {
+    return sProps.rowData.map((row) => {
         return (
             <div key={nanoid()}>
-                <div
-                    className={cn(styles.row, { [styles.greyBackground]: index % 2 !== 0 ? true : false })}
-                    style={rowStyle}
-                >
+                <div className={cn(styles.row)} style={rowStyle}>
                     {row.map((cell: string) => {
                         return (
                             <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
