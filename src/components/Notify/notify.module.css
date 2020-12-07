@@ -2,7 +2,7 @@
     width: 300px;
     min-height: 50px;
     max-height: 100px;
-    overflow: auto;
+    overflow: hidden;
     background: var(--primary-background-color);
     position: fixed;
     box-shadow: 0 0 10px 0 var(--overlay-color);
@@ -11,7 +11,7 @@
     font-size: var(--font-size-secondary);
     top: -100%;
     right: calc(50% - 150px);
-    transition: top .2s ease-in;
+    transition: top 0.2s ease-in;
     word-break: break-all;
 }
 
@@ -21,6 +21,8 @@
 
 .messageHolder {
     text-overflow: ellipsis;
+    max-height: 100px;
+    overflow: auto;
 }
 
 .closeIcon {

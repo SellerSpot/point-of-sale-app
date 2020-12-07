@@ -12,7 +12,12 @@ export const Notify = (): ReactElement => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(showNotify({ message: 'Brace for Impact!', type: 'warning' }));
+        dispatch(
+            showNotify({
+                message: 'Brace for Impact!',
+                type: 'success',
+            }),
+        );
     }, []);
 
     useEffect(() => {
@@ -35,7 +40,7 @@ export const Notify = (): ReactElement => {
                 color: cssColors['--light-font-color'],
             }}
         >
-            <div>{message}</div>
+            <div className={cn(styles.messageHolder)}>{message}</div>
             <div className={cn(styles.closeIcon)}>
                 <AiOutlineCloseCircle color={cssColors['--light-font-color']} />
             </div>
