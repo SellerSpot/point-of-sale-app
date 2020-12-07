@@ -10,21 +10,26 @@ import { AiOutlineCloseCircle } from 'react-icons/all';
 export const Notify = (): ReactElement => {
     const { active, type, message, timeout } = useSelector(notifySelector);
     const dispatch = useDispatch();
-
+    const clearNotification = () => dispatch(closeNotify());
     useEffect(() => {
-        dispatch(showNotify({ message: 'Brace for Impact!', type: 'warning' }));
+        dispatch(
+            showNotify({
+                message: 'Brace for Impact!',
+                type: 'success',
+            }),
+        );
     }, []);
 
     useEffect(() => {
         let timerReference: ReturnType<typeof setTimeout>;
-        const clearNotification = () => dispatch(closeNotify());
+
         if (active) {
             timerReference = setTimeout(clearNotification, timeout);
         }
         return () => {
             clearTimeout(timerReference);
         };
-    }, [active]);
+    }, [active, message, type]);
     return (
         <div
             className={cn(styles.notifyWrapper, {
@@ -35,8 +40,8 @@ export const Notify = (): ReactElement => {
                 color: cssColors['--light-font-color'],
             }}
         >
-            <div>{message}</div>
-            <div className={cn(styles.closeIcon)}>
+            <div className={cn(styles.messageHolder)}>{message}</div>
+            <div onClick={clearNotification} className={cn(styles.closeIcon)}>
                 <AiOutlineCloseCircle color={cssColors['--light-font-color']} />
             </div>
         </div>
