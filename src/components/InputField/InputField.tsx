@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
@@ -73,9 +72,6 @@ const getPrefixSufficStyles = (sProps: IInputFieldProps): React.CSSProperties =>
 };
 
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
-    // unique name for the inputfield for the label and helper text to attach to
-    const fieldId = nanoid();
-
     // seasoning the props
     const sProps: IInputFieldProps = {
         ...defaultProps,
@@ -84,11 +80,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
 
     return (
         <div className={styles.inputFieldWrapper}>
-            {sProps.label !== undefined ? (
-                <label className={styles.label} htmlFor={fieldId}>
-                    {sProps.label}
-                </label>
-            ) : null}
+            {sProps.label !== undefined ? <label className={styles.label}>{sProps.label}</label> : null}
 
             <div className={styles.inputWrapper}>
                 {sProps.prefix ?? false ? (
@@ -97,7 +89,6 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     </div>
                 ) : null}
                 <input
-                    id={fieldId}
                     className={styles.inputField}
                     disabled={sProps.disabled}
                     placeholder={sProps.placeHolder}
@@ -114,9 +105,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             </div>
 
             {sProps.helperText !== undefined ? (
-                <label className={cn(styles.label, styles.helperText)} htmlFor={fieldId}>
-                    {sProps.helperText}
-                </label>
+                <label className={cn(styles.label, styles.helperText)}>{sProps.helperText}</label>
             ) : null}
         </div>
     );
