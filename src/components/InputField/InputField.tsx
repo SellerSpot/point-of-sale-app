@@ -67,6 +67,17 @@ const getPrefixSufficStyles = (sProps: IInputFieldProps): React.CSSProperties =>
     const prefixSuffixStyles: React.CSSProperties = {};
     if (sProps.size === 'compact') {
         prefixSuffixStyles.borderColor = 'transparent';
+        prefixSuffixStyles.padding = '0';
+    }
+    if (sProps.borderStyle === 'shadow') {
+        prefixSuffixStyles.borderColor = 'transparent';
+        prefixSuffixStyles.boxShadow = cssVariables['--shadow'];
+    } else if (sProps.borderStyle === 'noBorder') {
+        prefixSuffixStyles.borderColor = 'transparent';
+    }
+    if (sProps.disabled) {
+        prefixSuffixStyles.backgroundColor = cssColors['--disabled-color'];
+        prefixSuffixStyles.cursor = 'default';
     }
     return prefixSuffixStyles;
 };
