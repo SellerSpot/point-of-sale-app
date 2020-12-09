@@ -72,3 +72,62 @@
 .suffix:hover {
     border-color: var(--border-accent-color);
 }
+
+/* Conditional Styling manipulation classes */
+
+.inputFieldNoBorder {
+    border-color: transparent;
+}
+
+.inputFieldShadowBorder {
+    border-color: transparent;
+    box-shadow: var(--shadow);
+}
+
+.inputFieldCompactSize {
+    height: var(--small-input-field-height);
+    padding: 0;
+    border-color: transparent;
+}
+
+.inputFieldPrefixPresent {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0px;
+}
+
+.inputFieldSuffixPresent {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0px;
+}
+
+.inputFieldError {
+    border-color: var(--danger-color);
+}
+
+.hintTextError {
+    color: var(--danger-color);
+}
+
+.prefixSuffixError {
+    border-color: var(--danger-color);
+}
+
+.prefixSuffixCompact {
+    border-color: transparent;
+    padding: 0;
+}
+
+.prefixSuffixShadow {
+    border-color: transparent;
+    box-shadow: var(--shadow);
+}
+
+.prefixSuffixNoBorder {
+    border-color: transparent;
+}
+
+.prefixSuffixDisabled {
+    background-color: var(--disabled-color);
+}
