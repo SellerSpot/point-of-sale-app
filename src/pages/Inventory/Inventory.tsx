@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '../../components/Button/Button';
@@ -23,7 +22,7 @@ export const Inventory = (): JSX.Element => {
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={nanoid()}
+                        key={'addProduct'}
                         label="Add Product (F4)"
                         labelColor="--inventory-color"
                         variant="outline"
