@@ -10,6 +10,7 @@
     padding: 15px 40px 15px 15px;
     font-size: var(--font-size-secondary);
     top: -100%;
+    z-index: var(--z-index-notify);
     right: calc(50% - 150px);
     transition: top 0.2s ease-in;
     word-break: break-all;

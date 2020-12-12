@@ -18,5 +18,5 @@ export const TabBars = Template.bind({});
 TabBars.args = {
     tabs: ['Sales', 'Manager', 'Stock', 'Customers'],
     selectedTab: 0,
-    onClick: () => void 0,
+    onSelect: () => void 0,
 } as ITabBarProps;

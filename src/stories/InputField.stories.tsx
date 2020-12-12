@@ -26,6 +26,10 @@ InputFields.args = {
     size: 'default',
     prefix: <FcOk />,
     suffix: <p>pcs</p>,
+    error: {
+        errorMessage: 'Sample Error message',
+        showError: true,
+    },
     borderStyle: 'border',
     onChange: () => void 0,
 } as IInputFieldProps;
