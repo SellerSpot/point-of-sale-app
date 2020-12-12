@@ -1,7 +1,8 @@
 .leftNavWrapper {
-    width: 100%;
+    width: 99%;
     height: 100%;
     user-select: none;
+    box-shadow: 0 0 1px 0 var(--overlay-color);
 }
 
 .contentWrapper {
@@ -9,7 +10,6 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     background-color: var(--primary-background-color);
 }
