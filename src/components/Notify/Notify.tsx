@@ -4,8 +4,8 @@ import styles from './notify.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeNotify, notifySelector, showNotify } from '../../store/models/notify';
 import { cssColors } from '../../config/cssVariables';
-import { Utils } from '../../services/Utils';
 import { AiOutlineCloseCircle } from 'react-icons/all';
+import { utils } from '../../services';
 
 export const Notify = (): ReactElement => {
     const { active, type, message, timeout } = useSelector(notifySelector);
@@ -36,7 +36,7 @@ export const Notify = (): ReactElement => {
                 [styles.notifyActive]: active,
             })}
             style={{
-                background: cssColors[Utils.getColor(type)],
+                background: cssColors[utils.getColor(type)],
                 color: cssColors['--light-font-color'],
             }}
         >
