@@ -13,9 +13,17 @@ import dashboardStyles from './dashboard.module.css';
 import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
+import { AddCategory } from '../../pages/Inventory/components/Sliders/AddCategory/AddCategory';
 
 export const Dashboard = (): JSX.Element => {
-    const { addProductSlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
+    const {
+        addProductSlider,
+        addCategorySlider,
+        // addBrandSlider,
+        // addTaxBracketSlider,
+        checkoutSlider,
+        newSaleSlider,
+    } = useSelector(sliderModalSelector);
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>
@@ -42,6 +50,9 @@ export const Dashboard = (): JSX.Element => {
             {/* full view sliders should be placed down here */}
             <SliderModal active={addProductSlider} sliderSize={'40%'}>
                 <AddProduct />
+            </SliderModal>
+            <SliderModal active={addCategorySlider} sliderSize={'40%'}>
+                <AddCategory />
             </SliderModal>
             <SliderModal active={newSaleSlider} sliderSize={'100%'}>
                 <NewSale />

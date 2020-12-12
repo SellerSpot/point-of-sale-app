@@ -4,12 +4,18 @@ import { RootState } from '../store';
 interface InitialState {
     newSaleSlider: boolean;
     addProductSlider: boolean;
+    addCategorySlider: boolean;
+    addBrandSlider: boolean;
+    addTaxBracketSlider: boolean;
     checkoutSlider: boolean;
 }
 
 const initialState: InitialState = {
     newSaleSlider: false,
     addProductSlider: false,
+    addCategorySlider: false,
+    addBrandSlider: false,
+    addTaxBracketSlider: false,
     checkoutSlider: false,
 };
 

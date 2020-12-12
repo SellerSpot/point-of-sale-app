@@ -1,0 +1,24 @@
+.addCategoryWrapper {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addCategoryForm {
+    width: 100%;
+}
+
+.categoryInputFieldWrapper {
+    width: 100%;
+    padding: 20px;
+}
+
+.submitCategoryNameWrapper {
+    width: 100%;
+    height: 50px;
+    padding: 0px 20px;
+}

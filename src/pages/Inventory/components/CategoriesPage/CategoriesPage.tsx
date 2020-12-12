@@ -18,12 +18,12 @@ export const CategoriesPage = (): JSX.Element => {
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addProduct'}
-                        label="Add Product (F4)"
+                        key={'addCategory'}
+                        label="Add Category (F5)"
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'addProductSlider', active: true }))}
+                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'addCategorySlider', active: true }))}
                     />,
                 ]}
             />
