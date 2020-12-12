@@ -1,17 +1,28 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import styles from './checkout.module.css';
 import cn from 'classnames';
 import { Button } from '../../../../components/Button/Button';
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
 import { cssColors, cssVariables } from '../../../../config/cssVariables';
+import { Bill } from '../../../BillingSetup/components/Bill/Bill';
+import { useReactToPrint } from 'react-to-print';
 
 export const Checkout = (): ReactElement => {
     const dispatch = useDispatch();
+    const billReference = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({
+        content: () => billReference.current,
+        onAfterPrint: () =>
+            new Promise(() => dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: false }))),
+    });
+
     return (
         <div className={cn(styles.checkoutWrapper)}>
             <div className={cn(styles.checkoutBillPreviewWrapper)}>
-                <div className={cn(styles.checkoutBillPreviewHolder)}>Bill Preview</div>
+                <div className={cn(styles.checkoutBillPreviewHolder)}>
+                    <Bill billReference={billReference} />
+                </div>
             </div>
             <div className={cn(styles.checkoutBillingDetailsWrapper)}>
                 <div className={styles.calculationEntry}>
@@ -43,7 +54,7 @@ export const Checkout = (): ReactElement => {
                     label="COMPLETE SALE ( enter )"
                     labelColor="--light-font-color"
                     backgroundColor="--sales-color"
-                    onClick={() => dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: false }))}
+                    onClick={handlePrint}
                 />
             </div>
         </div>

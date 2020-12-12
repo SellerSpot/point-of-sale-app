@@ -40,13 +40,13 @@ export const Dashboard = (): JSX.Element => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
-            <SliderModal active={newSaleSlider} sliderSize={'100%'}>
-                <NewSale />
-            </SliderModal>
             <SliderModal active={addProductSlider} sliderSize={'40%'}>
                 <AddProduct />
             </SliderModal>
-            <SliderModal active={checkoutSlider} sliderSize={'70%'}>
+            <SliderModal active={newSaleSlider} sliderSize={'100%'}>
+                <NewSale />
+            </SliderModal>
+            <SliderModal active={checkoutSlider} sliderSize={'80%'}>
                 <Checkout />
             </SliderModal>
         </div>
