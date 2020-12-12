@@ -29,7 +29,7 @@ export const cssColors = {
     /* page background */
     '--secondary-background-color': '#f3f4f6',
     /* table header" background selected tab */
-    '--tertiary-background-color': '#F5F5F5',
+    '--tertiary-background-color': '#e6e6e6',
     /* used as overlay backgrounds */
     '--overlay-color': 'rgb(0, 0, 0, 0.5)',
 

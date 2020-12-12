@@ -68,9 +68,9 @@ const tableRowFactory = (sProps: ITableProps): ReactNode => {
                     className={cn(styles.row, { [styles.greyBackground]: index % 2 !== 0 ? true : false })}
                     style={rowStyle}
                 >
-                    {row.map((cell: string) => {
+                    {row.map((cell: string, cellKey) => {
                         return (
-                            <div key={index} className={styles.bodyCell} style={cellStyle}>
+                            <div key={cellKey} className={styles.bodyCell} style={cellStyle}>
                                 {cell}
                             </div>
                         );
