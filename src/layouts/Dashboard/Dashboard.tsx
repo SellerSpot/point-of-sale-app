@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
-import { AddProduct } from '../../pages/Inventory/components/AddProduct/AddProduct';
+import { AddProduct } from '../../pages/Inventory/components/Sliders/AddProduct/AddProduct';
 import { CashRegister } from '../../pages/CashRegister/CashRegister';
 import { Inventory } from '../../pages/Inventory/Inventory';
 import { Sales } from '../../pages/Sales/Sales';

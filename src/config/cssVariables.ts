@@ -60,6 +60,7 @@ export const cssVariables = {
     '--shadow': '0px 0px 3px 0px var(--shadow-color)',
 
     /* z-index values */
+    '--z-index-notify': '10',
     '--z-index-confirm-dialog': '6',
     '--z-index-slider-modal': '5',
     '--z-index-tab-bar': '4',
