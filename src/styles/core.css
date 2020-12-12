@@ -6,6 +6,7 @@
     vertical-align: baseline;
     box-sizing: border-box;
     font-family: Inter, Helvetica, sans-serif;
+    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {

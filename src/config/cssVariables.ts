@@ -58,6 +58,13 @@ export const cssVariables = {
     '--input-field-height': '40px',
     '--small-input-field-height': '20px',
     '--shadow': '0px 0px 3px 0px var(--shadow-color)',
+
+    /* z-index values */
+    '--z-index-confirm-dialog': '6',
+    '--z-index-slider-modal': '5',
+    '--z-index-tab-bar': '4',
+    '--z-index-dropdown': '3',
+    '--z-index-table-header': '2',
 };
 
 // used to load css variables in ts object into the :root context
