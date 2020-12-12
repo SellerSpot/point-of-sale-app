@@ -3,10 +3,14 @@ import style from './bill.module.css';
 import dummyLogo from '../../../../images/logo192.png';
 import cn from 'classnames';
 import commonStyle from '../../../../styles/common.module.css';
+export interface IBillProps {
+    billReference: React.RefObject<HTMLDivElement>;
+}
 
-export const Bill = (): ReactElement => {
+export const Bill = (props: IBillProps): ReactElement => {
+    const { billReference } = props;
     return (
-        <div className={style.billWrapper}>
+        <div ref={billReference} className={style.billWrapper}>
             <div className={style.billHeader}>
                 <div className={style.storeDetailsWrapper}>
                     <img className={style.storeLogo} src={dummyLogo} alt={'Logo'} />
@@ -92,8 +96,129 @@ export const Bill = (): ReactElement => {
                     <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
                 </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
+                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignRight)}>2</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
+                    <div className={cn(commonStyle.textAlignRight)}>
+                        ₹ 1,44.00 <br />@ 8%
+                    </div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
+                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
+                </div>
             </div>
 
+            <div className={style.PageBreak}></div>
             <div className={cn(style.advertisementAndGrandTotalWrapper)}>
                 <div className={cn(style.advertisementHolder)}>Thanks for Shopping with us!</div>
                 <div className={cn(style.grandTotalWrapper)}>
@@ -131,7 +256,7 @@ export const Bill = (): ReactElement => {
                     </div>
                 </div>
             </div>
-
+            <div className={style.PageBreak}></div>
             <div className={style.billSubTitle}>TAX SPLIT UP</div>
             <div className={style.dashedBorder}></div>
             <div className={cn(style.billTableWrapper)}>

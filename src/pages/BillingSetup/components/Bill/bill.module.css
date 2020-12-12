@@ -1,6 +1,6 @@
 .billWrapper {
     width: 100%;
-    min-height: 1000px;
+    height: auto;
     background: white;
     box-shadow: 0 0 10px 0 gray;
     padding: 25px;
@@ -33,13 +33,13 @@
 }
 
 .storeName {
-    font-size: var(--font-size-header);
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 2px;
 }
 
 .storeAddress {
-    font-size: var(--font-size-secondary);
+    font-size: 13px;
     line-height: 22px;
 }
 
@@ -53,7 +53,7 @@
     padding: 5px 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    font-size: var(--font-size-secondary);
+    font-size: 13px;
 }
 
 .billInvoiceDetailsTitleHolder {
@@ -206,4 +206,32 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+}
+
+/* print essentials */
+@media all {
+    .PageBreak {
+        display: none;
+    }
+}
+
+@media print {
+    .PageBreak {
+        display: block;
+        page-break-before: auto;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 40px;
+}
+
+@media print {
+    .billWrapper {
+        -webkit-print-color-adjust: exact;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+    }
 }
