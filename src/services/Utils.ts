@@ -1,7 +1,7 @@
 import { cssColors, TMajorColors } from '../config/cssVariables';
 
-export const Utils = {
-    getColor: (majorColor: TMajorColors): keyof typeof cssColors => {
+export default class Utils {
+    public getColor(majorColor: TMajorColors): keyof typeof cssColors {
         let color: keyof typeof cssColors;
         switch (majorColor) {
             case 'success':
@@ -18,5 +18,5 @@ export const Utils = {
                 break;
         }
         return color;
-    },
-};
+    }
+}
