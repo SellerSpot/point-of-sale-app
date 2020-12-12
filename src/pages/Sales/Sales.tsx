@@ -4,7 +4,7 @@ import { TabBar } from '../../components/TabBar/TabBar';
 import { MetaCard } from '../../components/MetaCard/MetaCard';
 import { Table } from '../../components/Table/Table';
 import { Button } from '../../components/Button/Button';
-import { nanoid } from 'nanoid';
+
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from '../../store/models/sliderModal';
 
@@ -22,7 +22,7 @@ export const Sales = (): JSX.Element => {
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={nanoid()}
+                        key={'newSaleBtn'}
                         label="New Sale (F3)"
                         variant="outline"
                         backgroundColor="--sales-color"

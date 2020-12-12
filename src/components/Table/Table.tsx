@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import styles from './table.module.css';
-import { nanoid } from 'nanoid';
+
 import { cssColors, cssVariables } from '../../config/cssVariables';
 import { HorizontalRule } from '../HorizontalRule/HorizontalRule';
 import cn from 'classnames';
@@ -41,10 +41,10 @@ const tableHeaderFactory = (sProps: ITableProps): ReactNode => {
         height: '40px',
     };
     return (
-        <div key={nanoid()} className={cn(styles.row, styles.greyBackground)} style={rowStyle}>
-            {sProps.headers.map((heading) => {
+        <div className={cn(styles.row, styles.greyBackground)} style={rowStyle}>
+            {sProps.headers.map((heading, index) => {
                 return (
-                    <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
+                    <div key={index} className={styles.bodyCell} style={cellStyle}>
                         {heading}
                     </div>
                 );
@@ -61,13 +61,16 @@ const tableRowFactory = (sProps: ITableProps): ReactNode => {
         gap: '5px',
     };
     const cellStyle: React.CSSProperties = {};
-    return sProps.rowData.map((row) => {
+    return sProps.rowData.map((row, index) => {
         return (
-            <div key={nanoid()}>
-                <div className={cn(styles.row)} style={rowStyle}>
-                    {row.map((cell: string) => {
+            <div key={index}>
+                <div
+                    className={cn(styles.row, { [styles.greyBackground]: index % 2 !== 0 ? true : false })}
+                    style={rowStyle}
+                >
+                    {row.map((cell: string, cellKey) => {
                         return (
-                            <div key={nanoid()} className={styles.bodyCell} style={cellStyle}>
+                            <div key={cellKey} className={styles.bodyCell} style={cellStyle}>
                                 {cell}
                             </div>
                         );

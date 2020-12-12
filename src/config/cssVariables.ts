@@ -14,7 +14,7 @@ export const cssColors = {
     '--danger-accent-color': '#ffdee3',
     '--info-color': '#2196F3',
     '--info-accent-color': '#CCEFFC',
-    '--disabled-color': '#808080',
+    '--disabled-color': '#ebebe4',
     '--transparent-color': 'transparent',
 
     /* element colors */

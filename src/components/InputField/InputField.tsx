@@ -1,6 +1,5 @@
-import { nanoid } from 'nanoid';
 import React, { ReactNode } from 'react';
-import { cssColors, cssVariables } from '../../config/cssVariables';
+import { cssColors } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
 import cn from 'classnames';
 
@@ -16,6 +15,10 @@ export interface IInputFieldProps {
     size?: 'compact' | 'default';
     prefix?: ReactNode;
     suffix?: ReactNode;
+    error?: {
+        showError: boolean;
+        errorMessage: string;
+    };
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -27,55 +30,15 @@ const defaultProps: IInputFieldProps = {
     type: 'text',
     size: 'default',
     borderStyle: 'border',
+    error: {
+        errorMessage: 'Default error message',
+        showError: false,
+    },
     onChange: () => void 0,
     style: {},
 };
 
-// used to get the styles for the component
-const getComponentStyles = (sProps: IInputFieldProps): React.CSSProperties => {
-    const componentStyles: React.CSSProperties = {};
-    switch (sProps.borderStyle) {
-        case 'noBorder':
-            componentStyles.border = '1px solid transparent';
-            break;
-        case 'shadow':
-            componentStyles.border = '1px solid transparent';
-            componentStyles.boxShadow = cssVariables['--shadow'];
-    }
-    if (sProps.size === 'compact') {
-        componentStyles.height = cssVariables['--small-input-field-height'];
-        componentStyles.padding = '0px';
-        componentStyles.border = '1px solid transparent';
-    }
-
-    if (sProps.prefix !== undefined) {
-        componentStyles.borderTopLeftRadius = '0px';
-        componentStyles.borderBottomLeftRadius = '0px';
-        componentStyles.borderLeftColor = 'transparent';
-    }
-
-    if (sProps.suffix !== undefined) {
-        componentStyles.borderTopRightRadius = '0px';
-        componentStyles.borderBottomRightRadius = '0px';
-        componentStyles.borderRightColor = 'transparent';
-    }
-
-    return componentStyles;
-};
-
-// used to get the prefix and suffix styles
-const getPrefixSufficStyles = (sProps: IInputFieldProps): React.CSSProperties => {
-    const prefixSuffixStyles: React.CSSProperties = {};
-    if (sProps.size === 'compact') {
-        prefixSuffixStyles.borderColor = 'transparent';
-    }
-    return prefixSuffixStyles;
-};
-
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
-    // unique name for the inputfield for the label and helper text to attach to
-    const fieldId = nanoid();
-
     // seasoning the props
     const sProps: IInputFieldProps = {
         ...defaultProps,
@@ -84,38 +47,72 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
 
     return (
         <div className={styles.inputFieldWrapper}>
-            {sProps.label !== undefined ? (
-                <label className={styles.label} htmlFor={fieldId}>
-                    {sProps.label}
-                </label>
-            ) : null}
+            {sProps.label !== undefined ? <label className={styles.label}>{sProps.label}</label> : null}
 
             <div className={styles.inputWrapper}>
                 {sProps.prefix ?? false ? (
-                    <div style={getPrefixSufficStyles(sProps)} className={styles.prefix}>
+                    <div
+                        className={cn(
+                            styles.prefix,
+                            { [styles.prefixSuffixCompact]: sProps.size === 'compact' },
+                            { [styles.prefixSuffixDisabled]: sProps.disabled },
+                            { [styles.prefixSuffixError]: sProps.error?.showError },
+                            { [styles.prefixSuffixNoBorder]: sProps.borderStyle === 'noBorder' },
+                            { [styles.prefixSuffixShadow]: sProps.borderStyle === 'shadow' },
+                        )}
+                    >
                         {sProps.prefix}
                     </div>
                 ) : null}
                 <input
-                    id={fieldId}
-                    className={styles.inputField}
+                    className={cn(
+                        styles.inputField,
+                        {
+                            [styles.inputFieldError]:
+                                sProps.error?.showError && sProps.size === 'default' && sProps.borderStyle === 'border',
+                        },
+                        { [styles.inputFieldCompactSize]: sProps.size === 'compact' },
+                        {
+                            [styles.inputFieldNoBorder]: sProps.borderStyle === 'noBorder',
+                        },
+                        {
+                            [styles.inputFieldShadowBorder]: sProps.borderStyle === 'shadow',
+                        },
+                        {
+                            [styles.inputFieldPrefixPresent]: sProps.prefix !== undefined,
+                        },
+                        {
+                            [styles.inputFieldSuffixPresent]: sProps.suffix !== undefined,
+                        },
+                    )}
                     disabled={sProps.disabled}
                     placeholder={sProps.placeHolder}
                     type={sProps.type}
                     value={sProps.value}
                     onChange={(event) => sProps.onChange(event.target.value)}
-                    style={getComponentStyles(sProps)}
+                    style={sProps.style}
                 />
                 {sProps.suffix ?? false ? (
-                    <div style={getPrefixSufficStyles(sProps)} className={styles.suffix}>
+                    <div
+                        className={cn(
+                            styles.suffix,
+                            { [styles.prefixSuffixCompact]: sProps.size === 'compact' },
+                            { [styles.prefixSuffixDisabled]: sProps.disabled },
+                            { [styles.prefixSuffixError]: sProps.error?.showError },
+                            { [styles.prefixSuffixNoBorder]: sProps.borderStyle === 'noBorder' },
+                            { [styles.prefixSuffixShadow]: sProps.borderStyle === 'shadow' },
+                        )}
+                    >
                         {sProps.suffix}
                     </div>
                 ) : null}
             </div>
 
             {sProps.helperText !== undefined ? (
-                <label className={cn(styles.label, styles.helperText)} htmlFor={fieldId}>
-                    {sProps.helperText}
+                <label
+                    className={cn(styles.label, styles.helperText, { [styles.hintTextError]: sProps.error?.showError })}
+                >
+                    {sProps.error?.showError ? sProps.error.errorMessage : sProps.helperText}
                 </label>
             ) : null}
         </div>

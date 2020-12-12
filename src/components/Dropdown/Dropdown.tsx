@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './dropdown.module.css';
 import { FaCaretDown } from 'react-icons/fa';
-import { nanoid } from 'nanoid';
+
 import cn from 'classnames';
 
 export interface IDropdownProps {
@@ -37,17 +37,10 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
         ...props,
     };
 
-    // id for the dropdown box for the labels to attach to
-    const dropdownBoxId = nanoid();
-
     return (
         <div>
-            {sProps.label ?? false ? (
-                <label className={styles.label} htmlFor={dropdownBoxId}>
-                    {props.label}
-                </label>
-            ) : null}
-            <div className={styles.dropDownBox} id={dropdownBoxId} style={sProps.style}>
+            {sProps.label ?? false ? <label className={styles.label}>{props.label}</label> : null}
+            <div className={styles.dropDownBox} style={sProps.style}>
                 <div onClick={() => shouldShowOptions(!showOptions)} className={styles.dropDownSelect}>
                     <p>{sProps.options[selectedOption]}</p>
                     <FaCaretDown className={styles.caretIcon} />
@@ -79,9 +72,7 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
                 </div>
             </div>
             {props.helperText !== undefined ? (
-                <label className={cn(styles.label, styles.helperText)} htmlFor={dropdownBoxId}>
-                    {props.helperText}
-                </label>
+                <label className={cn(styles.label, styles.helperText)}>{props.helperText}</label>
             ) : null}
         </div>
     );
