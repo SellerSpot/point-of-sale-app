@@ -1,0 +1,30 @@
+.billingSetupWrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 55%;
+    overflow: hidden;
+}
+
+.billingConfigurationSection {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.billPreviewSection {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--tertiary-background-color);
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.billPreview {
+    width: 80%;
+    height: auto;
+}

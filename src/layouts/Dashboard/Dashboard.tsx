@@ -12,6 +12,7 @@ import { LeftNav } from './components/LeftNav/LeftNav';
 import dashboardStyles from './dashboard.module.css';
 import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
+import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
 
 export const Dashboard = (): JSX.Element => {
     const { addProductSlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
@@ -28,6 +29,9 @@ export const Dashboard = (): JSX.Element => {
                     </Route>
                     <Route path={ROUTES.CASH_REGISTER}>
                         <CashRegister />
+                    </Route>
+                    <Route path={ROUTES.BILLING_SETUP}>
+                        <BillingSetup />
                     </Route>
                     {/* this is '/' route hence should be placed atlast */}
                     <Route path={ROUTES.SALES}>

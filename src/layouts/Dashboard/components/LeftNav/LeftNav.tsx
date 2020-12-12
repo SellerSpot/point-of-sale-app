@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import leftNavStyles from './leftnav.module.css';
-import { FaBoxOpen, FaStore, IoMdCart } from 'react-icons/all';
+import { FaBoxOpen, FaStore, IoMdCart, RiBillLine } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../../../config/routes';
 import { cssColors } from '../../../../config/cssVariables';
@@ -51,6 +51,12 @@ export const LeftNav = (): JSX.Element => {
             color: cssColors['--inventory-color'],
             title: 'inventory',
             route: ROUTES.INVENTORY,
+        },
+        {
+            Icon: RiBillLine,
+            color: cssColors['--cashregister-color'],
+            title: 'Billing Setup',
+            route: ROUTES.BILLING_SETUP,
         },
         // {
         //     Icon: FaCashRegister,
