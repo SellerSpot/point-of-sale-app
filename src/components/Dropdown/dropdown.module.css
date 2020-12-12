@@ -54,7 +54,7 @@
     border: 1px solid var(--border-darker-color);
     border-radius: var(--border-radius);
     user-select: none;
-    z-index: 999;
+    z-index: var(--z-index-dropdown);
     font-size: var(--font-size-secondary);
     font-weight: 400;
     visibility: hidden;

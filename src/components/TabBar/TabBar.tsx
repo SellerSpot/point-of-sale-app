@@ -8,7 +8,7 @@ export interface ITabBarProps {
     selectedTab: number;
     selectedColor?: keyof typeof cssColors;
     style?: React.CSSProperties;
-    onClick: (selectedIndex: number) => void;
+    onSelect: (selectedIndex: number) => void;
 }
 
 const defaultProps: ITabBarProps = {
@@ -16,7 +16,7 @@ const defaultProps: ITabBarProps = {
     selectedColor: '--sales-color',
     selectedTab: 0,
     style: {},
-    onClick: () => void 0,
+    onSelect: () => void 0,
 };
 
 export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element => {
@@ -39,7 +39,7 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
                     tabStyle.color = cssColors[sProps.selectedColor ?? '--sales-color'];
                 }
                 return (
-                    <div onClick={() => sProps.onClick(index)} key={index} className={styles.tab}>
+                    <div onClick={() => sProps.onSelect(index)} key={index} className={styles.tab}>
                         <div
                             className={cn(styles.tabTitle, {
                                 [styles.selectedTab]: index === sProps.selectedTab ? true : false,

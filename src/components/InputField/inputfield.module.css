@@ -105,12 +105,19 @@
 .inputFieldError {
     border-color: var(--danger-color);
 }
+.inputFieldError:hover {
+    border-color: var(--danger-color);
+}
 
 .hintTextError {
     color: var(--danger-color);
 }
 
 .prefixSuffixError {
+    border-color: var(--danger-color);
+}
+
+.prefixSuffixError:hover {
     border-color: var(--danger-color);
 }
 

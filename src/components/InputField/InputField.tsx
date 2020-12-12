@@ -4,6 +4,7 @@ import styles from './inputfield.module.css';
 import cn from 'classnames';
 
 export interface IInputFieldProps {
+    id?: string;
     placeHolder: string;
     disabled?: boolean;
     borderColor?: keyof typeof cssColors;
@@ -24,6 +25,7 @@ export interface IInputFieldProps {
 }
 
 const defaultProps: IInputFieldProps = {
+    id: 'sampleField',
     placeHolder: 'Sample PlaceHolder',
     disabled: false,
     borderColor: '--border-accent-color',
@@ -65,6 +67,8 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     </div>
                 ) : null}
                 <input
+                    id={'categoryName'}
+                    name={'categoryName'}
                     className={cn(
                         styles.inputField,
                         {
@@ -108,7 +112,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                 ) : null}
             </div>
 
-            {sProps.helperText !== undefined ? (
+            {sProps.helperText !== undefined || sProps.error !== undefined ? (
                 <label
                     className={cn(styles.label, styles.helperText, { [styles.hintTextError]: sProps.error?.showError })}
                 >

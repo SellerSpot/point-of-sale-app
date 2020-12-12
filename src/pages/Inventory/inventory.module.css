@@ -1,25 +1,18 @@
 .inventoryPage {
     width: 100%;
-    height: 100%;
-    padding: 10px;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: 50px 90px 1fr;
-    gap: 10px;
+    height: auto;
+    position: relative;
+}
+
+.pageWrapper {
+    width: 100%;
+    height: calc(100vh - 50px);
 }
 
 .tabBarWrapper {
     width: 100%;
-    height: 100%;
-}
-
-.metaCardWrapper {
-    width: 100%;
-    height: 100%;
-}
-
-.tableWrapper {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+    height: 50px;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-tab-bar);
 }
