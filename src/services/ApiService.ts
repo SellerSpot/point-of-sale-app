@@ -1,5 +1,4 @@
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { API_ROUTES, TApiRoute } from '../config/apiRoutes';
 import { CONFIG } from '../config/config';
 
 export default class ApiService {
@@ -23,28 +22,33 @@ export default class ApiService {
     }
 
     // main request handlers
-    public async get(route: TApiRoute): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${API_ROUTES[route]}`;
+    public async get(route: string): Promise<AxiosResponse> {
+        const requestUrl = `${this.onlineServerUrl}/${route}`;
         return await this.axios.get(requestUrl);
     }
 
-    public async post(route: TApiRoute, data: unknown): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${API_ROUTES[route]}`;
+    public async post(route: string, data: unknown): Promise<AxiosResponse> {
+        const requestUrl = `${this.onlineServerUrl}/${route}`;
         return await this.axios.post(requestUrl, data);
     }
 
-    public async put(route: TApiRoute, data: unknown): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${API_ROUTES[route]}`;
+    public async put(route: string, data: unknown): Promise<AxiosResponse> {
+        const requestUrl = `${this.onlineServerUrl}/${route}`;
         return await this.axios.put(requestUrl, data);
     }
 
-    public async patch(route: TApiRoute, data: unknown): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${API_ROUTES[route]}`;
+    public async patch(route: string, data: unknown): Promise<AxiosResponse> {
+        const requestUrl = `${this.onlineServerUrl}/${route}`;
         return await this.axios.patch(requestUrl, data);
     }
 
-    public async delete(route: TApiRoute): Promise<AxiosResponse> {
+    public async delete(route: string): Promise<AxiosResponse> {
         const requestUrl = `${this.onlineServerUrl}/${route}`;
         return await this.axios.delete(requestUrl);
+    }
+
+    public async head(route: string): Promise<AxiosResponse> {
+        const requestUrl = `${this.onlineServerUrl}/${route}`;
+        return await this.axios.head(requestUrl);
     }
 }

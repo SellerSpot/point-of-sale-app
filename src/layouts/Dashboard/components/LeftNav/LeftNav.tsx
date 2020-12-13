@@ -12,10 +12,11 @@ interface INavItem {
     title: string;
     active: boolean;
     route: string;
+    activeRoutes: string[];
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, color, onClick, title, active }: INavItem): JSX.Element => {
+const NavItem = ({ Icon, color, onClick, title, active }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
     return (
         <div
             className={`${leftNavStyles.navItem} ${active ? leftNavStyles.navItemActive : ''}`}
@@ -45,18 +46,27 @@ export const LeftNav = (): JSX.Element => {
             color: cssColors['--sales-color'],
             title: 'sales',
             route: ROUTES.SALES,
+            activeRoutes: [ROUTES.SALES],
         },
         {
             Icon: FaBoxOpen,
             color: cssColors['--inventory-color'],
             title: 'inventory',
             route: ROUTES.INVENTORY,
+            activeRoutes: [
+                ROUTES.INVENTORY,
+                ROUTES.INVENTORY_BRANDS,
+                ROUTES.INVENTORY_CATEGORIES,
+                ROUTES.INVENTORY_PRODUCTS,
+                ROUTES.INVENTORY_TAX_BRACKETS,
+            ],
         },
         {
             Icon: RiBillLine,
             color: cssColors['--cashregister-color'],
             title: 'Billing Setup',
             route: ROUTES.BILLING_SETUP,
+            activeRoutes: [ROUTES.BILLING_SETUP],
         },
         // {
         //     Icon: FaCashRegister,
@@ -80,17 +90,20 @@ export const LeftNav = (): JSX.Element => {
                     style={{ paddingBottom: 30, paddingLeft: 0, paddingRight: 0, paddingTop: 0 }}
                 />
                 <div className={leftNavStyles.navSubHeading}>{'OPERATIONS'}</div>
-                {navItem.map((item, key) => (
-                    <NavItem
-                        key={key}
-                        Icon={item.Icon}
-                        color={item.route === currentNavRoute ? item.color : cssColors['--tertiary-font-color']}
-                        onClick={() => history.push(item.route)}
-                        title={item.title}
-                        route={item.route}
-                        active={item.route === currentNavRoute}
-                    />
-                ))}
+                {navItem.map((item, key) => {
+                    const isActive = item.activeRoutes.includes(currentNavRoute);
+                    return (
+                        <NavItem
+                            key={key}
+                            Icon={item.Icon}
+                            color={isActive ? item.color : cssColors['--tertiary-font-color']}
+                            onClick={() => history.push(item.route)}
+                            title={item.title}
+                            route={item.route}
+                            active={isActive}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

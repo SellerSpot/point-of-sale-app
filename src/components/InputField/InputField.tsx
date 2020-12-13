@@ -67,8 +67,6 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     </div>
                 ) : null}
                 <input
-                    id={'categoryName'}
-                    name={'categoryName'}
                     className={cn(
                         styles.inputField,
                         {

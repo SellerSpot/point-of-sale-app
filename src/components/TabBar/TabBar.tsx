@@ -2,9 +2,10 @@ import React from 'react';
 import styles from './tabBar.module.css';
 import { cssColors } from '../../config/cssVariables';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 
 export interface ITabBarProps {
-    tabs: string[];
+    tabs: { name: string; route?: string }[];
     selectedTab: number;
     selectedColor?: keyof typeof cssColors;
     style?: React.CSSProperties;
@@ -12,7 +13,7 @@ export interface ITabBarProps {
 }
 
 const defaultProps: ITabBarProps = {
-    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+    tabs: [],
     selectedColor: '--sales-color',
     selectedTab: 0,
     style: {},
@@ -40,14 +41,15 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
                 }
                 return (
                     <div onClick={() => sProps.onSelect(index)} key={index} className={styles.tab}>
-                        <div
+                        <Link
+                            to={tab.route ?? ''}
                             className={cn(styles.tabTitle, {
                                 [styles.selectedTab]: index === sProps.selectedTab ? true : false,
                             })}
                             style={tabStyle}
                         >
-                            {tab}
-                        </div>
+                            {tab.name}
+                        </Link>
                     </div>
                 );
             })}

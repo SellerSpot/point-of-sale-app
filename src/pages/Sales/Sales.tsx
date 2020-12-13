@@ -15,7 +15,15 @@ export const Sales = (): JSX.Element => {
     return (
         <div className={styles.salesPage}>
             <div className={styles.tabBarWrapper}>
-                <TabBar tabs={['Current Sales', 'Other Tabs']} onSelect={setcurrTab} selectedTab={currTab} />
+                <TabBar
+                    tabs={
+                        [
+                            /* CHECK INVENTORY FOR TAB DATA FORMATION */
+                        ]
+                    }
+                    onSelect={setcurrTab}
+                    selectedTab={currTab}
+                />
             </div>
             <MetaCard
                 title="Sample Description"

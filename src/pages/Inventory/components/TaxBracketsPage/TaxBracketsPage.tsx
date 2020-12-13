@@ -18,8 +18,8 @@ export const TaxBracketsPage = (): JSX.Element => {
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addProduct'}
-                        label="Add Product (F4)"
+                        key={'addTaxBracket'}
+                        label="Add Tax Bracket (F4)"
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"
