@@ -16,7 +16,20 @@ const Template: Story<ITabBarProps> = (args: ITabBarProps) => <TabBar {...args} 
 
 export const TabBars = Template.bind({});
 TabBars.args = {
-    tabs: ['Sales', 'Manager', 'Stock', 'Customers'],
+    tabs: [
+        {
+            name: 'Products',
+        },
+        {
+            name: 'Categories',
+        },
+        {
+            name: 'Brands',
+        },
+        {
+            name: 'Tax Brackets',
+        },
+    ],
     selectedTab: 0,
     onSelect: () => void 0,
 } as ITabBarProps;

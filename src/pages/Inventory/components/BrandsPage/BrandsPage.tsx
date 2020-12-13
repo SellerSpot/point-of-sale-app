@@ -18,8 +18,8 @@ export const BrandsPage = (): JSX.Element => {
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addProduct'}
-                        label="Add Product (F4)"
+                        key={'addBrand'}
+                        label="Add Brand (F4)"
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"

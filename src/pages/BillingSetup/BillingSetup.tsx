@@ -13,7 +13,7 @@ export const BillingSetup = (): ReactElement => {
     return (
         <div className={styles.billingSetupWrapper}>
             <div className={styles.billingConfigurationSection}>
-                <Button label="Print Bill" onClick={handlePrint} />
+                <Button label="Print Bill" style={{ width: '100px' }} onClick={handlePrint} />
             </div>
             <div className={styles.billPreviewSection}>
                 <div className={styles.billPreview}>

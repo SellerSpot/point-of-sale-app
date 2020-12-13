@@ -16,14 +16,7 @@ import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
 import { AddCategory } from '../../pages/Inventory/components/Sliders/AddCategory/AddCategory';
 
 export const Dashboard = (): JSX.Element => {
-    const {
-        addProductSlider,
-        addCategorySlider,
-        // addBrandSlider,
-        // addTaxBracketSlider,
-        checkoutSlider,
-        newSaleSlider,
-    } = useSelector(sliderModalSelector);
+    const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>
