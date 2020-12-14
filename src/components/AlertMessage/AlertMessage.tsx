@@ -60,7 +60,7 @@ export const AlertMessage: React.FC<IAlertMessageProps> = (props: IAlertMessageP
     return (
         <div
             className={cn(
-                styles.alertWrapper,
+                styles.alertMessageWrapper,
                 { [styles.infoAlert]: sProps.type === 'info' },
                 { [styles.successAlert]: sProps.type === 'success' },
                 { [styles.warningAlert]: sProps.type === 'warning' },
@@ -74,13 +74,15 @@ export const AlertMessage: React.FC<IAlertMessageProps> = (props: IAlertMessageP
                 <div className={cn(styles.alertContentItem)}>{sProps.label}</div>
             </div>
             {sProps.action !== undefined ? (
-                <Button
-                    label={sProps.action.actionLabel}
-                    onClick={() => sProps.action?.onClick()}
-                    variant="link"
-                    size="small"
-                    labelColor={getPrimaryColor(sProps)}
-                />
+                <div className={cn(styles.alertActionButton)}>
+                    <Button
+                        label={sProps.action.actionLabel}
+                        onClick={() => sProps.action?.onClick()}
+                        variant="link"
+                        size="small"
+                        labelColor={getPrimaryColor(sProps)}
+                    />
+                </div>
             ) : null}
         </div>
     );
