@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { SliderModal } from '../../components/SliderModal/SliderModal';
 import { ROUTES } from '../../config/routes';
-import { AddProduct } from '../../pages/Inventory/components/Sliders/AddProduct/AddProduct';
+import { AddProduct } from '../../pages/Inventory/components/AddProduct/AddProduct';
 import { CashRegister } from '../../pages/CashRegister/CashRegister';
 import { Inventory } from '../../pages/Inventory/Inventory';
 import { Sales } from '../../pages/Sales/Sales';
@@ -13,7 +13,7 @@ import dashboardStyles from './dashboard.module.css';
 import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
-import { AddCategory } from '../../pages/Inventory/components/Sliders/AddCategory/AddCategory';
+import { AddCategory } from '../../pages/Inventory/components/AddCategory/AddCategory';
 
 export const Dashboard = (): JSX.Element => {
     const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);

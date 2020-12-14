@@ -5,14 +5,14 @@ import { MetaCard } from '../../../../components/MetaCard/MetaCard';
 import { Table } from '../../../../components/Table/Table';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
 
-import styles from './categoriespage.module.css';
+import styles from './categories.module.css';
 
-export const CategoriesPage = (): JSX.Element => {
+export const Categories = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
 
     return (
-        <div id="categoriesPage" className={styles.categoriesPage}>
+        <div className={styles.categoriesWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}

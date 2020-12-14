@@ -5,14 +5,14 @@ import { MetaCard } from '../../../../components/MetaCard/MetaCard';
 import { Table } from '../../../../components/Table/Table';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
 
-import styles from './taxbracketspage.module.css';
+import styles from './taxbrackets.module.css';
 
-export const TaxBracketsPage = (): JSX.Element => {
+export const TaxBrackets = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
 
     return (
-        <div className={styles.taxBracketsPage}>
+        <div className={styles.taxBracketsWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}

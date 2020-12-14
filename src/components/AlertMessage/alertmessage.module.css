@@ -1,4 +1,4 @@
-.alertWrapper {
+.alertMessageWrapper {
     width: 100%;
     height: 40px;
     padding: 0 10px;
@@ -52,4 +52,8 @@
     display: inline;
     vertical-align: text-top;
     margin-right: 10px;
+}
+
+.alertActionButton {
+    position: relative;
 }

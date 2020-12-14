@@ -1,10 +1,9 @@
-/* eslint-disable no-console */
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from '../../components/TabBar/TabBar';
-import { BrandsPage } from './components/BrandsPage/BrandsPage';
-import { CategoriesPage } from './components/CategoriesPage/CategoriesPage';
-import { ProductsPage } from './components/ProductsPage/ProductsPage';
-import { TaxBracketsPage } from './components/TaxBracketsPage/TaxBracketsPage';
+import { Brands } from './components/Brands/Brands';
+import { Categories } from './components/Categories/Categories';
+import { Products } from './components/Products/Products';
+import { TaxBrackets } from './components/TaxBrackets/TaxBrackets';
 import styles from './inventory.module.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../config/routes';
@@ -34,22 +33,17 @@ export const Inventory = (): JSX.Element => {
 
     const getCurrentTabIndex = (pathname: string): number => {
         const tabIndex = lodash.findIndex(tabs, { route: pathname });
-        return tabIndex >= 0 ? tabIndex : currentTab;
+        return tabIndex >= 0 ? tabIndex : 0;
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
 
-    const productsPageRef = useRef<HTMLDivElement>(null);
-    const categoriesPageRef = useRef<HTMLDivElement>(null);
-    const brandsPageRef = useRef<HTMLDivElement>(null);
-    const taxBracketsPageRef = useRef<HTMLDivElement>(null);
-
     return (
-        <div className={styles.inventoryPage}>
+        <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
                 <TabBar
                     tabs={tabs}
-                    onSelect={(index) => setCurrentTab(index)}
+                    onSelect={setCurrentTab}
                     selectedColor={'--inventory-color'}
                     selectedTab={currentTab}
                     style={{ borderRadius: '0' }}
@@ -59,27 +53,19 @@ export const Inventory = (): JSX.Element => {
             <div className={styles.overallPageWrapper}>
                 <Switch>
                     <Route path={ROUTES.INVENTORY_CATEGORIES}>
-                        <div className={styles.pageWrapper} ref={categoriesPageRef}>
-                            <CategoriesPage />
-                        </div>
+                        <Categories />
                     </Route>
 
                     <Route path={ROUTES.INVENTORY_BRANDS}>
-                        <div className={styles.pageWrapper} ref={brandsPageRef}>
-                            <BrandsPage />
-                        </div>
+                        <Brands />
                     </Route>
 
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
-                        <div className={styles.pageWrapper} ref={taxBracketsPageRef}>
-                            <TaxBracketsPage />
-                        </div>
+                        <TaxBrackets />
                     </Route>
-                    {/* / route hence should be placed atlast */}
+                    {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>
-                        <div className={styles.pageWrapper} ref={productsPageRef}>
-                            <ProductsPage />
-                        </div>
+                        <Products />
                     </Route>
                 </Switch>
             </div>

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { Button } from '../../../../../components/Button/Button';
-import { InputField } from '../../../../../components/InputField/InputField';
+import { Button } from '../../../../components/Button/Button';
+import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addcategory.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
