@@ -29,7 +29,7 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
 
     return (
         <div
-            className={styles.tabBar}
+            className={styles.tabBarWrapper}
             style={{
                 ...sProps.style,
             }}
