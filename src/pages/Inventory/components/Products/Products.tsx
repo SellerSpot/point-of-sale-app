@@ -5,21 +5,21 @@ import { MetaCard } from '../../../../components/MetaCard/MetaCard';
 import { Table } from '../../../../components/Table/Table';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
 
-import styles from './brandspage.module.css';
+import styles from './products.module.css';
 
-export const BrandsPage = (): JSX.Element => {
+export const Products = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
 
     return (
-        <div className={styles.brandsPage}>
+        <div className={styles.productsWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addBrand'}
-                        label="Add Brand (F4)"
+                        key={'addProduct'}
+                        label="Add Product (F4)"
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"

@@ -10,7 +10,7 @@ import styles from './newsale.module.css';
 export const NewSale = (): JSX.Element => {
     const dispatch = useDispatch();
     return (
-        <div className={styles.newSalePage}>
+        <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField borderStyle="shadow" placeHolder="Product Name / Code" onChange={() => void 0} />
                 <Table
@@ -25,7 +25,7 @@ export const NewSale = (): JSX.Element => {
                         variant="solid"
                         backgroundColor="--danger-color"
                         labelColor="--light-font-color"
-                        style={{ marginRight: 'auto' }}
+                        style={{ marginRight: 'auto', width: 'auto' }}
                         onClick={() => dispatch(toggleSliderModal({ sliderName: 'newSaleSlider', active: false }))}
                     />
                     <Button
@@ -33,6 +33,7 @@ export const NewSale = (): JSX.Element => {
                         size="small"
                         variant="outline"
                         labelColor="--sales-color"
+                        style={{ width: 'auto' }}
                         backgroundColor="--sales-color"
                     />
                 </div>

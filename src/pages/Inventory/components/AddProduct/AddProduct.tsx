@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
-import { Button } from '../../../../../components/Button/Button';
-import { Dropdown } from '../../../../../components/Dropdown/Dropdown';
-import { HorizontalRule } from '../../../../../components/HorizontalRule/HorizontalRule';
-import { InputField } from '../../../../../components/InputField/InputField';
+import { Button } from '../../../../components/Button/Button';
+import { Dropdown } from '../../../../components/Dropdown/Dropdown';
+import { HorizontalRule } from '../../../../components/HorizontalRule/HorizontalRule';
+import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addproduct.module.css';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
-import { toggleSliderModal } from '../../../../../store/models/sliderModal';
+import { toggleSliderModal } from '../../../../store/models/sliderModal';
 
 export const AddProduct = (): ReactElement => {
     const dispatch = useDispatch();
