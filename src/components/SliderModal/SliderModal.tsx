@@ -12,6 +12,9 @@ interface ISliderModalProps {
     sliderName: keyof SliderModalInitialState;
     confirmSliderClose?: {
         show: boolean;
+        title?: string;
+        failureActionLabel?: string;
+        successActionLabel?: string;
         message?: string;
     };
 }
@@ -23,7 +26,6 @@ const defaultProps: ISliderModalProps = {
     sliderName: 'addCategorySlider',
     confirmSliderClose: {
         show: false,
-        message: 'Are you sure you want to go back to previous page?',
     },
 };
 
@@ -36,10 +38,11 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
         if (confirmSliderClose?.show) {
             dispatch(
                 openConfirmDialog({
-                    title: 'Are you sure?',
-                    description: confirmSliderClose?.message ?? '',
-                    failureActionLabel: 'Close',
-                    successActionLabel: 'Cancel',
+                    title: confirmSliderClose.title ?? 'Go back to previous page?',
+                    description:
+                        confirmSliderClose?.message ?? 'This action can cause loss of data in the current form',
+                    failureActionLabel: confirmSliderClose.failureActionLabel ?? 'Go to previous page',
+                    successActionLabel: confirmSliderClose.successActionLabel ?? 'Stay on current page',
                     actionOrder: 'reverse',
                     onFailure: () => {
                         dispatch(toggleSliderModal({ sliderName: props.sliderName, active: false }));
