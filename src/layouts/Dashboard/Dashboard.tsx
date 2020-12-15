@@ -14,9 +14,18 @@ import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
 import { AddCategory } from '../../pages/Inventory/components/AddCategory/AddCategory';
+import { AddBrand } from '../../pages/Inventory/components/AddBrand/AddBrand';
+import { AddTaxBracket } from '../../pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 
 export const Dashboard = (): JSX.Element => {
-    const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
+    const {
+        addProductSlider,
+        addCategorySlider,
+        checkoutSlider,
+        newSaleSlider,
+        addBrandSlider,
+        addTaxBracketSlider,
+    } = useSelector(sliderModalSelector);
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>
@@ -41,16 +50,64 @@ export const Dashboard = (): JSX.Element => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
-            <SliderModal active={addProductSlider} sliderSize={'40%'}>
+            <SliderModal
+                sliderName={'addBrandSlider'}
+                active={addBrandSlider}
+                sliderSize={'30%'}
+                confirmSliderClose={{
+                    show: true,
+                }}
+            >
+                <AddBrand />
+            </SliderModal>
+            <SliderModal
+                sliderName={'addProductSlider'}
+                active={addProductSlider}
+                sliderSize={'40%'}
+                confirmSliderClose={{
+                    show: false,
+                }}
+            >
                 <AddProduct />
             </SliderModal>
-            <SliderModal active={addCategorySlider} sliderSize={'40%'}>
+            <SliderModal
+                sliderName={'addCategorySlider'}
+                active={addCategorySlider}
+                sliderSize={'30%'}
+                confirmSliderClose={{
+                    show: false,
+                }}
+            >
                 <AddCategory />
             </SliderModal>
-            <SliderModal active={newSaleSlider} sliderSize={'100%'}>
+            <SliderModal
+                sliderName={'addTaxBracketSlider'}
+                active={addTaxBracketSlider}
+                sliderSize={'30%'}
+                confirmSliderClose={{
+                    show: false,
+                }}
+            >
+                <AddTaxBracket />
+            </SliderModal>
+            <SliderModal
+                sliderName={'newSaleSlider'}
+                active={newSaleSlider}
+                sliderSize={'100%'}
+                confirmSliderClose={{
+                    show: false,
+                }}
+            >
                 <NewSale />
             </SliderModal>
-            <SliderModal active={checkoutSlider} sliderSize={'80%'}>
+            <SliderModal
+                sliderName={'checkoutSlider'}
+                active={checkoutSlider}
+                sliderSize={'80%'}
+                confirmSliderClose={{
+                    show: false,
+                }}
+            >
                 <Checkout />
             </SliderModal>
         </div>

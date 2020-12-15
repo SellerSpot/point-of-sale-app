@@ -4,6 +4,7 @@ import { Button } from '../../../../components/Button/Button';
 import { MetaCard } from '../../../../components/MetaCard/MetaCard';
 import { Table } from '../../../../components/Table/Table';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
+import { KEYCODES } from '../../../../services/KeyCodeService';
 
 import styles from './categories.module.css';
 
@@ -19,7 +20,7 @@ export const Categories = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addCategory'}
-                        label="Add Category (F5)"
+                        label={`Add Category (${KEYCODES.ADDCATEGORY})`}
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"

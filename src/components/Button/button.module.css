@@ -1,9 +1,6 @@
 .button {
-    width: 100%;
     padding: 0.8em 1em;
     text-decoration: none;
-    /* don't apply transition all for bare metal child, it will affect the core components animaton transition where the it is used.. */
-    /* transition: all var(--transition-duration); */
     border: 1px solid;
     border-radius: var(--border-radius);
     cursor: pointer;

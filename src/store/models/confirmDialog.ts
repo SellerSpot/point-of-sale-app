@@ -7,6 +7,7 @@ const initialState: IConfirmDialogProps = {
     title: 'This is sample confirm dialog header?',
     successActionLabel: 'Agree',
     failureActionLabel: 'Disagree',
+    actionOrder: 'default',
     description:
         'This is sample confirm dialog description. This is sample confirm dialog description. This is sample confirm dialog description.',
     onFailure: () => void 0,

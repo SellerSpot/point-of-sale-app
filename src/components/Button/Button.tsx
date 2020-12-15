@@ -7,6 +7,7 @@ export interface IButtonProps {
     shape?: 'rectangle' | 'rounded';
     disabled?: boolean;
     size?: 'small' | 'medium';
+    fullWidth?: boolean;
     variant?: 'solid' | 'outline' | 'link';
     type?: 'button' | 'submit' | 'reset';
     backgroundColor?: keyof typeof cssColors;
@@ -20,6 +21,7 @@ const defaultProps: IButtonProps = {
     shape: 'rectangle',
     disabled: false,
     size: 'medium',
+    fullWidth: true,
     variant: 'solid',
     backgroundColor: '--success-color',
     labelColor: '--light-font-color',
@@ -60,6 +62,7 @@ const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
         cssProps.backgroundColor = cssColors['--disabled-color'];
         cssProps.border = '1px solid ' + cssColors['--disabled-color'];
     }
+    if (sProps.fullWidth) cssProps.width = '100%';
     return {
         ...cssProps,
         ...sProps.style,

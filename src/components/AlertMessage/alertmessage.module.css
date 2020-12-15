@@ -9,7 +9,7 @@
     border: 1px solid transparent;
     border-radius: var(--border-radius);
     color: var(--primary-font-color);
-    transition: all var(--transition-duration);
+    transition: color border-color background-color var(--transition-duration);
 }
 
 .infoAlert {

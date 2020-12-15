@@ -1,0 +1,45 @@
+.addBrandWrapper {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-background-color);
+}
+
+.addBrandForm {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 60px 1fr 70px;
+    padding: 0 15px;
+}
+
+.brandInputFieldsWrapper {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.submitBrandNameWrapper {
+    width: 100%;
+    height: 50px;
+}
+
+.sliderHeader {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.sliderFooter {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.formTitle {
+    font-weight: 700;
+    font-size: var(--font-size-header);
+}

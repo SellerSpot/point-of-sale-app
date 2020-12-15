@@ -11,7 +11,7 @@ import { toggleSliderModal } from '../../../../store/models/sliderModal';
 export const AddProduct = (): ReactElement => {
     const dispatch = useDispatch();
     return (
-        <div className={cn(styles.addProductWrapper)}>
+        <form className={cn(styles.addProductWrapper)}>
             <div className={styles.addProductHeader}>Add Product</div>
             <div className={styles.addProductBody}>
                 <div className={cn(styles.formGroup)}>
@@ -105,6 +105,6 @@ export const AddProduct = (): ReactElement => {
                     labelColor="--light-font-color"
                 />
             </div>
-        </div>
+        </form>
     );
 };

@@ -32,19 +32,19 @@
 }
 
 .content {
-    width: 45%;
-    height: 180px;
+    position: relative;
+    width: 40%;
+    height: 160px;
     background-color: var(--primary-background-color);
     border: 1px solid var(--primary-background-color);
     box-shadow: var(--shadow);
     border-radius: var(--border-radius);
     padding: 20px;
-    padding-bottom: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30px 1fr 30px;
+    row-gap: 10px;
 }
 
 .contentWithInputFields {
@@ -68,7 +68,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    align-items: center;
 }
 
 .dialogClose {

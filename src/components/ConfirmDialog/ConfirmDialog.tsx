@@ -13,6 +13,7 @@ export interface IConfirmDialogProps {
     description: string;
     successActionLabel: string;
     failureActionLabel: string;
+    actionOrder: 'default' | 'reverse';
     onSuccess: () => void;
     onFailure: () => void;
     inputFields?: ReactNode;
@@ -55,7 +56,7 @@ export const ConfirmDialog = (): ReactElement => {
                     ) : null}
                     <div className={styles.contentActions}>
                         <Button
-                            label={confirmDialogProps.failureActionLabel ?? ''}
+                            label={(confirmDialogProps.failureActionLabel ?? '').toUpperCase()}
                             variant={'link'}
                             backgroundColor={'--transparent-color'}
                             labelColor={'--danger-color'}
@@ -63,16 +64,20 @@ export const ConfirmDialog = (): ReactElement => {
                                 confirmDialogProps.onFailure();
                                 disptach(closeConfirmDialog());
                             }}
+                            fullWidth={false}
+                            style={{ order: confirmDialogProps.actionOrder === 'reverse' ? 1 : -1, fontWeight: 600 }}
                         />
                         <Button
-                            label={confirmDialogProps.successActionLabel ?? ''}
+                            label={(confirmDialogProps.successActionLabel ?? '').toUpperCase()}
                             variant={'link'}
                             backgroundColor={'--transparent-color'}
                             labelColor={'--success-color'}
+                            fullWidth={false}
                             onClick={() => {
                                 confirmDialogProps.onSuccess();
                                 disptach(closeConfirmDialog());
                             }}
+                            style={{ fontWeight: 600 }}
                         />
                     </div>
                 </div>
