@@ -17,7 +17,7 @@ export const AddCategory = (): ReactElement => {
         },
         validationSchema: formSchema,
         onSubmit(values) {
-            alert(JSON.stringify(values.categoryName));
+            alert(JSON.stringify(values));
         },
     });
     return (
@@ -41,7 +41,7 @@ export const AddCategory = (): ReactElement => {
                         variant={'outline'}
                         labelColor={'--inventory-color'}
                         backgroundColor={'--inventory-color'}
-                        type="button"
+                        type="submit"
                         onClick={() => void 0}
                     />
                 </div>

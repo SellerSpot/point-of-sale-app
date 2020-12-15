@@ -1,0 +1,24 @@
+.addBrandWrapper {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addBrandForm {
+    width: 100%;
+}
+
+.brandInputFieldWrapper {
+    width: 100%;
+    padding: 20px;
+}
+
+.submitBrandNameWrapper {
+    width: 100%;
+    height: 50px;
+    padding: 0px 20px;
+}

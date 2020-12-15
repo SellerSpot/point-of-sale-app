@@ -14,9 +14,12 @@ import { Checkout } from '../../pages/Sales/components/Checkout/Checkout';
 import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
 import { AddCategory } from '../../pages/Inventory/components/AddCategory/AddCategory';
+import { AddBrand } from '../../pages/Inventory/components/AddBrand/AddBrand';
 
 export const Dashboard = (): JSX.Element => {
-    const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider } = useSelector(sliderModalSelector);
+    const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider, addBrandSlider } = useSelector(
+        sliderModalSelector,
+    );
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>
@@ -41,10 +44,13 @@ export const Dashboard = (): JSX.Element => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
+            <SliderModal active={addBrandSlider} sliderSize={'30%'}>
+                <AddBrand />
+            </SliderModal>
             <SliderModal active={addProductSlider} sliderSize={'40%'}>
                 <AddProduct />
             </SliderModal>
-            <SliderModal active={addCategorySlider} sliderSize={'40%'}>
+            <SliderModal active={addCategorySlider} sliderSize={'30%'}>
                 <AddCategory />
             </SliderModal>
             <SliderModal active={newSaleSlider} sliderSize={'100%'}>
