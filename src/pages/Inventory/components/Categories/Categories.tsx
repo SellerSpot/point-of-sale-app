@@ -19,7 +19,7 @@ export const Categories = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addCategory'}
-                        label="Add Category (F5)"
+                        label="Add Category (Alt+C)"
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"

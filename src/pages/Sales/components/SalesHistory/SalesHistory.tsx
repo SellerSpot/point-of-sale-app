@@ -4,6 +4,7 @@ import { Button } from '../../../../components/Button/Button';
 import { MetaCard } from '../../../../components/MetaCard/MetaCard';
 import { Table } from '../../../../components/Table/Table';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
+import { SHORTCUTS } from '../../../../services/ShortcutsService';
 
 import styles from './saleshistory.module.css';
 
@@ -19,7 +20,7 @@ export const SalesHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'newSaleBtn'}
-                        label="New Sale (F3)"
+                        label={`NEW SALE (${SHORTCUTS.NEWSALE})`}
                         variant="outline"
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"
