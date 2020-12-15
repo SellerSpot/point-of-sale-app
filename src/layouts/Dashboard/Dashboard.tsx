@@ -15,11 +15,17 @@ import { NewSale } from '../../pages/Sales/components/NewSale/NewSale';
 import { BillingSetup } from '../../pages/BillingSetup/BillingSetup';
 import { AddCategory } from '../../pages/Inventory/components/AddCategory/AddCategory';
 import { AddBrand } from '../../pages/Inventory/components/AddBrand/AddBrand';
+import { AddTaxBracket } from '../../pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 
 export const Dashboard = (): JSX.Element => {
-    const { addProductSlider, addCategorySlider, checkoutSlider, newSaleSlider, addBrandSlider } = useSelector(
-        sliderModalSelector,
-    );
+    const {
+        addProductSlider,
+        addCategorySlider,
+        checkoutSlider,
+        newSaleSlider,
+        addBrandSlider,
+        addTaxBracketSlider,
+    } = useSelector(sliderModalSelector);
 
     return (
         <div className={dashboardStyles.dashboardWrapper}>
@@ -52,6 +58,9 @@ export const Dashboard = (): JSX.Element => {
             </SliderModal>
             <SliderModal active={addCategorySlider} sliderSize={'30%'}>
                 <AddCategory />
+            </SliderModal>
+            <SliderModal active={addTaxBracketSlider} sliderSize={'30%'}>
+                <AddTaxBracket />
             </SliderModal>
             <SliderModal active={newSaleSlider} sliderSize={'100%'}>
                 <NewSale />
