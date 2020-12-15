@@ -25,6 +25,13 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
             })}
         >
             <div
+                className={styles.backdropOverlay}
+                onClick={() => {
+                    // eslint-disable-next-line no-console
+                    console.log('Clicked');
+                }}
+            ></div>
+            <div
                 style={{ width: sliderSize }}
                 className={cn(styles.sliderContentWrapper, {
                     [styles.sliderContentActive]: active,
