@@ -5,6 +5,8 @@ import styles from './addbrand.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+// import { apiService } from '../../../../services';
+// import { API_ROUTES } from '../../../../config/apiRoutes';
 
 export const AddBrand = (): ReactElement => {
     const formSchema = Yup.object().shape({
@@ -17,7 +19,10 @@ export const AddBrand = (): ReactElement => {
         },
         validationSchema: formSchema,
         onSubmit(values) {
-            alert(JSON.stringify(values));
+            alert(values);
+            // apiService.post(API_ROUTES.ADDBRAND, {
+            //     brandName: values.brandName,
+            // });
         },
     });
     return (
@@ -42,7 +47,6 @@ export const AddBrand = (): ReactElement => {
                         labelColor={'--inventory-color'}
                         backgroundColor={'--inventory-color'}
                         type="submit"
-                        onClick={() => void 0}
                     />
                 </div>
             </form>
