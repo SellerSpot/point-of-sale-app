@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { SliderModalInitialState, toggleSliderModal } from '../../store/models/sliderModal';
 import { closeConfirmDialog, openConfirmDialog } from '../../store/models/confirmDialog';
+import { MdClose } from 'react-icons/md';
 
 interface ISliderModalProps {
     active: boolean;
@@ -64,7 +65,11 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
                 [styles.sliderModalWrapperBackdropInActive]: !active,
             })}
         >
-            <div className={styles.backdropOverlay} onClick={() => handleSliderClose()}></div>
+            <div className={styles.backdropOverlay} onClick={() => handleSliderClose()}>
+                <div className={styles.closeIconWrapper} style={{ right: active ? sliderSize : '-100px' }}>
+                    <MdClose size={'20px'} />
+                </div>
+            </div>
             <div
                 style={{ width: sliderSize }}
                 className={cn(styles.sliderContentWrapper, {

@@ -7,7 +7,7 @@
     overflow: hidden;
     background: transparent;
     right: -100%;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out-out;
 }
 
 .sliderModalWrapperBackdrop {
@@ -16,7 +16,7 @@
 }
 
 .sliderModalWrapperBackdropInActive {
-    transition: right 0.3s ease-in;
+    transition: right 0.3s ease-in-out;
 }
 
 .sliderContentWrapper {
@@ -29,12 +29,12 @@
 }
 
 .sliderContentActive {
-    transition: right 0.2s ease-in;
+    transition: right 0.2s ease-in-out;
     right: 0;
 }
 
 .sliderContentInActive {
-    transition: right 0.2s ease-in;
+    transition: right 0.2s ease-in-out;
     right: -100%;
 }
 
@@ -45,4 +45,20 @@
     z-index: 0;
     top: 0;
     left: 0;
+}
+
+.closeIconWrapper {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    right: -100px;
+    /* border-top-left-radius: var(--border-radius); */
+    border-bottom-left-radius: var(--border-radius);
+    cursor: pointer;
+    background-color: var(--primary-background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: right 0.2s ease-in-out;
 }

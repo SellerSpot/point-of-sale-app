@@ -27,8 +27,11 @@ export const AddBrand = (): ReactElement => {
     });
     return (
         <div className={cn(styles.addBrandWrapper)}>
-            <form onSubmit={brandNameFormik.handleSubmit} className={styles.addBrandForm} noValidate>
-                <div className={cn(styles.brandInputFieldWrapper)}>
+            <form onSubmit={brandNameFormik.handleSubmit} className={styles.addBrandForm}>
+                <div className={styles.sliderHeader}>
+                    <div className={styles.formTitle}>Add Brand</div>
+                </div>
+                <div className={cn(styles.brandInputFieldsWrapper)}>
                     <InputField
                         label={'Brand Name'}
                         placeHolder={'Brand Name'}
@@ -40,7 +43,7 @@ export const AddBrand = (): ReactElement => {
                         onChange={(value) => brandNameFormik.setFieldValue('brandName', value)}
                     />
                 </div>
-                <div className={cn(styles.submitBrandNameWrapper)}>
+                <div className={styles.sliderFooter}>
                     <Button
                         label={'Add Brand'}
                         variant={'outline'}
