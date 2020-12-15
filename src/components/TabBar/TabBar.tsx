@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './tabBar.module.css';
 import { cssColors } from '../../config/cssVariables';
 import cn from 'classnames';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export interface ITabBarProps {
     tabs: { name: string; route?: string }[];
@@ -22,6 +22,8 @@ const defaultProps: ITabBarProps = {
 
 export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element => {
     // seasoning the props
+
+    const history = useHistory();
     const sProps: ITabBarProps = {
         ...defaultProps,
         ...props,
@@ -40,16 +42,22 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
                     tabStyle.color = cssColors[sProps.selectedColor ?? '--sales-color'];
                 }
                 return (
-                    <div onClick={() => sProps.onSelect(index)} key={index} className={styles.tab}>
-                        <Link
-                            to={tab.route ?? ''}
+                    <div
+                        onClick={() => {
+                            sProps.onSelect(index);
+                            history.push(tab.route ?? '#');
+                        }}
+                        key={index}
+                        className={cn(styles.tab)}
+                    >
+                        <div
                             className={cn(styles.tabTitle, {
                                 [styles.selectedTab]: index === sProps.selectedTab ? true : false,
                             })}
                             style={tabStyle}
                         >
                             {tab.name}
-                        </Link>
+                        </div>
                     </div>
                 );
             })}
