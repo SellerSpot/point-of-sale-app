@@ -7,9 +7,23 @@ import styles from './addproduct.module.css';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from '../../../../store/models/sliderModal';
+// import * as Yup from 'yup';
+// import { useFormik } from 'formik';
 
 export const AddProduct = (): ReactElement => {
     const dispatch = useDispatch();
+
+    // const formSchema = Yup.object().shape({
+    //     name: Yup.string().required('Product Name is a required field'),
+    //     gtin: Yup.string(),
+    //     category: Yup.string(),
+    //     brand: Yup.string(),
+    //     markup: Yup.string(),
+    //     sellingPrice: Yup.string().required('Selling Price is a required field'),
+    //     stockLevel: Yup.string(),
+    //     stockUnit: Yup.string(),
+    // });
+
     return (
         <form className={cn(styles.addProductWrapper)}>
             <div className={styles.addProductHeader}>Add Product</div>
