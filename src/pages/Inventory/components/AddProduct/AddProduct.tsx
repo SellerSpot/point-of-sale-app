@@ -22,24 +22,30 @@ export const AddProduct = (): ReactElement => {
             .min(0, 'Selling Price must be greater than or equal to 0')
             .required('Selling Price is a required field'),
         stockLevel: Yup.number().min(0, 'Stock Level must be greater than or equal to 0'),
-        stockUnit: Yup.string(),
+        stockUnit: Yup.string().required('Stock Unit is a required field'),
     });
 
+    // holds the initial values of the form
+    const initialValues = {
+        name: '',
+        gtin: '',
+        category: '',
+        brand: '',
+        markup: 0,
+        landingPrice: 0,
+        sellingPrice: 0,
+        stockLevel: 0,
+        stockUnit: 'KG',
+    };
+
     const addProductFormik = useFormik({
-        initialValues: {
-            name: '',
-            gtin: '',
-            category: '',
-            brand: '',
-            markup: 0,
-            landingPrice: 0,
-            sellingPrice: 0,
-            stockLevel: 0,
-            stockUnit: '',
-        },
+        initialValues,
         validationSchema: formSchema,
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
+            resetForm({
+                values: initialValues,
+            });
         },
     });
 
@@ -81,12 +87,20 @@ export const AddProduct = (): ReactElement => {
                         onSelect={(value) => {
                             addProductFormik.setFieldValue('category', value);
                         }}
+                        error={{
+                            errorMessage: addProductFormik.errors.category ?? '',
+                            showError: addProductFormik.errors.category !== undefined,
+                        }}
                     />
                     <Dropdown
                         label={'Product Brand'}
                         options={['Brand One', 'Brand Two', 'Brand Three']}
                         onSelect={(value) => {
                             addProductFormik.setFieldValue('brand', value);
+                        }}
+                        error={{
+                            errorMessage: addProductFormik.errors.brand ?? '',
+                            showError: addProductFormik.errors.brand !== undefined,
                         }}
                     />
                 </div>
@@ -149,6 +163,10 @@ export const AddProduct = (): ReactElement => {
                         onSelect={(value) => {
                             addProductFormik.setFieldValue('stockUnit', value);
                         }}
+                        error={{
+                            errorMessage: addProductFormik.errors.stockUnit ?? '',
+                            showError: addProductFormik.errors.stockUnit !== undefined,
+                        }}
                     />
                 </div>
             </div>
@@ -168,6 +186,7 @@ export const AddProduct = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
+                    onClick={() => addProductFormik.resetForm({ values: initialValues })}
                 />
             </div>
         </form>
