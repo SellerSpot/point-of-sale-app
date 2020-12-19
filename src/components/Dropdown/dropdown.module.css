@@ -82,3 +82,7 @@
 .dropDownItem:hover {
     background-color: var(--secondary-background-color);
 }
+
+.hintTextError {
+    color: var(--danger-color);
+}
