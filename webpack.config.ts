@@ -23,6 +23,7 @@ const webpackConfiguration = (env: {
                 '.jpg',
                 '.jpeg',
                 '.svg',
+                '.gif',
             ],
             plugins: [new TsconfigPathsPlugin()],
         },
