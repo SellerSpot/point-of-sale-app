@@ -8,30 +8,30 @@ import { useFormik } from 'formik';
 
 export const AddTaxBracket = (): ReactElement => {
     const formSchema = Yup.object().shape({
-        name: Yup.string().required('Tax Bracket Name is a required field'),
-        percent: Yup.number()
+        taxBracketName: Yup.string().required('Tax Bracket Name is a required field'),
+        taxBracketPercent: Yup.number()
             .min(0, 'Tax Bracket Percent must be more than or equal to 0')
             .required('Tax Bracket Percent is a required field'),
     });
 
     // holds the initial values of the form
-    const initialValues = {
-        name: '',
-        percent: 0,
+    const addTaxBracketInitialValues = {
+        taxBracketName: '',
+        taxBracketPercent: 0,
     };
 
-    const formik = useFormik({
-        initialValues,
+    const addTaxBracketFormik = useFormik({
+        initialValues: addTaxBracketInitialValues,
         validationSchema: formSchema,
         onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
             resetForm({
-                values: initialValues,
+                values: addTaxBracketInitialValues,
             });
         },
     });
     return (
-        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={addTaxBracketFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -40,12 +40,12 @@ export const AddTaxBracket = (): ReactElement => {
                         label={'Tax Bracket Name'}
                         placeHolder={'Tax Bracket Name'}
                         required={true}
-                        value={formik.values.name}
+                        value={addTaxBracketFormik.values.taxBracketName}
                         error={{
-                            errorMessage: formik.errors.name ?? '',
-                            showError: formik.errors.name !== undefined,
+                            errorMessage: addTaxBracketFormik.errors.taxBracketName ?? '',
+                            showError: addTaxBracketFormik.errors.taxBracketName !== undefined,
                         }}
-                        onChange={(value) => formik.setFieldValue('name', value)}
+                        onChange={(value) => addTaxBracketFormik.setFieldValue('taxBracketName', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -54,12 +54,12 @@ export const AddTaxBracket = (): ReactElement => {
                         label={'Tax Bracket Percent'}
                         placeHolder={'Tax Bracket Percent'}
                         required={true}
-                        value={formik.values.percent.toString()}
+                        value={addTaxBracketFormik.values.taxBracketPercent.toString()}
                         error={{
-                            errorMessage: formik.errors.percent ?? '',
-                            showError: formik.errors.percent !== undefined,
+                            errorMessage: addTaxBracketFormik.errors.taxBracketPercent ?? '',
+                            showError: addTaxBracketFormik.errors.taxBracketPercent !== undefined,
                         }}
-                        onChange={(value) => formik.setFieldValue('percent', value)}
+                        onChange={(value) => addTaxBracketFormik.setFieldValue('taxBracketPercent', value)}
                     />
                 </div>
             </div>
@@ -80,7 +80,7 @@ export const AddTaxBracket = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => formik.resetForm({ values: initialValues })}
+                    onClick={() => addTaxBracketFormik.resetForm({ values: addTaxBracketInitialValues })}
                 />
             </div>
         </form>

@@ -7,22 +7,22 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 export const AddCategory = (): ReactElement => {
-    const formSchema = Yup.object().shape({
-        name: Yup.string().required('Category Name is a required field'),
+    const addCategoryFormSchema = Yup.object().shape({
+        categoryName: Yup.string().required('Category Name is a required field'),
     });
 
     // holds the initial values of the form
-    const initialValues = {
-        name: '',
+    const addCategoryInitialValues = {
+        categoryName: '',
     };
 
     const formik = useFormik({
-        initialValues,
-        validationSchema: formSchema,
+        initialValues: addCategoryInitialValues,
+        validationSchema: addCategoryFormSchema,
         onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
             resetForm({
-                values: initialValues,
+                values: addCategoryInitialValues,
             });
         },
     });
@@ -36,12 +36,12 @@ export const AddCategory = (): ReactElement => {
                         label={'Category Name'}
                         placeHolder={'Category Name'}
                         required={true}
-                        value={formik.values.name}
+                        value={formik.values.categoryName}
                         error={{
-                            errorMessage: formik.errors.name ?? '',
-                            showError: formik.errors.name !== undefined,
+                            errorMessage: formik.errors.categoryName ?? '',
+                            showError: formik.errors.categoryName !== undefined,
                         }}
-                        onChange={(value) => formik.setFieldValue('name', value)}
+                        onChange={(value) => formik.setFieldValue('categoryName', value)}
                     />
                 </div>
             </div>
@@ -62,7 +62,7 @@ export const AddCategory = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => formik.resetForm({ values: initialValues })}
+                    onClick={() => formik.resetForm({ values: addCategoryInitialValues })}
                 />
             </div>
         </form>

@@ -5,34 +5,34 @@ import styles from './addbrand.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-// import { apiService } from '../../../../services';
-// import { API_ROUTES } from '../../../../config/apiRoutes';
+import { apiService } from '../../../../services';
+import { API_ROUTES } from '../../../../config/apiRoutes';
 
 export const AddBrand = (): ReactElement => {
-    const formSchema = Yup.object().shape({
-        name: Yup.string().required('Brand Name is a required field'),
+    const addBrandFormSchema = Yup.object().shape({
+        brandName: Yup.string().required('Brand Name is a required field'),
     });
 
     // holds the initial values of the form
     const initialValues = {
-        name: '',
+        brandName: '',
     };
 
-    const formik = useFormik({
+    const addProductFormik = useFormik({
         initialValues,
-        validationSchema: formSchema,
+        validationSchema: addBrandFormSchema,
         onSubmit(values, { resetForm }) {
-            alert(JSON.stringify(values));
+            addProductFormik.setSubmitting(true);
+            apiService.post(API_ROUTES.ADDBRAND, {
+                brandName: values.brandName,
+            });
             resetForm({
                 values: initialValues,
             });
-            // apiService.post(API_ROUTES.ADDBRAND, {
-            //     brandName: values.brandName,
-            // });
         },
     });
     return (
-        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -41,33 +41,35 @@ export const AddBrand = (): ReactElement => {
                         label={'Brand Name'}
                         placeHolder={'Brand Name'}
                         required={true}
-                        value={formik.values.name}
+                        value={addProductFormik.values.brandName}
                         error={{
-                            errorMessage: formik.errors.name ?? '',
-                            showError: formik.errors.name !== undefined,
+                            errorMessage: addProductFormik.errors.brandName ?? '',
+                            showError: addProductFormik.errors.brandName !== undefined,
                         }}
-                        onChange={(value) => formik.setFieldValue('name', value)}
+                        onChange={(value) => addProductFormik.setFieldValue('brandName', value)}
                     />
                 </div>
             </div>
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    shape="rectangle"
-                    label="Add Brand"
-                    variant="solid"
-                    backgroundColor="--inventory-color"
-                    labelColor="--light-font-color"
+                    disabled={addProductFormik.isSubmitting}
+                    shape={'rectangle'}
+                    label={'Add Brand'}
+                    variant={'solid'}
+                    backgroundColor={'--inventory-color'}
+                    labelColor={'--light-font-color'}
                 />
                 <Button
                     type="button"
+                    disabled={addProductFormik.isSubmitting}
                     shape="rectangle"
                     label="Reset Values"
                     focusable={false}
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => formik.resetForm({ values: initialValues })}
+                    onClick={() => addProductFormik.resetForm({ values: initialValues })}
                 />
             </div>
         </form>
