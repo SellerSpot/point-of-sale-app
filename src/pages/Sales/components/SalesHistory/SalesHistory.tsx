@@ -20,7 +20,7 @@ export const SalesHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'newSaleBtn'}
-                        label={`NEW SALE (${KEYCODES.NEWSALE})`}
+                        label={`New Sale (${KEYCODES.NEWSALE})`}
                         variant="outline"
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"

@@ -1,6 +1,6 @@
 export const API_ROUTES = {
     BASE: '/',
-    ADDBRAND: '/brand',
+    ADDBRAND: 'brand',
 };
 
 export type TApiRoute = keyof typeof API_ROUTES;

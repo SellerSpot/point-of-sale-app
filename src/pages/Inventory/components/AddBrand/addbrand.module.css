@@ -1,45 +1,47 @@
-.addBrandWrapper {
+.pageWrapper {
     width: 100%;
     height: 100%;
-    background-color: var(--primary-background-color);
-}
-
-.addBrandForm {
-    width: 100%;
-    height: 100%;
+    background: var(--primary-background-color);
     display: grid;
-    grid-template-rows: 60px 1fr 70px;
-    padding: 0 15px;
+    grid-template-rows: 70px 1fr 70px;
+    padding: 0 30px;
 }
 
-.brandInputFieldsWrapper {
-    width: 100%;
-    overflow-y: auto;
-}
-
-.submitBrandNameWrapper {
-    width: 100%;
-    height: 50px;
-}
-
-.sliderHeader {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.sliderFooter {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-}
-
-.formTitle {
-    font-weight: 700;
+.pageHeader {
+    color: var(--primary-font-color);
     font-size: var(--font-size-header);
+    background-color: var(--primary-background-color);
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.pageBody {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroupSplitEqual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.pageFooter {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
 }

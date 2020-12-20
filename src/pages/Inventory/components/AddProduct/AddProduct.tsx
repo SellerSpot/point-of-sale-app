@@ -5,21 +5,66 @@ import { HorizontalRule } from '../../../../components/HorizontalRule/Horizontal
 import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addproduct.module.css';
 import cn from 'classnames';
-import { useDispatch } from 'react-redux';
-import { toggleSliderModal } from '../../../../store/models/sliderModal';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 
 export const AddProduct = (): ReactElement => {
-    const dispatch = useDispatch();
+    const formSchema = Yup.object().shape({
+        productName: Yup.string().required('Product Name is a required field'),
+        productGTIN: Yup.string(),
+        productCategory: Yup.string(),
+        productBrand: Yup.string(),
+        productMarkup: Yup.number(),
+        productLandingPrice: Yup.number()
+            .min(0, 'Landing Price must be greater than or equal to 0')
+            .required('Landing Price is a required field'),
+        productSellingPrice: Yup.number()
+            .min(0, 'Selling Price must be greater than or equal to 0')
+            .required('Selling Price is a required field'),
+        productStockLevel: Yup.number().min(0, 'Stock Level must be greater than or equal to 0'),
+        productStockUnit: Yup.string().required('Stock Unit is a required field'),
+    });
+
+    // holds the initial values of the form
+    const addProductInitialValues = {
+        productName: '',
+        productGTIN: '',
+        productCategory: '',
+        productBrand: '',
+        productMarkup: 0,
+        productLandingPrice: 0,
+        productSellingPrice: 0,
+        productStockLevel: 0,
+        productStockUnit: 'KG',
+    };
+
+    const addProductFormik = useFormik({
+        initialValues: addProductInitialValues,
+        validationSchema: formSchema,
+        onSubmit: (values, { resetForm }) => {
+            alert(JSON.stringify(values, null, 2));
+            resetForm({
+                values: addProductInitialValues,
+            });
+        },
+    });
+
     return (
-        <form className={cn(styles.addProductWrapper)}>
-            <div className={styles.addProductHeader}>Add Product</div>
-            <div className={styles.addProductBody}>
+        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Product</div>
+            <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Product Name'}
                         placeHolder={'Product Name'}
-                        onChange={() => void 0}
+                        required={true}
+                        value={addProductFormik.values.productName}
+                        error={{
+                            errorMessage: addProductFormik.errors.productName ?? '',
+                            showError: addProductFormik.errors.productName !== undefined,
+                        }}
+                        onChange={(value) => addProductFormik.setFieldValue('productName', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -27,22 +72,35 @@ export const AddProduct = (): ReactElement => {
                         type={'text'}
                         label={'Product GTIN'}
                         placeHolder={'Product Code'}
-                        onChange={() => void 0}
+                        value={addProductFormik.values.productGTIN}
+                        error={{
+                            errorMessage: addProductFormik.errors.productGTIN ?? '',
+                            showError: addProductFormik.errors.productGTIN !== undefined,
+                        }}
+                        onChange={(value) => addProductFormik.setFieldValue('productGTIN', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup, styles.formGroupSplitEqual)}>
                     <Dropdown
                         label={'Product Category'}
                         options={['Category One', 'Category Two', 'Category Three']}
-                        onSelect={() => {
-                            // console.log(option);
+                        onSelect={(value) => {
+                            addProductFormik.setFieldValue('productCategory', value);
+                        }}
+                        error={{
+                            errorMessage: addProductFormik.errors.productCategory ?? '',
+                            showError: addProductFormik.errors.productCategory !== undefined,
                         }}
                     />
                     <Dropdown
                         label={'Product Brand'}
                         options={['Brand One', 'Brand Two', 'Brand Three']}
-                        onSelect={() => {
-                            // console.log(option);
+                        onSelect={(value) => {
+                            addProductFormik.setFieldValue('productBrand', value);
+                        }}
+                        error={{
+                            errorMessage: addProductFormik.errors.productBrand ?? '',
+                            showError: addProductFormik.errors.productBrand !== undefined,
                         }}
                     />
                 </div>
@@ -50,23 +108,40 @@ export const AddProduct = (): ReactElement => {
                 <div className={cn(styles.formGroup, styles.formGroupSplitEqual)}>
                     <InputField
                         type={'number'}
-                        label={'Cost Price'}
-                        placeHolder={'Cost Price'}
-                        onChange={() => void 0}
+                        label={'Landing Price'}
+                        placeHolder={'Landing Price'}
+                        required={true}
+                        value={addProductFormik.values.productLandingPrice.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productLandingPrice', value)}
+                        error={{
+                            errorMessage: addProductFormik.errors.productLandingPrice ?? '',
+                            showError: addProductFormik.errors.productLandingPrice !== undefined,
+                        }}
                     />
                     <InputField
                         type={'number'}
                         label={'Markup %'}
                         placeHolder={'Markup Percent'}
-                        onChange={() => void 0}
+                        value={addProductFormik.values.productMarkup.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productMarkup', value)}
+                        error={{
+                            errorMessage: addProductFormik.errors.productMarkup ?? '',
+                            showError: addProductFormik.errors.productMarkup !== undefined,
+                        }}
                     />
                 </div>
                 <div className={cn(styles.formGroup, styles.formGroupSplitEqual)}>
                     <InputField
                         type={'number'}
                         label={'Selling Price'}
+                        required={true}
                         placeHolder={'Selling Price'}
-                        onChange={() => void 0}
+                        value={addProductFormik.values.productSellingPrice.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productSellingPrice', value)}
+                        error={{
+                            errorMessage: addProductFormik.errors.productSellingPrice ?? '',
+                            showError: addProductFormik.errors.productSellingPrice !== undefined,
+                        }}
                     />
                 </div>
                 <HorizontalRule style={{ paddingTop: 10, paddingBottom: 30 }} />
@@ -75,34 +150,44 @@ export const AddProduct = (): ReactElement => {
                         type={'number'}
                         label={'Stock Level'}
                         placeHolder={'Stock Level'}
-                        onChange={() => void 0}
+                        value={addProductFormik.values.productStockLevel.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productStockLevel', value)}
+                        error={{
+                            errorMessage: addProductFormik.errors.productStockLevel ?? '',
+                            showError: addProductFormik.errors.productStockLevel !== undefined,
+                        }}
                     />
-                    <InputField
-                        type={'number'}
+                    <Dropdown
                         label={'Stock Unit'}
-                        placeHolder={'Stock Unit'}
-                        onChange={() => void 0}
+                        options={['KG', 'Pieces', 'Liters']}
+                        onSelect={(value) => {
+                            addProductFormik.setFieldValue('productStockUnit', value);
+                        }}
+                        error={{
+                            errorMessage: addProductFormik.errors.productStockUnit ?? '',
+                            showError: addProductFormik.errors.productStockUnit !== undefined,
+                        }}
                     />
                 </div>
             </div>
-            <div className={styles.addProductFooter}>
+            <div className={styles.pageFooter}>
                 <Button
-                    type="button"
+                    type="submit"
                     shape="rectangle"
-                    label="Cancel"
+                    label="Add Product"
                     variant="solid"
-                    backgroundColor="--danger-color"
+                    backgroundColor="--inventory-color"
                     labelColor="--light-font-color"
-                    style={{ marginRight: 'auto' }}
-                    onClick={() => dispatch(toggleSliderModal({ sliderName: 'addProductSlider', active: false }))}
                 />
                 <Button
                     type="button"
                     shape="rectangle"
-                    label="Add Product"
-                    variant="solid"
-                    backgroundColor="--warning-color"
-                    labelColor="--light-font-color"
+                    label="Reset Values"
+                    variant="outline"
+                    focusable={false}
+                    backgroundColor="--inventory-color"
+                    labelColor="--inventory-color"
+                    onClick={() => addProductFormik.resetForm({ values: addProductInitialValues })}
                 />
             </div>
         </form>

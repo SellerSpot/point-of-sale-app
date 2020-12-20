@@ -13,6 +13,7 @@ export interface IButtonProps {
     backgroundColor?: keyof typeof cssColors;
     labelColor?: keyof typeof cssColors;
     style?: React.CSSProperties;
+    focusable?: boolean;
     onClick?: () => void;
 }
 
@@ -26,6 +27,7 @@ const defaultProps: IButtonProps = {
     backgroundColor: '--success-color',
     labelColor: '--light-font-color',
     type: 'button',
+    focusable: true,
     style: {},
     onClick: () => {
         return null;
@@ -80,6 +82,8 @@ export const Button: React.FC<IButtonProps> = (props: IButtonProps): JSX.Element
         <button
             className={styles.button}
             onClick={sProps.onClick}
+            tabIndex={sProps.focusable ?? true ? 0 : -1}
+            type={sProps.type}
             disabled={sProps.disabled}
             style={getButtonStyle(sProps)}
         >

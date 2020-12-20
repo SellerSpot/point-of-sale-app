@@ -7,45 +7,64 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 export const AddCategory = (): ReactElement => {
-    const formSchema = Yup.object().shape({
+    const addCategoryFormSchema = Yup.object().shape({
         categoryName: Yup.string().required('Category Name is a required field'),
     });
 
-    const categoryNameFormik = useFormik({
-        initialValues: {
-            categoryName: '',
-        },
-        validationSchema: formSchema,
-        onSubmit(values) {
+    // holds the initial values of the form
+    const addCategoryInitialValues = {
+        categoryName: '',
+    };
+
+    const formik = useFormik({
+        initialValues: addCategoryInitialValues,
+        validationSchema: addCategoryFormSchema,
+        onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
+            resetForm({
+                values: addCategoryInitialValues,
+            });
         },
     });
     return (
-        <div className={cn(styles.addCategoryWrapper)}>
-            <form onSubmit={categoryNameFormik.handleSubmit} className={styles.addCategoryForm} noValidate>
-                <div className={cn(styles.categoryInputFieldWrapper)}>
+        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Category</div>
+            <div className={styles.pageBody}>
+                <div className={cn(styles.formGroup)}>
                     <InputField
+                        type={'text'}
                         label={'Category Name'}
-                        placeHolder={'Name of the category you wish to add'}
+                        placeHolder={'Category Name'}
+                        required={true}
+                        value={formik.values.categoryName}
                         error={{
-                            errorMessage: categoryNameFormik.errors.categoryName ?? '',
-                            showError: categoryNameFormik.errors.categoryName !== undefined,
+                            errorMessage: formik.errors.categoryName ?? '',
+                            showError: formik.errors.categoryName !== undefined,
                         }}
-                        value={categoryNameFormik.values.categoryName}
-                        onChange={(value) => categoryNameFormik.setFieldValue('categoryName', value)}
+                        onChange={(value) => formik.setFieldValue('categoryName', value)}
                     />
                 </div>
-                <div className={cn(styles.submitCategoryNameWrapper)}>
-                    <Button
-                        label={'Add Category'}
-                        variant={'outline'}
-                        labelColor={'--inventory-color'}
-                        backgroundColor={'--inventory-color'}
-                        type="submit"
-                        onClick={() => void 0}
-                    />
-                </div>
-            </form>
-        </div>
+            </div>
+            <div className={styles.pageFooter}>
+                <Button
+                    type="submit"
+                    shape="rectangle"
+                    label="Add Category"
+                    variant="solid"
+                    backgroundColor="--inventory-color"
+                    labelColor="--light-font-color"
+                />
+                <Button
+                    type="button"
+                    shape="rectangle"
+                    label="Reset Values"
+                    focusable={false}
+                    variant="outline"
+                    backgroundColor="--inventory-color"
+                    labelColor="--inventory-color"
+                    onClick={() => formik.resetForm({ values: addCategoryInitialValues })}
+                />
+            </div>
+        </form>
     );
 };

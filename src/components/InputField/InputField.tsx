@@ -16,6 +16,7 @@ export interface IInputFieldProps {
     size?: 'compact' | 'default';
     prefix?: ReactNode;
     suffix?: ReactNode;
+    required?: boolean;
     error?: {
         showError: boolean;
         errorMessage: string;
@@ -32,6 +33,7 @@ const defaultProps: IInputFieldProps = {
     type: 'text',
     size: 'default',
     borderStyle: 'border',
+    required: false,
     error: {
         errorMessage: 'Default error message',
         showError: false,
@@ -49,7 +51,12 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
 
     return (
         <div className={styles.inputFieldWrapper}>
-            {sProps.label !== undefined ? <label className={styles.label}>{sProps.label}</label> : null}
+            {sProps.label !== undefined ? (
+                <label className={styles.label}>
+                    {sProps.label}
+                    {sProps.required ? <span style={{ color: cssColors['--danger-color'] }}> *</span> : null}
+                </label>
+            ) : null}
 
             <div className={styles.inputWrapper}>
                 {sProps.prefix ?? false ? (
@@ -90,6 +97,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     disabled={sProps.disabled}
                     placeholder={sProps.placeHolder}
                     type={sProps.type}
+                    required={sProps.required}
                     value={sProps.value}
                     onChange={(event) => sProps.onChange(event.target.value)}
                     style={sProps.style}
