@@ -89,6 +89,7 @@ const webpackConfiguration = (env: {
         devServer: {
             port: 8000,
             publicPath: '/',
+            open: true,
         },
         devtool: !isProduction ? 'source-map' : false,
     };
