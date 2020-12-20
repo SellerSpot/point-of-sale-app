@@ -184,6 +184,7 @@ export const AddProduct = (): ReactElement => {
                     shape="rectangle"
                     label="Reset Values"
                     variant="outline"
+                    focusable={false}
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
                     onClick={() => addProductFormik.resetForm({ values: initialValues })}

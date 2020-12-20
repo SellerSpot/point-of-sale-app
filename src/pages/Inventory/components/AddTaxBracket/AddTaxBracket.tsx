@@ -76,6 +76,7 @@ export const AddTaxBracket = (): ReactElement => {
                     type="button"
                     shape="rectangle"
                     label="Reset Values"
+                    focusable={false}
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
