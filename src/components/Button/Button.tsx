@@ -41,7 +41,8 @@ const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
             // setting the font color
             cssProps.color = cssColors[sProps.labelColor ?? '--light-font-color'];
             cssProps.backgroundColor = cssColors[sProps.backgroundColor ?? '--disabled-color'];
-            cssProps.border = '1px solid ' + cssColors[sProps.backgroundColor ?? '--disabled-color'];
+            cssProps.border =
+                '1px solid ' + cssColors[sProps.backgroundColor ?? '--disabled-color'];
             break;
         case 'link':
             cssProps.color = cssColors[sProps.labelColor ?? '--light-font-color'];
@@ -50,14 +51,19 @@ const getButtonStyle = (sProps: IButtonProps): React.CSSProperties => {
             break;
         case 'outline':
             cssProps.color = cssColors[sProps.labelColor ?? '--light-font-color'];
-            cssProps.border = '1px solid ' + cssColors[sProps.backgroundColor ?? '--disabled-color'];
+            cssProps.border =
+                '1px solid ' + cssColors[sProps.backgroundColor ?? '--disabled-color'];
             cssProps.backgroundColor = 'transparent';
             break;
     }
     cssProps.borderRadius =
-        sProps.shape === 'rounded' ? cssVariables['--rounded-border-radius'] : cssVariables['--border-radius'];
+        sProps.shape === 'rounded'
+            ? cssVariables['--rounded-border-radius']
+            : cssVariables['--border-radius'];
     cssProps.fontSize =
-        sProps.size === 'small' ? cssVariables['--font-size-tertiary'] : cssVariables['--font-size-secondary'];
+        sProps.size === 'small'
+            ? cssVariables['--font-size-tertiary']
+            : cssVariables['--font-size-secondary'];
     if (sProps.disabled) {
         cssProps.cursor = 'not-allowed';
         cssProps.color = cssColors['--light-font-color'];

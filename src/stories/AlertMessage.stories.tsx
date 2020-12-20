@@ -11,7 +11,9 @@ export default {
     component: AlertMessage,
 } as Meta;
 
-const Template: Story<IAlertMessageProps> = (args: IAlertMessageProps) => <AlertMessage {...args} />;
+const Template: Story<IAlertMessageProps> = (args: IAlertMessageProps) => (
+    <AlertMessage {...args} />
+);
 
 export const AlertMessages = Template.bind({});
 AlertMessages.args = {

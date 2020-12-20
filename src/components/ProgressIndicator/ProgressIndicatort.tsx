@@ -19,7 +19,9 @@ const defaultProps: IProgressIndicatorProps = {
     style: {},
 };
 
-export const ProgressIndicator: React.FC<IProgressIndicatorProps> = (props: IProgressIndicatorProps): JSX.Element => {
+export const ProgressIndicator: React.FC<IProgressIndicatorProps> = (
+    props: IProgressIndicatorProps,
+): JSX.Element => {
     // seasoning the props
     const sProps: IProgressIndicatorProps = {
         ...defaultProps,

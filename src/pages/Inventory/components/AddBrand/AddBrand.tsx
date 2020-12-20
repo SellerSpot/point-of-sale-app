@@ -65,7 +65,8 @@ export const AddBrand = (): ReactElement => {
                                         ? customErrorMessage
                                         : ''
                                     : addBrandFormik.errors.brandName,
-                            showError: customErrorFlag || addBrandFormik.errors.brandName !== undefined,
+                            showError:
+                                customErrorFlag || addBrandFormik.errors.brandName !== undefined,
                         }}
                         onChange={(value) => addBrandFormik.setFieldValue('brandName', value)}
                     />

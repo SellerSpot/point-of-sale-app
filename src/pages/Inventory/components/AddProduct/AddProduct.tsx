@@ -50,7 +50,11 @@ export const AddProduct = (): ReactElement => {
     });
 
     return (
-        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form
+            onSubmit={addProductFormik.handleSubmit}
+            className={cn(styles.pageWrapper)}
+            noValidate
+        >
             <div className={styles.pageHeader}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -112,7 +116,9 @@ export const AddProduct = (): ReactElement => {
                         placeHolder={'Landing Price'}
                         required={true}
                         value={addProductFormik.values.productLandingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('productLandingPrice', value)}
+                        onChange={(value) =>
+                            addProductFormik.setFieldValue('productLandingPrice', value)
+                        }
                         error={{
                             errorMessage: addProductFormik.errors.productLandingPrice ?? '',
                             showError: addProductFormik.errors.productLandingPrice !== undefined,
@@ -137,7 +143,9 @@ export const AddProduct = (): ReactElement => {
                         required={true}
                         placeHolder={'Selling Price'}
                         value={addProductFormik.values.productSellingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('productSellingPrice', value)}
+                        onChange={(value) =>
+                            addProductFormik.setFieldValue('productSellingPrice', value)
+                        }
                         error={{
                             errorMessage: addProductFormik.errors.productSellingPrice ?? '',
                             showError: addProductFormik.errors.productSellingPrice !== undefined,
@@ -151,7 +159,9 @@ export const AddProduct = (): ReactElement => {
                         label={'Stock Level'}
                         placeHolder={'Stock Level'}
                         value={addProductFormik.values.productStockLevel.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('productStockLevel', value)}
+                        onChange={(value) =>
+                            addProductFormik.setFieldValue('productStockLevel', value)
+                        }
                         error={{
                             errorMessage: addProductFormik.errors.productStockLevel ?? '',
                             showError: addProductFormik.errors.productStockLevel !== undefined,

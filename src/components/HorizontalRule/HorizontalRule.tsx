@@ -42,7 +42,12 @@ export const HorizontalRule = (props: IHorizontalRuleProps): ReactElement => {
             className={horizontalRuleStyles.horizontalRuleWrapper}
             style={{
                 ...style,
-                justifyContent: alignment === 'left' ? 'flex-start' : alignment === 'right' ? 'flex-end' : alignment,
+                justifyContent:
+                    alignment === 'left'
+                        ? 'flex-start'
+                        : alignment === 'right'
+                        ? 'flex-end'
+                        : alignment,
             }}
         >
             <div

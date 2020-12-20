@@ -23,7 +23,11 @@ export const Brands = (): JSX.Element => {
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'addBrandSlider', active: true }))}
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({ sliderName: 'addBrandSlider', active: true }),
+                            )
+                        }
                     />,
                 ]}
             />

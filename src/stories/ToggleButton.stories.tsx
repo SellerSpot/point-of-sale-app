@@ -11,7 +11,9 @@ export default {
     component: ToggleButton,
 } as Meta;
 
-const Template: Story<IToggleButtonProps> = (args: IToggleButtonProps) => <ToggleButton {...args} />;
+const Template: Story<IToggleButtonProps> = (args: IToggleButtonProps) => (
+    <ToggleButton {...args} />
+);
 
 export const ToggleButtons = Template.bind({});
 ToggleButtons.args = {

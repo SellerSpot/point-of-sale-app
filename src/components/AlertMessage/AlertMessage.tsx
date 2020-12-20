@@ -2,7 +2,12 @@ import React, { ReactNode } from 'react';
 import styles from './alertmessage.module.css';
 import cn from 'classnames';
 import { Button } from '../Button/Button';
-import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineInfoCircle, AiOutlineWarning } from 'react-icons/ai';
+import {
+    AiOutlineCheckCircle,
+    AiOutlineCloseCircle,
+    AiOutlineInfoCircle,
+    AiOutlineWarning,
+} from 'react-icons/ai';
 import { cssColors } from '../../config/cssVariables';
 
 export interface IAlertMessageProps {
@@ -50,7 +55,9 @@ const getPrimaryColor = (sProps: IAlertMessageProps): keyof typeof cssColors => 
     }
 };
 
-export const AlertMessage: React.FC<IAlertMessageProps> = (props: IAlertMessageProps): JSX.Element => {
+export const AlertMessage: React.FC<IAlertMessageProps> = (
+    props: IAlertMessageProps,
+): JSX.Element => {
     // seasoning the props
     const sProps: IAlertMessageProps = {
         ...defaultProps,
@@ -68,7 +75,10 @@ export const AlertMessage: React.FC<IAlertMessageProps> = (props: IAlertMessageP
             )}
         >
             <div>
-                <div className={cn(styles.alertContentItem)} style={{ color: cssColors[getPrimaryColor(sProps)] }}>
+                <div
+                    className={cn(styles.alertContentItem)}
+                    style={{ color: cssColors[getPrimaryColor(sProps)] }}
+                >
                     {sProps.showIcon ? getIcon(sProps) : null}
                 </div>
                 <div className={cn(styles.alertContentItem)}>{sProps.label}</div>

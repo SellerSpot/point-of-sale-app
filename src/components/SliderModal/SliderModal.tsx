@@ -41,12 +41,17 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
                 openConfirmDialog({
                     title: confirmSliderClose.title ?? 'Go back to previous page?',
                     description:
-                        confirmSliderClose?.message ?? 'This action can cause loss of data in the current form',
-                    failureActionLabel: confirmSliderClose.failureActionLabel ?? 'Go to previous page',
-                    successActionLabel: confirmSliderClose.successActionLabel ?? 'Stay on current page',
+                        confirmSliderClose?.message ??
+                        'This action can cause loss of data in the current form',
+                    failureActionLabel:
+                        confirmSliderClose.failureActionLabel ?? 'Go to previous page',
+                    successActionLabel:
+                        confirmSliderClose.successActionLabel ?? 'Stay on current page',
                     actionOrder: 'reverse',
                     onFailure: () => {
-                        dispatch(toggleSliderModal({ sliderName: props.sliderName, active: false }));
+                        dispatch(
+                            toggleSliderModal({ sliderName: props.sliderName, active: false }),
+                        );
                     },
                     onSuccess: () => {
                         dispatch(closeConfirmDialog());
@@ -66,7 +71,10 @@ export const SliderModal = (props: ISliderModalProps): ReactElement => {
             })}
         >
             <div className={styles.backdropOverlay} onClick={() => handleSliderClose()}>
-                <div className={styles.closeIconWrapper} style={{ right: active ? sliderSize : '-100px' }}>
+                <div
+                    className={styles.closeIconWrapper}
+                    style={{ right: active ? sliderSize : '-100px' }}
+                >
                     <MdClose size={'20px'} />
                 </div>
             </div>
