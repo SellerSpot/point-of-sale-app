@@ -10,61 +10,61 @@ import { useFormik } from 'formik';
 
 export const AddProduct = (): ReactElement => {
     const formSchema = Yup.object().shape({
-        name: Yup.string().required('Product Name is a required field'),
-        gtin: Yup.string(),
-        category: Yup.string(),
-        brand: Yup.string(),
-        markup: Yup.number(),
-        landingPrice: Yup.number()
+        productName: Yup.string().required('Product Name is a required field'),
+        productGTIN: Yup.string(),
+        productCategory: Yup.string(),
+        productBrand: Yup.string(),
+        productMarkup: Yup.number(),
+        productLandingPrice: Yup.number()
             .min(0, 'Landing Price must be greater than or equal to 0')
             .required('Landing Price is a required field'),
-        sellingPrice: Yup.number()
+        productSellingPrice: Yup.number()
             .min(0, 'Selling Price must be greater than or equal to 0')
             .required('Selling Price is a required field'),
-        stockLevel: Yup.number().min(0, 'Stock Level must be greater than or equal to 0'),
-        stockUnit: Yup.string().required('Stock Unit is a required field'),
+        productStockLevel: Yup.number().min(0, 'Stock Level must be greater than or equal to 0'),
+        productStockUnit: Yup.string().required('Stock Unit is a required field'),
     });
 
     // holds the initial values of the form
-    const initialValues = {
-        name: '',
-        gtin: '',
-        category: '',
-        brand: '',
-        markup: 0,
-        landingPrice: 0,
-        sellingPrice: 0,
-        stockLevel: 0,
-        stockUnit: 'KG',
+    const addProductInitialValues = {
+        productName: '',
+        productGTIN: '',
+        productCategory: '',
+        productBrand: '',
+        productMarkup: 0,
+        productLandingPrice: 0,
+        productSellingPrice: 0,
+        productStockLevel: 0,
+        productStockUnit: 'KG',
     };
 
     const addProductFormik = useFormik({
-        initialValues,
+        initialValues: addProductInitialValues,
         validationSchema: formSchema,
         onSubmit: (values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
             resetForm({
-                values: initialValues,
+                values: addProductInitialValues,
             });
         },
     });
 
     return (
-        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.addProductWrapper)} noValidate>
-            <div className={styles.addProductHeader}>Add Product</div>
-            <div className={styles.addProductBody}>
+        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Product</div>
+            <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Product Name'}
                         placeHolder={'Product Name'}
                         required={true}
-                        value={addProductFormik.values.name}
+                        value={addProductFormik.values.productName}
                         error={{
-                            errorMessage: addProductFormik.errors.name ?? '',
-                            showError: addProductFormik.errors.name !== undefined,
+                            errorMessage: addProductFormik.errors.productName ?? '',
+                            showError: addProductFormik.errors.productName !== undefined,
                         }}
-                        onChange={(value) => addProductFormik.setFieldValue('name', value)}
+                        onChange={(value) => addProductFormik.setFieldValue('productName', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -72,12 +72,12 @@ export const AddProduct = (): ReactElement => {
                         type={'text'}
                         label={'Product GTIN'}
                         placeHolder={'Product Code'}
-                        value={addProductFormik.values.gtin}
+                        value={addProductFormik.values.productGTIN}
                         error={{
-                            errorMessage: addProductFormik.errors.gtin ?? '',
-                            showError: addProductFormik.errors.gtin !== undefined,
+                            errorMessage: addProductFormik.errors.productGTIN ?? '',
+                            showError: addProductFormik.errors.productGTIN !== undefined,
                         }}
-                        onChange={(value) => addProductFormik.setFieldValue('gtin', value)}
+                        onChange={(value) => addProductFormik.setFieldValue('productGTIN', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup, styles.formGroupSplitEqual)}>
@@ -85,22 +85,22 @@ export const AddProduct = (): ReactElement => {
                         label={'Product Category'}
                         options={['Category One', 'Category Two', 'Category Three']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('category', value);
+                            addProductFormik.setFieldValue('productCategory', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.category ?? '',
-                            showError: addProductFormik.errors.category !== undefined,
+                            errorMessage: addProductFormik.errors.productCategory ?? '',
+                            showError: addProductFormik.errors.productCategory !== undefined,
                         }}
                     />
                     <Dropdown
                         label={'Product Brand'}
                         options={['Brand One', 'Brand Two', 'Brand Three']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('brand', value);
+                            addProductFormik.setFieldValue('productBrand', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.brand ?? '',
-                            showError: addProductFormik.errors.brand !== undefined,
+                            errorMessage: addProductFormik.errors.productBrand ?? '',
+                            showError: addProductFormik.errors.productBrand !== undefined,
                         }}
                     />
                 </div>
@@ -111,22 +111,22 @@ export const AddProduct = (): ReactElement => {
                         label={'Landing Price'}
                         placeHolder={'Landing Price'}
                         required={true}
-                        value={addProductFormik.values.landingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('landingPrice', value)}
+                        value={addProductFormik.values.productLandingPrice.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productLandingPrice', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.landingPrice ?? '',
-                            showError: addProductFormik.errors.landingPrice !== undefined,
+                            errorMessage: addProductFormik.errors.productLandingPrice ?? '',
+                            showError: addProductFormik.errors.productLandingPrice !== undefined,
                         }}
                     />
                     <InputField
                         type={'number'}
                         label={'Markup %'}
                         placeHolder={'Markup Percent'}
-                        value={addProductFormik.values.markup.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('markup', value)}
+                        value={addProductFormik.values.productMarkup.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productMarkup', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.markup ?? '',
-                            showError: addProductFormik.errors.markup !== undefined,
+                            errorMessage: addProductFormik.errors.productMarkup ?? '',
+                            showError: addProductFormik.errors.productMarkup !== undefined,
                         }}
                     />
                 </div>
@@ -136,11 +136,11 @@ export const AddProduct = (): ReactElement => {
                         label={'Selling Price'}
                         required={true}
                         placeHolder={'Selling Price'}
-                        value={addProductFormik.values.sellingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('sellingPrice', value)}
+                        value={addProductFormik.values.productSellingPrice.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productSellingPrice', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.sellingPrice ?? '',
-                            showError: addProductFormik.errors.sellingPrice !== undefined,
+                            errorMessage: addProductFormik.errors.productSellingPrice ?? '',
+                            showError: addProductFormik.errors.productSellingPrice !== undefined,
                         }}
                     />
                 </div>
@@ -150,27 +150,27 @@ export const AddProduct = (): ReactElement => {
                         type={'number'}
                         label={'Stock Level'}
                         placeHolder={'Stock Level'}
-                        value={addProductFormik.values.stockLevel.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('stockLevel', value)}
+                        value={addProductFormik.values.productStockLevel.toString()}
+                        onChange={(value) => addProductFormik.setFieldValue('productStockLevel', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.stockLevel ?? '',
-                            showError: addProductFormik.errors.stockLevel !== undefined,
+                            errorMessage: addProductFormik.errors.productStockLevel ?? '',
+                            showError: addProductFormik.errors.productStockLevel !== undefined,
                         }}
                     />
                     <Dropdown
                         label={'Stock Unit'}
                         options={['KG', 'Pieces', 'Liters']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('stockUnit', value);
+                            addProductFormik.setFieldValue('productStockUnit', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.stockUnit ?? '',
-                            showError: addProductFormik.errors.stockUnit !== undefined,
+                            errorMessage: addProductFormik.errors.productStockUnit ?? '',
+                            showError: addProductFormik.errors.productStockUnit !== undefined,
                         }}
                     />
                 </div>
             </div>
-            <div className={styles.addProductFooter}>
+            <div className={styles.pageFooter}>
                 <Button
                     type="submit"
                     shape="rectangle"
@@ -184,9 +184,10 @@ export const AddProduct = (): ReactElement => {
                     shape="rectangle"
                     label="Reset Values"
                     variant="outline"
+                    focusable={false}
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => addProductFormik.resetForm({ values: initialValues })}
+                    onClick={() => addProductFormik.resetForm({ values: addProductInitialValues })}
                 />
             </div>
         </form>
