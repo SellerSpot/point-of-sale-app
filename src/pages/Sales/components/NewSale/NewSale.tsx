@@ -12,7 +12,11 @@ export const NewSale = (): JSX.Element => {
     return (
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
-                <InputField borderStyle="shadow" placeHolder="Product Name / Code" onChange={() => void 0} />
+                <InputField
+                    borderStyle="shadow"
+                    placeHolder="Product Name / Code"
+                    onChange={() => void 0}
+                />
                 <Table
                     headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
                     rowData={[['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04', 'Data 05']]}
@@ -26,7 +30,11 @@ export const NewSale = (): JSX.Element => {
                         backgroundColor="--danger-color"
                         labelColor="--light-font-color"
                         style={{ marginRight: 'auto', width: 'auto' }}
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'newSaleSlider', active: false }))}
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
+                            )
+                        }
                     />
                     <Button
                         label="Calculator"
@@ -64,14 +72,20 @@ export const NewSale = (): JSX.Element => {
                     </div>
                     <div className={styles.calculationEntry}>
                         <span>{'Order Total'}</span>
-                        <span style={{ fontSize: cssVariables['--font-size-extra-large'] }}>{'₹ 250.00'}</span>
+                        <span style={{ fontSize: cssVariables['--font-size-extra-large'] }}>
+                            {'₹ 250.00'}
+                        </span>
                     </div>
                     <Button
                         style={{ width: '100%', height: '50px' }}
                         label="CHECKOUT"
                         labelColor="--light-font-color"
                         backgroundColor="--sales-color"
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: true }))}
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                            )
+                        }
                     />
                 </div>
             </div>

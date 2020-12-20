@@ -25,7 +25,9 @@ const sliderModalSlice = createSlice({
     reducers: {
         toggleSliderModal: (
             state,
-            { payload }: PayloadAction<{ sliderName: keyof SliderModalInitialState; active: boolean }>,
+            {
+                payload,
+            }: PayloadAction<{ sliderName: keyof SliderModalInitialState; active: boolean }>,
         ) => {
             state[payload.sliderName] = payload.active;
         },
@@ -39,5 +41,6 @@ export default sliderModalSlice.reducer;
 export const { toggleSliderModal } = sliderModalSlice.actions;
 
 // exporting selector - useful when using it in components to select particular state from global store
-export const sliderModalSelector: Selector<RootState, SliderModalInitialState> = (state: RootState) =>
-    state.sliderModal;
+export const sliderModalSelector: Selector<RootState, SliderModalInitialState> = (
+    state: RootState,
+) => state.sliderModal;

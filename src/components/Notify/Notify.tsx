@@ -1,16 +1,16 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 import cn from 'classnames';
 import styles from './notify.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeNotify, notifySelector } from '../../store/models/notify';
-import { cssColors } from '../../config/cssVariables';
+import { closeNotify, notifySelector } from 'store/models/notify';
+import { cssColors } from 'config/cssVariables';
 import { AiOutlineCloseCircle } from 'react-icons/all';
-import { utils } from '../../services';
+import { utils } from 'services';
 
 export const Notify = (): ReactElement => {
     const { active, type, message, timeout } = useSelector(notifySelector);
     const dispatch = useDispatch();
-    const clearNotification = () => dispatch(closeNotify());
+    const clearNotification = useCallback(() => dispatch(closeNotify()), [dispatch]);
 
     useEffect(() => {
         let timerReference: ReturnType<typeof setTimeout>;
@@ -21,7 +21,8 @@ export const Notify = (): ReactElement => {
         return () => {
             clearTimeout(timerReference);
         };
-    }, [active, message, type]);
+    }, [active, message, type, clearNotification, timeout]);
+
     return (
         <div
             className={cn(styles.notifyWrapper, {

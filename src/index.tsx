@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from 'store/store';
 import { BrowserRouter } from 'react-router-dom';
-import { loadCSSValues } from './config/cssVariables';
-
-// used to load css variables in ts object into the :root context
-loadCSSValues();
+import { App } from './App';
 
 ReactDOM.render(
     <React.StrictMode>

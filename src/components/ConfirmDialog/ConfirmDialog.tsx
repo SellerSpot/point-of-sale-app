@@ -38,7 +38,11 @@ export const ConfirmDialog = (): ReactElement => {
                     [styles.confirmDialogContentActive]: confirmDialogProps.active,
                 })}
             >
-                <div className={cn(styles.content, { [styles.contentWithInputFields]: showInputFields })}>
+                <div
+                    className={cn(styles.content, {
+                        [styles.contentWithInputFields]: showInputFields,
+                    })}
+                >
                     <div className={styles.dialogClose}>
                         <MdClose
                             style={{
@@ -50,7 +54,9 @@ export const ConfirmDialog = (): ReactElement => {
                         />
                     </div>
                     <div className={styles.contentTitle}>{confirmDialogProps.title}</div>
-                    <div className={styles.contentDescription}>{confirmDialogProps.description}</div>
+                    <div className={styles.contentDescription}>
+                        {confirmDialogProps.description}
+                    </div>
                     {showInputFields ? (
                         <div className={styles.inputFields}>{confirmDialogProps.inputFields}</div>
                     ) : null}
@@ -65,7 +71,10 @@ export const ConfirmDialog = (): ReactElement => {
                                 disptach(closeConfirmDialog());
                             }}
                             fullWidth={false}
-                            style={{ order: confirmDialogProps.actionOrder === 'reverse' ? 1 : -1, fontWeight: 600 }}
+                            style={{
+                                order: confirmDialogProps.actionOrder === 'reverse' ? 1 : -1,
+                                fontWeight: 600,
+                            }}
                         />
                         <Button
                             label={(confirmDialogProps.successActionLabel ?? '').toUpperCase()}

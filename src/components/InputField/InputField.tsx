@@ -54,7 +54,9 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
             {sProps.label !== undefined ? (
                 <label className={styles.label}>
                     {sProps.label}
-                    {sProps.required ? <span style={{ color: cssColors['--danger-color'] }}> *</span> : null}
+                    {sProps.required ? (
+                        <span style={{ color: cssColors['--danger-color'] }}> *</span>
+                    ) : null}
                 </label>
             ) : null}
 
@@ -78,7 +80,9 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                         styles.inputField,
                         {
                             [styles.inputFieldError]:
-                                sProps.error?.showError && sProps.size === 'default' && sProps.borderStyle === 'border',
+                                sProps.error?.showError &&
+                                sProps.size === 'default' &&
+                                sProps.borderStyle === 'border',
                         },
                         { [styles.inputFieldCompactSize]: sProps.size === 'compact' },
                         {
@@ -120,7 +124,9 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
 
             {sProps.helperText !== undefined || sProps.error !== undefined ? (
                 <label
-                    className={cn(styles.label, styles.helperText, { [styles.hintTextError]: sProps.error?.showError })}
+                    className={cn(styles.label, styles.helperText, {
+                        [styles.hintTextError]: sProps.error?.showError,
+                    })}
                 >
                     {sProps.error?.showError ? sProps.error.errorMessage : sProps.helperText}
                 </label>

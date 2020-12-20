@@ -24,7 +24,14 @@ export const Categories = (): JSX.Element => {
                         labelColor="--inventory-color"
                         variant="outline"
                         backgroundColor="--inventory-color"
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'addCategorySlider', active: true }))}
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({
+                                    sliderName: 'addCategorySlider',
+                                    active: true,
+                                }),
+                            )
+                        }
                     />,
                 ]}
             />

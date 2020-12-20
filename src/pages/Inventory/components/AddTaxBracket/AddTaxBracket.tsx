@@ -31,7 +31,11 @@ export const AddTaxBracket = (): ReactElement => {
         },
     });
     return (
-        <form onSubmit={addTaxBracketFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form
+            onSubmit={addTaxBracketFormik.handleSubmit}
+            className={cn(styles.pageWrapper)}
+            noValidate
+        >
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -45,7 +49,9 @@ export const AddTaxBracket = (): ReactElement => {
                             errorMessage: addTaxBracketFormik.errors.taxBracketName ?? '',
                             showError: addTaxBracketFormik.errors.taxBracketName !== undefined,
                         }}
-                        onChange={(value) => addTaxBracketFormik.setFieldValue('taxBracketName', value)}
+                        onChange={(value) =>
+                            addTaxBracketFormik.setFieldValue('taxBracketName', value)
+                        }
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -59,7 +65,9 @@ export const AddTaxBracket = (): ReactElement => {
                             errorMessage: addTaxBracketFormik.errors.taxBracketPercent ?? '',
                             showError: addTaxBracketFormik.errors.taxBracketPercent !== undefined,
                         }}
-                        onChange={(value) => addTaxBracketFormik.setFieldValue('taxBracketPercent', value)}
+                        onChange={(value) =>
+                            addTaxBracketFormik.setFieldValue('taxBracketPercent', value)
+                        }
                     />
                 </div>
             </div>
@@ -80,7 +88,9 @@ export const AddTaxBracket = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => addTaxBracketFormik.resetForm({ values: addTaxBracketInitialValues })}
+                    onClick={() =>
+                        addTaxBracketFormik.resetForm({ values: addTaxBracketInitialValues })
+                    }
                 />
             </div>
         </form>

@@ -20,7 +20,10 @@ const notify = createSlice({
     name: 'notify',
     initialState,
     reducers: {
-        showNotify: (state: InitialState, { payload }: PayloadAction<Omit<InitialState, 'active' | 'timeout'>>) => {
+        showNotify: (
+            state: InitialState,
+            { payload }: PayloadAction<Omit<InitialState, 'active' | 'timeout'>>,
+        ) => {
             Object.assign(state, { ...initialState, ...payload, active: true });
         },
         closeNotify: (state: InitialState) => {

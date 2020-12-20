@@ -24,13 +24,24 @@ export const SalesHistory = (): JSX.Element => {
                         variant="outline"
                         backgroundColor="--sales-color"
                         labelColor="--sales-color"
-                        onClick={() => dispatch(toggleSliderModal({ sliderName: 'newSaleSlider', active: true }))}
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({ sliderName: 'newSaleSlider', active: true }),
+                            )
+                        }
                     />,
                 ]}
             />
             <div className={styles.tableWrapper}>
                 <Table
-                    headers={['S.No', 'Created At', 'Status', 'Sub-Total', 'Taxation', 'Amount Paid']}
+                    headers={[
+                        'S.No',
+                        'Created At',
+                        'Status',
+                        'Sub-Total',
+                        'Taxation',
+                        'Amount Paid',
+                    ]}
                     rowData={[
                         ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
                         ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],

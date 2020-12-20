@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './dropdown.module.css';
 import { FaCaretDown } from 'react-icons/fa';
 
@@ -29,7 +29,10 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
     const [showOptions, shouldShowOptions] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<number>(0);
 
-    const handleClickOutsideHandler = () => shouldShowOptions(!showOptions);
+    const handleClickOutsideHandler = useCallback(() => shouldShowOptions(!showOptions), [
+        shouldShowOptions,
+        showOptions,
+    ]);
 
     useEffect(() => {
         // to handle clicks outside the dropdown and close the options view
@@ -37,7 +40,7 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
         return () => {
             document.removeEventListener('click', handleClickOutsideHandler);
         };
-    }, [showOptions]);
+    }, [showOptions, handleClickOutsideHandler]);
 
     // seasoning the props
     const sProps: IDropdownProps = {
@@ -49,7 +52,11 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
         <div>
             {sProps.label ?? false ? <label className={styles.label}>{sProps.label}</label> : null}
             <div className={styles.dropDownBox} style={sProps.style}>
-                <div tabIndex={0} onClick={() => shouldShowOptions(!showOptions)} className={styles.dropDownSelect}>
+                <div
+                    tabIndex={0}
+                    onClick={() => shouldShowOptions(!showOptions)}
+                    className={styles.dropDownSelect}
+                >
                     <p>{sProps.options[selectedOption]}</p>
                     <FaCaretDown className={styles.caretIcon} />
                 </div>
@@ -81,7 +88,9 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
             </div>
             {sProps.helperText !== undefined || sProps.error !== undefined ? (
                 <label
-                    className={cn(styles.label, styles.helperText, { [styles.hintTextError]: sProps.error?.showError })}
+                    className={cn(styles.label, styles.helperText, {
+                        [styles.hintTextError]: sProps.error?.showError,
+                    })}
                 >
                     {sProps.error?.showError ? sProps.error.errorMessage : sProps.helperText}
                 </label>

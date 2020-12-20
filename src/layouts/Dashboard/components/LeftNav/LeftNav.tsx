@@ -16,7 +16,13 @@ interface INavItem {
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, color, onClick, title, active }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
+const NavItem = ({
+    Icon,
+    color,
+    onClick,
+    title,
+    active,
+}: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
     return (
         <div
             className={`${leftNavStyles.navItem} ${active ? leftNavStyles.navItemActive : ''}`}
@@ -82,7 +88,9 @@ export const LeftNav = (): JSX.Element => {
                     <FaStore size={'40px'} />
                     <div>
                         {'Store Name'}
-                        <div className={leftNavStyles.storeNameHolderSubtitle}>{'Hi, Olivia Katz'}</div>
+                        <div className={leftNavStyles.storeNameHolderSubtitle}>
+                            {'Hi, Olivia Katz'}
+                        </div>
                     </div>
                 </div>
                 <HorizontalRule

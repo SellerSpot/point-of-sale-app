@@ -14,7 +14,9 @@ export const Checkout = (): ReactElement => {
     const handlePrint = useReactToPrint({
         content: () => billReference.current,
         onAfterPrint: () =>
-            new Promise(() => dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: false }))),
+            new Promise(() =>
+                dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: false })),
+            ),
     });
 
     return (
@@ -39,15 +41,24 @@ export const Checkout = (): ReactElement => {
                 </div>
                 <div className={styles.calculationEntry}>
                     <div>{'Order Total'}</div>
-                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>{'₹ 250.00'}</div>
+                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>
+                        {'₹ 250.00'}
+                    </div>
                 </div>
                 <div className={styles.calculationEntry}>
                     <div>{'Customer Paid'}</div>
-                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>{'₹ 500.00'}</div>
+                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>
+                        {'₹ 500.00'}
+                    </div>
                 </div>
-                <div className={styles.calculationEntry} style={{ color: cssColors['--danger-color'] }}>
+                <div
+                    className={styles.calculationEntry}
+                    style={{ color: cssColors['--danger-color'] }}
+                >
                     <div>{'Balance'}</div>
-                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>{'- ₹ 250.00'}</div>
+                    <div style={{ fontSize: cssVariables['--font-size-extra-large'] }}>
+                        {'- ₹ 250.00'}
+                    </div>
                 </div>
                 <Button
                     style={{ width: '100%', height: '65px', fontSize: 17 }}

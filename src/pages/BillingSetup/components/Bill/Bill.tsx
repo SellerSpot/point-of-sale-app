@@ -62,7 +62,13 @@ export const Bill = (props: IBillProps): ReactElement => {
             <div className={style.billSubTitle}>PURCHASE INVOICE</div>
             <div className={style.dashedBorder}></div>
             <div className={cn(style.billTableWrapper)}>
-                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeHead)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.purchaseInvoiceTable,
+                        style.billTableNodeHead,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignCenter)}>SNo</div>
                     <div className={cn(commonStyle.textAlignLeft)}>Item</div>
                     <div className={cn(commonStyle.textAlignRight)}>Qty</div>
@@ -72,9 +78,17 @@ export const Bill = (props: IBillProps): ReactElement => {
                     <div className={cn(commonStyle.textAlignRight)}>Tax</div>
                     <div className={cn(commonStyle.textAlignRight)}>Total</div>
                 </div>
-                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.purchaseInvoiceTable,
+                        style.billTableNodeContent,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignCenter)}>1.</div>
-                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>
+                        Philips Wireless Bluetooth Speaker
+                    </div>
                     <div className={cn(commonStyle.textAlignRight)}>2</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
@@ -84,9 +98,17 @@ export const Bill = (props: IBillProps): ReactElement => {
                     <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
                 </div>
-                <div className={cn(style.billTableNode, style.purchaseInvoiceTable, style.billTableNodeContent)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.purchaseInvoiceTable,
+                        style.billTableNodeContent,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignCenter)}>2.</div>
-                    <div className={cn(commonStyle.textAlignLeft)}>Philips Wireless Bluetooth Speaker</div>
+                    <div className={cn(commonStyle.textAlignLeft)}>
+                        Philips Wireless Bluetooth Speaker
+                    </div>
                     <div className={cn(commonStyle.textAlignRight)}>2</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
@@ -140,19 +162,37 @@ export const Bill = (props: IBillProps): ReactElement => {
             <div className={style.billSubTitle}>TAX SPLIT UP</div>
             <div className={style.dashedBorder}></div>
             <div className={cn(style.billTableWrapper)}>
-                <div className={cn(style.billTableNode, style.taxSplitupTable, style.billTableNodeHead)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.taxSplitupTable,
+                        style.billTableNodeHead,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignLeft)}>Tax Brackets</div>
                     <div className={cn(commonStyle.textAlignLeft)}>Items (SNo)</div>
                     <div className={cn(commonStyle.textAlignRight)}>Taxable Value</div>
                     <div className={cn(commonStyle.textAlignRight)}>Tax Amount</div>
                 </div>
-                <div className={cn(style.billTableNode, style.taxSplitupTable, style.billTableNodeContent)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.taxSplitupTable,
+                        style.billTableNodeContent,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignLeft)}>CGST (5%)</div>
                     <div className={cn(commonStyle.textAlignLeft)}>1, 2</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 12,186.00</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 609.30</div>
                 </div>
-                <div className={cn(style.billTableNode, style.taxSplitupTable, style.billTableNodeContent)}>
+                <div
+                    className={cn(
+                        style.billTableNode,
+                        style.taxSplitupTable,
+                        style.billTableNodeContent,
+                    )}
+                >
                     <div className={cn(commonStyle.textAlignLeft)}>CESS (1%)</div>
                     <div className={cn(commonStyle.textAlignLeft)}>1</div>
                     <div className={cn(commonStyle.textAlignRight)}>₹ 10,800.00</div>

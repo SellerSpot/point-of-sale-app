@@ -24,7 +24,10 @@ export const StatusFlag: React.FC<IStatusFlagProps> = (props: IStatusFlagProps):
     return (
         <div
             className={styles.statusFlagDiv}
-            style={{ color: cssColors[sProps.labelColor ?? '--tertiary-font-color'], ...sProps.style }}
+            style={{
+                color: cssColors[sProps.labelColor ?? '--tertiary-font-color'],
+                ...sProps.style,
+            }}
         >
             <div
                 className={cn(

@@ -1,12 +1,16 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { ROUTES } from './config/routes';
+import { ROUTES } from 'config/routes';
+import { loadCSSValues } from 'config/cssVariables';
+import { Dashboard } from 'layouts/Dashboard/Dashboard';
+import { ConfirmDialog } from 'components/ConfirmDialog/ConfirmDialog';
+import { Notify } from 'components/Notify/Notify';
 import './styles/core.css';
-import { Dashboard } from './layouts/Dashboard/Dashboard';
-import { ConfirmDialog } from './components/ConfirmDialog/ConfirmDialog';
-import { Notify } from './components/Notify/Notify';
 
-export const App: FC = (): JSX.Element => {
+// used to load css variables in ts object into the :root context
+loadCSSValues();
+
+export const App = (): ReactElement => {
     return (
         <div>
             <Switch>
