@@ -11,41 +11,59 @@ export const AddCategory = (): ReactElement => {
         categoryName: Yup.string().required('Category Name is a required field'),
     });
 
+    // holds the initial values of the form
+    const initialValues = {
+        categoryName: '',
+    };
+
     const categoryNameFormik = useFormik({
-        initialValues: {
-            categoryName: '',
-        },
+        initialValues,
         validationSchema: formSchema,
-        onSubmit(values) {
+        onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
+            resetForm({
+                values: initialValues,
+            });
         },
     });
     return (
-        <div className={cn(styles.addCategoryWrapper)}>
-            <form onSubmit={categoryNameFormik.handleSubmit} className={styles.addCategoryForm} noValidate>
-                <div className={cn(styles.categoryInputFieldWrapper)}>
+        <form onSubmit={categoryNameFormik.handleSubmit} className={cn(styles.addCategoryWrapper)} noValidate>
+            <div className={styles.addCategoryHeader}>Add Category</div>
+            <div className={styles.addCategoryBody}>
+                <div className={cn(styles.formGroup)}>
                     <InputField
+                        type={'text'}
                         label={'Category Name'}
-                        placeHolder={'Name of the category you wish to add'}
+                        placeHolder={'Category Name'}
+                        required={true}
+                        value={categoryNameFormik.values.categoryName}
                         error={{
                             errorMessage: categoryNameFormik.errors.categoryName ?? '',
                             showError: categoryNameFormik.errors.categoryName !== undefined,
                         }}
-                        value={categoryNameFormik.values.categoryName}
                         onChange={(value) => categoryNameFormik.setFieldValue('categoryName', value)}
                     />
                 </div>
-                <div className={cn(styles.submitCategoryNameWrapper)}>
-                    <Button
-                        label={'Add Category'}
-                        variant={'outline'}
-                        labelColor={'--inventory-color'}
-                        backgroundColor={'--inventory-color'}
-                        type="submit"
-                        onClick={() => void 0}
-                    />
-                </div>
-            </form>
-        </div>
+            </div>
+            <div className={styles.addCategoryFooter}>
+                <Button
+                    type="submit"
+                    shape="rectangle"
+                    label="Add Category"
+                    variant="solid"
+                    backgroundColor="--inventory-color"
+                    labelColor="--light-font-color"
+                />
+                <Button
+                    type="button"
+                    shape="rectangle"
+                    label="Reset Values"
+                    variant="outline"
+                    backgroundColor="--inventory-color"
+                    labelColor="--inventory-color"
+                    onClick={() => categoryNameFormik.resetForm({ values: initialValues })}
+                />
+            </div>
+        </form>
     );
 };
