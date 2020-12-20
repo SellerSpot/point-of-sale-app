@@ -19,6 +19,10 @@ Dropdowns.args = {
     label: 'Sample Label',
     options: ['Automobiles', 'Art'],
     helperText: 'Sample Helper Text',
+    error: {
+        errorMessage: 'Sample Message',
+        showError: false,
+    },
     onSelect: (option: string) => {
         // eslint-disable-next-line no-console
         console.log(option);

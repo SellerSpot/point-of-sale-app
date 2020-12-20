@@ -26,6 +26,7 @@ InputFields.args = {
     size: 'default',
     prefix: <FcOk />,
     suffix: <p>pcs</p>,
+    required: false,
     error: {
         errorMessage: 'Sample Error message',
         showError: true,

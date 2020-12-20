@@ -9,11 +9,19 @@ export interface IDropdownProps {
     label?: string;
     helperText?: string;
     style?: React.CSSProperties;
+    error?: {
+        showError: boolean;
+        errorMessage: string;
+    };
     onSelect: (option: string) => void;
 }
 
 const defaultProps: IDropdownProps = {
     options: ['Sample Option 1', 'Sample Option 2'],
+    error: {
+        errorMessage: 'Default error message',
+        showError: false,
+    },
     onSelect: () => void 0,
 };
 
@@ -39,7 +47,7 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
 
     return (
         <div>
-            {sProps.label ?? false ? <label className={styles.label}>{props.label}</label> : null}
+            {sProps.label ?? false ? <label className={styles.label}>{sProps.label}</label> : null}
             <div className={styles.dropDownBox} style={sProps.style}>
                 <div onClick={() => shouldShowOptions(!showOptions)} className={styles.dropDownSelect}>
                     <p>{sProps.options[selectedOption]}</p>
@@ -71,8 +79,12 @@ export const Dropdown: React.FC<IDropdownProps> = (props: IDropdownProps): JSX.E
                     </ul>
                 </div>
             </div>
-            {props.helperText !== undefined ? (
-                <label className={cn(styles.label, styles.helperText)}>{props.helperText}</label>
+            {sProps.helperText !== undefined || sProps.error !== undefined ? (
+                <label
+                    className={cn(styles.label, styles.helperText, { [styles.hintTextError]: sProps.error?.showError })}
+                >
+                    {sProps.error?.showError ? sProps.error.errorMessage : sProps.helperText}
+                </label>
             ) : null}
         </div>
     );
