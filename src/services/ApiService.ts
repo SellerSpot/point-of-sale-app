@@ -1,9 +1,31 @@
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { CONFIG } from '../config/config';
 
+interface IValidationResponse {
+    status: boolean;
+    data: unknown;
+}
+
 export default class ApiService {
     private axios: AxiosInstance;
     private onlineServerUrl: string;
+    // response status codes
+    private responseStatusCodes = {
+        // validation errors in the request
+        BADREQUEST: 400,
+        // requested resource has been createe successfully
+        CREATED: 201,
+        // a duplicate of the data to be created already exists in database
+        CONFLICT: 409,
+        // unknown server errors
+        INTERNALSERVERERROR: 500,
+        // operation successfully completed
+        OK: 200,
+        // for denoting that the required resource has not been found in database
+        NOTFOUND: 404,
+        // for denoting that no content is being sent in the response
+        NOCONTENT: 204,
+    };
 
     constructor() {
         this.axios = Axios.create();
@@ -27,9 +49,42 @@ export default class ApiService {
         return await this.axios.get(requestUrl);
     }
 
-    public async post(route: string, data: unknown): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${route}`;
-        return await this.axios.post(requestUrl, data);
+    public async post(route: string, data: unknown): Promise<IValidationResponse> {
+        try {
+            const requestUrl = `${this.onlineServerUrl}/${route}`;
+            const response = await this.axios.post(requestUrl, data);
+            if (response.status === 200) {
+                if (response.data.status) {
+                    switch (response.data.statusCode) {
+                        case this.responseStatusCodes.CREATED:
+                            return {
+                                status: true,
+                                data: response.data,
+                            };
+                        default:
+                            return {
+                                status: false,
+                                data: 'Unknown Error Occurred',
+                            };
+                    }
+                } else {
+                    return {
+                        status: false,
+                        data: response.data.data,
+                    };
+                }
+            } else {
+                return {
+                    status: false,
+                    data: 'Unable to connect to the server',
+                };
+            }
+        } catch (err) {
+            return {
+                status: false,
+                data: err.message,
+            };
+        }
     }
 
     public async put(route: string, data: unknown): Promise<AxiosResponse> {

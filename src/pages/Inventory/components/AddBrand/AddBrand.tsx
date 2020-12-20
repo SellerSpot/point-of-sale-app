@@ -1,59 +1,80 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Button } from '../../../../components/Button/Button';
 import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addbrand.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
-import { useFormik } from 'formik';
+import { FormikValues, useFormik } from 'formik';
 import { apiService } from '../../../../services';
 import { API_ROUTES } from '../../../../config/apiRoutes';
+import { showNotify } from '../../../../store/models/notify';
 
 export const AddBrand = (): ReactElement => {
+    const [customErrorFlag, setCustomErrorFlag] = useState<boolean>(false);
+    const [customErrorMessage, setCustomErrorMessage] = useState<string>('');
+
     const addBrandFormSchema = Yup.object().shape({
         brandName: Yup.string().required('Brand Name is a required field'),
     });
 
     // holds the initial values of the form
-    const initialValues = {
+    const addBrandInitialValues = {
         brandName: '',
     };
 
-    const addProductFormik = useFormik({
-        initialValues,
+    const handleSubmit = async (values: FormikValues) => {
+        addBrandFormik.setSubmitting(true);
+        setCustomErrorFlag(false);
+        setCustomErrorMessage('');
+        const response = await apiService.post(API_ROUTES.ADDBRAND, {
+            brandName: values.brandName,
+        });
+        if (response.status) {
+            showNotify({ message: response.data as string, type: 'success' });
+            addBrandFormik.resetForm({ values: addBrandInitialValues });
+        } else {
+            setCustomErrorFlag(true);
+            setCustomErrorMessage(response.data as string);
+        }
+        addBrandFormik.setSubmitting(false);
+    };
+
+    const addBrandFormik = useFormik({
+        initialValues: addBrandInitialValues,
         validationSchema: addBrandFormSchema,
-        onSubmit(values, { resetForm }) {
-            addProductFormik.setSubmitting(true);
-            apiService.post(API_ROUTES.ADDBRAND, {
-                brandName: values.brandName,
-            });
-            resetForm({
-                values: initialValues,
-            });
+        onSubmit(values) {
+            handleSubmit(values);
         },
     });
     return (
-        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={addBrandFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Brand Name'}
+                        disabled={addBrandFormik.isSubmitting}
                         placeHolder={'Brand Name'}
                         required={true}
-                        value={addProductFormik.values.brandName}
+                        value={addBrandFormik.values.brandName}
                         error={{
-                            errorMessage: addProductFormik.errors.brandName ?? '',
-                            showError: addProductFormik.errors.brandName !== undefined,
+                            errorMessage:
+                                addBrandFormik.errors.brandName === undefined
+                                    ? customErrorFlag
+                                        ? customErrorMessage
+                                        : ''
+                                    : addBrandFormik.errors.brandName,
+                            showError: customErrorFlag || addBrandFormik.errors.brandName !== undefined,
                         }}
-                        onChange={(value) => addProductFormik.setFieldValue('brandName', value)}
+                        onChange={(value) => addBrandFormik.setFieldValue('brandName', value)}
                     />
                 </div>
             </div>
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    disabled={addProductFormik.isSubmitting}
+                    disabled={addBrandFormik.isSubmitting}
                     shape={'rectangle'}
                     label={'Add Brand'}
                     variant={'solid'}
@@ -62,14 +83,14 @@ export const AddBrand = (): ReactElement => {
                 />
                 <Button
                     type="button"
-                    disabled={addProductFormik.isSubmitting}
+                    disabled={addBrandFormik.isSubmitting}
                     shape="rectangle"
                     label="Reset Values"
                     focusable={false}
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => addProductFormik.resetForm({ values: initialValues })}
+                    onClick={() => addBrandFormik.resetForm({ values: addBrandInitialValues })}
                 />
             </div>
         </form>
