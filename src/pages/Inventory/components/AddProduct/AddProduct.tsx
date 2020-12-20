@@ -38,7 +38,7 @@ export const AddProduct = (): ReactElement => {
         stockUnit: 'KG',
     };
 
-    const addProductFormik = useFormik({
+    const formik = useFormik({
         initialValues,
         validationSchema: formSchema,
         onSubmit: (values, { resetForm }) => {
@@ -50,21 +50,21 @@ export const AddProduct = (): ReactElement => {
     });
 
     return (
-        <form onSubmit={addProductFormik.handleSubmit} className={cn(styles.addProductWrapper)} noValidate>
-            <div className={styles.addProductHeader}>Add Product</div>
-            <div className={styles.addProductBody}>
+        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Product</div>
+            <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Product Name'}
                         placeHolder={'Product Name'}
                         required={true}
-                        value={addProductFormik.values.name}
+                        value={formik.values.name}
                         error={{
-                            errorMessage: addProductFormik.errors.name ?? '',
-                            showError: addProductFormik.errors.name !== undefined,
+                            errorMessage: formik.errors.name ?? '',
+                            showError: formik.errors.name !== undefined,
                         }}
-                        onChange={(value) => addProductFormik.setFieldValue('name', value)}
+                        onChange={(value) => formik.setFieldValue('name', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -72,12 +72,12 @@ export const AddProduct = (): ReactElement => {
                         type={'text'}
                         label={'Product GTIN'}
                         placeHolder={'Product Code'}
-                        value={addProductFormik.values.gtin}
+                        value={formik.values.gtin}
                         error={{
-                            errorMessage: addProductFormik.errors.gtin ?? '',
-                            showError: addProductFormik.errors.gtin !== undefined,
+                            errorMessage: formik.errors.gtin ?? '',
+                            showError: formik.errors.gtin !== undefined,
                         }}
-                        onChange={(value) => addProductFormik.setFieldValue('gtin', value)}
+                        onChange={(value) => formik.setFieldValue('gtin', value)}
                     />
                 </div>
                 <div className={cn(styles.formGroup, styles.formGroupSplitEqual)}>
@@ -85,22 +85,22 @@ export const AddProduct = (): ReactElement => {
                         label={'Product Category'}
                         options={['Category One', 'Category Two', 'Category Three']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('category', value);
+                            formik.setFieldValue('category', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.category ?? '',
-                            showError: addProductFormik.errors.category !== undefined,
+                            errorMessage: formik.errors.category ?? '',
+                            showError: formik.errors.category !== undefined,
                         }}
                     />
                     <Dropdown
                         label={'Product Brand'}
                         options={['Brand One', 'Brand Two', 'Brand Three']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('brand', value);
+                            formik.setFieldValue('brand', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.brand ?? '',
-                            showError: addProductFormik.errors.brand !== undefined,
+                            errorMessage: formik.errors.brand ?? '',
+                            showError: formik.errors.brand !== undefined,
                         }}
                     />
                 </div>
@@ -111,22 +111,22 @@ export const AddProduct = (): ReactElement => {
                         label={'Landing Price'}
                         placeHolder={'Landing Price'}
                         required={true}
-                        value={addProductFormik.values.landingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('landingPrice', value)}
+                        value={formik.values.landingPrice.toString()}
+                        onChange={(value) => formik.setFieldValue('landingPrice', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.landingPrice ?? '',
-                            showError: addProductFormik.errors.landingPrice !== undefined,
+                            errorMessage: formik.errors.landingPrice ?? '',
+                            showError: formik.errors.landingPrice !== undefined,
                         }}
                     />
                     <InputField
                         type={'number'}
                         label={'Markup %'}
                         placeHolder={'Markup Percent'}
-                        value={addProductFormik.values.markup.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('markup', value)}
+                        value={formik.values.markup.toString()}
+                        onChange={(value) => formik.setFieldValue('markup', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.markup ?? '',
-                            showError: addProductFormik.errors.markup !== undefined,
+                            errorMessage: formik.errors.markup ?? '',
+                            showError: formik.errors.markup !== undefined,
                         }}
                     />
                 </div>
@@ -136,11 +136,11 @@ export const AddProduct = (): ReactElement => {
                         label={'Selling Price'}
                         required={true}
                         placeHolder={'Selling Price'}
-                        value={addProductFormik.values.sellingPrice.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('sellingPrice', value)}
+                        value={formik.values.sellingPrice.toString()}
+                        onChange={(value) => formik.setFieldValue('sellingPrice', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.sellingPrice ?? '',
-                            showError: addProductFormik.errors.sellingPrice !== undefined,
+                            errorMessage: formik.errors.sellingPrice ?? '',
+                            showError: formik.errors.sellingPrice !== undefined,
                         }}
                     />
                 </div>
@@ -150,27 +150,27 @@ export const AddProduct = (): ReactElement => {
                         type={'number'}
                         label={'Stock Level'}
                         placeHolder={'Stock Level'}
-                        value={addProductFormik.values.stockLevel.toString()}
-                        onChange={(value) => addProductFormik.setFieldValue('stockLevel', value)}
+                        value={formik.values.stockLevel.toString()}
+                        onChange={(value) => formik.setFieldValue('stockLevel', value)}
                         error={{
-                            errorMessage: addProductFormik.errors.stockLevel ?? '',
-                            showError: addProductFormik.errors.stockLevel !== undefined,
+                            errorMessage: formik.errors.stockLevel ?? '',
+                            showError: formik.errors.stockLevel !== undefined,
                         }}
                     />
                     <Dropdown
                         label={'Stock Unit'}
                         options={['KG', 'Pieces', 'Liters']}
                         onSelect={(value) => {
-                            addProductFormik.setFieldValue('stockUnit', value);
+                            formik.setFieldValue('stockUnit', value);
                         }}
                         error={{
-                            errorMessage: addProductFormik.errors.stockUnit ?? '',
-                            showError: addProductFormik.errors.stockUnit !== undefined,
+                            errorMessage: formik.errors.stockUnit ?? '',
+                            showError: formik.errors.stockUnit !== undefined,
                         }}
                     />
                 </div>
             </div>
-            <div className={styles.addProductFooter}>
+            <div className={styles.pageFooter}>
                 <Button
                     type="submit"
                     shape="rectangle"
@@ -187,7 +187,7 @@ export const AddProduct = (): ReactElement => {
                     focusable={false}
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => addProductFormik.resetForm({ values: initialValues })}
+                    onClick={() => formik.resetForm({ values: initialValues })}
                 />
             </div>
         </form>

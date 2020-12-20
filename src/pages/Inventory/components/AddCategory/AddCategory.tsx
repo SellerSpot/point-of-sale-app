@@ -8,15 +8,15 @@ import { useFormik } from 'formik';
 
 export const AddCategory = (): ReactElement => {
     const formSchema = Yup.object().shape({
-        categoryName: Yup.string().required('Category Name is a required field'),
+        name: Yup.string().required('Category Name is a required field'),
     });
 
     // holds the initial values of the form
     const initialValues = {
-        categoryName: '',
+        name: '',
     };
 
-    const categoryNameFormik = useFormik({
+    const formik = useFormik({
         initialValues,
         validationSchema: formSchema,
         onSubmit(values, { resetForm }) {
@@ -27,25 +27,25 @@ export const AddCategory = (): ReactElement => {
         },
     });
     return (
-        <form onSubmit={categoryNameFormik.handleSubmit} className={cn(styles.addCategoryWrapper)} noValidate>
-            <div className={styles.addCategoryHeader}>Add Category</div>
-            <div className={styles.addCategoryBody}>
+        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Category</div>
+            <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Category Name'}
                         placeHolder={'Category Name'}
                         required={true}
-                        value={categoryNameFormik.values.categoryName}
+                        value={formik.values.name}
                         error={{
-                            errorMessage: categoryNameFormik.errors.categoryName ?? '',
-                            showError: categoryNameFormik.errors.categoryName !== undefined,
+                            errorMessage: formik.errors.name ?? '',
+                            showError: formik.errors.name !== undefined,
                         }}
-                        onChange={(value) => categoryNameFormik.setFieldValue('categoryName', value)}
+                        onChange={(value) => formik.setFieldValue('name', value)}
                     />
                 </div>
             </div>
-            <div className={styles.addCategoryFooter}>
+            <div className={styles.pageFooter}>
                 <Button
                     type="submit"
                     shape="rectangle"
@@ -62,7 +62,7 @@ export const AddCategory = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => categoryNameFormik.resetForm({ values: initialValues })}
+                    onClick={() => formik.resetForm({ values: initialValues })}
                 />
             </div>
         </form>
