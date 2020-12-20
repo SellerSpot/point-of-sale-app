@@ -10,49 +10,65 @@ import { useFormik } from 'formik';
 
 export const AddBrand = (): ReactElement => {
     const formSchema = Yup.object().shape({
-        brandName: Yup.string().required('Brand Name is a required field'),
+        name: Yup.string().required('Brand Name is a required field'),
     });
 
-    const brandNameFormik = useFormik({
-        initialValues: {
-            brandName: '',
-        },
+    // holds the initial values of the form
+    const initialValues = {
+        name: '',
+    };
+
+    const formik = useFormik({
+        initialValues,
         validationSchema: formSchema,
-        onSubmit(values) {
-            alert(values);
+        onSubmit(values, { resetForm }) {
+            alert(JSON.stringify(values));
+            resetForm({
+                values: initialValues,
+            });
             // apiService.post(API_ROUTES.ADDBRAND, {
             //     brandName: values.brandName,
             // });
         },
     });
     return (
-        <div className={cn(styles.addBrandWrapper)}>
-            <form onSubmit={brandNameFormik.handleSubmit} className={styles.addBrandForm}>
-                <div className={styles.sliderHeader}>
-                    <div className={styles.formTitle}>Add Brand</div>
-                </div>
-                <div className={cn(styles.brandInputFieldsWrapper)}>
+        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Category</div>
+            <div className={styles.pageBody}>
+                <div className={cn(styles.formGroup)}>
                     <InputField
+                        type={'text'}
                         label={'Brand Name'}
                         placeHolder={'Brand Name'}
+                        required={true}
+                        value={formik.values.name}
                         error={{
-                            errorMessage: brandNameFormik.errors.brandName ?? '',
-                            showError: brandNameFormik.errors.brandName !== undefined,
+                            errorMessage: formik.errors.name ?? '',
+                            showError: formik.errors.name !== undefined,
                         }}
-                        value={brandNameFormik.values.brandName}
-                        onChange={(value) => brandNameFormik.setFieldValue('brandName', value)}
+                        onChange={(value) => formik.setFieldValue('name', value)}
                     />
                 </div>
-                <div className={styles.sliderFooter}>
-                    <Button
-                        label={'Add Brand'}
-                        variant={'outline'}
-                        labelColor={'--inventory-color'}
-                        backgroundColor={'--inventory-color'}
-                        type="submit"
-                    />
-                </div>
-            </form>
-        </div>
+            </div>
+            <div className={styles.pageFooter}>
+                <Button
+                    type="submit"
+                    shape="rectangle"
+                    label="Add Brand"
+                    variant="solid"
+                    backgroundColor="--inventory-color"
+                    labelColor="--light-font-color"
+                />
+                <Button
+                    type="button"
+                    shape="rectangle"
+                    label="Reset Values"
+                    variant="outline"
+                    backgroundColor="--inventory-color"
+                    labelColor="--inventory-color"
+                    onClick={() => formik.resetForm({ values: initialValues })}
+                />
+            </div>
+        </form>
     );
 };

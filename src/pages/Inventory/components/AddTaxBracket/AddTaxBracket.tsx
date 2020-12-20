@@ -8,44 +8,80 @@ import { useFormik } from 'formik';
 
 export const AddTaxBracket = (): ReactElement => {
     const formSchema = Yup.object().shape({
-        taxBracketName: Yup.string().required('Tax Bracket Name is a required field'),
+        name: Yup.string().required('Tax Bracket Name is a required field'),
+        percent: Yup.number()
+            .min(0, 'Tax Bracket Percent must be more than or equal to 0')
+            .required('Tax Bracket Percent is a required field'),
     });
 
-    const taxBracketNameFormik = useFormik({
-        initialValues: {
-            taxBracketName: '',
-        },
+    // holds the initial values of the form
+    const initialValues = {
+        name: '',
+        percent: 0,
+    };
+
+    const formik = useFormik({
+        initialValues,
         validationSchema: formSchema,
-        onSubmit(values) {
+        onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
+            resetForm({
+                values: initialValues,
+            });
         },
     });
     return (
-        <div className={cn(styles.addTaxBracketWrapper)}>
-            <form onSubmit={taxBracketNameFormik.handleSubmit} className={styles.addTaxBracketForm} noValidate>
-                <div className={cn(styles.taxBracketInputFieldWrapper)}>
+        <form onSubmit={formik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>Add Category</div>
+            <div className={styles.pageBody}>
+                <div className={cn(styles.formGroup)}>
                     <InputField
+                        type={'text'}
                         label={'Tax Bracket Name'}
                         placeHolder={'Tax Bracket Name'}
+                        required={true}
+                        value={formik.values.name}
                         error={{
-                            errorMessage: taxBracketNameFormik.errors.taxBracketName ?? '',
-                            showError: taxBracketNameFormik.errors.taxBracketName !== undefined,
+                            errorMessage: formik.errors.name ?? '',
+                            showError: formik.errors.name !== undefined,
                         }}
-                        value={taxBracketNameFormik.values.taxBracketName}
-                        onChange={(value) => taxBracketNameFormik.setFieldValue('taxBracketName', value)}
+                        onChange={(value) => formik.setFieldValue('name', value)}
                     />
                 </div>
-                <div className={cn(styles.submitTaxBracketNameWrapper)}>
-                    <Button
-                        label={'Add TaxBracket'}
-                        variant={'outline'}
-                        labelColor={'--inventory-color'}
-                        backgroundColor={'--inventory-color'}
-                        type="submit"
-                        onClick={() => void 0}
+                <div className={cn(styles.formGroup)}>
+                    <InputField
+                        type={'number'}
+                        label={'Tax Bracket Percent'}
+                        placeHolder={'Tax Bracket Percent'}
+                        required={true}
+                        value={formik.values.percent.toString()}
+                        error={{
+                            errorMessage: formik.errors.percent ?? '',
+                            showError: formik.errors.percent !== undefined,
+                        }}
+                        onChange={(value) => formik.setFieldValue('percent', value)}
                     />
                 </div>
-            </form>
-        </div>
+            </div>
+            <div className={styles.pageFooter}>
+                <Button
+                    type="submit"
+                    shape="rectangle"
+                    label="Add Tax Bracket"
+                    variant="solid"
+                    backgroundColor="--inventory-color"
+                    labelColor="--light-font-color"
+                />
+                <Button
+                    type="button"
+                    shape="rectangle"
+                    label="Reset Values"
+                    variant="outline"
+                    backgroundColor="--inventory-color"
+                    labelColor="--inventory-color"
+                    onClick={() => formik.resetForm({ values: initialValues })}
+                />
+            </div>
+        </form>
     );
 };
