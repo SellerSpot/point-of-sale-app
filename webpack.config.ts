@@ -6,25 +6,14 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import packageJson from './package.json';
 
 const webpackConfiguration = (env: {
-    production: boolean;
-    development: boolean;
+    production?: boolean;
+    development?: boolean;
 }): Configuration => {
     const isProduction = env.production ? true : false;
     return {
         entry: './src',
         resolve: {
-            extensions: [
-                '.ts',
-                '.tsx',
-                '.js',
-                '.css',
-                '.module.css',
-                '.png',
-                '.jpg',
-                '.jpeg',
-                '.svg',
-                '.gif',
-            ],
+            extensions: ['.ts', '.tsx', '.js'],
             plugins: [new TsconfigPathsPlugin()],
         },
         output: {
