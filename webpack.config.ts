@@ -6,25 +6,14 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import packageJson from './package.json';
 
 const webpackConfiguration = (env: {
-    production: boolean;
-    development: boolean;
+    production?: boolean;
+    development?: boolean;
 }): Configuration => {
     const isProduction = env.production ? true : false;
     return {
         entry: './src',
         resolve: {
-            extensions: [
-                '.ts',
-                '.tsx',
-                '.js',
-                '.css',
-                '.module.css',
-                '.png',
-                '.jpg',
-                '.jpeg',
-                '.svg',
-                '.gif',
-            ],
+            extensions: ['.ts', '.tsx', '.js'],
             plugins: [new TsconfigPathsPlugin()],
         },
         output: {
@@ -74,6 +63,7 @@ const webpackConfiguration = (env: {
         },
         plugins: [
             new HtmlWebpackPlugin({
+                inject: true,
                 template: path.join(__dirname, '/public/index.html'),
             }),
             new webpack.DefinePlugin({
@@ -89,8 +79,11 @@ const webpackConfiguration = (env: {
         ],
         devServer: {
             port: 8000,
-            publicPath: '/',
             open: true,
+            hot: true,
+            contentBase: 'public',
+            publicPath: '/',
+            historyApiFallback: true,
         },
         devtool: !isProduction ? 'source-map' : false,
     };
