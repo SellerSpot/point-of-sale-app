@@ -67,7 +67,7 @@ const webpackConfiguration = (env: {
                 template: path.join(__dirname, '/public/index.html'),
             }),
             new webpack.DefinePlugin({
-                'process.env.ENV': isProduction ? 'production' : 'development',
+                'process.env.ENV': JSON.stringify(isProduction ? 'production' : 'development'),
                 'process.env.APP_NAME': JSON.stringify(packageJson.name),
                 'process.env.APP_VERSION': JSON.stringify(packageJson.version),
             }),

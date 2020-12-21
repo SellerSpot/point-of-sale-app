@@ -55,6 +55,12 @@ const getPrimaryColor = (sProps: IAlertMessageProps): keyof typeof cssColors => 
     }
 };
 
+/**
+ *
+ * This feature is not yet available for server-side rendering.
+ * Suspense support will be added in a later release.
+ */
+
 export const AlertMessage: React.FC<IAlertMessageProps> = (
     props: IAlertMessageProps,
 ): JSX.Element => {
