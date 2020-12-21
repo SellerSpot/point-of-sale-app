@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import leftNavStyles from './leftnav.module.css';
 import { FaBoxOpen, FaStore, IoMdCart, RiBillLine } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
-import { ROUTES } from '../../../../config/routes';
-import { cssColors } from '../../../../config/cssVariables';
-import { HorizontalRule } from '../../../../components/HorizontalRule/HorizontalRule';
+import { cssColors } from 'config/cssVariables';
+import { HorizontalRule } from 'components/HorizontalRule/HorizontalRule';
+import { ROUTES } from 'config/routes';
 
 interface INavItem {
     color: string;

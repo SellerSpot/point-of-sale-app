@@ -4,11 +4,7 @@
         "noImplicitAny": true,
         "module": "CommonJS",
         "target": "ES5",
-        "lib": [
-            "ESNext",
-            "DOM",
-            "DOM.Iterable"
-        ],
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "removeComments": true,
         "allowSyntheticDefaultImports": true,
         "jsx": "react",
@@ -18,37 +14,18 @@
         "moduleResolution": "node",
         "downlevelIteration": true,
         "baseUrl": "src",
-        "paths": { // will be used for module resolution
-            "components/*": [
-                "components/*"
-            ],
-            "config/*": [
-                "config/*"
-            ],
-            "images/*": [
-                "images/*"
-            ],
-            "layouts/*": [
-                "layouts/*"
-            ],
-            "pages/*": [
-                "pages/*"
-            ],
-            "services/*": [
-                "services/*"
-            ],
-            "store/*": [
-                "store/*"
-            ],
-            "styles/*": [
-                "styles/*"
-            ],
-            "typings/*": [
-                "typings/*"
-            ],
+        "paths": {
+            // will be used for module resolution
+            "components/*": ["components/*"],
+            "config/*": ["config/*"],
+            "images/*": ["images/*"],
+            "layouts/*": ["layouts/*"],
+            "pages/*": ["pages/*"],
+            "services/*": ["services/*"],
+            "store/*": ["store/*"],
+            "styles/*": ["styles/*"],
+            "typings/*": ["typings/*"]
         }
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }

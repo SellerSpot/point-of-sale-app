@@ -25,6 +25,7 @@ const defaultProps: ISliderModalProps = {
     children: null,
     sliderSize: '40%',
     sliderName: 'addCategorySlider',
+
     confirmSliderClose: {
         show: false,
     },
