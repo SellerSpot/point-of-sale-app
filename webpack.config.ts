@@ -63,6 +63,7 @@ const webpackConfiguration = (env: {
         },
         plugins: [
             new HtmlWebpackPlugin({
+                inject: true,
                 template: path.join(__dirname, '/public/index.html'),
             }),
             new webpack.DefinePlugin({
@@ -78,8 +79,11 @@ const webpackConfiguration = (env: {
         ],
         devServer: {
             port: 8000,
-            publicPath: '/',
             open: true,
+            hot: true,
+            contentBase: 'public',
+            publicPath: '/',
+            historyApiFallback: true,
         },
         devtool: !isProduction ? 'source-map' : false,
     };
