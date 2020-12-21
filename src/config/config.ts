@@ -1,5 +1,5 @@
 export const CONFIG = {
-    ENV: 'development', //development | production
+    ENV: process.env.ENV, //development | production
     ONLINE_SERVER_URL: 'http://localhost:8000',
 };
 
