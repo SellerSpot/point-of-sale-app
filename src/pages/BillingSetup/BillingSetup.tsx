@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Button } from '../../components/Button/Button';
+import { Button } from 'components/Button/Button';
 import styles from './billingsetup.module.css';
 import { Bill } from './components/Bill/Bill';
 

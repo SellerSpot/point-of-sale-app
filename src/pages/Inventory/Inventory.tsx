@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ITabBarProps, TabBar } from '../../components/TabBar/TabBar';
+import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
 import { Brands } from './components/Brands/Brands';
 import { Categories } from './components/Categories/Categories';
 import { Products } from './components/Products/Products';
 import { TaxBrackets } from './components/TaxBrackets/TaxBrackets';
 import styles from './inventory.module.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { ROUTES } from '../../config/routes';
+import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
 
 export const Inventory = (): JSX.Element => {

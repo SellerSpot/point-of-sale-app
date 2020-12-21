@@ -1,3 +1,5 @@
+import { json } from 'express';
+
 export const CONFIG = {
     ENV: process.env.ENV, //development | production
     ONLINE_SERVER_URL: 'http://localhost:8000',
