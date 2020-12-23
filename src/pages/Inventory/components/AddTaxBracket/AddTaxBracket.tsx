@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Button } from '../../../../components/Button/Button';
 import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addtaxbracket.module.css';
@@ -7,7 +7,10 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
 export const AddTaxBracket = (): ReactElement => {
-    const formSchema = Yup.object().shape({
+    const [customErrorFlag, setCustomErrorFlag] = useState<boolean>(false);
+    const [customErrorMessage, setCustomErrorMessage] = useState<string>('');
+
+    const addTaxBracketFormSchema = Yup.object().shape({
         taxBracketName: Yup.string().required('Tax Bracket Name is a required field'),
         taxBracketPercent: Yup.number()
             .min(0, 'Tax Bracket Percent must be more than or equal to 0')
@@ -22,7 +25,7 @@ export const AddTaxBracket = (): ReactElement => {
 
     const addTaxBracketFormik = useFormik({
         initialValues: addTaxBracketInitialValues,
-        validationSchema: formSchema,
+        validationSchema: addTaxBracketFormSchema,
         onSubmit(values, { resetForm }) {
             alert(JSON.stringify(values));
             resetForm({
@@ -30,6 +33,24 @@ export const AddTaxBracket = (): ReactElement => {
             });
         },
     });
+
+    // // used to assign the error messages to the right field
+    // const handleAddTeaxBracketFormErrorMessage = () => {};
+
+    // used to decide if the particular field should show errors
+    const handleAddTaxBracketFormShowError = (
+        fieldName: keyof typeof addTaxBracketInitialValues,
+    ): boolean => {
+        if (customErrorFlag) {
+            if (fieldName === 'taxBracketName') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    };
+
     return (
         <form
             onSubmit={addTaxBracketFormik.handleSubmit}
@@ -46,8 +67,13 @@ export const AddTaxBracket = (): ReactElement => {
                         required={true}
                         value={addTaxBracketFormik.values.taxBracketName}
                         error={{
-                            errorMessage: addTaxBracketFormik.errors.taxBracketName ?? '',
-                            showError: addTaxBracketFormik.errors.taxBracketName !== undefined,
+                            errorMessage:
+                                addTaxBracketFormik.errors.taxBracketName === undefined
+                                    ? customErrorFlag
+                                        ? customErrorMessage
+                                        : ''
+                                    : addTaxBracketFormik.errors.taxBracketName,
+                            showError: handleAddTaxBracketFormShowError('taxBracketName'),
                         }}
                         onChange={(value) =>
                             addTaxBracketFormik.setFieldValue('taxBracketName', value)
@@ -62,8 +88,15 @@ export const AddTaxBracket = (): ReactElement => {
                         required={true}
                         value={addTaxBracketFormik.values.taxBracketPercent.toString()}
                         error={{
-                            errorMessage: addTaxBracketFormik.errors.taxBracketPercent ?? '',
-                            showError: addTaxBracketFormik.errors.taxBracketPercent !== undefined,
+                            errorMessage:
+                                addTaxBracketFormik.errors.taxBracketName === undefined
+                                    ? customErrorFlag
+                                        ? customErrorMessage
+                                        : ''
+                                    : addTaxBracketFormik.errors.taxBracketName,
+                            showError:
+                                customErrorFlag ||
+                                addTaxBracketFormik.errors.taxBracketName !== undefined,
                         }}
                         onChange={(value) =>
                             addTaxBracketFormik.setFieldValue('taxBracketPercent', value)

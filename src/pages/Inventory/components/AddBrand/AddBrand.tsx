@@ -4,8 +4,8 @@ import { InputField } from '../../../../components/InputField/InputField';
 import styles from './addbrand.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
-import { FormikValues, useFormik } from 'formik';
-import { apiService } from '../../../../services';
+import { useFormik } from 'formik';
+import { apiService } from 'services';
 import { API_ROUTES } from '../../../../config/apiRoutes';
 import { showNotify } from '../../../../store/models/notify';
 
@@ -22,11 +22,11 @@ export const AddBrand = (): ReactElement => {
         brandName: '',
     };
 
-    const handleSubmit = async (values: FormikValues) => {
+    const handleSubmit = async (values: typeof addBrandInitialValues) => {
         addBrandFormik.setSubmitting(true);
         setCustomErrorFlag(false);
         setCustomErrorMessage('');
-        const response = await apiService.post(API_ROUTES.ADDBRAND, {
+        const response = await apiService.post(API_ROUTES.BRAND, {
             brandName: values.brandName,
         });
         if (response.status) {
