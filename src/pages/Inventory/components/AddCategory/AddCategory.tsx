@@ -8,50 +8,70 @@ import { useFormik } from 'formik';
 import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
+import { isNull, isUndefined } from 'lodash';
+
+interface ICustomErrorMessageState {
+    categoryName: string;
+}
+
+// holds the initial values for the customErrorMessage state
+const customErrorMessagesInitialState: ICustomErrorMessageState = {
+    categoryName: null,
+};
+
+const formSchema = Yup.object().shape({
+    categoryName: Yup.string().required('Category Name is a required field'),
+});
+
+// holds the initial values of the form
+const formInitialValues = {
+    categoryName: '',
+};
 
 export const AddCategory = (): ReactElement => {
-    const [customErrorFlag, setCustomErrorFlag] = useState<boolean>(false);
-    const [customErrorMessage, setCustomErrorMessage] = useState<string>('');
+    // holds the server side validation error messages
+    const [customErrorMessages, setCustomErrorMessages] = useState<ICustomErrorMessageState>(
+        customErrorMessagesInitialState,
+    );
 
-    const addCategoryFormSchema = Yup.object().shape({
-        categoryName: Yup.string().required('Category Name is a required field'),
-    });
-
-    // holds the initial values of the form
-    const addCategoryInitialValues = {
-        categoryName: '',
-    };
-
-    const handleSubmit = async (values: typeof addCategoryInitialValues) => {
-        addCategoryFormik.setSubmitting(true);
-        setCustomErrorFlag(false);
-        setCustomErrorMessage('');
-        const response = await apiService.post(API_ROUTES.CATEGORY, {
-            categoryName: values.categoryName,
-        });
-        if (response.status) {
-            showNotify({ message: response.data as string, type: 'success' });
-            addCategoryFormik.resetForm({ values: addCategoryInitialValues });
-        } else {
-            setCustomErrorFlag(true);
-            setCustomErrorMessage(response.data as string);
-        }
-        addCategoryFormik.setSubmitting(false);
-    };
-
-    const addCategoryFormik = useFormik({
-        initialValues: addCategoryInitialValues,
-        validationSchema: addCategoryFormSchema,
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: formSchema,
         onSubmit(values) {
             handleSubmit(values);
         },
     });
+
+    const handleSubmit = async (values: typeof formInitialValues) => {
+        formFormik.setSubmitting(true);
+        setCustomErrorMessages(customErrorMessagesInitialState);
+
+        // sending API request
+        const response = await apiService.post(API_ROUTES.CATEGORY, {
+            categoryName: values.categoryName,
+        });
+        // parsing response
+        if (response.status) {
+            showNotify({ message: response.data as string, type: 'success' });
+            formFormik.resetForm({ values: formInitialValues });
+        } else {
+            // setting custom error messages
+            response.error.map((error) => {
+                switch (error.fieldName) {
+                    case 'categoryName':
+                        setCustomErrorMessages({
+                            categoryName: error.message,
+                        });
+                        break;
+                }
+            });
+        }
+
+        formFormik.setSubmitting(false);
+    };
+
     return (
-        <form
-            onSubmit={addCategoryFormik.handleSubmit}
-            className={cn(styles.pageWrapper)}
-            noValidate
-        >
+        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -60,19 +80,24 @@ export const AddCategory = (): ReactElement => {
                         label={'Category Name'}
                         placeHolder={'Category Name'}
                         required={true}
-                        value={addCategoryFormik.values.categoryName}
+                        value={formFormik.values.categoryName}
                         error={{
-                            errorMessage:
-                                addCategoryFormik.errors.categoryName === undefined
-                                    ? customErrorFlag
-                                        ? customErrorMessage
-                                        : ''
-                                    : addCategoryFormik.errors.categoryName,
+                            errorMessage: isUndefined(formFormik.errors.categoryName)
+                                ? !isNull(customErrorMessages.categoryName)
+                                    ? customErrorMessages.categoryName
+                                    : ''
+                                : formFormik.errors.categoryName,
                             showError:
-                                customErrorFlag ||
-                                addCategoryFormik.errors.categoryName !== undefined,
+                                !isNull(customErrorMessages.categoryName) ||
+                                !isUndefined(formFormik.errors.categoryName),
                         }}
-                        onChange={(value) => addCategoryFormik.setFieldValue('categoryName', value)}
+                        onChange={(value) => {
+                            setCustomErrorMessages({
+                                ...customErrorMessages,
+                                categoryName: null,
+                            });
+                            formFormik.setFieldValue('categoryName', value);
+                        }}
                     />
                 </div>
             </div>
@@ -93,9 +118,7 @@ export const AddCategory = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() =>
-                        addCategoryFormik.resetForm({ values: addCategoryInitialValues })
-                    }
+                    onClick={() => formFormik.resetForm({ values: formInitialValues })}
                 />
             </div>
         </form>
