@@ -1,9 +1,13 @@
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { CONFIG } from '../config/config';
+import { CONFIG, inputFieldNames } from '../config/config';
 
 interface IValidationResponse {
     status: boolean;
-    data: unknown;
+    data?: unknown;
+    error?: {
+        fieldName: inputFieldNames | string;
+        message: string;
+    }[];
 }
 
 export default class ApiService {
@@ -64,25 +68,40 @@ export default class ApiService {
                         default:
                             return {
                                 status: false,
-                                data: 'Unknown Error Occurred',
+                                error: [
+                                    {
+                                        fieldName: inputFieldNames.COMMONMESSAGE,
+                                        message: 'Unable to connect to the server',
+                                    },
+                                ],
                             };
                     }
                 } else {
                     return {
                         status: false,
-                        data: response.data.data,
+                        error: response.data.error,
                     };
                 }
             } else {
                 return {
                     status: false,
-                    data: 'Unable to connect to the server',
+                    error: [
+                        {
+                            fieldName: inputFieldNames.COMMONMESSAGE,
+                            message: 'Unable to connect to the server',
+                        },
+                    ],
                 };
             }
-        } catch (err) {
+        } catch (e) {
             return {
                 status: false,
-                data: err.message,
+                error: [
+                    {
+                        fieldName: inputFieldNames.COMMONMESSAGE,
+                        message: e.message,
+                    },
+                ],
             };
         }
     }
