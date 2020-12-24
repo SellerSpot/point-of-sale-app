@@ -1,11 +1,11 @@
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { CONFIG, inputFieldNames } from '../config/config';
+import { CONFIG } from '../config/config';
 
 interface IValidationResponse {
     status: boolean;
     data?: unknown;
     error?: {
-        fieldName: inputFieldNames | string;
+        fieldName: string;
         message: string;
     }[];
 }
@@ -70,7 +70,7 @@ export default class ApiService {
                                 status: false,
                                 error: [
                                     {
-                                        fieldName: inputFieldNames.COMMONMESSAGE,
+                                        fieldName: 'commonMessage',
                                         message: 'Unable to connect to the server',
                                     },
                                 ],
@@ -87,7 +87,7 @@ export default class ApiService {
                     status: false,
                     error: [
                         {
-                            fieldName: inputFieldNames.COMMONMESSAGE,
+                            fieldName: 'commonMessage',
                             message: 'Unable to connect to the server',
                         },
                     ],
@@ -98,7 +98,7 @@ export default class ApiService {
                 status: false,
                 error: [
                     {
-                        fieldName: inputFieldNames.COMMONMESSAGE,
+                        fieldName: 'commonMessage',
                         message: e.message,
                     },
                 ],
