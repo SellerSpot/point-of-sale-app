@@ -1,62 +1,86 @@
 import React, { ReactElement, useState } from 'react';
-import { Button } from '../../../../components/Button/Button';
-import { InputField } from '../../../../components/InputField/InputField';
+import { Button } from 'components/Button/Button';
+import { InputField } from 'components/InputField/InputField';
 import styles from './addtaxbracket.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { isNull, isUndefined } from 'lodash';
+import { apiService } from 'services';
+import { API_ROUTES } from 'config/apiRoutes';
+import { showNotify } from 'store/models/notify';
+
+// holds the initial values for the customErrorMessage state
+const customErrorMessagesInitialState: typeof formInitialValues = {
+    name: null,
+    taxPercent: null,
+};
+
+const formSchema = Yup.object().shape({
+    name: Yup.string().required('Tax Bracket Name is a required field'),
+    taxPercent: Yup.number()
+        .min(0, 'Tax Bracket Percent must be more than or equal to 0')
+        .max(100, 'Tax Bracket Percent must be less than or equal to 100')
+        .required('Tax Bracket Percent is a required field'),
+});
+
+// holds the initial values of the form
+const formInitialValues = {
+    name: '',
+    taxPercent: '',
+};
 
 export const AddTaxBracket = (): ReactElement => {
-    const [customErrorFlag, setCustomErrorFlag] = useState<boolean>(false);
-    const [customErrorMessage, setCustomErrorMessage] = useState<string>('');
+    // holds the server side validation error messages
+    const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
 
-    const addTaxBracketFormSchema = Yup.object().shape({
-        taxBracketName: Yup.string().required('Tax Bracket Name is a required field'),
-        taxBracketPercent: Yup.number()
-            .min(0, 'Tax Bracket Percent must be more than or equal to 0')
-            .required('Tax Bracket Percent is a required field'),
-    });
-
-    // holds the initial values of the form
-    const addTaxBracketInitialValues = {
-        taxBracketName: '',
-        taxBracketPercent: 0,
-    };
-
-    const addTaxBracketFormik = useFormik({
-        initialValues: addTaxBracketInitialValues,
-        validationSchema: addTaxBracketFormSchema,
-        onSubmit(values, { resetForm }) {
-            alert(JSON.stringify(values));
-            resetForm({
-                values: addTaxBracketInitialValues,
-            });
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: formSchema,
+        onSubmit(values) {
+            handleSubmit(values);
         },
     });
 
-    // // used to assign the error messages to the right field
-    // const handleAddTeaxBracketFormErrorMessage = () => {};
+    const handleSubmit = async (values: typeof formInitialValues) => {
+        formFormik.setSubmitting(true);
+        setCustomErrorMessages(customErrorMessagesInitialState);
 
-    // used to decide if the particular field should show errors
-    const handleAddTaxBracketFormShowError = (
-        fieldName: keyof typeof addTaxBracketInitialValues,
-    ): boolean => {
-        if (customErrorFlag) {
-            if (fieldName === 'taxBracketName') {
-                return true;
-            } else {
-                return false;
-            }
+        // sending API request
+        const response = await apiService.post(API_ROUTES.TAXBRACKET, {
+            name: values.name,
+            taxPercent: values.taxPercent,
+        });
+
+        // parsing response
+        if (response.status) {
+            showNotify({ message: response.data as string, type: 'success' });
+            formFormik.resetForm({ values: formInitialValues });
+        } else {
+            // setting custom error messages
+            response.error.map((error) => {
+                switch (error.fieldName) {
+                    case 'name':
+                        setCustomErrorMessages({
+                            ...customErrorMessages,
+                            name: error.message,
+                        });
+                        break;
+                    case 'taxPercent':
+                        setCustomErrorMessages({
+                            ...customErrorMessages,
+                            taxPercent: error.message,
+                        });
+                        break;
+                }
+            });
         }
-        return false;
+
+        formFormik.setSubmitting(false);
     };
 
     return (
-        <form
-            onSubmit={addTaxBracketFormik.handleSubmit}
-            className={cn(styles.pageWrapper)}
-            noValidate
-        >
+        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
@@ -65,19 +89,24 @@ export const AddTaxBracket = (): ReactElement => {
                         label={'Tax Bracket Name'}
                         placeHolder={'Tax Bracket Name'}
                         required={true}
-                        value={addTaxBracketFormik.values.taxBracketName}
+                        value={formFormik.values.name}
                         error={{
-                            errorMessage:
-                                addTaxBracketFormik.errors.taxBracketName === undefined
-                                    ? customErrorFlag
-                                        ? customErrorMessage
-                                        : ''
-                                    : addTaxBracketFormik.errors.taxBracketName,
-                            showError: handleAddTaxBracketFormShowError('taxBracketName'),
+                            errorMessage: isUndefined(formFormik.errors.name)
+                                ? !isNull(customErrorMessages.name)
+                                    ? customErrorMessages.name
+                                    : ''
+                                : formFormik.errors.name,
+                            showError:
+                                !isNull(customErrorMessages.name) ||
+                                !isUndefined(formFormik.errors.name),
                         }}
-                        onChange={(value) =>
-                            addTaxBracketFormik.setFieldValue('taxBracketName', value)
-                        }
+                        onChange={(value) => {
+                            setCustomErrorMessages({
+                                ...customErrorMessages,
+                                name: null,
+                            });
+                            formFormik.setFieldValue('name', value);
+                        }}
                     />
                 </div>
                 <div className={cn(styles.formGroup)}>
@@ -86,21 +115,24 @@ export const AddTaxBracket = (): ReactElement => {
                         label={'Tax Bracket Percent'}
                         placeHolder={'Tax Bracket Percent'}
                         required={true}
-                        value={addTaxBracketFormik.values.taxBracketPercent.toString()}
+                        value={formFormik.values.taxPercent.toString()}
                         error={{
-                            errorMessage:
-                                addTaxBracketFormik.errors.taxBracketName === undefined
-                                    ? customErrorFlag
-                                        ? customErrorMessage
-                                        : ''
-                                    : addTaxBracketFormik.errors.taxBracketName,
+                            errorMessage: isUndefined(formFormik.errors.taxPercent)
+                                ? !isNull(customErrorMessages.taxPercent)
+                                    ? customErrorMessages.taxPercent
+                                    : ''
+                                : formFormik.errors.taxPercent,
                             showError:
-                                customErrorFlag ||
-                                addTaxBracketFormik.errors.taxBracketName !== undefined,
+                                !isNull(customErrorMessages.taxPercent) ||
+                                !isUndefined(formFormik.errors.taxPercent),
                         }}
-                        onChange={(value) =>
-                            addTaxBracketFormik.setFieldValue('taxBracketPercent', value)
-                        }
+                        onChange={(value) => {
+                            setCustomErrorMessages({
+                                ...customErrorMessages,
+                                taxPercent: null,
+                            });
+                            formFormik.setFieldValue('taxPercent', value);
+                        }}
                     />
                 </div>
             </div>
@@ -121,9 +153,10 @@ export const AddTaxBracket = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() =>
-                        addTaxBracketFormik.resetForm({ values: addTaxBracketInitialValues })
-                    }
+                    onClick={() => {
+                        setCustomErrorMessages(customErrorMessagesInitialState);
+                        formFormik.resetForm({ values: formInitialValues });
+                    }}
                 />
             </div>
         </form>

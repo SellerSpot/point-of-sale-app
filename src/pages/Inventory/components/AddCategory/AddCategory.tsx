@@ -118,7 +118,10 @@ export const AddCategory = (): ReactElement => {
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => formFormik.resetForm({ values: formInitialValues })}
+                    onClick={() => {
+                        setCustomErrorMessages(customErrorMessagesInitialState);
+                        formFormik.resetForm({ values: formInitialValues });
+                    }}
                 />
             </div>
         </form>
