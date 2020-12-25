@@ -10,12 +10,6 @@ import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
 
-// holds the initial values for the customErrorMessage state
-const customErrorMessagesInitialState: typeof formInitialValues = {
-    name: null,
-    taxPercent: null,
-};
-
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Tax Bracket Name is a required field'),
     taxPercent: Yup.number()
@@ -28,6 +22,12 @@ const formSchema = Yup.object().shape({
 const formInitialValues = {
     name: '',
     taxPercent: '',
+};
+
+// holds the initial values for the customErrorMessage state
+const customErrorMessagesInitialState: typeof formInitialValues = {
+    name: null,
+    taxPercent: null,
 };
 
 export const AddTaxBracket = (): ReactElement => {

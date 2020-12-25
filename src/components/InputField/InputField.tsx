@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { cssColors } from '../../config/cssVariables';
 import styles from './inputfield.module.css';
 import cn from 'classnames';
+import { isUndefined } from 'lodash';
 
 export interface IInputFieldProps {
     id?: string;
@@ -21,6 +22,7 @@ export interface IInputFieldProps {
         showError: boolean;
         errorMessage: string;
     };
+    selectTextOnFocus?: boolean;
     onChange: (value: string) => void;
     style?: React.CSSProperties;
 }
@@ -38,9 +40,13 @@ const defaultProps: IInputFieldProps = {
         errorMessage: 'Default error message',
         showError: false,
     },
+    selectTextOnFocus: true,
     onChange: () => void 0,
     style: {},
 };
+
+export const selectInputFieldText = (event: React.FocusEvent<HTMLInputElement>): void =>
+    event.target.select();
 
 export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps): JSX.Element => {
     // seasoning the props
@@ -76,6 +82,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                     </div>
                 ) : null}
                 <input
+                    onFocus={sProps.selectTextOnFocus ? selectInputFieldText : () => void 0}
                     className={cn(
                         styles.inputField,
                         {
@@ -122,7 +129,7 @@ export const InputField: React.FC<IInputFieldProps> = (props: IInputFieldProps):
                 ) : null}
             </div>
 
-            {sProps.helperText !== undefined || sProps.error !== undefined ? (
+            {!isUndefined(sProps.helperText) || !isUndefined(sProps.error) ? (
                 <label
                     className={cn(styles.label, styles.helperText, {
                         [styles.hintTextError]: sProps.error?.showError,

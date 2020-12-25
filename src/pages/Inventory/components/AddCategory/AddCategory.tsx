@@ -10,15 +10,6 @@ import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
 import { isNull, isUndefined } from 'lodash';
 
-interface ICustomErrorMessageState {
-    categoryName: string;
-}
-
-// holds the initial values for the customErrorMessage state
-const customErrorMessagesInitialState: ICustomErrorMessageState = {
-    categoryName: null,
-};
-
 const formSchema = Yup.object().shape({
     categoryName: Yup.string().required('Category Name is a required field'),
 });
@@ -28,11 +19,14 @@ const formInitialValues = {
     categoryName: '',
 };
 
+// holds the initial values for the customErrorMessage state
+const customErrorMessagesInitialState: typeof formInitialValues = {
+    categoryName: null,
+};
+
 export const AddCategory = (): ReactElement => {
     // holds the server side validation error messages
-    const [customErrorMessages, setCustomErrorMessages] = useState<ICustomErrorMessageState>(
-        customErrorMessagesInitialState,
-    );
+    const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,

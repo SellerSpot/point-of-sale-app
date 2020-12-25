@@ -1,5 +1,6 @@
 .inputFieldWrapper {
     width: 100%;
+    min-height: calc(var(--input-field-height)+80px);
 }
 
 .inputField,

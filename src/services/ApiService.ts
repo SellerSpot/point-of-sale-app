@@ -1,9 +1,10 @@
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { CONFIG } from '../config/config';
 
-interface IValidationResponse {
+export interface IValidationResponse {
     status: boolean;
-    data?: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data?: any;
     error?: {
         fieldName: string;
         message: string;
@@ -48,9 +49,57 @@ export default class ApiService {
     }
 
     // main request handlers
-    public async get(route: string): Promise<AxiosResponse> {
-        const requestUrl = `${this.onlineServerUrl}/${route}`;
-        return await this.axios.get(requestUrl);
+    public async get(route: string): Promise<IValidationResponse> {
+        try {
+            const requestUrl = `${this.onlineServerUrl}/${route}`;
+            const response = await this.axios.get(requestUrl);
+            if (response.status === 200) {
+                if (response.data.status) {
+                    switch (response.data.statusCode) {
+                        case this.responseStatusCodes.OK:
+                            return {
+                                status: true,
+                                data: response.data.data,
+                            };
+                        default:
+                            return {
+                                status: false,
+                                error: [
+                                    {
+                                        fieldName: 'commonMessage',
+                                        message: 'Unknown error recieved from server',
+                                    },
+                                ],
+                            };
+                    }
+                } else {
+                    return {
+                        status: false,
+                        error: response.data.error,
+                    };
+                }
+            } else {
+                return {
+                    status: false,
+                    error: [
+                        {
+                            fieldName: 'commonMessage',
+                            message: 'Unable to connect to the server',
+                        },
+                    ],
+                };
+            }
+        } catch (e) {
+            return {
+                status: false,
+                error: [
+                    {
+                        fieldName: 'commonMessage',
+                        message: e.message,
+                    },
+                ],
+            };
+        }
     }
 
     public async post(route: string, data: unknown): Promise<IValidationResponse> {
@@ -71,7 +120,7 @@ export default class ApiService {
                                 error: [
                                     {
                                         fieldName: 'commonMessage',
-                                        message: 'Unable to connect to the server',
+                                        message: 'Unknown error recieved from server',
                                     },
                                 ],
                             };
