@@ -1,6 +1,5 @@
+import React, { ReactElement, useContext } from 'react';
 import { SliderModal } from 'components/SliderModal/SliderModal';
-import React, { ReactElement } from 'react';
-
 import { Checkout } from 'pages/Sales/components/Checkout/Checkout';
 import { NewSale } from 'pages/Sales/components/NewSale/NewSale';
 import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
@@ -9,6 +8,7 @@ import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBr
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 import { useSelector } from 'react-redux';
 import { sliderModalSelector } from 'store/models/sliderModal';
+import { handleSliderClose } from 'config/config';
 
 const Sliders = (): ReactElement => {
     const {
@@ -22,62 +22,44 @@ const Sliders = (): ReactElement => {
     return (
         <>
             <SliderModal
-                sliderName={'addBrandSlider'}
                 active={addBrandSlider}
                 sliderSize={'30%'}
-                confirmSliderClose={{
-                    show: true,
-                }}
+                onClickBackdrop={() => handleSliderClose('addBrandSlider')}
             >
                 <AddBrand />
             </SliderModal>
             <SliderModal
-                sliderName={'addProductSlider'}
                 active={addProductSlider}
                 sliderSize={'40%'}
-                confirmSliderClose={{
-                    show: false,
-                }}
+                onClickBackdrop={() => handleSliderClose('addProductSlider')}
             >
                 <AddProduct />
             </SliderModal>
             <SliderModal
-                sliderName={'addCategorySlider'}
                 active={addCategorySlider}
                 sliderSize={'30%'}
-                confirmSliderClose={{
-                    show: false,
-                }}
+                onClickBackdrop={() => handleSliderClose('addCategorySlider')}
             >
                 <AddCategory />
             </SliderModal>
             <SliderModal
-                sliderName={'addTaxBracketSlider'}
                 active={addTaxBracketSlider}
                 sliderSize={'30%'}
-                confirmSliderClose={{
-                    show: false,
-                }}
+                onClickBackdrop={() => handleSliderClose('addTaxBracketSlider')}
             >
                 <AddTaxBracket />
             </SliderModal>
             <SliderModal
-                sliderName={'newSaleSlider'}
                 active={newSaleSlider}
                 sliderSize={'100%'}
-                confirmSliderClose={{
-                    show: false,
-                }}
+                onClickBackdrop={() => handleSliderClose('newSaleSlider')}
             >
                 <NewSale />
             </SliderModal>
             <SliderModal
-                sliderName={'checkoutSlider'}
                 active={checkoutSlider}
                 sliderSize={'80%'}
-                confirmSliderClose={{
-                    show: false,
-                }}
+                onClickBackdrop={() => handleSliderClose('checkoutSlider')}
             >
                 <Checkout />
             </SliderModal>

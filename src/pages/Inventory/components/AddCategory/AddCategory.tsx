@@ -9,6 +9,10 @@ import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
 import { isNull, isUndefined } from 'lodash';
+import { MdKeyboardArrowLeft } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { handleSliderClose } from 'config/config';
 
 const formSchema = Yup.object().shape({
     categoryName: Yup.string().required('Category Name is a required field'),
@@ -66,7 +70,15 @@ export const AddCategory = (): ReactElement => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
-            <div className={styles.pageHeader}>Add Category</div>
+            <div className={styles.pageHeader}>
+                <div
+                    className={styles.pageHeaderBackIcon}
+                    onClick={() => handleSliderClose('addCategorySlider')}
+                >
+                    <MdKeyboardArrowLeft size={'35px'} />
+                </div>
+            </div>
+            <div className={styles.pageTitleBar}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField

@@ -11,6 +11,8 @@ import { isNull, isUndefined } from 'lodash';
 import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
+import { MdKeyboardArrowLeft } from 'react-icons/md';
+import { handleSliderClose } from 'config/config';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('product name is a required field'),
@@ -320,7 +322,15 @@ export const AddProduct = (): ReactElement => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
-            <div className={styles.pageHeader}>Add Product</div>
+            <div className={styles.pageHeader}>
+                <div
+                    className={styles.pageHeaderBackIcon}
+                    onClick={() => handleSliderClose('addProductSlider')}
+                >
+                    <MdKeyboardArrowLeft size={'35px'} />
+                </div>
+            </div>
+            <div className={styles.pageTitleBar}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField

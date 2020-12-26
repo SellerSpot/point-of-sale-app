@@ -7,7 +7,6 @@ import { Sales } from 'pages/Sales/Sales';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import dashboardStyles from './dashboard.module.css';
 import { BillingSetup } from 'pages/BillingSetup/BillingSetup';
-// import { Sliders } from './components/LeftNav/Sliders/Sliders';
 
 const SlidersComponent = lazy(() => import('./components/LeftNav/Sliders/Sliders'));
 

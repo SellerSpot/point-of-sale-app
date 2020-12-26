@@ -9,6 +9,8 @@ import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
 import { isNull, isUndefined } from 'lodash';
+import { MdKeyboardArrowLeft } from 'react-icons/md';
+import { handleSliderClose } from 'config/config';
 
 const formSchema = Yup.object().shape({
     brandName: Yup.string().required('Brand Name is a required field'),
@@ -66,7 +68,15 @@ export const AddBrand = (): ReactElement => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
-            <div className={styles.pageHeader}>Add Brand</div>
+            <div className={styles.pageHeader}>
+                <div
+                    className={styles.pageHeaderBackIcon}
+                    onClick={() => handleSliderClose('addBrandSlider')}
+                >
+                    <MdKeyboardArrowLeft size={'35px'} />
+                </div>
+            </div>
+            <div className={styles.pageTitleBar}>Add Brand</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField

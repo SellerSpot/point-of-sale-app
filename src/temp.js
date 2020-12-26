@@ -1,5 +1,5 @@
 // used to close the slider on keydown
-const handleSliderClose = () => {
+const asdfasdfe = () => {
     if (confirmSliderClose?.show) {
         dispatch(
             openConfirmDialog({
