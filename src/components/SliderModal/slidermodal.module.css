@@ -46,19 +46,3 @@
     top: 0;
     left: 0;
 }
-
-.closeIconWrapper {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0px;
-    right: -100px;
-    /* border-top-left-radius: var(--border-radius); */
-    border-bottom-left-radius: var(--border-radius);
-    cursor: pointer;
-    background-color: var(--primary-background-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: right 0.2s ease-in-out;
-}

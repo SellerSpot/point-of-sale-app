@@ -1,81 +1,115 @@
 import React, { ReactElement, useState } from 'react';
-import { Button } from '../../../../components/Button/Button';
-import { InputField } from '../../../../components/InputField/InputField';
+import { Button } from 'components/Button/Button';
+import { InputField } from 'components/InputField/InputField';
 import styles from './addbrand.module.css';
 import cn from 'classnames';
 import * as Yup from 'yup';
-import { FormikValues, useFormik } from 'formik';
-import { apiService } from '../../../../services';
-import { API_ROUTES } from '../../../../config/apiRoutes';
-import { showNotify } from '../../../../store/models/notify';
+import { useFormik } from 'formik';
+import { apiService } from 'services';
+import { API_ROUTES } from 'config/apiRoutes';
+import { showNotify } from 'store/models/notify';
+import { isNull, isUndefined } from 'lodash';
+import { MdKeyboardArrowLeft } from 'react-icons/md';
+import { handleSliderClose } from 'config/config';
+
+const formSchema = Yup.object().shape({
+    brandName: Yup.string().required('Brand Name is a required field'),
+});
+
+// holds the initial values of the form
+const formInitialValues = {
+    brandName: '',
+};
+
+// holds the initial values for the customErrorMessage state
+const customErrorMessagesInitialState: typeof formInitialValues = {
+    brandName: null,
+};
 
 export const AddBrand = (): ReactElement => {
-    const [customErrorFlag, setCustomErrorFlag] = useState<boolean>(false);
-    const [customErrorMessage, setCustomErrorMessage] = useState<string>('');
+    // holds the server side validation error messages
+    const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
 
-    const addBrandFormSchema = Yup.object().shape({
-        brandName: Yup.string().required('Brand Name is a required field'),
-    });
-
-    // holds the initial values of the form
-    const addBrandInitialValues = {
-        brandName: '',
-    };
-
-    const handleSubmit = async (values: FormikValues) => {
-        addBrandFormik.setSubmitting(true);
-        setCustomErrorFlag(false);
-        setCustomErrorMessage('');
-        const response = await apiService.post(API_ROUTES.ADDBRAND, {
-            brandName: values.brandName,
-        });
-        if (response.status) {
-            showNotify({ message: response.data as string, type: 'success' });
-            addBrandFormik.resetForm({ values: addBrandInitialValues });
-        } else {
-            setCustomErrorFlag(true);
-            setCustomErrorMessage(response.data as string);
-        }
-        addBrandFormik.setSubmitting(false);
-    };
-
-    const addBrandFormik = useFormik({
-        initialValues: addBrandInitialValues,
-        validationSchema: addBrandFormSchema,
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: formSchema,
         onSubmit(values) {
             handleSubmit(values);
         },
     });
+
+    const handleSubmit = async (values: typeof formInitialValues) => {
+        formFormik.setSubmitting(true);
+        setCustomErrorMessages(customErrorMessagesInitialState);
+
+        // sending API request
+        const response = await apiService.post(API_ROUTES.BRAND, {
+            brandName: values.brandName,
+        });
+        // parsing response
+        if (response.status) {
+            showNotify({ message: response.data as string, type: 'success' });
+            formFormik.resetForm({ values: formInitialValues });
+        } else {
+            // setting custom error messages
+            response.error.map((error) => {
+                switch (error.fieldName) {
+                    case 'brandName':
+                        setCustomErrorMessages({
+                            brandName: error.message,
+                        });
+                        break;
+                }
+            });
+        }
+
+        formFormik.setSubmitting(false);
+    };
+
     return (
-        <form onSubmit={addBrandFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
-            <div className={styles.pageHeader}>Add Category</div>
+        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+            <div className={styles.pageHeader}>
+                <div
+                    className={styles.pageHeaderBackIcon}
+                    onClick={() => handleSliderClose('addBrandSlider')}
+                >
+                    <MdKeyboardArrowLeft size={'35px'} />
+                </div>
+            </div>
+            <div className={styles.pageTitleBar}>Add Brand</div>
             <div className={styles.pageBody}>
                 <div className={cn(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Brand Name'}
-                        disabled={addBrandFormik.isSubmitting}
+                        disabled={formFormik.isSubmitting}
                         placeHolder={'Brand Name'}
                         required={true}
-                        value={addBrandFormik.values.brandName}
+                        value={formFormik.values.brandName}
                         error={{
-                            errorMessage:
-                                addBrandFormik.errors.brandName === undefined
-                                    ? customErrorFlag
-                                        ? customErrorMessage
-                                        : ''
-                                    : addBrandFormik.errors.brandName,
+                            errorMessage: isUndefined(formFormik.errors.brandName)
+                                ? !isNull(customErrorMessages.brandName)
+                                    ? customErrorMessages.brandName
+                                    : ''
+                                : formFormik.errors.brandName,
                             showError:
-                                customErrorFlag || addBrandFormik.errors.brandName !== undefined,
+                                !isNull(customErrorMessages.brandName) ||
+                                !isUndefined(formFormik.errors.brandName),
                         }}
-                        onChange={(value) => addBrandFormik.setFieldValue('brandName', value)}
+                        onChange={(value) => {
+                            setCustomErrorMessages({
+                                ...customErrorMessages,
+                                brandName: null,
+                            });
+                            formFormik.setFieldValue('brandName', value);
+                        }}
                     />
                 </div>
             </div>
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    disabled={addBrandFormik.isSubmitting}
+                    disabled={formFormik.isSubmitting}
                     shape={'rectangle'}
                     label={'Add Brand'}
                     variant={'solid'}
@@ -84,14 +118,17 @@ export const AddBrand = (): ReactElement => {
                 />
                 <Button
                     type="button"
-                    disabled={addBrandFormik.isSubmitting}
+                    disabled={formFormik.isSubmitting}
                     shape="rectangle"
                     label="Reset Values"
                     focusable={false}
                     variant="outline"
                     backgroundColor="--inventory-color"
                     labelColor="--inventory-color"
-                    onClick={() => addBrandFormik.resetForm({ values: addBrandInitialValues })}
+                    onClick={() => {
+                        setCustomErrorMessages(customErrorMessagesInitialState);
+                        formFormik.resetForm({ values: formInitialValues });
+                    }}
                 />
             </div>
         </form>

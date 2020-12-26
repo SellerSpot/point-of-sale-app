@@ -78,7 +78,7 @@ const webpackConfiguration = (env: {
             }),
         ],
         devServer: {
-            port: 8000,
+            port: 8100,
             open: true,
             hot: true,
             contentBase: 'public',
