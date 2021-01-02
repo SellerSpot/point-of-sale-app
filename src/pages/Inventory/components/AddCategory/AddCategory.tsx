@@ -1,8 +1,6 @@
 import React, { ReactElement, useState } from 'react';
-import { Button } from 'components/Button/Button';
-import { InputField } from 'components/InputField/InputField';
-import styles from './addcategory.module.css';
-import cn from 'classnames';
+import { Button } from '@sellerspot/universal-components';
+import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { API_ROUTES } from 'config/apiRoutes';
@@ -12,7 +10,10 @@ import { isNull, isUndefined } from 'lodash';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
-import { handleSliderClose } from 'config/config';
+import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { cssColors } from 'config/cssVariables';
+import { getAddCategoryStyles } from './addCategory.styles';
+import { cx } from '@emotion/css';
 
 const formSchema = Yup.object().shape({
     categoryName: Yup.string().required('Category Name is a required field'),
@@ -68,8 +69,10 @@ export const AddCategory = (): ReactElement => {
         formFormik.setSubmitting(false);
     };
 
+    const styles = getAddCategoryStyles();
+
     return (
-        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={formFormik.handleSubmit} className={cx(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>
                 <div
                     className={styles.pageHeaderBackIcon}
@@ -80,7 +83,7 @@ export const AddCategory = (): ReactElement => {
             </div>
             <div className={styles.pageTitleBar}>Add Category</div>
             <div className={styles.pageBody}>
-                <div className={cn(styles.formGroup)}>
+                <div className={cx(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Category Name'}
@@ -97,12 +100,12 @@ export const AddCategory = (): ReactElement => {
                                 !isNull(customErrorMessages.categoryName) ||
                                 !isUndefined(formFormik.errors.categoryName),
                         }}
-                        onChange={(value) => {
+                        onChange={(event) => {
                             setCustomErrorMessages({
                                 ...customErrorMessages,
                                 categoryName: null,
                             });
-                            formFormik.setFieldValue('categoryName', value);
+                            formFormik.setFieldValue('categoryName', event.target.value);
                         }}
                     />
                 </div>
@@ -110,20 +113,23 @@ export const AddCategory = (): ReactElement => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    shape="rectangle"
-                    label="Add Category"
-                    variant="solid"
-                    backgroundColor="--inventory-color"
-                    labelColor="--light-font-color"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
+                    label={'Add Category'}
+                    tabIndex={0}
+                    style={{
+                        backgroundColor: cssColors['--inventory-color'],
+                        color: cssColors['--light-font-color'],
+                    }}
                 />
                 <Button
                     type="button"
-                    shape="rectangle"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label="Reset Values"
-                    focusable={false}
-                    variant="outline"
-                    backgroundColor="--inventory-color"
-                    labelColor="--inventory-color"
+                    style={{
+                        backgroundColor: 'transparent',
+                        borderColor: cssColors['--inventory-color'],
+                        color: cssColors['--inventory-color'],
+                    }}
                     onClick={() => {
                         setCustomErrorMessages(customErrorMessagesInitialState);
                         formFormik.resetForm({ values: formInitialValues });

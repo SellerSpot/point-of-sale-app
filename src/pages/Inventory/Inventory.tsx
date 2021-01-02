@@ -4,10 +4,10 @@ import { Brands } from './components/Brands/Brands';
 import { Categories } from './components/Categories/Categories';
 import { Products } from './components/Products/Products';
 import { TaxBrackets } from './components/TaxBrackets/TaxBrackets';
-import styles from './inventory.module.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
+import { getInventoryStyles } from './inventory.styles';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -38,16 +38,12 @@ export const Inventory = (): JSX.Element => {
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
 
+    const styles = getInventoryStyles();
+
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar
-                    tabs={tabs}
-                    onSelect={setCurrentTab}
-                    selectedColor={'--inventory-color'}
-                    selectedTab={currentTab}
-                    style={{ borderRadius: '0' }}
-                />
+                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
             </div>
 
             <div className={styles.overallPageWrapper}>

@@ -3,14 +3,19 @@ import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { loadCSSValues } from 'config/cssVariables';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
-import { ConfirmDialog } from 'components/ConfirmDialog/ConfirmDialog';
-import { Notify } from 'components/Notify/Notify';
+import { Notify } from '@sellerspot/universal-components';
 import './styles/core.css';
+import { store } from 'store/store';
+import { closeNotify, notifySelector } from 'store/models/notify';
+import { useSelector } from 'react-redux';
 
 // used to load css variables in ts object into the :root context
 loadCSSValues();
 
 export const App = (): ReactElement => {
+    // getting Notify selector
+    const { active, content, timeout, className, style } = useSelector(notifySelector);
+
     return (
         <div>
             <Switch>
@@ -20,8 +25,16 @@ export const App = (): ReactElement => {
                 </Route>
             </Switch>
             {/* all globally available components (via store) should be nested below  */}
-            <ConfirmDialog />
-            <Notify />
+            <Notify
+                active={active}
+                clearNotificationCallback={store.dispatch(closeNotify)}
+                content={content}
+                timeout={timeout}
+                className={{
+                    notifyWrapper: className?.notifyWrapper,
+                }}
+                style={style}
+            />
         </div>
     );
 };

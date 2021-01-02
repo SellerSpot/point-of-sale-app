@@ -1,16 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from '../../../../components/Button/Button';
-import { MetaCard } from '../../../../components/MetaCard/MetaCard';
-import { Table } from '../../../../components/Table/Table';
-import { toggleSliderModal } from '../../../../store/models/sliderModal';
-import { KEYCODES } from '../../../../services/KeyCodeService';
-
-import styles from './saleshistory.module.css';
+import { Button } from '@sellerspot/universal-components';
+import { MetaCard } from 'components/MetaCard/MetaCard';
+import { Table } from '@sellerspot/universal-components';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { KEYCODES } from 'services/KeyCodeService';
+import { cssColors } from 'config/cssVariables';
+import { getSalesHistoryStyles } from './salesHistory.styles';
 
 export const SalesHistory = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
+
+    const styles = getSalesHistoryStyles();
 
     return (
         <div className={styles.salesHistoryWrapper}>
@@ -21,9 +23,11 @@ export const SalesHistory = (): JSX.Element => {
                     <Button
                         key={'newSaleBtn'}
                         label={`New Sale (${KEYCODES.NEWSALE})`}
-                        variant="outline"
-                        backgroundColor="--sales-color"
-                        labelColor="--sales-color"
+                        style={{
+                            backgroundColor: 'transparent',
+                            color: cssColors['--sales-color'],
+                            borderColor: cssColors['--sales-color'],
+                        }}
                         onClick={() =>
                             dispatch(
                                 toggleSliderModal({ sliderName: 'newSaleSlider', active: true }),

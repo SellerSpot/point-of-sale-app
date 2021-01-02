@@ -1,8 +1,6 @@
 import React, { ReactElement, useState } from 'react';
-import { Button } from 'components/Button/Button';
-import { InputField } from 'components/InputField/InputField';
-import styles from './addtaxbracket.module.css';
-import cn from 'classnames';
+import { Button } from '@sellerspot/universal-components';
+import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { isNull, isUndefined } from 'lodash';
@@ -10,7 +8,10 @@ import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
-import { handleSliderClose } from 'config/config';
+import { cssColors } from 'config/cssVariables';
+import { getAddTaxBracketStyles } from './addTaxBracket.styles';
+import { cx } from '@emotion/css';
+import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Tax Bracket Name is a required field'),
@@ -81,8 +82,10 @@ export const AddTaxBracket = (): ReactElement => {
         formFormik.setSubmitting(false);
     };
 
+    const styles = getAddTaxBracketStyles();
+
     return (
-        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={formFormik.handleSubmit} className={cx(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>
                 <div
                     className={styles.pageHeaderBackIcon}
@@ -93,7 +96,7 @@ export const AddTaxBracket = (): ReactElement => {
             </div>
             <div className={styles.pageTitleBar}>Add Tax Brackets</div>
             <div className={styles.pageBody}>
-                <div className={cn(styles.formGroup)}>
+                <div className={cx(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Tax Bracket Name'}
@@ -110,16 +113,16 @@ export const AddTaxBracket = (): ReactElement => {
                                 !isNull(customErrorMessages.name) ||
                                 !isUndefined(formFormik.errors.name),
                         }}
-                        onChange={(value) => {
+                        onChange={(event) => {
                             setCustomErrorMessages({
                                 ...customErrorMessages,
                                 name: null,
                             });
-                            formFormik.setFieldValue('name', value);
+                            formFormik.setFieldValue('name', event.target.value);
                         }}
                     />
                 </div>
-                <div className={cn(styles.formGroup)}>
+                <div className={cx(styles.formGroup)}>
                     <InputField
                         type={'number'}
                         label={'Tax Bracket Percent'}
@@ -136,12 +139,12 @@ export const AddTaxBracket = (): ReactElement => {
                                 !isNull(customErrorMessages.taxPercent) ||
                                 !isUndefined(formFormik.errors.taxPercent),
                         }}
-                        onChange={(value) => {
+                        onChange={(event) => {
                             setCustomErrorMessages({
                                 ...customErrorMessages,
                                 taxPercent: null,
                             });
-                            formFormik.setFieldValue('taxPercent', value);
+                            formFormik.setFieldValue('taxPercent', event.target.value);
                         }}
                     />
                 </div>
@@ -149,20 +152,23 @@ export const AddTaxBracket = (): ReactElement => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    shape="rectangle"
-                    label="Add Tax Bracket"
-                    variant="solid"
-                    backgroundColor="--inventory-color"
-                    labelColor="--light-font-color"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
+                    label={'Add Tax Bracket'}
+                    tabIndex={0}
+                    style={{
+                        backgroundColor: cssColors['--inventory-color'],
+                        color: cssColors['--light-font-color'],
+                    }}
                 />
                 <Button
                     type="button"
-                    shape="rectangle"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label="Reset Values"
-                    focusable={false}
-                    variant="outline"
-                    backgroundColor="--inventory-color"
-                    labelColor="--inventory-color"
+                    style={{
+                        backgroundColor: 'transparent',
+                        borderColor: cssColors['--inventory-color'],
+                        color: cssColors['--inventory-color'],
+                    }}
                     onClick={() => {
                         setCustomErrorMessages(customErrorMessagesInitialState);
                         formFormik.resetForm({ values: formInitialValues });

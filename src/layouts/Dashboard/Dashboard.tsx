@@ -5,18 +5,20 @@ import { CashRegister } from 'pages/CashRegister/CashRegister';
 import { Inventory } from 'pages/Inventory/Inventory';
 import { Sales } from 'pages/Sales/Sales';
 import { LeftNav } from './components/LeftNav/LeftNav';
-import dashboardStyles from './dashboard.module.css';
 import { BillingSetup } from 'pages/BillingSetup/BillingSetup';
+import { getDashboardStyles } from './dashboard.styles';
 
-const SlidersComponent = lazy(() => import('./components/LeftNav/Sliders/Sliders'));
+const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
 export const Dashboard = (): ReactElement => {
+    const styles = getDashboardStyles();
+
     return (
-        <div className={dashboardStyles.dashboardWrapper}>
-            <div className={dashboardStyles.leftNavWrapper}>
+        <div className={styles.dashboardWrapper}>
+            <div className={styles.leftNavWrapper}>
                 <LeftNav />
             </div>
-            <div className={dashboardStyles.mainBodyWrapper}>
+            <div className={styles.mainBodyWrapper}>
                 <Switch>
                     <Route path={ROUTES.INVENTORY}>
                         <Inventory />
