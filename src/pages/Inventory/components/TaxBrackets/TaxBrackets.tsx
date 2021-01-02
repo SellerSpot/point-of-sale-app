@@ -5,12 +5,13 @@ import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
-
-import styles from './taxbrackets.module.css';
+import { getTaxBracketStyles } from './taxBrackets.styles';
 
 export const TaxBrackets = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
+
+    const styles = getTaxBracketStyles();
 
     return (
         <div className={styles.taxBracketsWrapper}>

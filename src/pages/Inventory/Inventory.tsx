@@ -43,13 +43,7 @@ export const Inventory = (): JSX.Element => {
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar
-                    tabs={tabs}
-                    onSelect={setCurrentTab}
-                    selectedColor={'--inventory-color'}
-                    selectedTab={currentTab}
-                    style={{ borderRadius: '0' }}
-                />
+                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
             </div>
 
             <div className={styles.overallPageWrapper}>

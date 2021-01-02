@@ -31,7 +31,7 @@ export const App = (): ReactElement => {
                 content={content}
                 timeout={timeout}
                 className={{
-                    notifyWrapper: className.notifyWrapper,
+                    notifyWrapper: className?.notifyWrapper,
                 }}
                 style={style}
             />

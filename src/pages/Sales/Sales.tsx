@@ -28,13 +28,7 @@ export const Sales = (): JSX.Element => {
     return (
         <div className={styles.salesWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar
-                    tabs={tabs}
-                    onSelect={setCurrentTab}
-                    selectedColor={'--sales-color'}
-                    selectedTab={currentTab}
-                    style={{ borderRadius: '0' }}
-                />
+                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
             </div>
 
             <div className={styles.overallPageWrapper}>
