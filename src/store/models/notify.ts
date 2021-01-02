@@ -4,16 +4,17 @@ import { RootState } from '../store';
 
 interface InitialState {
     active: boolean;
-    message: string;
-    type: TMajorColors;
+    content?: JSX.Element;
     timeout: number;
+    className?: {
+        notifyWrapper: string;
+    };
+    style?: React.CSSProperties;
 }
 
 const initialState: InitialState = {
     active: false,
-    message: '',
-    type: 'success',
-    timeout: 3000, // 3 seconds
+    timeout: 3000,
 };
 
 const notify = createSlice({
@@ -27,7 +28,7 @@ const notify = createSlice({
             Object.assign(state, { ...initialState, ...payload, active: true });
         },
         closeNotify: (state: InitialState) => {
-            Object.assign(state, { ...initialState, type: state.type });
+            Object.assign(state, { ...initialState, active: false });
         },
     },
 });

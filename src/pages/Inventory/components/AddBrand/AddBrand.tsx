@@ -1,8 +1,6 @@
 import React, { ReactElement, useState } from 'react';
-import { Button } from 'components/Button/Button';
-import { InputField } from 'components/InputField/InputField';
-import styles from './addbrand.module.css';
-import cn from 'classnames';
+import { Button } from '@sellerspot/universal-components';
+import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { apiService } from 'services';
@@ -10,7 +8,10 @@ import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
 import { isNull, isUndefined } from 'lodash';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
-import { handleSliderClose } from 'config/config';
+import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { cssColors } from 'config/cssVariables';
+import { getAddBrandStyles } from './addBrand.styles';
+import { cx } from '@emotion/css';
 
 const formSchema = Yup.object().shape({
     brandName: Yup.string().required('Brand Name is a required field'),
@@ -66,8 +67,10 @@ export const AddBrand = (): ReactElement => {
         formFormik.setSubmitting(false);
     };
 
+    const styles = getAddBrandStyles();
+
     return (
-        <form onSubmit={formFormik.handleSubmit} className={cn(styles.pageWrapper)} noValidate>
+        <form onSubmit={formFormik.handleSubmit} className={cx(styles.pageWrapper)} noValidate>
             <div className={styles.pageHeader}>
                 <div
                     className={styles.pageHeaderBackIcon}
@@ -78,7 +81,7 @@ export const AddBrand = (): ReactElement => {
             </div>
             <div className={styles.pageTitleBar}>Add Brand</div>
             <div className={styles.pageBody}>
-                <div className={cn(styles.formGroup)}>
+                <div className={cx(styles.formGroup)}>
                     <InputField
                         type={'text'}
                         label={'Brand Name'}
@@ -96,12 +99,12 @@ export const AddBrand = (): ReactElement => {
                                 !isNull(customErrorMessages.brandName) ||
                                 !isUndefined(formFormik.errors.brandName),
                         }}
-                        onChange={(value) => {
+                        onChange={(event) => {
                             setCustomErrorMessages({
                                 ...customErrorMessages,
                                 brandName: null,
                             });
-                            formFormik.setFieldValue('brandName', value);
+                            formFormik.setFieldValue('brandName', event.target.value);
                         }}
                     />
                 </div>
@@ -109,22 +112,23 @@ export const AddBrand = (): ReactElement => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    disabled={formFormik.isSubmitting}
-                    shape={'rectangle'}
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label={'Add Brand'}
-                    variant={'solid'}
-                    backgroundColor={'--inventory-color'}
-                    labelColor={'--light-font-color'}
+                    tabIndex={0}
+                    style={{
+                        backgroundColor: cssColors['--inventory-color'],
+                        color: cssColors['--light-font-color'],
+                    }}
                 />
                 <Button
                     type="button"
-                    disabled={formFormik.isSubmitting}
-                    shape="rectangle"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label="Reset Values"
-                    focusable={false}
-                    variant="outline"
-                    backgroundColor="--inventory-color"
-                    labelColor="--inventory-color"
+                    style={{
+                        backgroundColor: 'transparent',
+                        borderColor: cssColors['--inventory-color'],
+                        color: cssColors['--inventory-color'],
+                    }}
                     onClick={() => {
                         setCustomErrorMessages(customErrorMessagesInitialState);
                         formFormik.resetForm({ values: formInitialValues });

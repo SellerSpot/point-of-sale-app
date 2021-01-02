@@ -1,12 +1,12 @@
 import React, { ReactElement, useRef } from 'react';
-import styles from './checkout.module.css';
-import cn from 'classnames';
-import { Button } from '../../../../components/Button/Button';
+import { Button } from '@sellerspot/universal-components';
 import { useDispatch } from 'react-redux';
-import { toggleSliderModal } from '../../../../store/models/sliderModal';
-import { cssColors, cssVariables } from '../../../../config/cssVariables';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { cssColors, cssVariables } from 'config/cssVariables';
 import { Bill } from '../../../BillingSetup/components/Bill/Bill';
 import { useReactToPrint } from 'react-to-print';
+import { cx } from '@emotion/css';
+import { getCheckoutStyles } from './checkout.styles';
 
 export const Checkout = (): ReactElement => {
     const dispatch = useDispatch();
@@ -19,14 +19,16 @@ export const Checkout = (): ReactElement => {
             ),
     });
 
+    const styles = getCheckoutStyles();
+
     return (
-        <div className={cn(styles.checkoutWrapper)}>
-            <div className={cn(styles.checkoutBillPreviewWrapper)}>
-                <div className={cn(styles.checkoutBillPreviewHolder)}>
+        <div className={cx(styles.checkoutWrapper)}>
+            <div className={cx(styles.checkoutBillPreviewWrapper)}>
+                <div className={cx(styles.checkoutBillPreviewHolder)}>
                     <Bill billReference={billReference} />
                 </div>
             </div>
-            <div className={cn(styles.checkoutBillingDetailsWrapper)}>
+            <div className={cx(styles.checkoutBillingDetailsWrapper)}>
                 <div className={styles.calculationEntry}>
                     <div>{'Sub-Total'}</div>
                     <div>{'₹ 200.00'}</div>
@@ -61,10 +63,14 @@ export const Checkout = (): ReactElement => {
                     </div>
                 </div>
                 <Button
-                    style={{ width: '100%', height: '65px', fontSize: 17 }}
                     label="COMPLETE SALE ( enter )"
-                    labelColor="--light-font-color"
-                    backgroundColor="--sales-color"
+                    style={{
+                        width: '100%',
+                        height: '65px',
+                        fontSize: 17,
+                        color: cssColors['--light-font-color'],
+                        backgroundColor: cssColors['--sales-color'],
+                    }}
                     onClick={handlePrint}
                 />
             </div>

@@ -1,9 +1,10 @@
+import { cssColors } from 'config/cssVariables';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from '../../../../components/Button/Button';
-import { MetaCard } from '../../../../components/MetaCard/MetaCard';
-import { Table } from '../../../../components/Table/Table';
-import { toggleSliderModal } from '../../../../store/models/sliderModal';
+import { Button } from '@sellerspot/universal-components';
+import { MetaCard } from 'components/MetaCard/MetaCard';
+import { Table } from '@sellerspot/universal-components';
+import { toggleSliderModal } from 'store/models/sliderModal';
 
 import styles from './taxbrackets.module.css';
 
@@ -20,9 +21,11 @@ export const TaxBrackets = (): JSX.Element => {
                     <Button
                         key={'addTaxBracket'}
                         label="Add Tax Bracket (F4)"
-                        labelColor="--inventory-color"
-                        variant="outline"
-                        backgroundColor="--inventory-color"
+                        style={{
+                            color: cssColors['--inventory-color'],
+                            backgroundColor: cssColors['--primary-background-color'],
+                            borderColor: cssColors['--inventory-color'],
+                        }}
                         onClick={() =>
                             dispatch(
                                 toggleSliderModal({

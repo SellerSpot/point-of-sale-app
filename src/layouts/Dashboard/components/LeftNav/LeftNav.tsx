@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import leftNavStyles from './leftnav.module.css';
 import { FaBoxOpen, FaStore, IoMdCart, RiBillLine } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import { cssColors } from 'config/cssVariables';
-import { HorizontalRule } from 'components/HorizontalRule/HorizontalRule';
+import { HorizontalRule } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
+import { getLeftNavStyles } from './leftNav.styles';
 
 interface INavItem {
     color: string;
@@ -23,18 +23,20 @@ const NavItem = ({
     title,
     active,
 }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
+    const styles = getLeftNavStyles();
+
     return (
         <div
-            className={`${leftNavStyles.navItem} ${active ? leftNavStyles.navItemActive : ''}`}
+            className={styles.navItem}
             style={{
                 color,
             }}
             onClick={onClick}
         >
-            <div className={leftNavStyles.navIcon}>
+            <div className={styles.navIcon}>
                 <Icon />
             </div>
-            <div className={leftNavStyles.navTitle}>{title}</div>
+            <div className={styles.navTitle}>{title}</div>
         </div>
     );
 };
@@ -81,23 +83,30 @@ export const LeftNav = (): JSX.Element => {
         //     route: ROUTES.CASH_REGISTER,
         // },
     ];
+
+    const styles = getLeftNavStyles();
     return (
-        <div className={leftNavStyles.leftNavWrapper}>
-            <div className={leftNavStyles.contentWrapper}>
-                <div className={leftNavStyles.storeNameHolder}>
+        <div className={styles.leftNavWrapper}>
+            <div className={styles.contentWrapper}>
+                <div className={styles.storeNameHolder}>
                     <FaStore size={'40px'} />
                     <div>
                         {'Store Name'}
-                        <div className={leftNavStyles.storeNameHolderSubtitle}>
-                            {'Hi, Olivia Katz'}
-                        </div>
+                        <div className={styles.storeNameHolderSubtitle}>{'Hi, Olivia Katz'}</div>
                     </div>
                 </div>
                 <HorizontalRule
                     ruleWidth="100%"
-                    style={{ paddingBottom: 30, paddingLeft: 0, paddingRight: 0, paddingTop: 0 }}
+                    style={{
+                        horizontalRuleWrapperStyle: {
+                            paddingBottom: 30,
+                            paddingLeft: 0,
+                            paddingRight: 0,
+                            paddingTop: 0,
+                        },
+                    }}
                 />
-                <div className={leftNavStyles.navSubHeading}>{'OPERATIONS'}</div>
+                <div className={styles.navSubHeading}>{'OPERATIONS'}</div>
                 {navItem.map((item, key) => {
                     const isActive = item.activeRoutes.includes(currentNavRoute);
                     return (

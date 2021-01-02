@@ -1,60 +1,60 @@
 import React from 'react';
-import styles from './tabBar.module.css';
-import { cssColors } from '../../config/cssVariables';
-import cn from 'classnames';
 import { useHistory } from 'react-router-dom';
+import { getTabBarStyles } from './tabBar.styles';
+import { cx } from '@emotion/css';
+import lodash from 'lodash';
 
 export interface ITabBarProps {
     tabs: { name: string; route?: string }[];
-    selectedTab: number;
-    selectedColor?: keyof typeof cssColors;
-    style?: React.CSSProperties;
+    selectedIndex: number;
     onSelect: (selectedIndex: number) => void;
+    style?: {
+        tabBarWrapperStyle?: React.CSSProperties;
+        tabStyle?: React.CSSProperties;
+        tabTitleStyle?: React.CSSProperties;
+        selectedIndexStyle?: React.CSSProperties;
+    };
+    className?: {
+        tabBarWrapper?: string;
+        tab?: string;
+        tabTitle?: string;
+        selectedIndex?: string;
+    };
 }
 
-const defaultProps: ITabBarProps = {
-    tabs: [],
-    selectedColor: '--sales-color',
-    selectedTab: 0,
-    style: {},
-    onSelect: () => void 0,
-};
-
 export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element => {
-    // seasoning the props
-
     const history = useHistory();
-    const sProps: ITabBarProps = {
-        ...defaultProps,
-        ...props,
+
+    const defaultProps: ITabBarProps = {
+        tabs: [],
+        selectedIndex: 0,
+        style: {},
+        onSelect: () => void 0,
     };
+    const requiredProps = lodash.merge(defaultProps, props);
+    const styles = getTabBarStyles();
 
     return (
         <div
-            className={styles.tabBarWrapper}
-            style={{
-                ...sProps.style,
-            }}
+            className={cx(styles.tabBarWrapper, requiredProps.className?.tabBarWrapper)}
+            style={requiredProps.style?.tabBarWrapperStyle}
         >
-            {sProps.tabs.map((tab, index) => {
-                const tabStyle: React.CSSProperties = {};
-                if (index === sProps.selectedTab) {
-                    tabStyle.color = cssColors[sProps.selectedColor ?? '--sales-color'];
-                }
+            {requiredProps.tabs.map((tab, index) => {
                 return (
                     <div
                         onClick={() => {
-                            sProps.onSelect(index);
+                            requiredProps.onSelect(index);
                             history.push(tab.route ?? '#');
                         }}
                         key={index}
-                        className={cn(styles.tab)}
+                        className={cx(styles.tab, requiredProps.className?.tab)}
+                        style={requiredProps.style?.tabStyle}
                     >
                         <div
-                            className={cn(styles.tabTitle, {
-                                [styles.selectedTab]: index === sProps.selectedTab ? true : false,
+                            className={cx(cx(styles.tabTitle, requiredProps.className?.tabTitle), {
+                                [cx(styles.selectedTab, requiredProps.className?.tabTitle)]:
+                                    index === requiredProps.selectedIndex ? true : false,
                             })}
-                            style={tabStyle}
                         >
                             {tab.name}
                         </div>

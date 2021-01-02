@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import styles from './sales.module.css';
-import { ITabBarProps, TabBar } from '../../components/TabBar/TabBar';
+import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
 import { ROUTES } from '../../config/routes';
 import lodash from 'lodash';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { SalesHistory } from './components/SalesHistory/SalesHistory';
+import { getSalesStyles } from './sales.styles';
 
 export const Sales = (): JSX.Element => {
     const history = useHistory();
@@ -22,6 +22,8 @@ export const Sales = (): JSX.Element => {
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
+
+    const styles = getSalesStyles();
 
     return (
         <div className={styles.salesWrapper}>
