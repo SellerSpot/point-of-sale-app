@@ -1,8 +1,7 @@
 import { css } from '@emotion/css';
 import { cssColors, cssVariables } from '../../config/cssVariables';
-import { ITabBarProps } from './TabBar';
 
-interface IGetTabBarStyles {
+export interface IGetTabBarStyles {
     tabBarWrapper: string;
     tab: string;
     tabTitle: string;

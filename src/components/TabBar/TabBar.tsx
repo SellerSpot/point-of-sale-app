@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { getTabBarStyles } from './tabBar.styles';
+import { getTabBarStyles, IGetTabBarStyles } from './tabBar.styles';
 import { cx } from '@emotion/css';
 import lodash from 'lodash';
 
@@ -14,12 +14,7 @@ export interface ITabBarProps {
         tabTitleStyle?: React.CSSProperties;
         selectedIndexStyle?: React.CSSProperties;
     };
-    className?: {
-        tabBarWrapper?: string;
-        tab?: string;
-        tabTitle?: string;
-        selectedIndex?: string;
-    };
+    className?: IGetTabBarStyles;
 }
 
 export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element => {

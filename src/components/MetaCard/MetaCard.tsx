@@ -1,34 +1,67 @@
 import React, { ReactNode } from 'react';
-import styles from './metacard.module.css';
+import { getMetaCardStyles, IGetMetaCardStyles } from './metacard.styles';
+import lodash from 'lodash';
+import { cx } from '@emotion/css';
 
 export interface IMetaCardProps {
-    title?: string;
-    secondaryText?: string;
-    buttons?: ReactNode[];
-    style?: React.CSSProperties;
+    title?: string | JSX.Element;
+    secondaryText?: string | JSX.Element;
+    buttons?: JSX.Element[];
+    className?: IGetMetaCardStyles;
+    style?: {
+        cardActions: React.CSSProperties;
+        cardSecondaryText: React.CSSProperties;
+        cardTitle: React.CSSProperties;
+        metaCard: React.CSSProperties;
+        pageInformationSection: React.CSSProperties;
+    };
 }
 
 const defaultProps: IMetaCardProps = {
     title: 'This is sample description',
     secondaryText: 'This is sample secondary text',
     buttons: [],
-    style: {},
 };
 
 export const MetaCard: React.FC<IMetaCardProps> = (props: IMetaCardProps): JSX.Element => {
     // seasoning the props
-    const sProps: IMetaCardProps = {
-        ...defaultProps,
-        ...props,
-    };
+    const requiredProps = lodash.merge(defaultProps, props);
+    const styles = getMetaCardStyles();
 
     return (
-        <div className={styles.metaCard} style={sProps.style}>
-            <div className={styles.pageInformationSection}>
-                <div className={styles.cardTitle}>{sProps.title}</div>
-                <div className={styles.cardSecondaryText}>{sProps.secondaryText}</div>
+        <div
+            className={cx(styles.metaCard, requiredProps.className?.metaCard)}
+            style={requiredProps.style?.metaCard}
+        >
+            <div
+                className={cx(
+                    styles.pageInformationSection,
+                    requiredProps.className?.pageInformationSection,
+                )}
+                style={requiredProps.style?.pageInformationSection}
+            >
+                <div
+                    className={cx(styles.cardTitle, requiredProps.className?.cardTitle)}
+                    style={requiredProps.style?.cardTitle}
+                >
+                    {requiredProps.title}
+                </div>
+                <div
+                    className={cx(
+                        styles.cardSecondaryText,
+                        requiredProps.className?.cardSecondaryText,
+                    )}
+                    style={requiredProps.style?.cardSecondaryText}
+                >
+                    {requiredProps.secondaryText}
+                </div>
             </div>
-            <div className={styles.cardActions}>{sProps.buttons}</div>
+            <div
+                className={cx(styles.cardActions, requiredProps.className?.cardActions)}
+                style={requiredProps.style?.cardActions}
+            >
+                {requiredProps.buttons}
+            </div>
         </div>
     );
 };
