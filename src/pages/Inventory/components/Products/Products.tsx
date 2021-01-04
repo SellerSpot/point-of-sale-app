@@ -15,14 +15,11 @@ export const Products = (): JSX.Element => {
     const styles = getProductsStyles();
     const [productsData, setproductsData] = useState<IGetProduct[]>(null);
 
-    // call action function to fetch the sales history data
-    const getProductsData = async () => {
-        // to populate the table
-        setproductsData(await getProducts());
-    };
-
     useEffect(() => {
-        getProductsData();
+        (async () => {
+            // to populate the table
+            setproductsData(await getProducts());
+        }).call(null);
     }, []);
 
     return (

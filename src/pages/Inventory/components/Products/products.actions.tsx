@@ -1,6 +1,7 @@
 import { API_ROUTES } from 'config/apiRoutes';
 import lodash from 'lodash';
 import React from 'react';
+import { batch } from 'react-redux';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
 import { IGetProduct } from 'typings/ComponentTypings/product.types';
