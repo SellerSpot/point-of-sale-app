@@ -6,8 +6,10 @@ import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { cssColors } from 'config/cssVariables';
 import { getBrandsStyles } from './brands.styles';
-import { compileBrandTableBodyData, brandsAPIRequest } from './brands.actions';
+import { compileBrandTableBodyData, brandsAPIRequest, handleTableRowClick } from './brands.actions';
 import { IGetBrands } from 'typings/ComponentTypings/brand.types';
+import lodash from 'lodash';
+import { css } from '@emotion/css';
 
 export const Brands = (): JSX.Element => {
     const dispatchBrandStore = useDispatch();
@@ -43,13 +45,29 @@ export const Brands = (): JSX.Element => {
                 ]}
             />
             <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Brand Name'}>{'Brand Name'}</p>,
-                    ]}
-                    rowData={compileBrandTableBodyData(brandData, setBrandData)}
-                />
+                {!lodash.isNull(brandData) && brandData.length > 0 ? (
+                    <Table
+                        headers={[
+                            <p key={'S.No'}>{'S.No'}</p>,
+                            <p key={'Brand Name'}>{'Brand Name'}</p>,
+                        ]}
+                        rowData={compileBrandTableBodyData(brandData)}
+                        className={{
+                            bodyRow: css`
+                                :hover {
+                                    cursor: pointer;
+                                    background-color: ${cssColors['--secondary-background-color']};
+                                }
+                            `,
+                        }}
+                        onClick={{
+                            rowClick: (index: number) => {
+                                console.log(index);
+                                handleTableRowClick(brandData[index]);
+                            },
+                        }}
+                    />
+                ) : null}
             </div>
         </div>
     );

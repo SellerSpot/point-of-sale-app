@@ -18,22 +18,58 @@ import { store } from 'store/store';
 export const handleSliderClose = (sliderModalToClose: keyof SliderModalInitialState): void => {
     switch (sliderModalToClose) {
         case 'addBrandSlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'addBrandSlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addBrandSlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
         case 'addCategorySlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'addCategorySlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addCategorySlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
         case 'addProductSlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'addProductSlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addProductSlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
         case 'addTaxBracketSlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'addTaxBracketSlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addTaxBracketSlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
         case 'checkoutSlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'checkoutSlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'checkoutSlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
         case 'newSaleSlider':
-            store.dispatch(toggleSliderModal({ sliderName: 'newSaleSlider', active: false }));
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'newSaleSlider',
+                    active: false,
+                    autoFillData: null,
+                }),
+            );
             break;
     }
 };
@@ -50,42 +86,42 @@ const Sliders = (): ReactElement => {
     return (
         <>
             <SliderModal
-                active={addBrandSlider}
+                active={addBrandSlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addBrandSlider')}
             >
                 <AddBrand />
             </SliderModal>
             <SliderModal
-                active={addProductSlider}
+                active={addProductSlider.show}
                 sliderSize={'40%'}
                 onClickBackdrop={() => handleSliderClose('addProductSlider')}
             >
                 <AddProduct />
             </SliderModal>
             <SliderModal
-                active={addCategorySlider}
+                active={addCategorySlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addCategorySlider')}
             >
                 <AddCategory />
             </SliderModal>
             <SliderModal
-                active={addTaxBracketSlider}
+                active={addTaxBracketSlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addTaxBracketSlider')}
             >
                 <AddTaxBracket />
             </SliderModal>
             <SliderModal
-                active={newSaleSlider}
+                active={newSaleSlider.show}
                 sliderSize={'100%'}
                 onClickBackdrop={() => handleSliderClose('newSaleSlider')}
             >
                 <NewSale />
             </SliderModal>
             <SliderModal
-                active={checkoutSlider}
+                active={checkoutSlider.show}
                 sliderSize={'80%'}
                 onClickBackdrop={() => handleSliderClose('checkoutSlider')}
             >

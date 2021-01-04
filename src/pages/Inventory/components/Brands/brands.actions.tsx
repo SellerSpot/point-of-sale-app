@@ -4,6 +4,8 @@ import lodash from 'lodash';
 import React from 'react';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
 import { IGetBrands } from 'typings/ComponentTypings/brand.types';
 
 // to get the list of brands from server
@@ -23,10 +25,7 @@ export const brandsAPIRequest = async (): Promise<IGetBrands[]> => {
 };
 
 // compile data to show in table
-export const compileBrandTableBodyData = (
-    brandData: IGetBrands[],
-    setBrandData: React.Dispatch<React.SetStateAction<IGetBrands[]>>,
-): JSX.Element[][] => {
+export const compileBrandTableBodyData = (brandData: IGetBrands[]): JSX.Element[][] => {
     if (!lodash.isNull(brandData) && brandData.length > 0) {
         // to hold the compiled table data
         const compiledData: JSX.Element[][] = [];
@@ -40,4 +39,12 @@ export const compileBrandTableBodyData = (
     } else {
         return [];
     }
+};
+
+// to show Slider when the tableRow is shown
+export const handleTableRowClick = (brand: IGetBrands): void => {
+    console.log(brand);
+    store.dispatch(
+        toggleSliderModal({ sliderName: 'addBrandSlider', active: true, autoFillData: brand }),
+    );
 };
