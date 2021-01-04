@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
@@ -8,12 +8,24 @@ import { KEYCODES } from 'services/KeyCodeService';
 
 import { cssColors } from 'config/cssVariables';
 import { getCategoriesStyles } from './categories.styles';
+import { IGetCategory } from 'typings/ComponentTypings/categories.types';
+import { compileCategoriesTableBodyData, getCategories } from './categories.actions';
 
 export const Categories = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
-
     const styles = getCategoriesStyles();
+    const [categoriesData, setCategoriesData] = useState<IGetCategory[]>(null);
+
+    // to fetch the categories data
+    const getCategoriesData = async () => {
+        // to populate the table
+        setCategoriesData(await getCategories());
+    };
+
+    useEffect(() => {
+        getCategoriesData();
+    }, []);
 
     return (
         <div className={styles.categoriesWrapper}>
@@ -41,19 +53,14 @@ export const Categories = (): JSX.Element => {
                 ]}
             />
             <div className={styles.tableWrapper}>
-                {/* <Table
-                    headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
-                    rowData={[
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                <Table
+                    headers={[
+                        <p key={'S.No'}>{'S.No'}</p>,
+                        <p key={'Category Name'}>{'Category Name'}</p>,
+                        <p key={'Category ID'}>{'Category ID'}</p>,
                     ]}
-                /> */}
+                    rowData={compileCategoriesTableBodyData(categoriesData)}
+                />
             </div>
         </div>
     );

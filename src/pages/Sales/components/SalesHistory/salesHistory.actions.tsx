@@ -12,7 +12,7 @@ export const getSalesHistory = async (): Promise<IGetSales[]> => {
     const response = await apiService.get(API_ROUTES.SALES);
     // parsing response
     if (response.status) {
-        return (response.data as IGetSales[]).map((sale: IGetSales) => {
+        return (response.data as IGetSales[]).map((sale) => {
             const {
                 _id,
                 status,
