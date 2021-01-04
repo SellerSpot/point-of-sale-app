@@ -1,3 +1,4 @@
+import ms from 'ms';
 import { cssColors, TMajorColors } from '../config/cssVariables';
 
 export default class Utils {
@@ -20,3 +21,11 @@ export default class Utils {
         return color;
     }
 }
+
+// to convert epoch time to human readable format
+export const convertEpochTime = (epochTime: number): string => {
+    const currEpoch = Date.now();
+    // to find the milliseconds elapsed
+    const millSecsElapsed = currEpoch - epochTime;
+    return ms(millSecsElapsed, { long: true }) + ' ago';
+};

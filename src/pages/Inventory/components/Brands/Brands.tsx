@@ -37,7 +37,7 @@ export const Brands = (): JSX.Element => {
                 ]}
             />
             <div className={styles.tableWrapper}>
-                <Table
+                {/* <Table
                     headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
                     rowData={[
                         ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
@@ -49,7 +49,7 @@ export const Brands = (): JSX.Element => {
                         ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
                         ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
                     ]}
-                />
+                /> */}
             </div>
         </div>
     );

@@ -16,10 +16,10 @@ export const NewSale = (): JSX.Element => {
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField placeHolder="Product Name / Code" onChange={(): void => void 0} />
-                <Table
+                {/* <Table
                     headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
                     rowData={[['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04', 'Data 05']]}
-                />
+                /> */}
                 <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
@@ -48,7 +48,7 @@ export const NewSale = (): JSX.Element => {
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                <Table
+                {/* <Table
                     headers={['Item Name', 'Quantity', 'Sub-Total', 'Discount']}
                     rowData={[
                         ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
@@ -57,7 +57,7 @@ export const NewSale = (): JSX.Element => {
                         ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
                         ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
                     ]}
-                />
+                /> */}
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>
