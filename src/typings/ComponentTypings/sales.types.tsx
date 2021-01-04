@@ -1,5 +1,3 @@
-// SALES HISTORY
-
 enum ESaleStatus {
     COMPLETED = 'COMPLETED',
     PENDING = 'PENDING',

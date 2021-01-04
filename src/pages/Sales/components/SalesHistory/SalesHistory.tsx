@@ -7,10 +7,8 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { KEYCODES } from 'services/KeyCodeService';
 import { cssColors } from 'config/cssVariables';
 import { getSalesHistoryStyles } from './salesHistory.styles';
-import { getSalesHistory } from './salesHistory.actions';
-import { IGetSales } from './salesHistory.types';
-import lodash from 'lodash';
-import { convertEpochTime } from 'services/Utils';
+import { compileSalesTableBodyData, getSalesHistory } from './salesHistory.actions';
+import { IGetSales } from 'typings/ComponentTypings/sales.types';
 
 export const SalesHistory = (): JSX.Element => {
     // to manage which tab is selected
@@ -23,27 +21,6 @@ export const SalesHistory = (): JSX.Element => {
     const getSalesHistoryData = async () => {
         // to populate the table
         setSalesHistoryData(await getSalesHistory());
-    };
-
-    // compile data to show in table
-    const compileTableBodyData = (): JSX.Element[][] => {
-        if (!lodash.isNull(salesHistoryData) && salesHistoryData.length > 0) {
-            // to hold the compiled table data
-            const compiledData: JSX.Element[][] = [];
-            salesHistoryData.map((sale, index) => {
-                compiledData.push([
-                    <p key={index}>{index + 1}</p>,
-                    <p key={sale.createdAt}>{convertEpochTime(parseInt(sale.createdAt))}</p>,
-                    <p key={sale.status}>{sale.status}</p>,
-                    <p key={sale.subTotal}>{sale.subTotal}</p>,
-                    <p key={sale.totalTax}>{sale.totalTax}</p>,
-                    <p key={sale.grandTotal}>{sale.grandTotal}</p>,
-                ]);
-            });
-            return compiledData;
-        } else {
-            return [[]];
-        }
     };
 
     useEffect(() => {
@@ -81,8 +58,13 @@ export const SalesHistory = (): JSX.Element => {
                         <p key={'Sub-Total'}>{'Sub-Total'}</p>,
                         <p key={'Taxation'}>{'Taxation'}</p>,
                         <p key={'Grand Total'}>{'Grand Total'}</p>,
+                        <p key={'Created At'}>{'Created'}</p>,
+                        <p key={'Status'}>{'Status'}</p>,
+                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
+                        <p key={'Taxation'}>{'Taxation'}</p>,
+                        <p key={'Grand Total'}>{'Grand Total'}</p>,
                     ]}
-                    rowData={compileTableBodyData()}
+                    rowData={compileSalesTableBodyData(salesHistoryData)}
                 />
             </div>
         </div>
