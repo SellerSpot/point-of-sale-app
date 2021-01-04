@@ -1,23 +1,28 @@
-import { Button } from '@sellerspot/universal-components/dist/components/Button/Button';
+import { Dispatch } from '@reduxjs/toolkit';
+import { InputField } from '@sellerspot/universal-components';
 import { API_ROUTES } from 'config/apiRoutes';
 import lodash from 'lodash';
 import React from 'react';
 import { apiService } from 'services';
+import { addbrand, editBrand } from 'store/models/brand';
 import { showNotify } from 'store/models/notify';
+import { store } from 'store/store';
 import { IGetBrands } from 'typings/ComponentTypings/brand.types';
 
+// to get all brands from server
+export const getAllBrands = async (): Promise<void> => {
+    // to fetch all brands
+    const allBrands = await brandsAPIRequest();
+    store.dispatch(addbrand(allBrands));
+};
+
 // to get the list of brands from server
-export const getAllBrands = async (): Promise<IGetBrands[]> => {
+export const brandsAPIRequest = async (): Promise<IGetBrands[]> => {
     // sending API request
     const response = await apiService.get(API_ROUTES.BRAND);
     // parsing response
     if (response.status) {
-        return (response.data as IGetBrands[]).map((brand) => {
-            return {
-                _id: brand._id,
-                name: brand.name,
-            };
-        });
+        return response.data;
     } else {
         showNotify({
             content: <p>Unable to fetch sales data</p>,
@@ -35,7 +40,15 @@ export const compileBrandTableBodyData = (brandsData: IGetBrands[]): JSX.Element
         brandsData.map((brand, index) => {
             compiledData.push([
                 <p key={index}>{index + 1}</p>,
-                <p key={brand.name}>{brand.name}</p>,
+                <InputField
+                    key={brand.name}
+                    selectTextOnFocus={true}
+                    size={'compact'}
+                    value={brand.name}
+                    onChange={(event) =>
+                        store.dispatch(editBrand({ _id: brand._id, name: event.target.value }))
+                    }
+                />,
                 <p key={brand._id}>{brand._id}</p>,
             ]);
         });

@@ -14,8 +14,10 @@ const brand = createSlice({
     name: 'brand',
     initialState,
     reducers: {
-        addbrand: (state, { payload }: PayloadAction<IGetBrands>) => {
-            state.brands.push(payload);
+        addbrand: (state, { payload }: PayloadAction<IGetBrands[]>) => {
+            for (let i = 0; i < payload.length; i++) {
+                state.brands.push(payload[i]);
+            }
         },
         deleteBrand: (state, { payload }: PayloadAction<IGetBrands['_id']>) => {
             // to find the index of the brand to remove and delete it from array

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
@@ -7,22 +7,15 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { cssColors } from 'config/cssVariables';
 import { getBrandsStyles } from './brands.styles';
 import { compileBrandTableBodyData, getAllBrands } from './brands.actions';
-import { IGetBrands } from 'typings/ComponentTypings/brand.types';
+import { RootState } from 'store/store';
 
 export const Brands = (): JSX.Element => {
-    // to manage which tab is selected
-    const dispatch = useDispatch();
+    const dispatchBrandStore = useDispatch();
+    const brandState = useSelector((state: RootState) => state.brand);
     const styles = getBrandsStyles();
-    const [brandsData, setBrandsData] = useState<IGetBrands[]>(null);
-
-    // call action function to fetch the sales history data
-    const getSalesHistoryData = async () => {
-        // to populate the table
-        setBrandsData(await getAllBrands());
-    };
 
     useEffect(() => {
-        getSalesHistoryData();
+        getAllBrands();
     }, []);
 
     return (
@@ -40,7 +33,7 @@ export const Brands = (): JSX.Element => {
                             borderColor: cssColors['--inventory-color'],
                         }}
                         onClick={() =>
-                            dispatch(
+                            dispatchBrandStore(
                                 toggleSliderModal({ sliderName: 'addBrandSlider', active: true }),
                             )
                         }
@@ -54,7 +47,7 @@ export const Brands = (): JSX.Element => {
                         <p key={'Brand Name'}>{'Brand Name'}</p>,
                         <p key={'Brand ID'}>{'Brand ID'}</p>,
                     ]}
-                    rowData={compileBrandTableBodyData(brandsData)}
+                    rowData={compileBrandTableBodyData(brandState.brands)}
                 />
             </div>
         </div>
