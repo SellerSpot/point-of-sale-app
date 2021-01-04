@@ -57,26 +57,18 @@ export const cssVariables = {
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
     '--small-input-field-height': '20px',
-    '--shadow': '0px 0px 3px 0px var(--shadow-color)',
+    '--shadow': '0px 0px 3px 0px ' + cssColors['--shadow-color'],
 
     /* z-index values */
-    '--z-index-notify': '10',
-    '--z-index-confirm-dialog': '6',
-    '--z-index-slider-modal': '5',
-    '--z-index-tab-bar': '4',
-    '--z-index-dropdown': '3',
-    '--z-index-table-header': '2',
-};
+    '--z-index-notify': 10,
+    '--z-index-confirm-dialog': 6,
+    '--z-index-slider-modal': 5,
+    '--z-index-tab-bar': 4,
+    '--z-index-dropdown': 3,
+    '--z-index-table-header': 2,
 
-// used to load css variables in ts object into the :root context
-export function loadCSSValues(): void {
-    const root = document.documentElement;
-    for (const [key, value] of Object.entries(cssVariables)) {
-        root.style.setProperty(key, value);
-    }
-    for (const [key, value] of Object.entries(cssColors)) {
-        root.style.setProperty(key, value);
-    }
-}
+    /* debounce timming */
+    '--input-debounce-delay': 300,
+};
 
 export type TMajorColors = 'success' | 'danger' | 'warning' | 'info';

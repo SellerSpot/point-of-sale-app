@@ -1,4 +1,5 @@
 import { css } from '@emotion/css';
+import { cssColors, cssVariables } from 'config/cssVariables';
 
 interface IGetLeftNavStyles {
     leftNavWrapper: string;
@@ -16,7 +17,7 @@ export const getLeftNavStyles = (): IGetLeftNavStyles => {
         width: 99%;
         height: 100%;
         user-select: none;
-        box-shadow: 0 0 1px 0 var(--overlay-color);
+        box-shadow: 0 0 1px 0 ${cssColors['--overlay-color']};
     `;
 
     const contentWrapper = css`
@@ -24,14 +25,14 @@ export const getLeftNavStyles = (): IGetLeftNavStyles => {
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
-        border-radius: var(--border-radius);
-        background-color: var(--primary-background-color);
+        border-radius: ${cssVariables['--border-radius']};
+        background-color: ${cssColors['--primary-background-color']};
     `;
 
     const storeNameHolder = css`
         width: 100%;
         height: 70px;
-        font-size: var(--font-size-header);
+        font-size: ${cssVariables['--font-size-header']};
         font-weight: 700;
         pointer-events: none;
         padding-left: 20px;
@@ -42,7 +43,7 @@ export const getLeftNavStyles = (): IGetLeftNavStyles => {
     `;
 
     const storeNameHolderSubtitle = css`
-        font-size: var(--font-size-tertiary);
+        font-size: ${cssVariables['--font-size-tertiary']};
         font-weight: 500;
     `;
 
@@ -56,25 +57,25 @@ export const getLeftNavStyles = (): IGetLeftNavStyles => {
         padding-left: 20px;
         cursor: pointer;
         margin-bottom: 5px;
-        transition: color var(--transition-duration);
+        transition: color ${cssVariables['--transition-duration']};
 
         :hover {
-            background-color: var(--tertiary-background-color);
+            background-color: ${cssColors['--tertiary-background-color']};
         }
 
         :active {
-            background-color: var(--tertiary-background-color);
+            background-color: ${cssColors['--tertiary-background-color']};
         }
     `;
 
     const navIcon = css`
-        font-size: var(--font-size-master-sub);
+        font-size: ${cssVariables['--font-size-master-sub']};
         margin-right: 15px;
         margin-top: 3px;
     `;
 
     const navTitle = css`
-        font-size: var(--font-size-default);
+        font-size: ${cssVariables['--font-size-default']};
         text-transform: capitalize;
     `;
 
@@ -82,7 +83,7 @@ export const getLeftNavStyles = (): IGetLeftNavStyles => {
         width: 100%;
         padding-left: 20px;
         margin-bottom: 10px;
-        font-size: var(--font-size-secondary);
+        font-size: ${cssVariables['--font-size-secondary']};
         font-weight: 600;
     `;
 

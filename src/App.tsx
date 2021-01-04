@@ -1,16 +1,12 @@
 import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
-import { loadCSSValues } from 'config/cssVariables';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
 import { Notify } from '@sellerspot/universal-components';
 import './styles/core.css';
 import { store } from 'store/store';
 import { closeNotify, notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
-
-// used to load css variables in ts object into the :root context
-loadCSSValues();
 
 export const App = (): ReactElement => {
     // getting Notify selector

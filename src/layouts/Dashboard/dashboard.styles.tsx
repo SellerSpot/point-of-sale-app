@@ -1,4 +1,5 @@
 import { css } from '@emotion/css';
+import { cssColors } from 'config/cssVariables';
 
 interface IGetDashboardStyles {
     dashboardWrapper: string;
@@ -13,7 +14,7 @@ export const getDashboardStyles = (): IGetDashboardStyles => {
         height: 100vh;
         overflow-y: hidden;
         display: grid;
-        background-color: var(--secondary-background-color);
+        background-color: ${cssColors['--secondary-background-color']};
         grid-template-columns: 240px 1fr;
     `;
 

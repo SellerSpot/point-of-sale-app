@@ -1,4 +1,5 @@
 import { css } from '@emotion/css';
+import { cssColors, cssVariables } from 'config/cssVariables';
 
 interface IGetNewSaleStyles {
     newSaleWrapper: string;
@@ -19,7 +20,7 @@ export const getNewSaleStyles = (): IGetNewSaleStyles => {
         grid-template-rows: 1fr;
         padding: 10px;
         gap: 10px;
-        background-color: var(--secondary-background-color);
+        background-color: ${cssColors['--secondary-background-color']};
     `;
 
     const leftPanel = css`
@@ -44,9 +45,9 @@ export const getNewSaleStyles = (): IGetNewSaleStyles => {
         width: 100%;
         height: 100%;
         padding: 10px;
-        background-color: var(--primary-background-color);
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
+        background-color: ${cssColors['--primary-background-color']};
+        border-radius: ${cssVariables['--border-radius']};
+        box-shadow: ${cssVariables['--shadow']};
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
@@ -57,9 +58,9 @@ export const getNewSaleStyles = (): IGetNewSaleStyles => {
         width: 100%;
         height: 100%;
         padding: 10px 20px;
-        background-color: var(--primary-background-color);
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
+        background-color: ${cssColors['--primary-background-color']};
+        border-radius: ${cssVariables['--border-radius']};
+        box-shadow: ${cssVariables['--shadow']};
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -73,7 +74,7 @@ export const getNewSaleStyles = (): IGetNewSaleStyles => {
         justify-content: space-between;
         align-items: center;
         font-weight: 700;
-        font-size: var(--font-size-small-heading);
+        font-size: ${cssVariables['--font-size-small-heading']};
     `;
 
     return {
