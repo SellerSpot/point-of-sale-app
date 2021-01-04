@@ -60,6 +60,6 @@ export const compileSalesTableBodyData = (salesHistoryData: IGetSales[]): JSX.El
         });
         return compiledData;
     } else {
-        return [[]];
+        return [];
     }
 };

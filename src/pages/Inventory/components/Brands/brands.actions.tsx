@@ -41,6 +41,6 @@ export const compileBrandTableBodyData = (brandsData: IGetBrands[]): JSX.Element
         });
         return compiledData;
     } else {
-        return [[]];
+        return [];
     }
 };

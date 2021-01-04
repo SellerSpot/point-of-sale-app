@@ -44,6 +44,6 @@ export const compileTaxBracketTableBodyData = (
         });
         return compiledData;
     } else {
-        return [[]];
+        return [];
     }
 };

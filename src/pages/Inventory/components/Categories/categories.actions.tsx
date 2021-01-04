@@ -40,6 +40,6 @@ export const compileCategoriesTableBodyData = (categoriesData: IGetCategory[]): 
         });
         return compiledData;
     } else {
-        return [[]];
+        return [];
     }
 };

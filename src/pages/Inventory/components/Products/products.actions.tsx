@@ -68,6 +68,6 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
         });
         return compiledData;
     } else {
-        return [[]];
+        return [];
     }
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
@@ -6,20 +6,46 @@ import { Table } from '@sellerspot/universal-components';
 import { cssColors, cssVariables } from 'config/cssVariables';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { getNewSaleStyles } from './newSale.styles';
+import { IGetProduct } from 'typings/ComponentTypings/product.types';
+import {
+    compileProductsTableBodyData,
+    getProducts,
+} from 'pages/Inventory/components/Products/products.actions';
+import { ICartItem } from 'typings/ComponentTypings/newSale.types';
+import { getCartItems } from './newSale.actions';
 
 export const NewSale = (): JSX.Element => {
     const dispatch = useDispatch();
-
     const styles = getNewSaleStyles();
+    const [productsData, setproductsData] = useState<IGetProduct[]>(null);
+    const [cartData, setCartData] = useState<ICartItem[]>(null);
+
+    // call action function to fetch the sales history data
+    const getProductsData = async () => {
+        // to populate the table
+        setproductsData(await getProducts());
+    };
+
+    useEffect(() => {
+        getProductsData();
+    }, []);
 
     return (
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField placeHolder="Product Name / Code" onChange={(): void => void 0} />
-                {/* <Table
-                    headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
-                    rowData={[['Data 00', 'Data 01', 'Data 02', 'Data 03', 'Data 04', 'Data 05']]}
-                /> */}
+                <Table
+                    headers={[
+                        <p key={'S.No'}>{'S.No'}</p>,
+                        <p key={'Item Name'}>{'Item Name'}</p>,
+                        <p key={'Code'}>{'Code'}</p>,
+                        <p key={'Brand'}>{'Brand'}</p>,
+                        <p key={'Category'}>{'Category'}</p>,
+                        <p key={'Available Stock'}>{'Available Stock'}</p>,
+                        <p key={'Price'}>{'Price'}</p>,
+                    ]}
+                    rowData={compileProductsTableBodyData(productsData)}
+                />
                 <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
@@ -48,16 +74,16 @@ export const NewSale = (): JSX.Element => {
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                {/* <Table
-                    headers={['Item Name', 'Quantity', 'Sub-Total', 'Discount']}
-                    rowData={[
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
-                        ['Data 00', 'Data 01', 'Data 02', 'Data 03'],
+                <Table
+                    headers={[
+                        <p key={'S.No'}>{'S.No'}</p>,
+                        <p key={'Item Name'}>{'Item Name'}</p>,
+                        <p key={'Quantity'}>{'Quantity'}</p>,
+                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
+                        <p key={'Discount'}>{'Discount'}</p>,
                     ]}
-                /> */}
+                    rowData={getCartItems(cartData)}
+                />
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>
