@@ -1,17 +1,29 @@
 import { cssColors } from 'config/cssVariables';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { getProductsStyles } from './products.styles';
+import { IGetProduct } from 'typings/ComponentTypings/product.types';
+import { compileProductsTableBodyData, getProducts } from './products.actions';
 
 export const Products = (): JSX.Element => {
     // to manage which tab is selected
     const dispatch = useDispatch();
-
     const styles = getProductsStyles();
+    const [productsData, setproductsData] = useState<IGetProduct[]>(null);
+
+    // call action function to fetch the sales history data
+    const getProductsData = async () => {
+        // to populate the table
+        setproductsData(await getProducts());
+    };
+
+    useEffect(() => {
+        getProductsData();
+    }, []);
 
     return (
         <div className={styles.productsWrapper}>
@@ -36,19 +48,18 @@ export const Products = (): JSX.Element => {
                 ]}
             />
             <div className={styles.tableWrapper}>
-                {/* <Table
-                    headers={['Item Name', 'Code', 'Brand', 'Category', 'Available Stock', 'Price']}
-                    rowData={[
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
-                        ['value 1', 'value 2', 'value 3', 'value 4', 'value 5', 'value 6'],
+                <Table
+                    headers={[
+                        <p key={'S.No'}>{'S.No'}</p>,
+                        <p key={'Item Name'}>{'Item Name'}</p>,
+                        <p key={'Code'}>{'Code'}</p>,
+                        <p key={'Brand'}>{'Brand'}</p>,
+                        <p key={'Category'}>{'Category'}</p>,
+                        <p key={'Available Stock'}>{'Available Stock'}</p>,
+                        <p key={'Price'}>{'Price'}</p>,
                     ]}
-                /> */}
+                    rowData={compileProductsTableBodyData(productsData)}
+                />
             </div>
         </div>
     );
