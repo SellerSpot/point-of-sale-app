@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { cssColors } from 'config/cssVariables';
 import { getBrandsStyles } from './brands.styles';
-import { compileBrandTableBodyData, getAllBrands } from './brands.actions';
-import { RootState } from 'store/store';
+import { compileBrandTableBodyData, brandsAPIRequest } from './brands.actions';
+import { IGetBrands } from 'typings/ComponentTypings/brand.types';
 
 export const Brands = (): JSX.Element => {
     const dispatchBrandStore = useDispatch();
-    const brandState = useSelector((state: RootState) => state.brand);
     const styles = getBrandsStyles();
+    const [brandData, setBrandData] = useState<IGetBrands[]>(null);
 
     useEffect(() => {
-        getAllBrands();
+        (async () => {
+            setBrandData(await brandsAPIRequest());
+        }).call(null);
     }, []);
 
     return (
@@ -45,9 +47,9 @@ export const Brands = (): JSX.Element => {
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
                         <p key={'Brand Name'}>{'Brand Name'}</p>,
-                        <p key={'Brand ID'}>{'Brand ID'}</p>,
+                        
                     ]}
-                    rowData={compileBrandTableBodyData(brandState.brands)}
+                    rowData={compileBrandTableBodyData(brandData, setBrandData)}
                 />
             </div>
         </div>
