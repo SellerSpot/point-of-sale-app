@@ -47,7 +47,6 @@ export const Brands = (): JSX.Element => {
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
                         <p key={'Brand Name'}>{'Brand Name'}</p>,
-                        
                     ]}
                     rowData={compileBrandTableBodyData(brandData, setBrandData)}
                 />
