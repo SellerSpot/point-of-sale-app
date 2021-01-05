@@ -1,4 +1,5 @@
-import React, { ReactElement, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Button } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
@@ -6,12 +7,14 @@ import { useFormik } from 'formik';
 import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
-import { isNull, isUndefined } from 'lodash';
+import lodash, { isNull, isUndefined } from 'lodash';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { cssColors } from 'config/cssVariables';
 import { getAddBrandStyles } from './addBrand.styles';
 import { cx } from '@emotion/css';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const formSchema = Yup.object().shape({
     brandName: Yup.string().required('Brand Name is a required field'),
@@ -30,6 +33,7 @@ const customErrorMessagesInitialState: typeof formInitialValues = {
 export const AddBrand = (): ReactElement => {
     // holds the server side validation error messages
     const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -38,6 +42,12 @@ export const AddBrand = (): ReactElement => {
             handleSubmit(values);
         },
     });
+
+    useEffect(() => {
+        if (!lodash.isUndefined(sliderState.addBrandSlider.autoFillData))
+            formFormik.setValues({ brandName: sliderState.addBrandSlider.autoFillData?.name });
+        else formFormik.resetForm();
+    }, [sliderState.addBrandSlider.autoFillData]);
 
     const handleSubmit = async (values: typeof formInitialValues) => {
         formFormik.setSubmitting(true);
@@ -79,7 +89,11 @@ export const AddBrand = (): ReactElement => {
                     <MdKeyboardArrowLeft size={'35px'} />
                 </div>
             </div>
-            <div className={styles.pageTitleBar}>Add Brand</div>
+            <div className={styles.pageTitleBar}>
+                {lodash.isUndefined(sliderState.addBrandSlider.autoFillData)
+                    ? 'Add Brand'
+                    : 'Edit Brand'}
+            </div>
             <div className={styles.pageBody}>
                 <div className={cx(styles.formGroup)}>
                     <InputField
@@ -89,6 +103,7 @@ export const AddBrand = (): ReactElement => {
                         placeHolder={'Brand Name'}
                         required={true}
                         value={formFormik.values.brandName}
+                        selectTextOnFocus
                         error={{
                             errorMessage: isUndefined(formFormik.errors.brandName)
                                 ? !isNull(customErrorMessages.brandName)
@@ -99,7 +114,7 @@ export const AddBrand = (): ReactElement => {
                                 !isNull(customErrorMessages.brandName) ||
                                 !isUndefined(formFormik.errors.brandName),
                         }}
-                        onChange={(event) => {
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setCustomErrorMessages({
                                 ...customErrorMessages,
                                 brandName: null,
@@ -113,7 +128,11 @@ export const AddBrand = (): ReactElement => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Brand'}
+                    label={
+                        lodash.isUndefined(sliderState.addBrandSlider.autoFillData)
+                            ? 'Add Brand'
+                            : 'Edit Brand'
+                    }
                     tabIndex={0}
                     style={{
                         backgroundColor: cssColors['--inventory-color'],

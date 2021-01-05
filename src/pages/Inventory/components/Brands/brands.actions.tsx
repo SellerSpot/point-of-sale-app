@@ -43,7 +43,6 @@ export const compileBrandTableBodyData = (brandData: IGetBrands[]): JSX.Element[
 
 // to show Slider when the tableRow is shown
 export const handleTableRowClick = (brand: IGetBrands): void => {
-    console.log(brand);
     store.dispatch(
         toggleSliderModal({ sliderName: 'addBrandSlider', active: true, autoFillData: brand }),
     );

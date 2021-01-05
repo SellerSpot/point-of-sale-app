@@ -62,7 +62,6 @@ export const Brands = (): JSX.Element => {
                         }}
                         onClick={{
                             rowClick: (index: number) => {
-                                console.log(index);
                                 handleTableRowClick(brandData[index]);
                             },
                         }}
