@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { Button } from '@sellerspot/universal-components';
 import { Dropdown } from '@sellerspot/universal-components';
@@ -5,7 +6,7 @@ import { HorizontalRule } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { isNull, isUndefined } from 'lodash';
+import lodash from 'lodash';
 import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
@@ -14,6 +15,8 @@ import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders'
 import { cssColors } from 'config/cssVariables';
 import { getAddProductStyles } from './addProduct.styles';
 import { cx } from '@emotion/css';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('product name is a required field'),
@@ -25,7 +28,7 @@ const formSchema = Yup.object().shape({
     sellingPrice: Yup.number().required('selling price is a required field'),
     availableStock: Yup.number(),
     stockUnit: Yup.string().length(24),
-    taxBracket: Yup.string().length(24),
+    taxBracket: Yup.array().length(24),
 });
 
 // holds the initial values of the form
@@ -39,7 +42,7 @@ const formInitialValues = {
     sellingPrice: 0,
     availableStock: 0,
     stockUnit: '',
-    taxBracket: '',
+    taxBracket: [''],
 };
 
 interface ICustomErrorMessagesInitialState {
@@ -52,7 +55,7 @@ interface ICustomErrorMessagesInitialState {
     sellingPrice: string;
     availableStock: string;
     stockUnit: string;
-    taxBracket: string;
+    taxBracket: string[];
 }
 
 // holds the initial values for the customErrorMessage state
@@ -80,6 +83,7 @@ interface IDropdownValues {
 export const AddProduct = (): ReactElement => {
     // holds the server side validation error messages
     const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     // holds the different dropdown values used in components
     const [brandDropdownValues, setBrandDropdownValues] = useState<IDropdownValues>({
@@ -103,6 +107,24 @@ export const AddProduct = (): ReactElement => {
             handleSubmit(values);
         },
     });
+
+    useEffect(() => {
+        if (!lodash.isUndefined(sliderState.addProductSlider.autoFillData))
+            formFormik.setValues({
+                name: sliderState.addProductSlider.autoFillData?.name,
+                brand: sliderState.addProductSlider.autoFillData?.brand,
+                category: sliderState.addProductSlider.autoFillData?.category,
+                availableStock:
+                    sliderState.addProductSlider.autoFillData?.stockInformation.availableStock,
+                gtinNumber: sliderState.addProductSlider.autoFillData?.gtinNumber,
+                landingPrice: sliderState.addProductSlider.autoFillData?.landingPrice,
+                profitPercent: sliderState.addProductSlider.autoFillData?.profitPercent,
+                sellingPrice: sliderState.addProductSlider.autoFillData?.sellingPrice,
+                stockUnit: sliderState.addProductSlider.autoFillData?.stockInformation.stockUnit,
+                taxBracket: sliderState.addProductSlider.autoFillData?.taxBracket,
+            });
+        else formFormik.resetForm();
+    }, [sliderState.addProductSlider.autoFillData]);
 
     const handleSubmit = async (values: typeof formInitialValues) => {
         formFormik.setSubmitting(true);
@@ -207,7 +229,7 @@ export const AddProduct = (): ReactElement => {
                     case 'taxBracket':
                         setCustomErrorMessages({
                             ...customErrorMessages,
-                            taxBracket: error.message,
+                            taxBracket: [error.message],
                         });
                         break;
                 }
@@ -308,7 +330,7 @@ export const AddProduct = (): ReactElement => {
                 values: taxBracket,
             });
             // setting default values for the fields
-            formInitialValues.taxBracket = taxBracket[0].id;
+            formInitialValues.taxBracket = [taxBracket[0].id];
         } else {
             showNotify({ message: response.error[0].message, type: 'danger' });
         }
@@ -343,14 +365,14 @@ export const AddProduct = (): ReactElement => {
                         required={true}
                         value={formFormik.values.name}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.name)
-                                ? !isNull(customErrorMessages.name)
+                            errorMessage: lodash.isUndefined(formFormik.errors.name)
+                                ? !lodash.isNull(customErrorMessages.name)
                                     ? customErrorMessages.name
                                     : ''
                                 : formFormik.errors.name,
                             showError:
-                                !isNull(customErrorMessages.name) ||
-                                !isUndefined(formFormik.errors.name),
+                                !lodash.isNull(customErrorMessages.name) ||
+                                !lodash.isUndefined(formFormik.errors.name),
                         }}
                         onChange={(event) => formFormik.setFieldValue('name', event.target.value)}
                     />
@@ -362,14 +384,14 @@ export const AddProduct = (): ReactElement => {
                         placeHolder={'Product Code'}
                         value={formFormik.values.gtinNumber}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.gtinNumber)
-                                ? !isNull(customErrorMessages.gtinNumber)
+                            errorMessage: lodash.isUndefined(formFormik.errors.gtinNumber)
+                                ? !lodash.isNull(customErrorMessages.gtinNumber)
                                     ? customErrorMessages.gtinNumber
                                     : ''
                                 : formFormik.errors.gtinNumber,
                             showError:
-                                !isNull(customErrorMessages.gtinNumber) ||
-                                !isUndefined(formFormik.errors.gtinNumber),
+                                !lodash.isNull(customErrorMessages.gtinNumber) ||
+                                !lodash.isUndefined(formFormik.errors.gtinNumber),
                         }}
                         onChange={(event) =>
                             formFormik.setFieldValue('gtinNumber', event.target.value)
@@ -380,7 +402,7 @@ export const AddProduct = (): ReactElement => {
                     <Dropdown
                         label={'Product Category'}
                         options={
-                            !isNull(categoryDropdownValues.values)
+                            !lodash.isNull(categoryDropdownValues.values)
                                 ? categoryDropdownValues.values.map((category) => category.name)
                                 : []
                         }
@@ -394,20 +416,20 @@ export const AddProduct = (): ReactElement => {
                             );
                         }}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.category)
-                                ? !isNull(customErrorMessages.category)
+                            errorMessage: lodash.isUndefined(formFormik.errors.category)
+                                ? !lodash.isNull(customErrorMessages.category)
                                     ? customErrorMessages.category
                                     : ''
                                 : formFormik.errors.category,
                             showError:
-                                !isNull(customErrorMessages.category) ||
-                                !isUndefined(formFormik.errors.category),
+                                !lodash.isNull(customErrorMessages.category) ||
+                                !lodash.isUndefined(formFormik.errors.category),
                         }}
                     />
                     <Dropdown
                         label={'Product Brand'}
                         options={
-                            !isNull(brandDropdownValues.values)
+                            !lodash.isNull(brandDropdownValues.values)
                                 ? brandDropdownValues.values.map((brand) => brand.name)
                                 : []
                         }
@@ -421,14 +443,14 @@ export const AddProduct = (): ReactElement => {
                             );
                         }}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.brand)
-                                ? !isNull(customErrorMessages.brand)
+                            errorMessage: lodash.isUndefined(formFormik.errors.brand)
+                                ? !lodash.isNull(customErrorMessages.brand)
                                     ? customErrorMessages.brand
                                     : ''
                                 : formFormik.errors.brand,
                             showError:
-                                !isNull(customErrorMessages.brand) ||
-                                !isUndefined(formFormik.errors.brand),
+                                !lodash.isNull(customErrorMessages.brand) ||
+                                !lodash.isUndefined(formFormik.errors.brand),
                         }}
                     />
                 </div>
@@ -447,19 +469,19 @@ export const AddProduct = (): ReactElement => {
                         placeHolder={'Landing Price'}
                         prefix={<p>₹</p>}
                         required={true}
-                        value={formFormik.values.landingPrice.toString()}
+                        value={formFormik.values.landingPrice?.toString()}
                         onChange={(event) =>
                             formFormik.setFieldValue('landingPrice', event.target.value)
                         }
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.landingPrice)
-                                ? !isNull(customErrorMessages.landingPrice)
+                            errorMessage: lodash.isUndefined(formFormik.errors.landingPrice)
+                                ? !lodash.isNull(customErrorMessages.landingPrice)
                                     ? customErrorMessages.landingPrice
                                     : ''
                                 : formFormik.errors.landingPrice,
                             showError:
-                                !isNull(customErrorMessages.landingPrice) ||
-                                !isUndefined(formFormik.errors.landingPrice),
+                                !lodash.isNull(customErrorMessages.landingPrice) ||
+                                !lodash.isUndefined(formFormik.errors.landingPrice),
                         }}
                     />
                     <InputField
@@ -467,19 +489,19 @@ export const AddProduct = (): ReactElement => {
                         label={'Profit Percent'}
                         placeHolder={'Profit Percent'}
                         suffix={<p>%</p>}
-                        value={formFormik.values.profitPercent.toString()}
+                        value={formFormik.values.profitPercent?.toString()}
                         onChange={(event) =>
                             formFormik.setFieldValue('profitPercent', event.target.value)
                         }
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.profitPercent)
-                                ? !isNull(customErrorMessages.profitPercent)
+                            errorMessage: lodash.isUndefined(formFormik.errors.profitPercent)
+                                ? !lodash.isNull(customErrorMessages.profitPercent)
                                     ? customErrorMessages.profitPercent
                                     : ''
                                 : formFormik.errors.profitPercent,
                             showError:
-                                !isNull(customErrorMessages.profitPercent) ||
-                                !isUndefined(formFormik.errors.profitPercent),
+                                !lodash.isNull(customErrorMessages.profitPercent) ||
+                                !lodash.isUndefined(formFormik.errors.profitPercent),
                         }}
                     />
                 </div>
@@ -490,19 +512,19 @@ export const AddProduct = (): ReactElement => {
                         required={true}
                         placeHolder={'Selling Price'}
                         prefix={<p>₹</p>}
-                        value={formFormik.values.sellingPrice.toString()}
+                        value={formFormik.values.sellingPrice?.toString()}
                         onChange={(event) =>
                             formFormik.setFieldValue('sellingPrice', event.target.value)
                         }
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.sellingPrice)
-                                ? !isNull(customErrorMessages.sellingPrice)
+                            errorMessage: lodash.isUndefined(formFormik.errors.sellingPrice)
+                                ? !lodash.isNull(customErrorMessages.sellingPrice)
                                     ? customErrorMessages.sellingPrice
                                     : ''
                                 : formFormik.errors.sellingPrice,
                             showError:
-                                !isNull(customErrorMessages.sellingPrice) ||
-                                !isUndefined(formFormik.errors.sellingPrice),
+                                !lodash.isNull(customErrorMessages.sellingPrice) ||
+                                !lodash.isUndefined(formFormik.errors.sellingPrice),
                         }}
                     />
                 </div>
@@ -514,25 +536,25 @@ export const AddProduct = (): ReactElement => {
                         type={'number'}
                         label={'Available Stock'}
                         placeHolder={'Available Stock'}
-                        value={formFormik.values.availableStock.toString()}
+                        value={formFormik.values.availableStock?.toString()}
                         onChange={(event) =>
                             formFormik.setFieldValue('availableStock', event.target.value)
                         }
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.availableStock)
-                                ? !isNull(customErrorMessages.availableStock)
+                            errorMessage: lodash.isUndefined(formFormik.errors.availableStock)
+                                ? !lodash.isNull(customErrorMessages.availableStock)
                                     ? customErrorMessages.availableStock
                                     : ''
                                 : formFormik.errors.availableStock,
                             showError:
-                                !isNull(customErrorMessages.availableStock) ||
-                                !isUndefined(formFormik.errors.availableStock),
+                                !lodash.isNull(customErrorMessages.availableStock) ||
+                                !lodash.isUndefined(formFormik.errors.availableStock),
                         }}
                     />
                     <Dropdown
                         label={'Stock Unit'}
                         options={
-                            !isNull(stockUnitDropdownValues.values)
+                            !lodash.isNull(stockUnitDropdownValues.values)
                                 ? stockUnitDropdownValues.values.map((stockUnit) => stockUnit.name)
                                 : []
                         }
@@ -547,14 +569,14 @@ export const AddProduct = (): ReactElement => {
                             );
                         }}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.stockUnit)
-                                ? !isNull(customErrorMessages.stockUnit)
+                            errorMessage: lodash.isUndefined(formFormik.errors.stockUnit)
+                                ? !lodash.isNull(customErrorMessages.stockUnit)
                                     ? customErrorMessages.stockUnit
                                     : ''
                                 : formFormik.errors.stockUnit,
                             showError:
-                                !isNull(customErrorMessages.stockUnit) ||
-                                !isUndefined(formFormik.errors.stockUnit),
+                                !lodash.isNull(customErrorMessages.stockUnit) ||
+                                !lodash.isUndefined(formFormik.errors.stockUnit),
                         }}
                     />
                 </div>
@@ -562,7 +584,7 @@ export const AddProduct = (): ReactElement => {
                     <Dropdown
                         label={'Tax Bracket'}
                         options={
-                            !isNull(taxBracketDropdownValues.values)
+                            !lodash.isNull(taxBracketDropdownValues.values)
                                 ? taxBracketDropdownValues.values.map(
                                       (taxBracket) =>
                                           taxBracket.name + '-' + taxBracket.taxPercent + '%',
@@ -580,14 +602,14 @@ export const AddProduct = (): ReactElement => {
                             );
                         }}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.taxBracket)
-                                ? !isNull(customErrorMessages.taxBracket)
-                                    ? customErrorMessages.taxBracket
+                            errorMessage: lodash.isUndefined(formFormik.errors.taxBracket)
+                                ? !lodash.isNull(customErrorMessages.taxBracket)
+                                    ? customErrorMessages.taxBracket?.toString()
                                     : ''
-                                : formFormik.errors.taxBracket,
+                                : formFormik.errors.taxBracket?.toString(),
                             showError:
-                                !isNull(customErrorMessages.taxBracket) ||
-                                !isUndefined(formFormik.errors.taxBracket),
+                                !lodash.isNull(customErrorMessages.taxBracket) ||
+                                !lodash.isUndefined(formFormik.errors.taxBracket),
                         }}
                     />
                 </div>

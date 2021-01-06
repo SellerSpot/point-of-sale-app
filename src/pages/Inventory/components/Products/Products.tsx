@@ -7,7 +7,9 @@ import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { getProductsStyles } from './products.styles';
 import { IGetProduct } from 'typings/ComponentTypings/product.types';
-import { compileProductsTableBodyData, getProducts } from './products.actions';
+import { compileProductsTableBodyData, getProducts, handleTableRowClick } from './products.actions';
+import lodash from 'lodash';
+import { css } from '@emotion/css';
 
 export const Products = (): JSX.Element => {
     // to manage which tab is selected
@@ -45,18 +47,33 @@ export const Products = (): JSX.Element => {
                 ]}
             />
             <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Code'}>{'Code'}</p>,
-                        <p key={'Brand'}>{'Brand'}</p>,
-                        <p key={'Category'}>{'Category'}</p>,
-                        <p key={'Available Stock'}>{'Available Stock'}</p>,
-                        <p key={'Price'}>{'Price'}</p>,
-                    ]}
-                    rowData={compileProductsTableBodyData(productsData)}
-                />
+                {!lodash.isNull(productsData) && productsData.length > 0 ? (
+                    <Table
+                        headers={[
+                            <p key={'S.No'}>{'S.No'}</p>,
+                            <p key={'Item Name'}>{'Item Name'}</p>,
+                            <p key={'Code'}>{'Code'}</p>,
+                            <p key={'Brand'}>{'Brand'}</p>,
+                            <p key={'Category'}>{'Category'}</p>,
+                            <p key={'Available Stock'}>{'Available Stock'}</p>,
+                            <p key={'Price'}>{'Price'}</p>,
+                        ]}
+                        rowData={compileProductsTableBodyData(productsData)}
+                        className={{
+                            bodyRow: css`
+                                :hover {
+                                    cursor: pointer;
+                                    background-color: ${cssColors['--secondary-background-color']};
+                                }
+                            `,
+                        }}
+                        onClick={{
+                            rowClick: (index: number) => {
+                                handleTableRowClick(productsData[index]);
+                            },
+                        }}
+                    />
+                ) : null}
             </div>
         </div>
     );

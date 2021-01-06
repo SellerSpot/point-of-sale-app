@@ -4,6 +4,8 @@ import React from 'react';
 import { batch } from 'react-redux';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
 import { IGetProduct } from 'typings/ComponentTypings/product.types';
 
 // to get all Products data from server
@@ -71,4 +73,11 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
     } else {
         return [];
     }
+};
+
+// to show Slider when the tableRow is shown
+export const handleTableRowClick = (product: IGetProduct): void => {
+    store.dispatch(
+        toggleSliderModal({ sliderName: 'addProductSlider', active: true, autoFillData: product }),
+    );
 };
