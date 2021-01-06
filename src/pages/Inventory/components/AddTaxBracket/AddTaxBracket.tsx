@@ -1,9 +1,10 @@
-import React, { ReactElement, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Button } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { isNull, isUndefined } from 'lodash';
+import lodash from 'lodash';
 import { apiService } from 'services';
 import { API_ROUTES } from 'config/apiRoutes';
 import { showNotify } from 'store/models/notify';
@@ -12,6 +13,8 @@ import { cssColors } from 'config/cssVariables';
 import { getAddTaxBracketStyles } from './addTaxBracket.styles';
 import { cx } from '@emotion/css';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Tax Bracket Name is a required field'),
@@ -36,6 +39,7 @@ const customErrorMessagesInitialState: typeof formInitialValues = {
 export const AddTaxBracket = (): ReactElement => {
     // holds the server side validation error messages
     const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -44,6 +48,15 @@ export const AddTaxBracket = (): ReactElement => {
             handleSubmit(values);
         },
     });
+
+    useEffect(() => {
+        if (!lodash.isUndefined(sliderState.addTaxBracketSlider.autoFillData))
+            formFormik.setValues({
+                name: sliderState.addTaxBracketSlider.autoFillData?.name,
+                taxPercent: sliderState.addTaxBracketSlider.autoFillData?.taxPercent,
+            });
+        else formFormik.resetForm();
+    }, [sliderState.addTaxBracketSlider.autoFillData]);
 
     const handleSubmit = async (values: typeof formInitialValues) => {
         formFormik.setSubmitting(true);
@@ -94,7 +107,11 @@ export const AddTaxBracket = (): ReactElement => {
                     <MdKeyboardArrowLeft size={'35px'} />
                 </div>
             </div>
-            <div className={styles.pageTitleBar}>Add Tax Brackets</div>
+            <div className={styles.pageTitleBar}>
+                {lodash.isUndefined(sliderState.addTaxBracketSlider.autoFillData)
+                    ? 'Add Tax Bracket'
+                    : 'Edit Tax Bracket'}
+            </div>
             <div className={styles.pageBody}>
                 <div className={cx(styles.formGroup)}>
                     <InputField
@@ -104,14 +121,14 @@ export const AddTaxBracket = (): ReactElement => {
                         required={true}
                         value={formFormik.values.name}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.name)
-                                ? !isNull(customErrorMessages.name)
+                            errorMessage: lodash.isUndefined(formFormik.errors.name)
+                                ? !lodash.isNull(customErrorMessages.name)
                                     ? customErrorMessages.name
                                     : ''
                                 : formFormik.errors.name,
                             showError:
-                                !isNull(customErrorMessages.name) ||
-                                !isUndefined(formFormik.errors.name),
+                                !lodash.isNull(customErrorMessages.name) ||
+                                !lodash.isUndefined(formFormik.errors.name),
                         }}
                         onChange={(event) => {
                             setCustomErrorMessages({
@@ -128,16 +145,16 @@ export const AddTaxBracket = (): ReactElement => {
                         label={'Tax Bracket Percent'}
                         placeHolder={'Tax Bracket Percent'}
                         required={true}
-                        value={formFormik.values.taxPercent.toString()}
+                        value={formFormik.values.taxPercent?.toString()}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.taxPercent)
-                                ? !isNull(customErrorMessages.taxPercent)
+                            errorMessage: lodash.isUndefined(formFormik.errors.taxPercent)
+                                ? !lodash.isNull(customErrorMessages.taxPercent)
                                     ? customErrorMessages.taxPercent
                                     : ''
                                 : formFormik.errors.taxPercent,
                             showError:
-                                !isNull(customErrorMessages.taxPercent) ||
-                                !isUndefined(formFormik.errors.taxPercent),
+                                !lodash.isNull(customErrorMessages.taxPercent) ||
+                                !lodash.isUndefined(formFormik.errors.taxPercent),
                         }}
                         onChange={(event) => {
                             setCustomErrorMessages({
@@ -153,7 +170,11 @@ export const AddTaxBracket = (): ReactElement => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Tax Bracket'}
+                    label={
+                        lodash.isUndefined(sliderState.addTaxBracketSlider.autoFillData)
+                            ? 'Add Tax Bracket'
+                            : 'Edit Tax Bracket'
+                    }
                     tabIndex={0}
                     style={{
                         backgroundColor: cssColors['--inventory-color'],

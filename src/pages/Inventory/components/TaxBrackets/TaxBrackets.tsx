@@ -7,7 +7,12 @@ import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { getTaxBracketStyles } from './taxBrackets.styles';
 import { IGetTaxBracket } from 'typings/ComponentTypings/taxBracket.types';
-import { compileTaxBracketTableBodyData, getTaxBrackets } from './taxBracket.actions';
+import {
+    compileTaxBracketTableBodyData,
+    getTaxBrackets,
+    handleTableRowClick,
+} from './taxBracket.actions';
+import { css } from '@emotion/css';
 
 export const TaxBrackets = (): JSX.Element => {
     // to manage which tab is selected
@@ -15,14 +20,11 @@ export const TaxBrackets = (): JSX.Element => {
     const styles = getTaxBracketStyles();
     const [taxBracketsData, setTaxBracketsData] = useState<IGetTaxBracket[]>(null);
 
-    // call action function to fetch the taxBrackets data
-    const getTaxBracketsData = async () => {
-        // to populate the table
-        setTaxBracketsData(await getTaxBrackets());
-    };
-
     useEffect(() => {
-        getTaxBracketsData();
+        (async () => {
+            // to populate the table
+            setTaxBracketsData(await getTaxBrackets());
+        }).call(null);
     }, []);
 
     return (
@@ -58,6 +60,19 @@ export const TaxBrackets = (): JSX.Element => {
                         <p key={'Tax Bracket Percent'}>{'Tax Bracket Percent'}</p>,
                     ]}
                     rowData={compileTaxBracketTableBodyData(taxBracketsData)}
+                    className={{
+                        bodyRow: css`
+                            :hover {
+                                cursor: pointer;
+                                background-color: ${cssColors['--secondary-background-color']};
+                            }
+                        `,
+                    }}
+                    onClick={{
+                        rowClick: (index: number) => {
+                            handleTableRowClick(taxBracketsData[index]);
+                        },
+                    }}
                 />
             </div>
         </div>

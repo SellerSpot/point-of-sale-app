@@ -3,6 +3,8 @@ import lodash from 'lodash';
 import React from 'react';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
 import { IGetTaxBracket } from 'typings/ComponentTypings/taxBracket.types';
 
 // to get all taxBrackets data from server
@@ -46,4 +48,15 @@ export const compileTaxBracketTableBodyData = (
     } else {
         return [];
     }
+};
+
+// to show Slider when the tableRow is shown
+export const handleTableRowClick = (taxBracket: IGetTaxBracket): void => {
+    store.dispatch(
+        toggleSliderModal({
+            sliderName: 'addTaxBracketSlider',
+            active: true,
+            autoFillData: taxBracket,
+        }),
+    );
 };
