@@ -58,11 +58,6 @@ export const SalesHistory = (): JSX.Element => {
                         <p key={'Sub-Total'}>{'Sub-Total'}</p>,
                         <p key={'Taxation'}>{'Taxation'}</p>,
                         <p key={'Grand Total'}>{'Grand Total'}</p>,
-                        <p key={'Created At'}>{'Created'}</p>,
-                        <p key={'Status'}>{'Status'}</p>,
-                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
-                        <p key={'Taxation'}>{'Taxation'}</p>,
-                        <p key={'Grand Total'}>{'Grand Total'}</p>,
                     ]}
                     rowData={compileSalesTableBodyData(salesHistoryData)}
                 />

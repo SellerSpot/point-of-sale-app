@@ -1,4 +1,5 @@
-import React, { ReactElement, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Button } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
 import * as Yup from 'yup';
@@ -6,14 +7,15 @@ import { useFormik } from 'formik';
 import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services';
 import { showNotify } from 'store/models/notify';
-import { isNull, isUndefined } from 'lodash';
+import lodash from 'lodash';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { cssColors } from 'config/cssVariables';
 import { getAddCategoryStyles } from './addCategory.styles';
 import { cx } from '@emotion/css';
+import { RootState } from 'store/store';
 
 const formSchema = Yup.object().shape({
     categoryName: Yup.string().required('Category Name is a required field'),
@@ -32,6 +34,7 @@ const customErrorMessagesInitialState: typeof formInitialValues = {
 export const AddCategory = (): ReactElement => {
     // holds the server side validation error messages
     const [customErrorMessages, setCustomErrorMessages] = useState(customErrorMessagesInitialState);
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -40,6 +43,14 @@ export const AddCategory = (): ReactElement => {
             handleSubmit(values);
         },
     });
+
+    useEffect(() => {
+        if (!lodash.isUndefined(sliderState.addCategorySlider.autoFillData))
+            formFormik.setValues({
+                categoryName: sliderState.addCategorySlider.autoFillData?.name,
+            });
+        else formFormik.resetForm();
+    }, [sliderState.addCategorySlider.autoFillData]);
 
     const handleSubmit = async (values: typeof formInitialValues) => {
         formFormik.setSubmitting(true);
@@ -81,7 +92,11 @@ export const AddCategory = (): ReactElement => {
                     <MdKeyboardArrowLeft size={'35px'} />
                 </div>
             </div>
-            <div className={styles.pageTitleBar}>Add Category</div>
+            <div className={styles.pageTitleBar}>
+                {lodash.isUndefined(sliderState.addCategorySlider.autoFillData)
+                    ? 'Add Category'
+                    : 'Edit Category'}
+            </div>
             <div className={styles.pageBody}>
                 <div className={cx(styles.formGroup)}>
                     <InputField
@@ -91,14 +106,14 @@ export const AddCategory = (): ReactElement => {
                         required={true}
                         value={formFormik.values.categoryName}
                         error={{
-                            errorMessage: isUndefined(formFormik.errors.categoryName)
-                                ? !isNull(customErrorMessages.categoryName)
+                            errorMessage: lodash.isUndefined(formFormik.errors.categoryName)
+                                ? !lodash.isNull(customErrorMessages.categoryName)
                                     ? customErrorMessages.categoryName
                                     : ''
                                 : formFormik.errors.categoryName,
                             showError:
-                                !isNull(customErrorMessages.categoryName) ||
-                                !isUndefined(formFormik.errors.categoryName),
+                                !lodash.isNull(customErrorMessages.categoryName) ||
+                                !lodash.isUndefined(formFormik.errors.categoryName),
                         }}
                         onChange={(event) => {
                             setCustomErrorMessages({
@@ -114,7 +129,11 @@ export const AddCategory = (): ReactElement => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Category'}
+                    label={
+                        lodash.isUndefined(sliderState.addCategorySlider.autoFillData)
+                            ? 'Add Category'
+                            : 'Edit Category'
+                    }
                     tabIndex={0}
                     style={{
                         backgroundColor: cssColors['--inventory-color'],

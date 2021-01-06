@@ -5,11 +5,15 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { KEYCODES } from 'services/KeyCodeService';
-
 import { cssColors } from 'config/cssVariables';
 import { getCategoriesStyles } from './categories.styles';
 import { IGetCategory } from 'typings/ComponentTypings/categories.types';
-import { compileCategoriesTableBodyData, getCategories } from './categories.actions';
+import {
+    compileCategoriesTableBodyData,
+    getCategories,
+    handleTableRowClick,
+} from './categories.actions';
+import { css } from '@emotion/css';
 
 export const Categories = (): JSX.Element => {
     // to manage which tab is selected
@@ -17,14 +21,11 @@ export const Categories = (): JSX.Element => {
     const styles = getCategoriesStyles();
     const [categoriesData, setCategoriesData] = useState<IGetCategory[]>(null);
 
-    // to fetch the categories data
-    const getCategoriesData = async () => {
-        // to populate the table
-        setCategoriesData(await getCategories());
-    };
-
     useEffect(() => {
-        getCategoriesData();
+        // to populate the table with data form server
+        (async () => {
+            setCategoriesData(await getCategories());
+        }).call(null);
     }, []);
 
     return (
@@ -57,9 +58,21 @@ export const Categories = (): JSX.Element => {
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
                         <p key={'Category Name'}>{'Category Name'}</p>,
-                        <p key={'Category ID'}>{'Category ID'}</p>,
                     ]}
                     rowData={compileCategoriesTableBodyData(categoriesData)}
+                    className={{
+                        bodyRow: css`
+                            :hover {
+                                cursor: pointer;
+                                background-color: ${cssColors['--secondary-background-color']};
+                            }
+                        `,
+                    }}
+                    onClick={{
+                        rowClick: (index: number) => {
+                            handleTableRowClick(categoriesData[index]);
+                        },
+                    }}
                 />
             </div>
         </div>
