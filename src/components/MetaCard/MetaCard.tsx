@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { getMetaCardStyles, IGetMetaCardStyles } from './metacard.styles';
+import React from 'react';
+import { getMetaCardStyles, IGetMetaCardStyles } from './metaCard.styles';
 import lodash from 'lodash';
 import { cx } from '@emotion/css';
 

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { TMajorColors } from '../../config/cssVariables';
 import { RootState } from '../store';
 
 interface InitialState {

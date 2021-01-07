@@ -16,13 +16,7 @@ interface INavItem {
     onClick: () => void;
 }
 
-const NavItem = ({
-    Icon,
-    color,
-    onClick,
-    title,
-    active,
-}: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
+const NavItem = ({ Icon, color, onClick, title }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
     const styles = getLeftNavStyles();
 
     return (
@@ -76,12 +70,6 @@ export const LeftNav = (): JSX.Element => {
             route: ROUTES.BILLING_SETUP,
             activeRoutes: [ROUTES.BILLING_SETUP],
         },
-        // {
-        //     Icon: FaCashRegister,
-        //     color: cssColors['--cashregister-color'],
-        //     title: 'cash register',
-        //     route: ROUTES.CASH_REGISTER,
-        // },
     ];
 
     const styles = getLeftNavStyles();
