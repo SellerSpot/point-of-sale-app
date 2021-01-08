@@ -72,7 +72,7 @@ export const AddProduct = (): JSX.Element => {
                         selectTextOnFocus={true}
                         value={formFormik.values.name}
                         onBlur={formFormik.handleBlur}
-                        onChange={(event) => formFormik.setFieldValue('name', event.target.value)}
+                        onChange={formFormik.handleChange}
                     />
                 </div>
                 <div className={styles.formGroup}>
@@ -90,9 +90,7 @@ export const AddProduct = (): JSX.Element => {
                         }}
                         value={formFormik.values.gtinNumber}
                         onBlur={formFormik.handleBlur}
-                        onChange={(event) =>
-                            formFormik.setFieldValue('gtinNumber', event.target.value)
-                        }
+                        onChange={formFormik.handleChange}
                     />
                 </div>
             </div>
