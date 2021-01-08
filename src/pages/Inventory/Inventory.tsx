@@ -8,6 +8,7 @@ import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
 import { getInventoryStyles } from './inventory.styles';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
+import { cssColors } from 'config/cssVariables';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -43,7 +44,16 @@ export const Inventory = (): JSX.Element => {
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
+                <TabBar
+                    tabs={tabs}
+                    onSelect={setCurrentTab}
+                    selectedIndex={currentTab}
+                    style={{
+                        selectedTabStyle: {
+                            color: cssColors['--inventory-color'],
+                        },
+                    }}
+                />
             </div>
 
             <div className={styles.overallPageWrapper}>
