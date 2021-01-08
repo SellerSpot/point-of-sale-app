@@ -5,7 +5,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { cssColors } from 'config/cssVariables';
-import { compileSaleTableBodyData, getSalesHistoryData } from './saleHistory.actions';
+import { compileSaleTableBodyData, getSaleHistoryData } from './saleHistory.actions';
 import { IGetSale } from 'typings/components/sale.types';
 import service from 'services/services';
 import { getSaleHistoryStyles } from './saleHistory.styles';
@@ -17,14 +17,14 @@ export const SaleHistory = (): JSX.Element => {
 
     useEffect(() => {
         (async () => {
-            setSalesHistoryData(await getSalesHistoryData());
+            setSalesHistoryData(await getSaleHistoryData());
         }).call(null);
     }, []);
 
     const styles = getSaleHistoryStyles();
 
     return (
-        <div className={styles.salesHistoryWrapper}>
+        <div className={styles.saleHistoryWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}

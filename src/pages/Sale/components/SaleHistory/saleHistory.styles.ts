@@ -1,14 +1,14 @@
 import { css } from '@emotion/css';
 
 interface IGetSaleHistoryStyles {
-    salesHistoryWrapper: string;
+    saleHistoryWrapper: string;
     metaCardWrapper: string;
     tableWrapper: string;
 }
 
 export const getSaleHistoryStyles = (): IGetSaleHistoryStyles => {
     return {
-        salesHistoryWrapper: css`
+        saleHistoryWrapper: css`
             width: 100%;
             height: 100%;
             padding: 10px;

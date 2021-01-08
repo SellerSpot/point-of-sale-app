@@ -5,7 +5,7 @@ import { IGetSale } from 'typings/components/sale.types';
 import requests from 'requests/requests';
 
 // to get the sales history data
-export const getSalesHistoryData = async (): Promise<IGetSale[]> => {
+export const getSaleHistoryData = async (): Promise<IGetSale[]> => {
     try {
         const salesHistoryData = await requests.sale.getSales();
         if (salesHistoryData.status) {
