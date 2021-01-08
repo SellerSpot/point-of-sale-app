@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import { getDashboardStyles } from './dashboard.styles';
+import { Sliders } from './components/Sliders/Sliders';
 
 // const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
@@ -33,9 +34,9 @@ export const Dashboard = (): ReactElement => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
-            {/* <Suspense fallback={<div>Loading...</div>}>
-                <SlidersComponent />
-            </Suspense> */}
+            <Suspense fallback={<div>Loading...</div>}>
+                <Sliders />
+            </Suspense>
         </div>
     );
 };

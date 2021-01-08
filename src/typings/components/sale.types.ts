@@ -1,3 +1,5 @@
+import { IGetProduct } from './product.types';
+
 // denotes the two statuses for any sale
 enum ESaleStatus {
     COMPLETED = 'COMPLETED',
@@ -31,4 +33,12 @@ export interface IGetSale {
     discountPercent: number;
     totalTax: number;
     grandTotal: number;
+}
+
+//
+export interface ISaleCartItem {
+    productInformation: IGetProduct;
+    quantity: number;
+    subTotal: number;
+    discount: number;
 }
