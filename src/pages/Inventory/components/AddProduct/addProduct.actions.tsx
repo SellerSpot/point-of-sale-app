@@ -17,7 +17,7 @@ export const fetchAddProductDropDownData = async (
 
     // setting state values
     setDropDownValues({
-        category: {
+        categories: {
             options: allCategories.data ?? [],
             selectedIndex: 0,
         },
