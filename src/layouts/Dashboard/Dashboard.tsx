@@ -1,14 +1,11 @@
-import React, { ReactElement, lazy, Suspense } from 'react';
+import React, { ReactElement } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
-import { CashRegister } from 'pages/CashRegister/CashRegister';
-import { Inventory } from 'pages/Inventory/Inventory';
-import { Sales } from 'pages/Sales/Sales';
+import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
-import { BillingSetup } from 'pages/BillingSetup/BillingSetup';
 import { getDashboardStyles } from './dashboard.styles';
 
-const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
+// const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
 export const Dashboard = (): ReactElement => {
     const styles = getDashboardStyles();
@@ -20,7 +17,7 @@ export const Dashboard = (): ReactElement => {
             </div>
             <div className={styles.mainBodyWrapper}>
                 <Switch>
-                    <Route path={ROUTES.INVENTORY}>
+                    {/* <Route path={ROUTES.INVENTORY}>
                         <Inventory />
                     </Route>
                     <Route path={ROUTES.CASH_REGISTER}>
@@ -28,7 +25,7 @@ export const Dashboard = (): ReactElement => {
                     </Route>
                     <Route path={ROUTES.BILLING_SETUP}>
                         <BillingSetup />
-                    </Route>
+                    </Route> */}
                     {/* this is '/' route hence should be placed atlast */}
                     <Route path={ROUTES.SALES}>
                         <Sales />
@@ -36,9 +33,9 @@ export const Dashboard = (): ReactElement => {
                 </Switch>
             </div>
             {/* full view sliders should be placed down here */}
-            <Suspense fallback={<div>Loading...</div>}>
+            {/* <Suspense fallback={<div>Loading...</div>}>
                 <SlidersComponent />
-            </Suspense>
+            </Suspense> */}
         </div>
     );
 };

@@ -1,0 +1,10 @@
+import { FaBoxOpen, FaStore } from 'react-icons/fa';
+import { IoMdCart } from 'react-icons/io';
+import { RiBillLine } from 'react-icons/ri';
+
+export const ICONS = {
+    storeLeftNavHeader: FaStore,
+    saleLeftNavItem: IoMdCart,
+    inventoryLeftNavItem: FaBoxOpen,
+    billLeftNavItem: RiBillLine,
+};
