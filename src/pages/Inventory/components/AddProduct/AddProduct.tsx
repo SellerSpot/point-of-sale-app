@@ -42,27 +42,44 @@ const formInitialValues = {
 };
 
 export interface IAddProductDropDownValues {
-    category: {
-        options: IGetCategory[];
-        selectedIndex: number;
+    category?: {
+        options?: IGetCategory[];
+        selectedIndex?: number;
     };
-    brands: {
-        options: IGetBrand[];
-        selectedIndex: number;
+    brands?: {
+        options?: IGetBrand[];
+        selectedIndex?: number;
     };
-    stockUnits: {
-        options: IGetStockUnit[];
-        selectedIndex: number;
+    stockUnits?: {
+        options?: IGetStockUnit[];
+        selectedIndex?: number;
     };
-    taxBrackets: {
-        options: IGetTaxBracket[];
-        selectedIndex: number;
+    taxBrackets?: {
+        options?: IGetTaxBracket[];
+        selectedIndex?: number;
     };
 }
 
 export const AddProduct = (): JSX.Element => {
     const styles = getAddProductStyles();
-    const [dropDownValues, setDropDownValues] = useState<IAddProductDropDownValues>(null);
+    const [dropDownValues, setDropDownValues] = useState<IAddProductDropDownValues>({
+        category: {
+            options: [],
+            selectedIndex: 0,
+        },
+        brands: {
+            options: [],
+            selectedIndex: 0,
+        },
+        stockUnits: {
+            options: [],
+            selectedIndex: 0,
+        },
+        taxBrackets: {
+            options: [],
+            selectedIndex: 0,
+        },
+    });
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
@@ -129,23 +146,37 @@ export const AddProduct = (): JSX.Element => {
                         onChange={formFormik.handleChange}
                     />
                 </div>
-                {/* <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
+                <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
                     <Dropdown
                         label={'Product Category'}
-                        options={dropDownValues.category.options}
+                        options={dropDownValues.category.options.map((category) => {
+                            return <p key={category._id}>{category.name}</p>;
+                        })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
                                 'category',
-                                dropDownValues.category.options[index],
+                                dropDownValues.category.options[index]._id,
+                            );
+                            setDropDownValues(
+                                lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
+                                    dropDownValues,
+                                    {
+                                        category: {
+                                            selectedIndex: index,
+                                        },
+                                    },
+                                ),
                             );
                         }}
                         error={{
                             errorMessage: formFormik.errors.category ?? '',
                             showError:
                                 !lodash.isUndefined(formFormik.errors.category) &&
-                                formFormik.touched.gtinNumber,
+                                formFormik.touched.category,
                         }}
                     />
+                </div>
+                {/*
                     <Dropdown
                         label={'Product Brand'}
                         options={
