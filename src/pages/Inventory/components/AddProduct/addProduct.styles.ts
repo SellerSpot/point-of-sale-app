@@ -60,7 +60,7 @@ export const getAddProductStyles = (): IGetProductStyles => {
             padding-top: 10px;
         `,
         formGroup: css`
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         `,
         formGroupSplitEqual: css`
             display: grid;

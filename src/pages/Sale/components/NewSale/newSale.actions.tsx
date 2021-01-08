@@ -3,10 +3,10 @@ import React from 'react';
 import { IGetProduct } from 'typings/components/product.types';
 import { ISaleCartItem } from 'typings/components/sale.types';
 
-// compile data to show in table
+// Compile data to show in table
 export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
     if (!lodash.isNull(productsData) && productsData.length > 0) {
-        // to hold the compiled table data
+        // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.map((product, index) => {
             compiledData.push([
@@ -27,10 +27,10 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
     }
 };
 
-// to get the items in the cart
+// To get the items in the cart
 export const getCartItems = (cartData: ISaleCartItem[]): JSX.Element[][] => {
     if (!lodash.isNull(cartData) && cartData.length > 0) {
-        // to hold the compiled table data
+        // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         cartData.map((cartItem, index) => {
             compiledData.push([

@@ -5,21 +5,21 @@ import { CONFIG } from '../config/config';
 export default class ApiService {
     private axios: AxiosInstance;
     private onlineServerUrl: string;
-    // response status codes
+    // Response status codes
     private responseStatusCodes = {
-        // validation errors in the request
+        // Validation errors in the request
         BADREQUEST: 400,
-        // requested resource has been createe successfully
+        // Requested resource has been createe successfully
         CREATED: 201,
-        // a duplicate of the data to be created already exists in database
+        // A duplicate of the data to be created already exists in database
         CONFLICT: 409,
-        // unknown server errors
+        // Unknown server errors
         INTERNALSERVERERROR: 500,
-        // operation successfully completed
+        // Operation successfully completed
         OK: 200,
-        // for denoting that the required resource has not been found in database
+        // For denoting that the required resource has not been found in database
         NOTFOUND: 404,
-        // for denoting that no content is being sent in the response
+        // For denoting that no content is being sent in the response
         NOCONTENT: 204,
     };
 
@@ -30,7 +30,7 @@ export default class ApiService {
         this.setServerUrl();
     }
 
-    // helper methods (it is public because we would change both the settings (method) at runtime *(may be from store))
+    // Helper methods (it is public because we would change both the settings (method) at runtime *(may be from store))
     public setAxiosHeader(): void {
         this.axios = Axios.create({});
     }
@@ -39,7 +39,7 @@ export default class ApiService {
         this.onlineServerUrl = CONFIG.ONLINE_SERVER_URL;
     }
 
-    // main request handlers
+    // Main request handlers
     public async get(route: string): Promise<IApiServiceResponse> {
         try {
             const requestUrl = `${this.onlineServerUrl}/${route}`;

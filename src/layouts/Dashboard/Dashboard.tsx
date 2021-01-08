@@ -1,13 +1,12 @@
-import React, { ReactElement, Suspense } from 'react';
+import React, { lazy, ReactElement, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import { getDashboardStyles } from './dashboard.styles';
-import { Sliders } from './components/Sliders/Sliders';
 import { Inventory } from 'pages/Inventory/Inventory';
 
-// const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
+const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
 export const Dashboard = (): ReactElement => {
     const styles = getDashboardStyles();
@@ -29,15 +28,15 @@ export const Dashboard = (): ReactElement => {
                     <Route path={ROUTES.BILLING_SETUP}>
                         <BillingSetup />
                     </Route> */}
-                    {/* this is '/' route hence should be placed atlast */}
+                    {/* This is '/' route hence should be placed atlast */}
                     <Route path={ROUTES.SALES}>
                         <Sales />
                     </Route>
                 </Switch>
             </div>
-            {/* full view sliders should be placed down here */}
+            {/* Full view sliders should be placed down here */}
             <Suspense fallback={<div>Loading...</div>}>
-                <Sliders />
+                <SlidersComponent />
             </Suspense>
         </div>
     );

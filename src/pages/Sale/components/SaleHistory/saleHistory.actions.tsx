@@ -4,7 +4,7 @@ import services from 'services/services';
 import { IGetSale } from 'typings/components/sale.types';
 import requests from 'requests/requests';
 
-// to get the sales history data
+// To get the sales history data
 export const getSaleHistoryData = async (): Promise<IGetSale[]> => {
     try {
         const salesHistoryData = await requests.sale.getSales();
@@ -19,10 +19,10 @@ export const getSaleHistoryData = async (): Promise<IGetSale[]> => {
     return null;
 };
 
-// compile data to show in table
+// Compile data to show in table
 export const compileSaleTableBodyData = (salesHistoryData: IGetSale[]): JSX.Element[][] => {
     if (!lodash.isNull(salesHistoryData) && salesHistoryData.length > 0) {
-        // to hold the compiled table data
+        // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         salesHistoryData.map((sale, index) => {
             compiledData.push([

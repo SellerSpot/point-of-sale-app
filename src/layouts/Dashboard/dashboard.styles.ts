@@ -1,8 +1,13 @@
 import { css } from '@emotion/css';
 import { cssColors } from 'config/cssVariables';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getDashboardStyles = () => {
+interface IGetDashboardStyles {
+    dashboardWrapper: string;
+    leftNavWrapper: string;
+    mainBodyWrapper: string;
+}
+
+export const getDashboardStyles = (): IGetDashboardStyles => {
     return {
         dashboardWrapper: css`
             height: 100vw;

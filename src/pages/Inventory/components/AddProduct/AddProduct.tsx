@@ -4,19 +4,17 @@ import { useFormik } from 'formik';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import lodash from 'lodash';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
 import * as Yup from 'yup';
 import { getAddProductStyles } from './addProduct.styles';
 
 const formSchema = Yup.object().shape({
-    name: Yup.string().required('product name is a required field'),
+    name: Yup.string().required('Product name is a required field'),
     gtinNumber: Yup.string(),
     category: Yup.string(),
     brand: Yup.string(),
-    landingPrice: Yup.number().required('landing price is a required field'),
+    landingPrice: Yup.number().required('Landing price is a required field'),
     profitPercent: Yup.number(),
-    sellingPrice: Yup.number().required('selling price is a required field'),
+    sellingPrice: Yup.number().required('Selling price is a required field'),
     availableStock: Yup.number(),
     stockUnit: Yup.string(),
     taxBracket: Yup.array(),
@@ -37,7 +35,6 @@ const formInitialValues = {
 
 export const AddProduct = (): JSX.Element => {
     const styles = getAddProductStyles();
-    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -61,9 +58,10 @@ export const AddProduct = (): JSX.Element => {
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
+                        name={'name'}
                         type={'text'}
                         label={'Product Name'}
-                        placeHolder={'Product Name'}
+                        placeHolder={'Eg. Wanda Paprika'}
                         required={true}
                         error={{
                             errorMessage: formFormik.errors.name ?? '',
@@ -73,8 +71,28 @@ export const AddProduct = (): JSX.Element => {
                         }}
                         selectTextOnFocus={true}
                         value={formFormik.values.name}
-                        onBlur={(event) => formFormik.handleBlur(event)}
+                        onBlur={formFormik.handleBlur}
                         onChange={(event) => formFormik.setFieldValue('name', event.target.value)}
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                    <InputField
+                        name={'gtinNumber'}
+                        type={'text'}
+                        label={'GTIN Code'}
+                        helperText={'Refers to the barcode for the product'}
+                        placeHolder={'Eg. 0123456789'}
+                        error={{
+                            errorMessage: formFormik.errors.gtinNumber ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.gtinNumber) &&
+                                formFormik.touched.gtinNumber,
+                        }}
+                        value={formFormik.values.gtinNumber}
+                        onBlur={formFormik.handleBlur}
+                        onChange={(event) =>
+                            formFormik.setFieldValue('gtinNumber', event.target.value)
+                        }
                     />
                 </div>
             </div>

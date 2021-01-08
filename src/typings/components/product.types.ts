@@ -3,7 +3,7 @@ import { IGetCategory } from './category.types';
 import { IGetStockUnit } from './stockUnit.types';
 import { IGetTaxBracket } from './taxBracket.types';
 
-// response type for GET request to fetch all products
+// Response type for GET request to fetch all products
 export interface IGetProduct {
     _id: string;
     name: string;

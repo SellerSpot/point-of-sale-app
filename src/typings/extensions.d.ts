@@ -1,4 +1,4 @@
-// file extensions support type declaration
+// File extensions support type declaration
 declare module '*.module.css';
 declare module '*.png';
 declare module '*.jpg';

@@ -4,10 +4,10 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { IGetProduct } from 'typings/components/product.types';
 
-// compile data to show in table
+// Compile data to show in table
 export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
     if (!lodash.isNull(productsData) && productsData.length > 0) {
-        // to hold the compiled table data
+        // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.map((product, index) => {
             compiledData.push([
@@ -28,7 +28,7 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
     }
 };
 
-// to show Slider when the tableRow is shown
+// To show Slider when the tableRow is shown
 export const handleTableRowClick = (product: IGetProduct): void => {
     store.dispatch(
         toggleSliderModal({ sliderName: 'addProductSlider', active: true, autoFillData: product }),

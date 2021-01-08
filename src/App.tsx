@@ -9,18 +9,18 @@ import { closeNotify, notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
 
 export const App = (): ReactElement => {
-    // getting Notify selector
+    // Getting Notify selector
     const { active, content, timeout, className, style } = useSelector(notifySelector);
 
     return (
         <div>
             <Switch>
-                {/* all other routes should be nested above this route because it is '/' route hence should be placed atlast */}
+                {/* All other routes should be nested above this route because it is '/' route hence should be placed atlast */}
                 <Route path={ROUTES.DASHBOARD}>
                     <Dashboard />
                 </Route>
             </Switch>
-            {/* all globally available components (via store) should be nested below  */}
+            {/* All globally available components (via store) should be nested below  */}
             <Notify
                 active={active}
                 clearNotificationCallback={store.dispatch(closeNotify)}

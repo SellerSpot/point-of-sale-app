@@ -32,11 +32,11 @@ const notify = createSlice({
     },
 });
 
-// exporting reducer
+// Exporting reducer
 export default notify.reducer;
 
-// exporting actions
+// Exporting actions
 export const { showNotify, closeNotify } = notify.actions;
 
-// exporting selector - useful when using it in components to select particular state from global store
+// Exporting selector - useful when using it in components to select particular state from global store
 export const notifySelector: Selector<RootState, InitialState> = (state: RootState) => state.notify;

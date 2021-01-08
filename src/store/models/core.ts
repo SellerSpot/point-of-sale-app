@@ -19,11 +19,11 @@ const coreSlice = createSlice({
     },
 });
 
-// exporting reducer
+// Exporting reducer
 export default coreSlice.reducer;
 
-// exporting actions
+// Exporting actions
 export const { initiateHandshake } = coreSlice.actions;
 
-// exporting selector - useful when using it in components to select particular state from global store
+// Exporting selector - useful when using it in components to select particular state from global store
 export const coreSelector: Selector<RootState, InitialState> = (state: RootState) => state.core;

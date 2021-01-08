@@ -13,14 +13,14 @@ import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, handleTableRowClick } from './productsHistory.actions';
 
 export const ProductsHistory = (): JSX.Element => {
-    // to manage which tab is selected
+    // To manage which tab is selected
     const dispatch = useDispatch();
     const styles = getProductsHistoryStyles();
     const [productsData, setproductsData] = useState<IGetProduct[]>(null);
 
     useEffect(() => {
         (async () => {
-            // to populate the table
+            // To populate the table
             const productsData = await getProducts();
             setproductsData(productsData.data);
         }).call(null);

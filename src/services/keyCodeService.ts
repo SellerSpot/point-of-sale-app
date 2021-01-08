@@ -13,7 +13,7 @@ export default class KeyCodeService {
         };
     }
 
-    // to get all the keycodes
+    // To get all the keycodes
     public getKeyCodes(command: keyof IKeyCodes): string {
         return this.keyCodes[command];
     }

@@ -7,7 +7,7 @@ export const store = configureStore({
     reducer: combineReducers({ ...reducers }),
     devTools: CONFIG.ENV === 'development' ? true : false,
     middleware: getDefaultMiddleware({
-        serializableCheck: false, // try to avoid using non-serialized value in store (only use if it is really needed)
+        serializableCheck: false, // Try to avoid using non-serialized value in store (only use if it is really needed)
     }),
 });
 

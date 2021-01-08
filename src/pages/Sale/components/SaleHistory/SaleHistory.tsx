@@ -11,7 +11,7 @@ import service from 'services/services';
 import { getSaleHistoryStyles } from './saleHistory.styles';
 
 export const SaleHistory = (): JSX.Element => {
-    // to manage which tab is selected
+    // To manage which tab is selected
     const dispatch = useDispatch();
     const [salesHistoryData, setSalesHistoryData] = useState<IGetSale[]>(null);
 

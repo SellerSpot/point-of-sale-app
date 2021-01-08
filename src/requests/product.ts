@@ -10,9 +10,9 @@ interface IProductApiResponse {
 }
 
 export const getProducts = async (): Promise<IProductApiResponse> => {
-    // sending API request
+    // Sending API request
     const response = await services.ApiService.get(API_ROUTES.PRODUCT);
-    // parsing response
+    // Parsing response
     if (response.status) {
         return {
             status: true,

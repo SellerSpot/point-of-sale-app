@@ -1,8 +1,18 @@
 import { css } from '@emotion/css';
 import { cssColors, cssVariables } from 'config/cssVariables';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getLeftNavStyles = () => {
+interface IGetLeftNavStyles {
+    leftNavWrapper: string;
+    contentWrapper: string;
+    storeNameHolder: string;
+    storeNameHolderSubtitle: string;
+    navItem: string;
+    navIcon: string;
+    navTitle: string;
+    navSubHeading: string;
+}
+
+export const getLeftNavStyles = (): IGetLeftNavStyles => {
     return {
         leftNavWrapper: css`
             width: 99%;

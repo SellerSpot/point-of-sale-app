@@ -25,7 +25,7 @@ export const handleSliderClose = (sliderModalToClose: keyof SliderModalInitialSt
     }
 };
 
-export const Sliders = (): ReactElement => {
+const Sliders = (): ReactElement => {
     const {
         addProductSlider,
         addCategorySlider,
@@ -84,3 +84,5 @@ export const Sliders = (): ReactElement => {
         </>
     );
 };
+
+export default Sliders;

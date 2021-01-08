@@ -10,5 +10,5 @@ declare global {
     }
 }
 
-// convert it into a module by adding an empty export statement.
+// Convert it into a module by adding an empty export statement.
 export {};
