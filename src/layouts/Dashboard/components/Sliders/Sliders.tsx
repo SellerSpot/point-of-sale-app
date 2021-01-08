@@ -8,8 +8,9 @@ import {
 } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
+import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 
-// used to close the sliderModals
+// Used to close the sliderModals
 export const handleSliderClose = (sliderModalToClose: keyof SliderModalInitialState): void => {
     switch (sliderModalToClose) {
         default:
@@ -43,13 +44,6 @@ export const Sliders = (): ReactElement => {
             >
                 <NewSale />
             </SliderModal>
-            {/* <SliderModal
-                active={addBrandSlider.show}
-                sliderSize={'30%'}
-                onClickBackdrop={() => handleSliderClose('addBrandSlider')}
-            >
-                <AddBrand />
-            </SliderModal>
             <SliderModal
                 active={addProductSlider.show}
                 sliderSize={'40%'}
@@ -57,6 +51,14 @@ export const Sliders = (): ReactElement => {
             >
                 <AddProduct />
             </SliderModal>
+            {/* <SliderModal
+                active={addBrandSlider.show}
+                sliderSize={'30%'}
+                onClickBackdrop={() => handleSliderClose('addBrandSlider')}
+            >
+                <AddBrand />
+            </SliderModal>
+            
             <SliderModal
                 active={addCategorySlider.show}
                 sliderSize={'30%'}

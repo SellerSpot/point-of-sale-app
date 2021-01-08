@@ -75,13 +75,13 @@ const sliderModalSlice = createSlice({
     },
 });
 
-// exporting reducer
+// Exporting reducer
 export default sliderModalSlice.reducer;
 
-// exporting actions
+// Exporting actions
 export const { toggleSliderModal } = sliderModalSlice.actions;
 
-// exporting selector - useful when using it in components to select particular state from global store
+// Exporting selector - useful when using it in components to select particular state from global store
 export const sliderModalSelector: Selector<RootState, SliderModalInitialState> = (
     state: RootState,
 ) => state.sliderModal;

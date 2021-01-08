@@ -1,4 +1,13 @@
+import { InputField } from '@sellerspot/universal-components';
+import { ICONS } from 'config/icons';
+import { useFormik } from 'formik';
+import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
+import lodash from 'lodash';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 import * as Yup from 'yup';
+import { getAddProductStyles } from './addProduct.styles';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('product name is a required field'),
@@ -13,7 +22,6 @@ const formSchema = Yup.object().shape({
     taxBracket: Yup.array(),
 });
 
-// Holds the initial values of the form
 const formInitialValues = {
     name: '',
     gtinNumber: '',
@@ -27,29 +35,49 @@ const formInitialValues = {
     taxBracket: [''],
 };
 
-interface ICustomErrorMessagesInitialState {
-    name: string;
-    gtinNumber: string;
-    category: string;
-    brand: string;
-    landingPrice: string;
-    profitPercent: string;
-    sellingPrice: string;
-    availableStock: string;
-    stockUnit: string;
-    taxBracket: string[];
-}
+export const AddProduct = (): JSX.Element => {
+    const styles = getAddProductStyles();
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
-// Holds the initial values for the customErrorMessage state
-const customErrorMessagesInitialState: ICustomErrorMessagesInitialState = {
-    name: null,
-    gtinNumber: null,
-    category: null,
-    brand: null,
-    landingPrice: null,
-    profitPercent: null,
-    sellingPrice: null,
-    availableStock: null,
-    stockUnit: null,
-    taxBracket: null,
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: formSchema,
+        onSubmit: (values) => {
+            console.log('Form Submitted');
+        },
+    });
+
+    return (
+        <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
+            <div className={styles.pageHeader}>
+                <div
+                    className={styles.pageHeaderBackIcon}
+                    onClick={() => handleSliderClose('addProductSlider')}
+                >
+                    <ICONS.leftCaretBack size={'35px'} />
+                </div>
+            </div>
+            <div className={styles.pageTitleBar}>Add Product</div>
+            <div className={styles.pageBody}>
+                <div className={styles.formGroup}>
+                    <InputField
+                        type={'text'}
+                        label={'Product Name'}
+                        placeHolder={'Product Name'}
+                        required={true}
+                        error={{
+                            errorMessage: formFormik.errors.name ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.name) &&
+                                formFormik.touched.name,
+                        }}
+                        selectTextOnFocus={true}
+                        value={formFormik.values.name}
+                        onBlur={(event) => formFormik.handleBlur(event)}
+                        onChange={(event) => formFormik.setFieldValue('name', event.target.value)}
+                    />
+                </div>
+            </div>
+        </form>
+    );
 };
