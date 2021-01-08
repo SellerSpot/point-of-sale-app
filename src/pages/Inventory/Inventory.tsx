@@ -7,7 +7,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
 import { getInventoryStyles } from './inventory.styles';
-import { ProductsHistory } from './components/Products/ProductsHistory';
+import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
