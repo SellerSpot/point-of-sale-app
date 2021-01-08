@@ -5,6 +5,7 @@ import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import { getDashboardStyles } from './dashboard.styles';
 import { Sliders } from './components/Sliders/Sliders';
+import { Inventory } from 'pages/Inventory/Inventory';
 
 // const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
@@ -18,9 +19,10 @@ export const Dashboard = (): ReactElement => {
             </div>
             <div className={styles.mainBodyWrapper}>
                 <Switch>
-                    {/* <Route path={ROUTES.INVENTORY}>
+                    <Route path={ROUTES.INVENTORY}>
                         <Inventory />
                     </Route>
+                    {/* 
                     <Route path={ROUTES.CASH_REGISTER}>
                         <CashRegister />
                     </Route>
