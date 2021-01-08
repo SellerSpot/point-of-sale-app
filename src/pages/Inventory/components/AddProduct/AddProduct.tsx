@@ -1,11 +1,19 @@
-import { InputField } from '@sellerspot/universal-components';
+import { cx } from '@emotion/css';
+import { Dropdown, InputField } from '@sellerspot/universal-components';
 import { ICONS } from 'config/icons';
 import { useFormik } from 'formik';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import lodash from 'lodash';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { getAddProductStyles } from './addProduct.styles';
+import { IGetCategory } from 'typings/components/category.types';
+import { IGetBrand } from 'typings/components/brand.types';
+import { IGetStockUnit } from 'typings/components/stockUnit.types';
+import { IGetTaxBracket } from 'typings/components/taxBracket.types';
+import { fetchAddProductDropDownData } from './addProduct.actions';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),
@@ -33,8 +41,29 @@ const formInitialValues = {
     taxBracket: [''],
 };
 
+export interface IAddProductDropDownValues {
+    category: {
+        options: IGetCategory[];
+        selectedIndex: number;
+    };
+    brands: {
+        options: IGetBrand[];
+        selectedIndex: number;
+    };
+    stockUnits: {
+        options: IGetStockUnit[];
+        selectedIndex: number;
+    };
+    taxBrackets: {
+        options: IGetTaxBracket[];
+        selectedIndex: number;
+    };
+}
+
 export const AddProduct = (): JSX.Element => {
     const styles = getAddProductStyles();
+    const [dropDownValues, setDropDownValues] = useState<IAddProductDropDownValues>(null);
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -43,6 +72,13 @@ export const AddProduct = (): JSX.Element => {
             console.log('Form Submitted');
         },
     });
+
+    useEffect(() => {
+        (async () => {
+            // fetching all dropDown data
+            await fetchAddProductDropDownData(setDropDownValues);
+        }).call(null);
+    }, [sliderState.addProductSlider.show === true]);
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
@@ -93,6 +129,47 @@ export const AddProduct = (): JSX.Element => {
                         onChange={formFormik.handleChange}
                     />
                 </div>
+                {/* <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
+                    <Dropdown
+                        label={'Product Category'}
+                        options={dropDownValues.category.options}
+                        onSelect={(index) => {
+                            formFormik.setFieldValue(
+                                'category',
+                                dropDownValues.category.options[index],
+                            );
+                        }}
+                        error={{
+                            errorMessage: formFormik.errors.category ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.category) &&
+                                formFormik.touched.gtinNumber,
+                        }}
+                    />
+                    <Dropdown
+                        label={'Product Brand'}
+                        options={
+                            !lodash.isNull(brandDropdownValues.values)
+                                ? brandDropdownValues.values.map((brand) => brand.name)
+                                : []
+                        }
+                        onSelect={(index) => {
+                            formFormik.setFieldValue(
+                                'brand',
+                                brandDropdownValues.values.find(
+                                    (brand) =>
+                                        brand.name === brandDropdownValues.values[index].name,
+                                ).id,
+                            );
+                        }}
+                        error={{
+                            errorMessage: formFormik.errors.brand ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.brand) &&
+                                formFormik.touched.gtinNumber,
+                        }}
+                    />
+                </div> */}
             </div>
         </form>
     );
