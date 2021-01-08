@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-// import { Brands } from './components/Brands/Brands';
-// import { Categories } from './components/Categories/Categories';
-// import { TaxBrackets } from './components/TaxBrackets/TaxBrackets';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
@@ -33,8 +30,7 @@ export const Inventory = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        const tabIndex = lodash.findIndex(tabs, { route: pathname });
-        return tabIndex >= 0 ? tabIndex : 0;
+        return lodash.findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));

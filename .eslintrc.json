@@ -28,7 +28,15 @@
         ],
         "react/prop-types": "off",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"
+        "react-hooks/exhaustive-deps": "off",
+        "default-case": "warn",
+        "no-magic-numbers": "warn",
+        "require-await": "warn",
+        "prefer-const": "warn",
+        "prefer-template": "warn",
+        "no-var": "warn",
+        "capitalized-comments": "warn",
+        "camelcase": "warn"
     },
     "settings": {
         "react": {
