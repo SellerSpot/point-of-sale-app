@@ -44,6 +44,7 @@ export default class ApiService {
         try {
             const requestUrl = `${this.onlineServerUrl}/${route}`;
             const response = await this.axios.get(requestUrl);
+            // eslint-disable-next-line no-magic-numbers
             if (response.status === 200) {
                 if (response.data.status) {
                     switch (response.data.statusCode) {
@@ -98,6 +99,7 @@ export default class ApiService {
         try {
             const requestUrl = `${this.onlineServerUrl}/${route}`;
             const response = await this.axios.post(requestUrl, data);
+            // eslint-disable-next-line no-magic-numbers
             if (response.status === 200) {
                 if (response.data.status) {
                     switch (response.data.statusCode) {

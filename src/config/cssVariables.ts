@@ -57,7 +57,7 @@ export const cssVariables = {
     '--transition-duration': '0.3s',
     '--input-field-height': '40px',
     '--small-input-field-height': '20px',
-    '--shadow': '0px 0px 3px 0px ' + cssColors['--shadow-color'],
+    '--shadow': `0px 0px 3px 0px ${cssColors['--shadow-color']}`,
 
     /* z-index values */
     '--z-index-notify': 10,

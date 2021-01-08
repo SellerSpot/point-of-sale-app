@@ -21,12 +21,15 @@ export const getSaleHistoryData = async (): Promise<IGetSale[]> => {
 
 // Compile data to show in table
 export const compileSaleTableBodyData = (salesHistoryData: IGetSale[]): JSX.Element[][] => {
+    // eslint-disable-next-line no-magic-numbers
     if (!lodash.isNull(salesHistoryData) && salesHistoryData.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         salesHistoryData.map((sale, index) => {
+            // value to offset the sNo so that it is human readable
+            const sNoIndexOffset = 1;
             compiledData.push([
-                <p key={index}>{index + 1}</p>,
+                <p key={index}>{index + sNoIndexOffset}</p>,
                 <p key={sale.createdAt}>
                     {services.ComputeOps.convertEpochTime(parseInt(sale.createdAt))}
                 </p>,

@@ -6,6 +6,6 @@ export default class ComputeOps {
         const currEpoch = Date.now();
         // To find the milliseconds elapsed
         const millSecsElapsed = currEpoch - epochTime;
-        return ms(millSecsElapsed, { long: true }) + ' ago';
+        return `${ms(millSecsElapsed, { long: true })} ago`;
     };
 }

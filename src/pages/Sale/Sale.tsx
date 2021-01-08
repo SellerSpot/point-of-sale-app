@@ -17,8 +17,7 @@ export const Sales = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        const tabIndex = lodash.findIndex(tabs, { route: pathname });
-        return tabIndex >= 0 ? tabIndex : 0;
+        return lodash.findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
