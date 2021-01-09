@@ -5,7 +5,7 @@ import { ISaleCartItem } from 'typings/components/sale.types';
 
 // Compile data to show in table
 export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
-    if (!lodash.isNull(productsData) && productsData.length > 0) {
+    if (productsData?.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.map((product, index) => {
@@ -29,7 +29,7 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
 
 // To get the items in the cart
 export const getCartItems = (cartData: ISaleCartItem[]): JSX.Element[][] => {
-    if (!lodash.isNull(cartData) && cartData.length > 0) {
+    if (!lodash.isUndefined(cartData) && cartData?.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         cartData.map((cartItem, index) => {

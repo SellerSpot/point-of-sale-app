@@ -6,7 +6,7 @@ import { IGetProduct } from 'typings/components/product.types';
 
 // Compile data to show in table
 export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
-    if (!lodash.isNull(productsData) && productsData.length > 0) {
+    if (productsData?.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.map((product, index) => {

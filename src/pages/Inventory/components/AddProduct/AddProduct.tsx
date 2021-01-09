@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import { Dropdown, InputField } from '@sellerspot/universal-components';
+import { Dropdown, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import { ICONS } from 'config/icons';
 import { useFormik } from 'formik';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
@@ -18,27 +18,53 @@ import { RootState } from 'store/store';
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),
     gtinNumber: Yup.string(),
-    category: Yup.string(),
-    brand: Yup.string(),
+    category: Yup.object().shape({
+        name: Yup.string(),
+        _id: Yup.string(),
+    }),
+    brand: Yup.object().shape({
+        name: Yup.string(),
+        _id: Yup.string(),
+    }),
     landingPrice: Yup.number().required('Landing price is a required field'),
     profitPercent: Yup.number(),
     sellingPrice: Yup.number().required('Selling price is a required field'),
     availableStock: Yup.number(),
-    stockUnit: Yup.string(),
-    taxBracket: Yup.array(),
+    stockUnit: Yup.object().shape({
+        name: Yup.string(),
+        _id: Yup.string(),
+    }),
+    taxBracket: Yup.object().shape({
+        name: Yup.string(),
+        _id: Yup.string(),
+    }),
 });
 
 const formInitialValues = {
     name: '',
     gtinNumber: '',
-    category: '',
-    brand: '',
+    category: {
+        name: 'NA',
+        _id: '0000',
+    },
+    brand: {
+        name: 'NA',
+        _id: '0000',
+    },
     landingPrice: 0,
     profitPercent: 0,
     sellingPrice: 0,
     availableStock: 0,
-    stockUnit: '',
-    taxBracket: [''],
+    stockUnit: {
+        name: 'NA',
+        _id: '0000',
+    },
+    taxBracket: [
+        {
+            name: 'NA',
+            _id: '0000',
+        },
+    ],
 };
 
 export interface IAddProductDropDownValues {
@@ -168,22 +194,16 @@ export const AddProduct = (): JSX.Element => {
                                 ),
                             );
                         }}
-                        error={{
-                            errorMessage: formFormik.errors.category ?? '',
-                            showError:
-                                !lodash.isUndefined(formFormik.errors.category) &&
-                                formFormik.touched.category,
-                        }}
                     />
                     <Dropdown
                         label={'Brand'}
-                        options={dropDownValues.brands.options.map((category) => {
-                            return <p key={category._id}>{category.name}</p>;
+                        options={dropDownValues.brands.options.map((brand) => {
+                            return <p key={brand._id}>{brand.name}</p>;
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
                                 'category',
-                                dropDownValues.brands.options[index]._id,
+                                dropDownValues.brands.options[index],
                             );
                             setDropDownValues(
                                 lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
@@ -196,11 +216,115 @@ export const AddProduct = (): JSX.Element => {
                                 ),
                             );
                         }}
+                    />
+                </div>
+                <HorizontalRule
+                    ruleWidth={'75%'}
+                    style={{
+                        horizontalRuleWrapperStyle: {
+                            paddingTop: 5,
+                            paddingBottom: 20,
+                        },
+                    }}
+                />
+                <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
+                    <InputField
+                        name={'landingPrice'}
+                        type={'number'}
+                        label={'Landing Price'}
+                        placeHolder={'Landing Price'}
+                        prefix={<p>₹</p>}
+                        required={true}
+                        value={formFormik.values.landingPrice?.toString()}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
                         error={{
-                            errorMessage: formFormik.errors.category ?? '',
+                            errorMessage: formFormik.errors.landingPrice ?? '',
                             showError:
-                                !lodash.isUndefined(formFormik.errors.category) &&
-                                formFormik.touched.category,
+                                !lodash.isUndefined(formFormik.errors.landingPrice) &&
+                                formFormik.touched.landingPrice,
+                        }}
+                    />
+                    <InputField
+                        name={'profitPercent'}
+                        type={'number'}
+                        label={'Profit Percent'}
+                        placeHolder={'Profit Percent'}
+                        suffix={<p>%</p>}
+                        value={formFormik.values.profitPercent?.toString()}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
+                        error={{
+                            errorMessage: formFormik.errors.profitPercent ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.profitPercent) &&
+                                formFormik.touched.profitPercent,
+                        }}
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                    <InputField
+                        name={'sellingPrice'}
+                        type={'number'}
+                        label={'Selling Price'}
+                        prefix={<p>₹</p>}
+                        placeHolder={'Eg. 251'}
+                        error={{
+                            errorMessage: formFormik.errors.sellingPrice ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.sellingPrice) &&
+                                formFormik.touched.sellingPrice,
+                        }}
+                        value={formFormik.values.sellingPrice.toString()}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
+                    />
+                </div>
+                <HorizontalRule
+                    ruleWidth={'75%'}
+                    style={{
+                        horizontalRuleWrapperStyle: {
+                            paddingTop: 5,
+                            paddingBottom: 20,
+                        },
+                    }}
+                />
+                <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
+                    <InputField
+                        type={'number'}
+                        label={'Available Stock'}
+                        placeHolder={'Available Stock'}
+                        value={formFormik.values.availableStock?.toString()}
+                        onChange={(event) =>
+                            formFormik.setFieldValue('availableStock', event.target.value)
+                        }
+                        error={{
+                            errorMessage: formFormik.errors.sellingPrice ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.sellingPrice) &&
+                                formFormik.touched.sellingPrice,
+                        }}
+                    />
+                    <Dropdown
+                        label={'Stock Unit'}
+                        options={dropDownValues.stockUnits.options.map((stockUnit) => {
+                            return <p key={stockUnit._id}>{stockUnit.name}</p>;
+                        })}
+                        onSelect={(index) => {
+                            formFormik.setFieldValue(
+                                'stockUnit',
+                                dropDownValues.stockUnits.options[index],
+                            );
+                            setDropDownValues(
+                                lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
+                                    dropDownValues,
+                                    {
+                                        stockUnits: {
+                                            selectedIndex: index,
+                                        },
+                                    },
+                                ),
+                            );
                         }}
                     />
                 </div>
