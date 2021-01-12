@@ -2,15 +2,15 @@ import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
-import { Notify } from '@sellerspot/universal-components';
 import './styles/core.css';
 import { store } from 'store/store';
-import { closeNotify, notifySelector } from 'store/models/notify';
+import { notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
+import { Notify } from '@sellerspot/universal-components';
 
 export const App = (): ReactElement => {
     // Getting Notify selector
-    const { active, content, timeout, className, style } = useSelector(notifySelector);
+    const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
 
     return (
         <div>
@@ -22,14 +22,15 @@ export const App = (): ReactElement => {
             </Switch>
             {/* All globally available components (via store) should be nested below  */}
             <Notify
-                active={active}
-                clearNotificationCallback={store.dispatch(closeNotify)}
+                notifyId={notifyId}
                 content={content}
                 timeout={timeout}
                 className={{
                     notifyWrapper: className?.notifyWrapper,
                 }}
-                style={style}
+                style={{
+                    notifyWrapper: style,
+                }}
             />
         </div>
     );

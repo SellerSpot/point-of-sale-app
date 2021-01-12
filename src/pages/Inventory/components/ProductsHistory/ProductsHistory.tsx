@@ -11,6 +11,8 @@ import { IGetProduct } from 'typings/components/product.types';
 import { getProductsHistoryStyles } from './productsHistory.styles';
 import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, handleTableRowClick } from './productsHistory.actions';
+import { showNotify } from 'store/models/notify';
+import { store } from 'store/store';
 
 export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
