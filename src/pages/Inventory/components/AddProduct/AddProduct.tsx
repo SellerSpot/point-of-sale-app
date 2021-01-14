@@ -1,45 +1,33 @@
 import { cx } from '@emotion/css';
-import { Checkbox, Dropdown, HorizontalRule, InputField } from '@sellerspot/universal-components';
+import {
+    Button,
+    Checkbox,
+    Dropdown,
+    HorizontalRule,
+    InputField,
+} from '@sellerspot/universal-components';
 import { ICONS } from 'config/icons';
 import { useFormik } from 'formik';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import lodash from 'lodash';
 import React, { useEffect, useState } from 'react';
-import * as Yup from 'yup';
 import { getAddProductStyles } from './addProduct.styles';
+import {
+    checkIfTaxItemIsSelected,
+    fetchAddProductDropDownData,
+    handleAddProductFormOnSubmit,
+} from './addProduct.actions';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
+import {
+    addProductFormSchema,
+    IAddProductDropDownValues,
+    IFormInitialValues,
+} from './addProduct.types';
+import { cssColors } from 'config/cssVariables';
 import { IGetCategory } from 'typings/components/category.types';
 import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
-import { IGetTaxBracket } from 'typings/components/taxBracket.types';
-import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
-import { IAddProductDropDownValues, IFormInitialValues } from './addProduct.types';
-
-const formSchema = Yup.object().shape({
-    name: Yup.string().required('Product name is a required field'),
-    gtinNumber: Yup.string(),
-    category: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-    brand: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-    landingPrice: Yup.number().required('Landing price is a required field'),
-    profitPercent: Yup.number(),
-    sellingPrice: Yup.number().required('Selling price is a required field'),
-    availableStock: Yup.number(),
-    stockUnit: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-    taxBracket: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-});
 
 const formInitialValues: IFormInitialValues = {
     name: '',
@@ -66,16 +54,27 @@ export const AddProduct = (): JSX.Element => {
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
-        validationSchema: formSchema,
-        onSubmit: (values) => {
-            console.log('Form Submitted');
-        },
+        validationSchema: addProductFormSchema,
+        onSubmit: handleAddProductFormOnSubmit,
     });
+
+    useEffect(() => {
+        if (formFormik.isSubmitting) {
+            console.log(formFormik.errors);
+        }
+    }, [formFormik.isSubmitting]);
 
     useEffect(() => {
         (async () => {
             // fetching all dropDown data
-            await fetchAddProductDropDownData(setMultiOptionValues);
+            await fetchAddProductDropDownData(
+                setMultiOptionValues,
+                (category: IGetCategory, brand: IGetBrand, stockUnit: IGetStockUnit) => {
+                    formFormik.setFieldValue('category', category);
+                    formFormik.setFieldValue('brand', brand);
+                    formFormik.setFieldValue('stockUnit', stockUnit);
+                },
+            );
         }).call(null);
     }, [sliderState.addProductSlider.show]);
 
@@ -131,23 +130,23 @@ export const AddProduct = (): JSX.Element => {
                 <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
                     <Dropdown
                         label={'Category'}
-                        options={multiOptionValues.categories.map((category) => {
-                            return <p key={category._id}>{category.name}</p>;
+                        options={multiOptionValues.categories.map((category, index) => {
+                            return <p key={index}>{category.name}</p>;
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
                                 'category',
-                                multiOptionValues.categories[index]._id,
+                                multiOptionValues.categories[index],
                             );
                         }}
                     />
                     <Dropdown
                         label={'Brand'}
-                        options={multiOptionValues.brands.map((brand) => {
-                            return <p key={brand._id}>{brand.name}</p>;
+                        options={multiOptionValues.brands.map((brand, index) => {
+                            return <p key={index}>{brand.name}</p>;
                         })}
                         onSelect={(index) => {
-                            formFormik.setFieldValue('category', multiOptionValues.brands[index]);
+                            formFormik.setFieldValue('brand', multiOptionValues.brands[index]);
                         }}
                     />
                 </div>
@@ -280,7 +279,6 @@ export const AddProduct = (): JSX.Element => {
 
                                                 break;
                                             }
-                                            // console.log(taxBracketValues[i]._id, taxBracket._id);
                                         }
                                     }
                                 }}
@@ -288,6 +286,31 @@ export const AddProduct = (): JSX.Element => {
                         );
                     })}
                 </div>
+            </div>
+            <div className={styles.pageFooter}>
+                <Button
+                    type="submit"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
+                    label={'Add Product'}
+                    tabIndex={0}
+                    style={{
+                        backgroundColor: cssColors['--inventory-color'],
+                        color: cssColors['--light-font-color'],
+                    }}
+                />
+                <Button
+                    type="button"
+                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
+                    label="Reset Values"
+                    style={{
+                        backgroundColor: 'transparent',
+                        borderColor: cssColors['--inventory-color'],
+                        color: cssColors['--inventory-color'],
+                    }}
+                    onClick={() => {
+                        formFormik.resetForm({ values: formInitialValues });
+                    }}
+                />
             </div>
         </form>
     );
