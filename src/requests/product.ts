@@ -9,6 +9,9 @@ interface IProductApiResponse {
     error?: IApiServiceErrorResponse[];
 }
 
+/**
+ * Gets all the products stored in the database
+ */
 export const getProducts = async (): Promise<IProductApiResponse> => {
     // Sending API request
     const response = await services.ApiService.get(API_ROUTES.PRODUCT);

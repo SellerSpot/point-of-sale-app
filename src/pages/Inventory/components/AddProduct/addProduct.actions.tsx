@@ -3,8 +3,16 @@ import { IGetBrand } from 'typings/components/brand.types';
 import { IGetCategory } from 'typings/components/category.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
-import { IAddProductDropDownValues, IFormInitialValues } from './addProduct.types';
+import {
+    IAddProductDropDownValues,
+    AddProductFormInitialValues,
+} from 'typings/components/product.types';
 
+/**
+ * Used to fetch the values from database and prepare the AddProduct page
+ * @param setDropDownValues Setter for dropDownValues state values
+ * @param setDropDownInitialValues Callback function to set the initial values in the form
+ */
 export const fetchAddProductDropDownData = async (
     setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValues>>,
     setDropDownInitialValues: (
@@ -40,7 +48,9 @@ export const fetchAddProductDropDownData = async (
 };
 
 /**
- * Checks if the taxItem is already in the list
+ * Used to check if a taxBracket is selected or not
+ * @param taxBrackets List of all taxBrackets stored in the formik store (those in store are selected)
+ * @param taxBracket The current taxBracket to check if it exists in the formik store
  */
 export const checkIfTaxItemIsSelected = (
     taxBrackets: IGetTaxBracket[],
@@ -55,6 +65,6 @@ export const checkIfTaxItemIsSelected = (
 /**
  * Handles onSubmit for the addProduct form
  */
-export const handleAddProductFormOnSubmit = (values: IFormInitialValues): void => {
-    console.log(values);
+export const handleAddProductFormOnSubmit = (values: AddProductFormInitialValues): void => {
+    const dataToSend = {};
 };

@@ -22,14 +22,14 @@ import { RootState } from 'store/store';
 import {
     addProductFormSchema,
     IAddProductDropDownValues,
-    IFormInitialValues,
-} from './addProduct.types';
+    AddProductFormInitialValues,
+} from 'typings/components/product.types';
 import { cssColors } from 'config/cssVariables';
 import { IGetCategory } from 'typings/components/category.types';
 import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 
-const formInitialValues: IFormInitialValues = {
+const formInitialValues: AddProductFormInitialValues = {
     name: '',
     gtinNumber: '',
     category: null,
