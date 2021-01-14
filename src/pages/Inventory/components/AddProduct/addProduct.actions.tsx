@@ -1,5 +1,6 @@
 import requests from 'requests/requests';
-import { IAddProductDropDownValues } from './AddProduct';
+import { IGetTaxBracket } from 'typings/components/taxBracket.types';
+import { IAddProductDropDownValues } from './addProduct.types';
 
 export const fetchAddProductDropDownData = async (
     setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValues>>,
@@ -13,25 +14,24 @@ export const fetchAddProductDropDownData = async (
     // getting all tax brackets
     const allTaxBrackets = await requests.taxBracket.getTaxBrackets();
 
-    console.log(allCategories, allBrands, allStockUnits, allTaxBrackets);
-
     // setting state values
     setDropDownValues({
-        categories: {
-            options: allCategories.data ?? [],
-            selectedIndex: 0,
-        },
-        brands: {
-            options: allBrands.data ?? [],
-            selectedIndex: 0,
-        },
-        stockUnits: {
-            options: allStockUnits.data ?? [],
-            selectedIndex: 0,
-        },
-        taxBrackets: {
-            options: allTaxBrackets.data ?? [],
-            selectedIndex: 0,
-        },
+        categories: allCategories.data ?? [],
+        brands: allBrands.data ?? [],
+        stockUnits: allStockUnits.data ?? [],
+        taxBrackets: allTaxBrackets.data ?? [],
     });
+};
+
+/**
+ * Checks if the taxItem is already in the list
+ */
+export const checkIfTaxItemIsSelected = (
+    taxBrackets: IGetTaxBracket[],
+    taxBracket: IGetTaxBracket,
+): boolean => {
+    for (let i = 0; i < taxBrackets.length; i++) {
+        if (taxBrackets[i]._id === taxBracket._id) return true;
+    }
+    return false;
 };

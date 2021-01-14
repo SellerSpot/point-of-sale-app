@@ -1,5 +1,5 @@
 import { cx } from '@emotion/css';
-import { Dropdown, HorizontalRule, InputField } from '@sellerspot/universal-components';
+import { Checkbox, Dropdown, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import { ICONS } from 'config/icons';
 import { useFormik } from 'formik';
 import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
@@ -11,9 +11,10 @@ import { IGetCategory } from 'typings/components/category.types';
 import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
-import { fetchAddProductDropDownData } from './addProduct.actions';
+import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
+import { IAddProductDropDownValues, IFormInitialValues } from './addProduct.types';
 
 const formSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),
@@ -40,71 +41,26 @@ const formSchema = Yup.object().shape({
     }),
 });
 
-const formInitialValues = {
+const formInitialValues: IFormInitialValues = {
     name: '',
     gtinNumber: '',
-    category: {
-        name: 'NA',
-        _id: '0000',
-    },
-    brand: {
-        name: 'NA',
-        _id: '0000',
-    },
+    category: null,
+    brand: null,
     landingPrice: 0,
     profitPercent: 0,
     sellingPrice: 0,
     availableStock: 0,
-    stockUnit: {
-        name: 'NA',
-        _id: '0000',
-    },
-    taxBracket: [
-        {
-            name: 'NA',
-            _id: '0000',
-        },
-    ],
+    stockUnit: null,
+    taxBracket: [],
 };
-
-export interface IAddProductDropDownValues {
-    categories?: {
-        options?: IGetCategory[];
-        selectedIndex?: number;
-    };
-    brands?: {
-        options?: IGetBrand[];
-        selectedIndex?: number;
-    };
-    stockUnits?: {
-        options?: IGetStockUnit[];
-        selectedIndex?: number;
-    };
-    taxBrackets?: {
-        options?: IGetTaxBracket[];
-        selectedIndex?: number;
-    };
-}
 
 export const AddProduct = (): JSX.Element => {
     const styles = getAddProductStyles();
-    const [dropDownValues, setDropDownValues] = useState<IAddProductDropDownValues>({
-        categories: {
-            options: [],
-            selectedIndex: 0,
-        },
-        brands: {
-            options: [],
-            selectedIndex: 0,
-        },
-        stockUnits: {
-            options: [],
-            selectedIndex: 0,
-        },
-        taxBrackets: {
-            options: [],
-            selectedIndex: 0,
-        },
+    const [multiOptionValues, setMultiOptionValues] = useState<IAddProductDropDownValues>({
+        categories: [],
+        brands: [],
+        stockUnits: [],
+        taxBrackets: [],
     });
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
@@ -119,7 +75,7 @@ export const AddProduct = (): JSX.Element => {
     useEffect(() => {
         (async () => {
             // fetching all dropDown data
-            await fetchAddProductDropDownData(setDropDownValues);
+            await fetchAddProductDropDownData(setMultiOptionValues);
         }).call(null);
     }, [sliderState.addProductSlider.show]);
 
@@ -175,46 +131,23 @@ export const AddProduct = (): JSX.Element => {
                 <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
                     <Dropdown
                         label={'Category'}
-                        options={dropDownValues.categories.options.map((category) => {
+                        options={multiOptionValues.categories.map((category) => {
                             return <p key={category._id}>{category.name}</p>;
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
                                 'category',
-                                dropDownValues.categories.options[index]._id,
-                            );
-                            setDropDownValues(
-                                lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
-                                    dropDownValues,
-                                    {
-                                        categories: {
-                                            selectedIndex: index,
-                                        },
-                                    },
-                                ),
+                                multiOptionValues.categories[index]._id,
                             );
                         }}
                     />
                     <Dropdown
                         label={'Brand'}
-                        options={dropDownValues.brands.options.map((brand) => {
+                        options={multiOptionValues.brands.map((brand) => {
                             return <p key={brand._id}>{brand.name}</p>;
                         })}
                         onSelect={(index) => {
-                            formFormik.setFieldValue(
-                                'category',
-                                dropDownValues.brands.options[index],
-                            );
-                            setDropDownValues(
-                                lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
-                                    dropDownValues,
-                                    {
-                                        brands: {
-                                            selectedIndex: index,
-                                        },
-                                    },
-                                ),
-                            );
+                            formFormik.setFieldValue('category', multiOptionValues.brands[index]);
                         }}
                     />
                 </div>
@@ -307,26 +240,53 @@ export const AddProduct = (): JSX.Element => {
                     />
                     <Dropdown
                         label={'Stock Unit'}
-                        options={dropDownValues.stockUnits.options.map((stockUnit) => {
+                        options={multiOptionValues.stockUnits.map((stockUnit) => {
                             return <p key={stockUnit._id}>{stockUnit.name}</p>;
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
                                 'stockUnit',
-                                dropDownValues.stockUnits.options[index],
-                            );
-                            setDropDownValues(
-                                lodash.merge<IAddProductDropDownValues, IAddProductDropDownValues>(
-                                    dropDownValues,
-                                    {
-                                        stockUnits: {
-                                            selectedIndex: index,
-                                        },
-                                    },
-                                ),
+                                multiOptionValues.stockUnits[index],
                             );
                         }}
                     />
+                </div>
+                <div className={cx(styles.formGroup)}>
+                    {multiOptionValues.taxBrackets?.map((taxBracket, index) => {
+                        return (
+                            <Checkbox
+                                key={index}
+                                groupLabel={index === 0 ? 'Tax Bracket' : null}
+                                label={taxBracket.name}
+                                checked={checkIfTaxItemIsSelected(
+                                    formFormik.values.taxBracket,
+                                    taxBracket,
+                                )}
+                                onChange={(event) => {
+                                    if (event.target.checked) {
+                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        taxBracketValues.push(taxBracket);
+                                        formFormik.setFieldValue('taxBracket', taxBracketValues);
+                                    } else {
+                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        // finding index of the taxBracket to remove and removing it
+                                        for (let i = 0; i < taxBracketValues.length; i++) {
+                                            if (taxBracketValues[i]._id === taxBracket._id) {
+                                                taxBracketValues.splice(i, 1);
+                                                formFormik.setFieldValue(
+                                                    'taxBracket',
+                                                    taxBracketValues,
+                                                );
+
+                                                break;
+                                            }
+                                            // console.log(taxBracketValues[i]._id, taxBracket._id);
+                                        }
+                                    }
+                                }}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </form>
