@@ -7,6 +7,9 @@ import {
     IPostCreateProductInServer,
 } from 'typings/components/product.types';
 
+/**
+ * Interface for the data sent back to calling functions from these requests
+ */
 interface IProductApiResponse {
     status: boolean;
     data?: IGetProductFromServer[] | string;
