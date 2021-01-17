@@ -8,6 +8,7 @@ import {
     IAddProductFormSchema,
     IPostCreateProductInServer,
 } from 'typings/components/product.types';
+import { introduceDelay } from 'utils/utils';
 
 /**
  * Used to fetch the values from database and prepare the AddProduct page
@@ -61,19 +62,4 @@ export const checkIfTaxItemIsSelected = (
         if (taxBrackets[i]._id === taxBracket._id) return true;
     }
     return false;
-};
-
-/**
- * Handles onSubmit for the addProduct form
- */
-export const handleAddProductFormOnSubmit = (values: IAddProductFormSchema): void => {
-    // // converting to format required at server site - IPostCreateProductInServer
-    // const dataToSend: IPostCreateProductInServer = {
-    //     brand: values.brand._id,
-    //     category: values.category._id.,
-    //     gtinNumber: values.gtinNumber,
-    //     landingPrice: values.landingPrice,
-    //     mrpPrice: values.
-    // };
-    console.log('FUCK');
 };

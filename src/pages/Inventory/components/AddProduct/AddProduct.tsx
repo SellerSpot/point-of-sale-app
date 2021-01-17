@@ -12,11 +12,7 @@ import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders'
 import lodash from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { getAddProductStyles } from './addProduct.styles';
-import {
-    checkIfTaxItemIsSelected,
-    fetchAddProductDropDownData,
-    handleAddProductFormOnSubmit,
-} from './addProduct.actions';
+import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import {
@@ -28,6 +24,8 @@ import { cssColors } from 'config/cssVariables';
 import { IGetCategory } from 'typings/components/category.types';
 import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
+import { showNotify } from 'store/models/notify';
+import { createProduct } from 'requests/product';
 
 const formInitialValues: IAddProductFormSchema = {
     name: '',
@@ -56,7 +54,21 @@ export const AddProduct = (): JSX.Element => {
     const formFormik = useFormik({
         initialValues: formInitialValues,
         validationSchema: addProductFormSchema,
-        onSubmit: handleAddProductFormOnSubmit,
+        onSubmit: async (values: IAddProductFormSchema) => {
+            formFormik.setSubmitting(true);
+            const response = await createProduct(values);
+            console.log(response);
+
+            if (response.status) {
+                showNotify({ notifyId: Math.random(), content: <p>{response.data as string}</p> });
+            } else {
+                // setting errors
+                response.error.map((error) => {
+                    formFormik.setFieldError(error.fieldName, error.message);
+                });
+            }
+            formFormik.setSubmitting(false);
+        },
     });
 
     useEffect(() => {
@@ -311,7 +323,7 @@ export const AddProduct = (): JSX.Element => {
                 />
                 <Button
                     type="button"
-                    status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
+                    status={formFormik.isSubmitting ? 'disabled' : 'default'}
                     label="Reset Values"
                     style={{
                         backgroundColor: 'transparent',

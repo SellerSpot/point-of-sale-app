@@ -24,7 +24,7 @@ export const ProductsHistory = (): JSX.Element => {
         (async () => {
             // To populate the table
             const productsData = await getProducts();
-            setproductsData(productsData.data);
+            setproductsData(productsData.data as IGetProductFromServer[]);
         }).call(null);
     }, []);
 

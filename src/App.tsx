@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
 import './styles/core.css';
-import { store } from 'store/store';
 import { notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
 import { Notify } from '@sellerspot/universal-components';

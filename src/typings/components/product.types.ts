@@ -40,7 +40,7 @@ export interface IPostCreateProductInServer {
         stockUnit: string;
     };
     profitPercent: number;
-    taxBracket: string;
+    taxBracket: string[];
 }
 
 /**

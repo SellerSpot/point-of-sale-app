@@ -20,7 +20,7 @@ export const NewSale = (): JSX.Element => {
     useEffect(() => {
         (async () => {
             const productsData = await getProducts();
-            setproductsData(productsData.data);
+            setproductsData(productsData.data as IGetProductFromServer[]);
         }).call(null);
     }, []);
 
