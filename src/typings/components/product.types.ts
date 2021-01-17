@@ -5,9 +5,9 @@ import { IGetTaxBracket } from './taxBracket.types';
 import * as Yup from 'yup';
 
 /**
- * Response type for GET request to fetch all products
+ * Response interface for GET request to fetch all products in server
  */
-export interface IGetProduct {
+export interface IGetProductFromServer {
     _id: string;
     name: string;
     category: IGetCategory;
@@ -22,6 +22,25 @@ export interface IGetProduct {
     };
     profitPercent: number;
     taxBracket: IGetTaxBracket[];
+}
+
+/**
+ * Request body interface for POST request to create product in server
+ */
+export interface IPostCreateProductInServer {
+    name: string;
+    category: string;
+    brand: string;
+    gtinNumber: string;
+    mrpPrice: number;
+    landingPrice: number;
+    sellingPrice: number;
+    stockInformation: {
+        availableStock: number;
+        stockUnit: string;
+    };
+    profitPercent: number;
+    taxBracket: string;
 }
 
 /**
@@ -41,6 +60,7 @@ export const addProductFormSchema = Yup.object().shape({
     landingPrice: Yup.number().required('Landing price is a required field'),
     profitPercent: Yup.number(),
     sellingPrice: Yup.number().required('Selling price is a required field'),
+    mrpPrice: Yup.number(),
     availableStock: Yup.number(),
     stockUnit: Yup.object().shape({
         name: Yup.string(),
@@ -57,7 +77,7 @@ export const addProductFormSchema = Yup.object().shape({
 /**
  * Interface for the addProduct form formik initial values const
  */
-export interface AddProductFormInitialValues {
+export interface IAddProductFormSchema {
     name: string;
     gtinNumber: string;
     category: IGetCategory;
@@ -65,14 +85,16 @@ export interface AddProductFormInitialValues {
     landingPrice: number;
     profitPercent: number;
     sellingPrice: number;
+    mrpPrice: number;
     availableStock: number;
     stockUnit: IGetStockUnit;
     taxBracket: IGetTaxBracket[];
 }
+
 /**
  * Interface for the AddProduct page state object containing all the values for the dropdown fields fetched from the server
  */
-export interface IAddProductDropDownValues {
+export interface IAddProductDropDownValuesData {
     categories?: IGetCategory[];
     brands?: IGetBrand[];
     stockUnits?: IGetStockUnit[];

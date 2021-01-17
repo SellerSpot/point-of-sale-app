@@ -21,15 +21,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
 import {
     addProductFormSchema,
-    IAddProductDropDownValues,
-    AddProductFormInitialValues,
+    IAddProductDropDownValuesData,
+    IAddProductFormSchema,
 } from 'typings/components/product.types';
 import { cssColors } from 'config/cssVariables';
 import { IGetCategory } from 'typings/components/category.types';
 import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 
-const formInitialValues: AddProductFormInitialValues = {
+const formInitialValues: IAddProductFormSchema = {
     name: '',
     gtinNumber: '',
     category: null,
@@ -37,6 +37,7 @@ const formInitialValues: AddProductFormInitialValues = {
     landingPrice: 0,
     profitPercent: 0,
     sellingPrice: 0,
+    mrpPrice: 0,
     availableStock: 0,
     stockUnit: null,
     taxBracket: [],
@@ -44,7 +45,7 @@ const formInitialValues: AddProductFormInitialValues = {
 
 export const AddProduct = (): JSX.Element => {
     const styles = getAddProductStyles();
-    const [multiOptionValues, setMultiOptionValues] = useState<IAddProductDropDownValues>({
+    const [multiOptionValues, setMultiOptionValues] = useState<IAddProductDropDownValuesData>({
         categories: [],
         brands: [],
         stockUnits: [],
@@ -57,12 +58,6 @@ export const AddProduct = (): JSX.Element => {
         validationSchema: addProductFormSchema,
         onSubmit: handleAddProductFormOnSubmit,
     });
-
-    useEffect(() => {
-        if (formFormik.isSubmitting) {
-            console.log(formFormik.errors);
-        }
-    }, [formFormik.isSubmitting]);
 
     useEffect(() => {
         (async () => {
@@ -194,7 +189,23 @@ export const AddProduct = (): JSX.Element => {
                         }}
                     />
                 </div>
-                <div className={styles.formGroup}>
+                <div className={cx(styles.formGroup, styles.formGroupSplitEqual)}>
+                    <InputField
+                        name={'mrpPrice'}
+                        type={'number'}
+                        label={'MRP'}
+                        prefix={<p>₹</p>}
+                        placeHolder={'Eg. 251'}
+                        error={{
+                            errorMessage: formFormik.errors.mrpPrice ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.mrpPrice) &&
+                                formFormik.touched.mrpPrice,
+                        }}
+                        value={formFormik.values.mrpPrice.toString()}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
+                    />
                     <InputField
                         name={'sellingPrice'}
                         type={'number'}

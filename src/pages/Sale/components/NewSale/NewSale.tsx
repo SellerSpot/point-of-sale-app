@@ -6,7 +6,7 @@ import { Table } from '@sellerspot/universal-components';
 import { cssColors, cssVariables } from 'config/cssVariables';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { getNewSaleStyles } from './NewSale.styles';
-import { IGetProduct } from 'typings/components/product.types';
+import { IGetProductFromServer } from 'typings/components/product.types';
 import { ISaleCartItem } from 'typings/components/sale.types';
 import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, getCartItems } from './newSale.actions';
@@ -14,7 +14,7 @@ import { compileProductsTableBodyData, getCartItems } from './newSale.actions';
 export const NewSale = (): JSX.Element => {
     const dispatch = useDispatch();
     const styles = getNewSaleStyles();
-    const [productsData, setproductsData] = useState<IGetProduct[]>(null);
+    const [productsData, setproductsData] = useState<IGetProductFromServer[]>(null);
     const [cartData, setCartData] = useState<ISaleCartItem[]>(null);
 
     useEffect(() => {

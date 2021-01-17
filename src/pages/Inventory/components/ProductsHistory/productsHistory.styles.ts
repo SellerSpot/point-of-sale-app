@@ -1,12 +1,12 @@
 import { css } from '@emotion/css';
 
-interface IGetProductStyles {
+interface IGetProductFromServerStyles {
     productsWrapper: string;
     metaCardWrapper: string;
     tableWrapper: string;
 }
 
-export const getProductsHistoryStyles = (): IGetProductStyles => {
+export const getProductsHistoryStyles = (): IGetProductFromServerStyles => {
     return {
         productsWrapper: css`
             width: 100%;

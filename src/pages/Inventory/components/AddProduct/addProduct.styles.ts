@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { cssColors, cssVariables } from 'config/cssVariables';
 
-interface IGetProductStyles {
+interface IGetProductFromServerStyles {
     pageWrapper: string;
     pageHeader: string;
     pageHeaderBackIcon: string;
@@ -12,7 +12,7 @@ interface IGetProductStyles {
     pageFooter: string;
 }
 
-export const getAddProductStyles = (): IGetProductStyles => {
+export const getAddProductStyles = (): IGetProductFromServerStyles => {
     return {
         pageWrapper: css`
             width: 100%;

@@ -7,7 +7,7 @@ import { Table } from '@sellerspot/universal-components';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import lodash from 'lodash';
 import { css } from '@emotion/css';
-import { IGetProduct } from 'typings/components/product.types';
+import { IGetProductFromServer } from 'typings/components/product.types';
 import { getProductsHistoryStyles } from './productsHistory.styles';
 import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, handleTableRowClick } from './productsHistory.actions';
@@ -18,7 +18,7 @@ export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
     const styles = getProductsHistoryStyles();
-    const [productsData, setproductsData] = useState<IGetProduct[]>(null);
+    const [productsData, setproductsData] = useState<IGetProductFromServer[]>(null);
 
     useEffect(() => {
         (async () => {

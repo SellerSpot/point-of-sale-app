@@ -46,7 +46,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={addProductSlider.show}
-                sliderSize={'40%'}
+                sliderSize={'50%'}
                 onClickBackdrop={() => handleSliderClose('addProductSlider')}
             >
                 <AddProduct />

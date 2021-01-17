@@ -1,10 +1,12 @@
 import lodash from 'lodash';
 import React from 'react';
-import { IGetProduct } from 'typings/components/product.types';
+import { IGetProductFromServer } from 'typings/components/product.types';
 import { ISaleCartItem } from 'typings/components/sale.types';
 
 // Compile data to show in table
-export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
+export const compileProductsTableBodyData = (
+    productsData: IGetProductFromServer[],
+): JSX.Element[][] => {
     if (productsData?.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];

@@ -4,8 +4,9 @@ import { IGetCategory } from 'typings/components/category.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
 import {
-    IAddProductDropDownValues,
-    AddProductFormInitialValues,
+    IAddProductDropDownValuesData,
+    IAddProductFormSchema,
+    IPostCreateProductInServer,
 } from 'typings/components/product.types';
 
 /**
@@ -14,7 +15,7 @@ import {
  * @param setDropDownInitialValues Callback function to set the initial values in the form
  */
 export const fetchAddProductDropDownData = async (
-    setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValues>>,
+    setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValuesData>>,
     setDropDownInitialValues: (
         category: IGetCategory,
         brand: IGetBrand,
@@ -65,6 +66,14 @@ export const checkIfTaxItemIsSelected = (
 /**
  * Handles onSubmit for the addProduct form
  */
-export const handleAddProductFormOnSubmit = (values: AddProductFormInitialValues): void => {
-    const dataToSend = {};
+export const handleAddProductFormOnSubmit = (values: IAddProductFormSchema): void => {
+    // // converting to format required at server site - IPostCreateProductInServer
+    // const dataToSend: IPostCreateProductInServer = {
+    //     brand: values.brand._id,
+    //     category: values.category._id.,
+    //     gtinNumber: values.gtinNumber,
+    //     landingPrice: values.landingPrice,
+    //     mrpPrice: values.
+    // };
+    console.log('FUCK');
 };

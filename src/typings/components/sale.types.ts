@@ -1,4 +1,4 @@
-import { IGetProduct } from './product.types';
+import { IGetProductFromServer } from './product.types';
 
 // Denotes the two statuses for any sale
 enum ESaleStatus {
@@ -37,7 +37,7 @@ export interface IGetSale {
 
 //
 export interface ISaleCartItem {
-    productInformation: IGetProduct;
+    productInformation: IGetProductFromServer;
     quantity: number;
     subTotal: number;
     discount: number;

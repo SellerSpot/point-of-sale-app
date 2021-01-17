@@ -2,14 +2,18 @@ import lodash from 'lodash';
 import React from 'react';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
-import { IGetProduct } from 'typings/components/product.types';
+import { IGetProductFromServer } from 'typings/components/product.types';
 
 // Compile data to show in table
-export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.Element[][] => {
+export const compileProductsTableBodyData = (
+    productsData: IGetProductFromServer[],
+): JSX.Element[][] => {
     if (productsData?.length > 0) {
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.map((product, index) => {
+            console.log(product);
+
             compiledData.push([
                 <p key={index}>{index + 1}</p>,
                 <p key={product.name}>{product.name}</p>,
@@ -29,7 +33,7 @@ export const compileProductsTableBodyData = (productsData: IGetProduct[]): JSX.E
 };
 
 // To show Slider when the tableRow is shown
-export const handleTableRowClick = (product: IGetProduct): void => {
+export const handleTableRowClick = (product: IGetProductFromServer): void => {
     store.dispatch(
         toggleSliderModal({ sliderName: 'addProductSlider', active: true, autoFillData: product }),
     );
