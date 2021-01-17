@@ -4,5 +4,23 @@
         "source.fixAll.eslint": false,
         "source.fixAll.tslint": false,
         "source.fixAll.stylelint": false
-    }
+    },
+    "god.tsconfig": "./tsconfig.json",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#67c1d3",
+        "activityBar.activeBorder": "#c639ae",
+        "activityBar.background": "#67c1d3",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#c639ae",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#3fb1c8",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#2f91a5",
+        "titleBar.activeBackground": "#3fb1c8",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#3fb1c899",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#3fb1c8"
 }

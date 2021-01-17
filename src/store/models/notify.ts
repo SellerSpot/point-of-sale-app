@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { TMajorColors } from '../../config/cssVariables';
+import lodash from 'lodash';
 import { RootState } from '../store';
 
 interface InitialState {
-    active: boolean;
+    notifyId: string | number;
     content?: JSX.Element;
-    timeout: number;
+    timeout?: number;
     className?: {
         notifyWrapper: string;
     };
@@ -13,7 +13,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-    active: false,
+    notifyId: null,
     timeout: 3000,
 };
 
@@ -21,23 +21,18 @@ const notify = createSlice({
     name: 'notify',
     initialState,
     reducers: {
-        showNotify: (
-            state: InitialState,
-            { payload }: PayloadAction<Omit<InitialState, 'active' | 'timeout'>>,
-        ) => {
-            Object.assign(state, { ...initialState, ...payload, active: true });
-        },
-        closeNotify: (state: InitialState) => {
-            Object.assign(state, { ...initialState, active: false });
+        showNotify: (state: InitialState, { payload }: PayloadAction<InitialState>) => {
+            console.log(lodash.merge(initialState, payload));
+            state = lodash.merge(initialState, payload);
         },
     },
 });
 
-// exporting reducer
+// Exporting reducer
 export default notify.reducer;
 
-// exporting actions
-export const { showNotify, closeNotify } = notify.actions;
+// Exporting actions
+export const { showNotify } = notify.actions;
 
-// exporting selector - useful when using it in components to select particular state from global store
+// Exporting selector - useful when using it in components to select particular state from global store
 export const notifySelector: Selector<RootState, InitialState> = (state: RootState) => state.notify;

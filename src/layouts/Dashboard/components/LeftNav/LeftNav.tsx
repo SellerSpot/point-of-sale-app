@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { FaBoxOpen, FaStore, IoMdCart, RiBillLine } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import { cssColors } from 'config/cssVariables';
 import { HorizontalRule } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
 import { getLeftNavStyles } from './leftNav.styles';
+import { ICONS } from 'config/icons';
 
 interface INavItem {
     color: string;
@@ -16,13 +16,7 @@ interface INavItem {
     onClick: () => void;
 }
 
-const NavItem = ({
-    Icon,
-    color,
-    onClick,
-    title,
-    active,
-}: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
+const NavItem = ({ Icon, color, onClick, title }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
     const styles = getLeftNavStyles();
 
     return (
@@ -50,14 +44,14 @@ export const LeftNav = (): JSX.Element => {
 
     const navItem: Omit<INavItem, 'active' | 'onClick'>[] = [
         {
-            Icon: IoMdCart,
+            Icon: ICONS.saleLeftNavItem,
             color: cssColors['--sales-color'],
             title: 'sales',
             route: ROUTES.SALES,
             activeRoutes: [ROUTES.SALES],
         },
         {
-            Icon: FaBoxOpen,
+            Icon: ICONS.inventoryLeftNavItem,
             color: cssColors['--inventory-color'],
             title: 'inventory',
             route: ROUTES.INVENTORY,
@@ -70,18 +64,12 @@ export const LeftNav = (): JSX.Element => {
             ],
         },
         {
-            Icon: RiBillLine,
+            Icon: ICONS.billLeftNavItem,
             color: cssColors['--cashregister-color'],
             title: 'Billing Setup',
             route: ROUTES.BILLING_SETUP,
             activeRoutes: [ROUTES.BILLING_SETUP],
         },
-        // {
-        //     Icon: FaCashRegister,
-        //     color: cssColors['--cashregister-color'],
-        //     title: 'cash register',
-        //     route: ROUTES.CASH_REGISTER,
-        // },
     ];
 
     const styles = getLeftNavStyles();
@@ -89,7 +77,7 @@ export const LeftNav = (): JSX.Element => {
         <div className={styles.leftNavWrapper}>
             <div className={styles.contentWrapper}>
                 <div className={styles.storeNameHolder}>
-                    <FaStore size={'40px'} />
+                    <ICONS.storeLeftNavHeader size={'40px'} />
                     <div>
                         {'Store Name'}
                         <div className={styles.storeNameHolderSubtitle}>{'Hi, Olivia Katz'}</div>

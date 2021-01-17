@@ -1,15 +1,15 @@
-const inferRouteTypes = <T extends { [key: string]: string }>(arg: T): T => arg; // infering types from Route object with autocomplete support.
+const inferRouteTypes = <T extends { [key: string]: string }>(arg: T): T => arg; // Infering types from Route object with autocomplete support.
 
 export const ROUTES = inferRouteTypes({
-    // base routes
+    // Base routes
     DASHBOARD: '/',
     SALES: '/',
     INVENTORY: '/inventory',
     CASH_REGISTER: '/cashregister',
     BILLING_SETUP: '/billingsetup',
-    // sales routes
+    // Sales routes
     SALES_HISTORY: '/',
-    // inventory routes
+    // Inventory routes
     INVENTORY_PRODUCTS: '/inventory',
     INVENTORY_CATEGORIES: '/inventory/categories',
     INVENTORY_BRANDS: '/inventory/brands',

@@ -1,39 +1,35 @@
 import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
-import { loadCSSValues } from 'config/cssVariables';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
-import { Notify } from '@sellerspot/universal-components';
 import './styles/core.css';
-import { store } from 'store/store';
-import { closeNotify, notifySelector } from 'store/models/notify';
+import { notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
-
-// used to load css variables in ts object into the :root context
-loadCSSValues();
+import { Notify } from '@sellerspot/universal-components';
 
 export const App = (): ReactElement => {
-    // getting Notify selector
-    const { active, content, timeout, className, style } = useSelector(notifySelector);
+    // Getting Notify selector
+    const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
 
     return (
         <div>
             <Switch>
-                {/* all other routes should be nested above this route because it is '/' route hence should be placed atlast */}
+                {/* All other routes should be nested above this route because it is '/' route hence should be placed atlast */}
                 <Route path={ROUTES.DASHBOARD}>
                     <Dashboard />
                 </Route>
             </Switch>
-            {/* all globally available components (via store) should be nested below  */}
+            {/* All globally available components (via store) should be nested below  */}
             <Notify
-                active={active}
-                clearNotificationCallback={store.dispatch(closeNotify)}
+                notifyId={notifyId}
                 content={content}
                 timeout={timeout}
                 className={{
                     notifyWrapper: className?.notifyWrapper,
                 }}
-                style={style}
+                style={{
+                    notifyWrapper: style,
+                }}
             />
         </div>
     );

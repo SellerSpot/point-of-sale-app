@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { getMetaCardStyles, IGetMetaCardStyles } from './metacard.styles';
+import React from 'react';
+import { getMetaCardStyles, IGetMetaCardStyles } from './metaCard.styles';
 import lodash from 'lodash';
 import { cx } from '@emotion/css';
 
@@ -24,7 +24,7 @@ const defaultProps: IMetaCardProps = {
 };
 
 export const MetaCard: React.FC<IMetaCardProps> = (props: IMetaCardProps): JSX.Element => {
-    // seasoning the props
+    // Seasoning the props
     const requiredProps = lodash.merge(defaultProps, props);
     const styles = getMetaCardStyles();
 

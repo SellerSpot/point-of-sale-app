@@ -12,7 +12,7 @@ export interface ITabBarProps {
         tabBarWrapperStyle?: React.CSSProperties;
         tabStyle?: React.CSSProperties;
         tabTitleStyle?: React.CSSProperties;
-        selectedIndexStyle?: React.CSSProperties;
+        selectedTabStyle?: React.CSSProperties;
     };
     className?: IGetTabBarStyles;
 }
@@ -50,6 +50,11 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
                                 [cx(styles.selectedTab, requiredProps.className?.tabTitle)]:
                                     index === requiredProps.selectedIndex ? true : false,
                             })}
+                            style={
+                                index === requiredProps.selectedIndex
+                                    ? requiredProps.style?.selectedTabStyle
+                                    : null
+                            }
                         >
                             {tab.name}
                         </div>

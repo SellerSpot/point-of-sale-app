@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-import { Brands } from './components/Brands/Brands';
-import { Categories } from './components/Categories/Categories';
-import { Products } from './components/Products/Products';
-import { TaxBrackets } from './components/TaxBrackets/TaxBrackets';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
 import { getInventoryStyles } from './inventory.styles';
+import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
+import { cssColors } from 'config/cssVariables';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -32,8 +30,7 @@ export const Inventory = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        const tabIndex = lodash.findIndex(tabs, { route: pathname });
-        return tabIndex >= 0 ? tabIndex : 0;
+        return lodash.findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
@@ -43,12 +40,21 @@ export const Inventory = (): JSX.Element => {
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
+                <TabBar
+                    tabs={tabs}
+                    onSelect={setCurrentTab}
+                    selectedIndex={currentTab}
+                    style={{
+                        selectedTabStyle: {
+                            color: cssColors['--inventory-color'],
+                        },
+                    }}
+                />
             </div>
 
             <div className={styles.overallPageWrapper}>
                 <Switch>
-                    <Route path={ROUTES.INVENTORY_CATEGORIES}>
+                    {/* <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <Categories />
                     </Route>
 
@@ -58,10 +64,10 @@ export const Inventory = (): JSX.Element => {
 
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBrackets />
-                    </Route>
+                    </Route> */}
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>
-                        <Products />
+                        <ProductsHistory />
                     </Route>
                 </Switch>
             </div>

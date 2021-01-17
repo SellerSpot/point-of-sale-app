@@ -37,7 +37,6 @@ const [user, setUser] = useState<User | null>(null);
 
 7. Install vscode extension css modules for modular css intellisense support https://github.com/clinyong/vscode-css-modules
 
-
 ---
 
 ## Techstack

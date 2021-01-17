@@ -1,22 +1,58 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
+import { IGetBrand } from 'typings/components/brand.types';
+import { IGetCategory } from 'typings/components/category.types';
+import { IGetProductFromServer } from 'typings/components/product.types';
+import { IGetTaxBracket } from 'typings/components/taxBracket.types';
 import { RootState } from '../store';
 
+type TSliderAutofill = IGetProductFromServer | IGetCategory | IGetBrand | IGetTaxBracket;
+
 export interface SliderModalInitialState {
-    newSaleSlider: boolean;
-    addProductSlider: boolean;
-    addCategorySlider: boolean;
-    addBrandSlider: boolean;
-    addTaxBracketSlider: boolean;
-    checkoutSlider: boolean;
+    newSaleSlider: {
+        show: boolean;
+        autoFillData?: null;
+    };
+    addProductSlider: {
+        show: boolean;
+        autoFillData?: IGetProductFromServer;
+    };
+    addCategorySlider: {
+        show: boolean;
+        autoFillData?: IGetCategory;
+    };
+    addBrandSlider: {
+        show: boolean;
+        autoFillData?: IGetBrand;
+    };
+    addTaxBracketSlider: {
+        show: boolean;
+        autoFillData?: IGetTaxBracket;
+    };
+    checkoutSlider: {
+        show: boolean;
+        autoFillData?: null;
+    };
 }
 
 const initialState: SliderModalInitialState = {
-    newSaleSlider: false,
-    addProductSlider: false,
-    addCategorySlider: false,
-    addBrandSlider: false,
-    addTaxBracketSlider: false,
-    checkoutSlider: false,
+    newSaleSlider: {
+        show: false,
+    },
+    addProductSlider: {
+        show: false,
+    },
+    addCategorySlider: {
+        show: false,
+    },
+    addBrandSlider: {
+        show: false,
+    },
+    addTaxBracketSlider: {
+        show: false,
+    },
+    checkoutSlider: {
+        show: false,
+    },
 };
 
 const sliderModalSlice = createSlice({
@@ -27,20 +63,25 @@ const sliderModalSlice = createSlice({
             state,
             {
                 payload,
-            }: PayloadAction<{ sliderName: keyof SliderModalInitialState; active: boolean }>,
+            }: PayloadAction<{
+                sliderName: keyof SliderModalInitialState;
+                active: boolean;
+                autoFillData?: TSliderAutofill;
+            }>,
         ) => {
-            state[payload.sliderName] = payload.active;
+            state[payload.sliderName].show = payload.active;
+            state[payload.sliderName].autoFillData = payload.autoFillData;
         },
     },
 });
 
-// exporting reducer
+// Exporting reducer
 export default sliderModalSlice.reducer;
 
-// exporting actions
+// Exporting actions
 export const { toggleSliderModal } = sliderModalSlice.actions;
 
-// exporting selector - useful when using it in components to select particular state from global store
+// Exporting selector - useful when using it in components to select particular state from global store
 export const sliderModalSelector: Selector<RootState, SliderModalInitialState> = (
     state: RootState,
 ) => state.sliderModal;

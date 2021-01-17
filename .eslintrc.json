@@ -1,12 +1,6 @@
 {
     "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "react-hooks",
-        "eslint-plugin-import",
-        "prettier"
-    ],
+    "plugins": ["@typescript-eslint", "react", "react-hooks", "eslint-plugin-import", "prettier"],
     "env": {
         "browser": true
     },
@@ -16,9 +10,7 @@
         "plugin:prettier/recommended"
     ],
     "parserOptions": {
-        "project": [
-            "tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "ecmaVersion": 2020,
         "sourceType": "module",
         "ecmaFeatures": {
@@ -31,15 +23,18 @@
         "react/jsx-filename-extension": [
             "warn",
             {
-                "extensions": [
-                    ".jsx",
-                    ".tsx"
-                ]
+                "extensions": [".jsx", ".tsx"]
             }
         ],
         "react/prop-types": "off",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"
+        "react-hooks/exhaustive-deps": "off",
+        "default-case": "warn",
+        "require-await": "warn",
+        "prefer-const": "warn",
+        "prefer-template": "warn",
+        "no-var": "warn",
+        "camelcase": "warn"
     },
     "settings": {
         "react": {
