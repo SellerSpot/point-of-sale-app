@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
 import { IGetBrand } from 'typings/components/brand.types';
-import { IGetCategory } from 'typings/components/category.types';
+import { IGetCategoryFromServer } from 'typings/components/category.types';
 import { IGetProductFromServer } from 'typings/components/product.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
 import { RootState } from '../store';
 
-type TSliderAutofill = IGetProductFromServer | IGetCategory | IGetBrand | IGetTaxBracket;
+type TSliderAutofill = IGetProductFromServer | IGetCategoryFromServer | IGetBrand | IGetTaxBracket;
 
 export interface SliderModalInitialState {
     newSaleSlider: {
@@ -18,7 +18,7 @@ export interface SliderModalInitialState {
     };
     addCategorySlider: {
         show: boolean;
-        autoFillData?: IGetCategory;
+        autoFillData?: IGetCategoryFromServer;
     };
     addBrandSlider: {
         show: boolean;

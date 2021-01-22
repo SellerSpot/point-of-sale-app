@@ -6,6 +6,7 @@ import lodash from 'lodash';
 import { getInventoryStyles } from './inventory.styles';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 import { cssColors } from 'config/cssVariables';
+import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -54,11 +55,11 @@ export const Inventory = (): JSX.Element => {
 
             <div className={styles.overallPageWrapper}>
                 <Switch>
-                    {/* <Route path={ROUTES.INVENTORY_CATEGORIES}>
-                        <Categories />
+                    <Route path={ROUTES.INVENTORY_CATEGORIES}>
+                        <CategoriesHistory />
                     </Route>
 
-                    <Route path={ROUTES.INVENTORY_BRANDS}>
+                    {/* <Route path={ROUTES.INVENTORY_BRANDS}>
                         <Brands />
                     </Route>
 

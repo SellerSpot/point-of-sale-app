@@ -1,6 +1,6 @@
 import requests from 'requests/requests';
 import { IGetBrand } from 'typings/components/brand.types';
-import { IGetCategory } from 'typings/components/category.types';
+import { IGetCategoryFromServer } from 'typings/components/category.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
 import {
@@ -18,7 +18,7 @@ import { introduceDelay } from 'utils/utils';
 export const fetchAddProductDropDownData = async (
     setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValuesData>>,
     setDropDownInitialValues: (
-        category: IGetCategory,
+        category: IGetCategoryFromServer,
         brand: IGetBrand,
         stockUnit: IGetStockUnit,
     ) => void,

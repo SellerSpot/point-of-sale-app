@@ -16,7 +16,7 @@ import { showNotify } from 'store/models/notify';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { IGetBrand } from 'typings/components/brand.types';
-import { IGetCategory } from 'typings/components/category.types';
+import { IGetCategoryFromServer } from 'typings/components/category.types';
 import {
     addProductFormSchema,
     IAddProductDropDownValuesData,
@@ -96,7 +96,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
             // fetching all dropDown data
             await fetchAddProductDropDownData(
                 setMultiOptionValues,
-                (category: IGetCategory, brand: IGetBrand, stockUnit: IGetStockUnit) => {
+                (category: IGetCategoryFromServer, brand: IGetBrand, stockUnit: IGetStockUnit) => {
                     formFormik.setFieldValue('category', category);
                     formFormik.setFieldValue('brand', brand);
                     formFormik.setFieldValue('stockUnit', stockUnit);
