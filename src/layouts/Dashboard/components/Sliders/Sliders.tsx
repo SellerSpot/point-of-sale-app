@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { SliderModal } from '@sellerspot/universal-components';
 import { useSelector } from 'react-redux';
 import {
@@ -35,21 +35,26 @@ const Sliders = (): ReactElement => {
         addTaxBracketSlider,
     } = useSelector(sliderModalSelector);
 
+    // state used to track the callbacks from the sliderModal
+    const callBackStateTrack = useState(false);
+
     return (
         <>
             <SliderModal
                 active={newSaleSlider.show}
                 sliderSize={'100%'}
-                onClickBackdrop={() => handleSliderClose('newSaleSlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <NewSale />
             </SliderModal>
             <SliderModal
                 active={addProductSlider.show}
                 sliderSize={'50%'}
-                onClickBackdrop={() => handleSliderClose('addProductSlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
-                <AddProduct />
+                <AddProduct callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             {/* <SliderModal
                 active={addBrandSlider.show}

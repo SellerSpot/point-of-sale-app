@@ -13,6 +13,7 @@ import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, handleTableRowClick } from './productsHistory.actions';
 import { showNotify } from 'store/models/notify';
 import { store } from 'store/store';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
 
 export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -36,7 +37,7 @@ export const ProductsHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addProduct'}
-                        label="Add Product (F4)"
+                        label={`Add Product (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
                         style={{
                             color: cssColors['--inventory-color'],
                             backgroundColor: cssColors['--primary-background-color'],

@@ -6,26 +6,25 @@ import {
     HorizontalRule,
     InputField,
 } from '@sellerspot/universal-components';
-import { ICONS } from 'config/icons';
+import { cssColors } from 'config/cssVariables';
 import { useFormik } from 'formik';
-import { handleSliderClose } from 'layouts/Dashboard/components/Sliders/Sliders';
 import lodash from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { getAddProductStyles } from './addProduct.styles';
-import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
+import { createProduct } from 'requests/product';
+import { showNotify } from 'store/models/notify';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { RootState, store } from 'store/store';
+import { IGetBrand } from 'typings/components/brand.types';
+import { IGetCategory } from 'typings/components/category.types';
 import {
     addProductFormSchema,
     IAddProductDropDownValuesData,
     IAddProductFormSchema,
 } from 'typings/components/product.types';
-import { cssColors } from 'config/cssVariables';
-import { IGetCategory } from 'typings/components/category.types';
-import { IGetBrand } from 'typings/components/brand.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
-import { showNotify } from 'store/models/notify';
-import { createProduct } from 'requests/product';
+import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
+import styles from './addProduct.module.css';
 
 const formInitialValues: IAddProductFormSchema = {
     name: '',
@@ -41,8 +40,11 @@ const formInitialValues: IAddProductFormSchema = {
     taxBracket: [],
 };
 
-export const AddProduct = (): JSX.Element => {
-    const styles = getAddProductStyles();
+export interface IAddProductProps {
+    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+export const AddProduct = (props: IAddProductProps): JSX.Element => {
     const [multiOptionValues, setMultiOptionValues] = useState<IAddProductDropDownValuesData>({
         categories: [],
         brands: [],
@@ -71,6 +73,24 @@ export const AddProduct = (): JSX.Element => {
         },
     });
 
+    // used to handle the closing of the sliderModal
+    const handleCloseSlider = () => {
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'addProductSlider',
+                active: false,
+                autoFillData: null,
+            }),
+        );
+        props.callBackStateTrack[1](false);
+    };
+
+    useEffect(() => {
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0]]);
+
     useEffect(() => {
         (async () => {
             // fetching all dropDown data
@@ -87,14 +107,6 @@ export const AddProduct = (): JSX.Element => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
-            <div className={styles.pageHeader}>
-                <div
-                    className={styles.pageHeaderBackIcon}
-                    onClick={() => handleSliderClose('addProductSlider')}
-                >
-                    <ICONS.leftCaretBack size={'35px'} />
-                </div>
-            </div>
             <div className={styles.pageTitleBar}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>

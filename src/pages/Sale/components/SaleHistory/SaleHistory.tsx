@@ -9,6 +9,7 @@ import { compileSaleTableBodyData, getSaleHistoryData } from './saleHistory.acti
 import { IGetSale } from 'typings/components/sale.types';
 import service from 'services/services';
 import { getSaleHistoryStyles } from './saleHistory.styles';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
 
 export const SaleHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -31,7 +32,7 @@ export const SaleHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'newSaleBtn'}
-                        label={`New Sale (${service.KeyCodeService.getKeyCodes('NEWSALE')})`}
+                        label={`New Sale (${GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE})`}
                         style={{
                             backgroundColor: 'transparent',
                             color: cssColors['--sales-color'],
