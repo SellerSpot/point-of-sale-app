@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
-import { getDashboardStyles } from './dashboard.styles';
 import { Inventory } from 'pages/Inventory/Inventory';
 import styles from './dashboard.module.css';
 
