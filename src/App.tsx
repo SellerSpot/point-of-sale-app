@@ -6,8 +6,35 @@ import './styles/core.css';
 import { notifySelector } from 'store/models/notify';
 import { useSelector } from 'react-redux';
 import { Notify } from '@sellerspot/universal-components';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { store } from 'store/store';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { getGlobalKeyBoardShortcuts } from 'utils/keyboardShortcuts';
 
 export const App = (): ReactElement => {
+    // setting keyboard listeners
+    useHotkeys(getGlobalKeyBoardShortcuts(), (event) => {
+        event.preventDefault();
+        if (event.code === 'F1') {
+            event.preventDefault();
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'newSaleSlider',
+                    active: true,
+                    autoFillData: null,
+                }),
+            );
+        } else if (event.code === 'KeyP' && event.altKey) {
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addProductSlider',
+                    active: true,
+                    autoFillData: null,
+                }),
+            );
+        }
+    });
+
     // Getting Notify selector
     const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
 

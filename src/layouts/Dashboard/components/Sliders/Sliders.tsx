@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { SliderModal } from '@sellerspot/universal-components';
 import { useSelector } from 'react-redux';
 import {
@@ -9,21 +9,7 @@ import {
 import { store } from 'store/store';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
-
-// Used to close the sliderModals
-export const handleSliderClose = (sliderModalToClose: keyof SliderModalInitialState): void => {
-    switch (sliderModalToClose) {
-        default:
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: sliderModalToClose,
-                    active: false,
-                    autoFillData: null,
-                }),
-            );
-            break;
-    }
-};
+import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 
 const Sliders = (): ReactElement => {
     const {
@@ -35,21 +21,26 @@ const Sliders = (): ReactElement => {
         addTaxBracketSlider,
     } = useSelector(sliderModalSelector);
 
+    // state used to track the callbacks from the sliderModal
+    const callBackStateTrack = useState(false);
+
     return (
         <>
             <SliderModal
                 active={newSaleSlider.show}
                 sliderSize={'100%'}
-                onClickBackdrop={() => handleSliderClose('newSaleSlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <NewSale />
             </SliderModal>
             <SliderModal
                 active={addProductSlider.show}
                 sliderSize={'50%'}
-                onClickBackdrop={() => handleSliderClose('addProductSlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
-                <AddProduct />
+                <AddProduct callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             {/* <SliderModal
                 active={addBrandSlider.show}
@@ -57,24 +48,25 @@ const Sliders = (): ReactElement => {
                 onClickBackdrop={() => handleSliderClose('addBrandSlider')}
             >
                 <AddBrand />
-            </SliderModal>
-            
+            </SliderModal> */}
+
             <SliderModal
                 active={addCategorySlider.show}
                 sliderSize={'30%'}
-                onClickBackdrop={() => handleSliderClose('addCategorySlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
-                <AddCategory />
+                <AddCategory callBackStateTrack={callBackStateTrack} />
             </SliderModal>
-            <SliderModal
+            {/* <SliderModal
                 active={addTaxBracketSlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addTaxBracketSlider')}
             >
                 <AddTaxBracket />
-            </SliderModal>
-            
-            <SliderModal
+            </SliderModal> */}
+
+            {/* <SliderModal
                 active={checkoutSlider.show}
                 sliderSize={'80%'}
                 onClickBackdrop={() => handleSliderClose('checkoutSlider')}

@@ -1,5 +1,5 @@
 import { IGetBrand } from './brand.types';
-import { IGetCategory } from './category.types';
+import { IGetCategoryFromServer } from './category.types';
 import { IGetStockUnit } from './stockUnit.types';
 import { IGetTaxBracket } from './taxBracket.types';
 import * as Yup from 'yup';
@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 export interface IGetProductFromServer {
     _id: string;
     name: string;
-    category: IGetCategory;
+    category: IGetCategoryFromServer;
     brand: IGetBrand;
     gtinNumber: string;
     mrpPrice: number;
@@ -80,7 +80,7 @@ export const addProductFormSchema = Yup.object().shape({
 export interface IAddProductFormSchema {
     name: string;
     gtinNumber: string;
-    category: IGetCategory;
+    category: IGetCategoryFromServer;
     brand: IGetBrand;
     landingPrice: number;
     profitPercent: number;
@@ -95,7 +95,7 @@ export interface IAddProductFormSchema {
  * Interface for the AddProduct page state object containing all the values for the dropdown fields fetched from the server
  */
 export interface IAddProductDropDownValuesData {
-    categories?: IGetCategory[];
+    categories?: IGetCategoryFromServer[];
     brands?: IGetBrand[];
     stockUnits?: IGetStockUnit[];
     taxBrackets?: IGetTaxBracket[];

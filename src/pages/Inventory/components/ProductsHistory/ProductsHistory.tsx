@@ -1,30 +1,29 @@
+import { css } from '@emotion/css';
+import { Button, Table } from '@sellerspot/universal-components';
+import { MetaCard } from 'components/MetaCard/MetaCard';
 import { cssColors } from 'config/cssVariables';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from '@sellerspot/universal-components';
-import { MetaCard } from 'components/MetaCard/MetaCard';
-import { Table } from '@sellerspot/universal-components';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import lodash from 'lodash';
-import { css } from '@emotion/css';
-import { IGetProductFromServer } from 'typings/components/product.types';
-import { getProductsHistoryStyles } from './productsHistory.styles';
 import { getProducts } from 'requests/product';
-import { compileProductsTableBodyData, handleTableRowClick } from './productsHistory.actions';
-import { showNotify } from 'store/models/notify';
-import { store } from 'store/store';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { IGetProductFromServer } from 'typings/components/product.types';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import {
+    compileProductsTableBodyData,
+    handleProductsHistoryTableRowClick,
+} from './productsHistory.actions';
+import styles from './productsHistory.module.css';
 
 export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const styles = getProductsHistoryStyles();
-    const [productsData, setproductsData] = useState<IGetProductFromServer[]>(null);
+    const [productsData, setProductsData] = useState<IGetProductFromServer[]>(null);
 
     useEffect(() => {
         (async () => {
             // To populate the table
             const productsData = await getProducts();
-            setproductsData(productsData.data as IGetProductFromServer[]);
+            setProductsData(productsData.data as IGetProductFromServer[]);
         }).call(null);
     }, []);
 
@@ -36,7 +35,7 @@ export const ProductsHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addProduct'}
-                        label="Add Product (F4)"
+                        label={`Add Product (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
                         style={{
                             color: cssColors['--inventory-color'],
                             backgroundColor: cssColors['--primary-background-color'],
@@ -72,7 +71,7 @@ export const ProductsHistory = (): JSX.Element => {
                     }}
                     onClick={{
                         rowClick: (index: number) => {
-                            handleTableRowClick(productsData[index]);
+                            handleProductsHistoryTableRowClick(productsData[index]);
                         },
                     }}
                 />

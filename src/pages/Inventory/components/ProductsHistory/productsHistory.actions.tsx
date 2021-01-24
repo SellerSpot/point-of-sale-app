@@ -33,7 +33,7 @@ export const compileProductsTableBodyData = (
 };
 
 // To show Slider when the tableRow is shown
-export const handleTableRowClick = (product: IGetProductFromServer): void => {
+export const handleProductsHistoryTableRowClick = (product: IGetProductFromServer): void => {
     store.dispatch(
         toggleSliderModal({ sliderName: 'addProductSlider', active: true, autoFillData: product }),
     );

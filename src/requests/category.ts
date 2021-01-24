@@ -1,11 +1,11 @@
 import { API_ROUTES } from 'config/apiRoutes';
 import services from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
-import { IGetCategory } from 'typings/components/category.types';
+import { IGetCategoryFromServer } from 'typings/components/category.types';
 
 interface ICategoryApiResponse {
     status: boolean;
-    data?: IGetCategory[];
+    data?: IGetCategoryFromServer[];
     error?: IApiServiceErrorResponse[];
 }
 
@@ -16,7 +16,7 @@ export const getCategories = async (): Promise<ICategoryApiResponse> => {
     if (response.status) {
         return {
             status: true,
-            data: response.data as IGetCategory[],
+            data: response.data as IGetCategoryFromServer[],
         };
     } else {
         return {
