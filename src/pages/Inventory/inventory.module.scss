@@ -1,5 +1,3 @@
-@use '../../styles/colors.module' as colors;
-
 .inventoryWrapper {
     width: 100%;
     height: 100%;
@@ -10,7 +8,7 @@
 .tabBarWrapper {
     width: 100%;
     height: 100%;
-    box-shadow: 0 0 3px 0 colors.$overlay-color;
+    box-shadow: 0 0 3px 0 $overlay-color;
     position: relative;
     z-index: 1;
 }

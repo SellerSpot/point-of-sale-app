@@ -6,7 +6,7 @@ import lodash from 'lodash';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 import { cssColors } from 'config/cssVariables';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
-import styles from './inventory.module.css';
+import styles from './inventory.module.scss';
 import { BrandsHistory } from './components/BrandHistory/BrandHistory';
 import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
 
