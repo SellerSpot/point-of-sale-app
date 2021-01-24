@@ -60,7 +60,7 @@ const Sliders = (): ReactElement => {
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addTaxBracketSlider')}
             >
-                <AddTaxBracket />
+                <AddTax-Bracket />
             </SliderModal> */}
 
             {/* <SliderModal

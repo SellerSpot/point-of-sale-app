@@ -4,38 +4,38 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import { cssColors } from 'config/cssVariables';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getBrands } from 'requests/brand';
+import { getTaxBrackets } from 'requests/taxBracket';
 import { toggleSliderModal } from 'store/models/sliderModal';
-import { IGetBrandFromServer } from 'typings/components/brand.types';
+import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
 import {
-    compileBrandsTableBodyData,
-    handleBrandsHistoryTableRowClick,
-} from './brandHistory.actions';
-import styles from './brandHistory.module.css';
+    compileTaxBracketsTableBodyData,
+    handleTaxBracketsHistoryTableRowClick,
+} from './taxBracketsHistory.actions';
+import styles from './taxBracketsHistory.module.css';
 
-export const BrandsHistory = (): JSX.Element => {
+export const TaxBracketsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [brandData, setBrandsData] = useState<IGetBrandFromServer[]>(null);
+    const [taxBracketsData, setTaxBracketsData] = useState<IGetTaxBracketFromServer[]>(null);
 
     useEffect(() => {
         (async () => {
             // To populate the table
-            const brandData = await getBrands();
-            setBrandsData(brandData.data as IGetBrandFromServer[]);
+            const taxBracketsData = await getTaxBrackets();
+            setTaxBracketsData(taxBracketsData.data as IGetTaxBracketFromServer[]);
         }).call(null);
     }, []);
 
     return (
-        <div className={styles.brandWrapper}>
+        <div className={styles.taxBracketsWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addBrand'}
-                        label={`Add Brand (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND})`}
+                        key={'addTaxBracket'}
+                        label={`Add Tax-Bracket (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET})`}
                         style={{
                             color: cssColors['--inventory-color'],
                             backgroundColor: cssColors['--primary-background-color'],
@@ -44,7 +44,7 @@ export const BrandsHistory = (): JSX.Element => {
                         onClick={() =>
                             dispatch(
                                 toggleSliderModal({
-                                    sliderName: 'addBrandSlider',
+                                    sliderName: 'addTaxBracketSlider',
                                     active: true,
                                 }),
                             )
@@ -56,9 +56,10 @@ export const BrandsHistory = (): JSX.Element => {
                 <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Brand Name'}>{'Brand Name'}</p>,
+                        <p key={'taxBracketName'}>{'Tax-Bracket Name'}</p>,
+                        <p key={'taxBracketPercent'}>{'Tax-Bracket Percent'}</p>,
                     ]}
-                    rowData={compileBrandsTableBodyData(brandData)}
+                    rowData={compileTaxBracketsTableBodyData(taxBracketsData)}
                     className={{
                         bodyRow: css`
                             :hover {
@@ -69,7 +70,7 @@ export const BrandsHistory = (): JSX.Element => {
                     }}
                     onClick={{
                         rowClick: (index: number) => {
-                            handleBrandsHistoryTableRowClick(brandData[index]);
+                            handleTaxBracketsHistoryTableRowClick(taxBracketsData[index]);
                         },
                     }}
                 />

@@ -1,11 +1,11 @@
 import { API_ROUTES } from 'config/apiRoutes';
 import services from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
-import { IGetTaxBracket } from 'typings/components/taxBracket.types';
+import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
 
 interface ITaxBracketApiResponse {
     status: boolean;
-    data?: IGetTaxBracket[];
+    data?: IGetTaxBracketFromServer[];
     error?: IApiServiceErrorResponse[];
 }
 
@@ -16,7 +16,7 @@ export const getTaxBrackets = async (): Promise<ITaxBracketApiResponse> => {
     if (response.status) {
         return {
             status: true,
-            data: response.data as IGetTaxBracket[],
+            data: response.data as IGetTaxBracketFromServer[],
         };
     } else {
         return {

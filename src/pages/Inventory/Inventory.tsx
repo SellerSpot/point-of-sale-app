@@ -8,6 +8,7 @@ import { cssColors } from 'config/cssVariables';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 import styles from './inventory.module.css';
 import { BrandsHistory } from './components/BrandHistory/BrandHistory';
+import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -62,9 +63,9 @@ export const Inventory = (): JSX.Element => {
                         <BrandsHistory />
                     </Route>
 
-                    {/* <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
-                        <TaxBrackets />
-                    </Route> */}
+                    <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
+                        <TaxBracketsHistory />
+                    </Route>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>
                         <ProductsHistory />
