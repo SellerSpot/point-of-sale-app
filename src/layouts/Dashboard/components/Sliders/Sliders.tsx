@@ -9,21 +9,7 @@ import {
 import { store } from 'store/store';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
-
-// Used to close the sliderModals
-export const handleSliderClose = (sliderModalToClose: keyof SliderModalInitialState): void => {
-    switch (sliderModalToClose) {
-        default:
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: sliderModalToClose,
-                    active: false,
-                    autoFillData: null,
-                }),
-            );
-            break;
-    }
-};
+import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 
 const Sliders = (): ReactElement => {
     const {
@@ -62,24 +48,25 @@ const Sliders = (): ReactElement => {
                 onClickBackdrop={() => handleSliderClose('addBrandSlider')}
             >
                 <AddBrand />
-            </SliderModal>
-            
+            </SliderModal> */}
+
             <SliderModal
                 active={addCategorySlider.show}
                 sliderSize={'30%'}
-                onClickBackdrop={() => handleSliderClose('addCategorySlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
-                <AddCategory />
+                <AddCategory callBackStateTrack={callBackStateTrack} />
             </SliderModal>
-            <SliderModal
+            {/* <SliderModal
                 active={addTaxBracketSlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => handleSliderClose('addTaxBracketSlider')}
             >
                 <AddTaxBracket />
-            </SliderModal>
-            
-            <SliderModal
+            </SliderModal> */}
+
+            {/* <SliderModal
                 active={checkoutSlider.show}
                 sliderSize={'80%'}
                 onClickBackdrop={() => handleSliderClose('checkoutSlider')}

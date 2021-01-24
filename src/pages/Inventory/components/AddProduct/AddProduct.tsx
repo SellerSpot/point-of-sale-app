@@ -40,6 +40,10 @@ const formInitialValues: IAddProductFormSchema = {
     taxBracket: [],
 };
 
+/**
+ * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
+ * Callbacks operating the props state - onEscClick & onBackdropClick
+ */
 export interface IAddProductProps {
     callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
@@ -51,6 +55,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         stockUnits: [],
         taxBrackets: [],
     });
+    // getting sliderState to listen to when the slider is invoked
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     const formFormik = useFormik({
