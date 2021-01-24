@@ -1,0 +1,29 @@
+/* Values */
+/* font-sizes */
+$font-size-extra-large: 36px;
+$font-size-master: 26px;
+$font-size-master-sub: 24px;
+$font-size-header: 20px;
+$font-size-small-heading: 18px;
+$font-size-default: 16px;
+$font-size-secondary: 14px;
+$font-size-tertiary: 12px;
+
+/* values */
+$border-radius: 0.2rem;
+$rounded-border-radius: 50px;
+$transition-duration: 0.3s;
+$input-field-height: 40px;
+$small-input-field-height: 20px;
+$shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
+
+/* z-index values */
+$z-index-notify: 10;
+$z-index-confirm-dialog: 6;
+$z-index-slider-modal: 5;
+$z-index-tab-bar: 4;
+$z-index-dropdown: 3;
+$z-index-table-header: 2;
+
+/* debounce timming */
+$input-debounce-delay: 300;

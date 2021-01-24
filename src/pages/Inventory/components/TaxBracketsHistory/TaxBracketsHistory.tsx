@@ -28,7 +28,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
     }, []);
 
     return (
-        <div className={styles.taxBracketsWrapper}>
+        <div className={styles.taxBracketWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}

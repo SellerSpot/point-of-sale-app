@@ -39,7 +39,7 @@ const webpackConfiguration = (env: {
                     ],
                 },
                 {
-                    test: /\.(css|scss)$/,
+                    test: /\.(css|s[ac]ss)$/i,
                     use: [
                         'style-loader',
                         {
@@ -51,13 +51,22 @@ const webpackConfiguration = (env: {
                                 },
                             },
                         },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                importLoaders: 1,
+                                modules: {
+                                    localIdentName: '[name]__[local]___[hash:base64:5]',
+                                },
+                            },
+                        },
                     ],
-                    include: /\.module\.css$/,
+                    include: /\.module\.(css|s[ac]ss)$/i,
                 },
                 {
-                    test: /\.(css|scss)$/,
-                    use: ['style-loader', 'css-loader'],
-                    exclude: /\.module\.css$/,
+                    test: /\.(css|s[ac]ss)$/i,
+                    use: ['style-loader', 'css-loader', 'sass-loader'],
+                    exclude: /\.module\.(css|s[ac]ss)$/i,
                 },
             ],
         },

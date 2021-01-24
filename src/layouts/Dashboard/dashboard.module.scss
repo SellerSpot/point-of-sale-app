@@ -1,10 +1,12 @@
+@use '../../styles/colors.module.scss' as colors;
+
 .dashboardWrapper {
     display: grid;
     overflow-x: hidden;
     overflow-y: hidden;
     justify-content: center;
     height: 100vh;
-    background-color: var('--secondary-background-color');
+    background-color: colors.$secondary-background-color;
 
     grid-template-columns: 240px 1fr;
 }
