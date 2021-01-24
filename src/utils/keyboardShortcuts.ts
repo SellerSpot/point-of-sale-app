@@ -8,16 +8,3 @@ export const GLOBAL_KEYBOARD_SHORTCUTS = {
     ADD_BRAND: 'ALT+B',
     ADD_TAXBRACKET: 'ALT+T',
 };
-
-/**
- * Combines all the global keyboard shortcuts to produce a single string to use in useHotkeys
- */
-export const getGlobalKeyBoardShortcuts = (): string => {
-    let globalShortcuts = '';
-    for (const shortcut in GLOBAL_KEYBOARD_SHORTCUTS) {
-        globalShortcuts += `${
-            GLOBAL_KEYBOARD_SHORTCUTS[shortcut as keyof typeof GLOBAL_KEYBOARD_SHORTCUTS]
-        },`;
-    }
-    return globalShortcuts;
-};

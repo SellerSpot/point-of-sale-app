@@ -1,5 +1,5 @@
 import requests from 'requests/requests';
-import { IGetBrand } from 'typings/components/brand.types';
+import { IGetBrandFromServer } from 'typings/components/brand.types';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
 import { IGetTaxBracket } from 'typings/components/taxBracket.types';
@@ -19,7 +19,7 @@ export const fetchAddProductDropDownData = async (
     setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValuesData>>,
     setDropDownInitialValues: (
         category: IGetCategoryFromServer,
-        brand: IGetBrand,
+        brand: IGetBrandFromServer,
         stockUnit: IGetStockUnit,
     ) => void,
 ): Promise<void> => {

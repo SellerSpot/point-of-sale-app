@@ -10,12 +10,13 @@ import { cssColors } from 'config/cssVariables';
 import { useFormik } from 'formik';
 import lodash from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { createProduct } from 'requests/product';
 import { showNotify } from 'store/models/notify';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { IGetBrand } from 'typings/components/brand.types';
+import { IGetBrandFromServer } from 'typings/components/brand.types';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
 import {
     addProductFormSchema,
@@ -23,6 +24,7 @@ import {
     IAddProductFormSchema,
 } from 'typings/components/product.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
 import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
 import styles from './addProduct.module.css';
 
@@ -57,6 +59,17 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     });
     // getting sliderState to listen to when the slider is invoked
     const sliderState = useSelector((state: RootState) => state.sliderModal);
+
+    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT, (event) => {
+        event.preventDefault();
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'addProductSlider',
+                active: true,
+                autoFillData: null,
+            }),
+        );
+    });
 
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -101,7 +114,11 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
             // fetching all dropDown data
             await fetchAddProductDropDownData(
                 setMultiOptionValues,
-                (category: IGetCategoryFromServer, brand: IGetBrand, stockUnit: IGetStockUnit) => {
+                (
+                    category: IGetCategoryFromServer,
+                    brand: IGetBrandFromServer,
+                    stockUnit: IGetStockUnit,
+                ) => {
                     formFormik.setFieldValue('category', category);
                     formFormik.setFieldValue('brand', brand);
                     formFormik.setFieldValue('stockUnit', stockUnit);

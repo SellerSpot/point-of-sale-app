@@ -3,10 +3,12 @@ import { cssColors } from 'config/cssVariables';
 import { useFormik } from 'formik';
 import lodash from 'lodash';
 import React, { useEffect } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { AddCategoryFormSchema, IAddCategoryFormSchema } from 'typings/components/category.types';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
 import styles from './addCategory.module.css';
 
 // holds the initial values for the form
@@ -39,6 +41,16 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
             handleCloseSlider();
         }
     }, [props.callBackStateTrack[0]]);
+
+    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY, () => {
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'addCategorySlider',
+                active: true,
+                autoFillData: null,
+            }),
+        );
+    });
 
     // getting sliderState to listen to when the slider is invoked
     const sliderState = useSelector((state: RootState) => state.sliderModal);

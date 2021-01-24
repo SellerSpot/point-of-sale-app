@@ -1,4 +1,4 @@
-import { IGetBrand } from './brand.types';
+import { IGetBrandFromServer } from './brand.types';
 import { IGetCategoryFromServer } from './category.types';
 import { IGetStockUnit } from './stockUnit.types';
 import { IGetTaxBracket } from './taxBracket.types';
@@ -11,7 +11,7 @@ export interface IGetProductFromServer {
     _id: string;
     name: string;
     category: IGetCategoryFromServer;
-    brand: IGetBrand;
+    brand: IGetBrandFromServer;
     gtinNumber: string;
     mrpPrice: number;
     landingPrice: number;
@@ -81,7 +81,7 @@ export interface IAddProductFormSchema {
     name: string;
     gtinNumber: string;
     category: IGetCategoryFromServer;
-    brand: IGetBrand;
+    brand: IGetBrandFromServer;
     landingPrice: number;
     profitPercent: number;
     sellingPrice: number;
@@ -96,7 +96,7 @@ export interface IAddProductFormSchema {
  */
 export interface IAddProductDropDownValuesData {
     categories?: IGetCategoryFromServer[];
-    brands?: IGetBrand[];
+    brands?: IGetBrandFromServer[];
     stockUnits?: IGetStockUnit[];
     taxBrackets?: IGetTaxBracket[];
 }
