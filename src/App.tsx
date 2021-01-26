@@ -1,36 +1,51 @@
-import { Notify } from '@sellerspot/universal-components';
+import { Notify, Spinner } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { coreSelector } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
-import './styles/core.css';
+import './styles/core.scss';
+import commonStyles from 'styles/common.module.scss';
+import styles from 'styles/app.module.scss';
 
 export const App = (): ReactElement => {
     // Getting Notify selector
+    const coreState = useSelector(coreSelector);
     const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
+    useEffect(() => {
+        // do tenant authorization and release isLoading if valid
+    }, []);
 
     return (
-        <div>
-            <Switch>
-                {/* All other routes should be nested above this route because it is '/' route hence should be placed atlast */}
-                <Route path={ROUTES.DASHBOARD}>
-                    <Dashboard />
-                </Route>
-            </Switch>
-            {/* All globally available components (via store) should be nested below  */}
-            <Notify
-                notifyId={notifyId}
-                content={content}
-                timeout={timeout}
-                className={{
-                    notifyWrapper: className?.notifyWrapper,
-                }}
-                style={{
-                    notifyWrapper: style,
-                }}
-            />
+        <div className={styles.appWrapper}>
+            {coreState.isLoading ? (
+                <div className={commonStyles.flexCenter}>
+                    <Spinner size="large" />
+                </div>
+            ) : (
+                <>
+                    <Switch>
+                        {/* All other routes should be nested above this route because it is '/' route hence should be placed atlast */}
+                        <Route path={ROUTES.DASHBOARD}>
+                            <Dashboard />
+                        </Route>
+                    </Switch>
+                    {/* All globally available components (via store) should be nested below  */}
+                    <Notify
+                        notifyId={notifyId}
+                        content={content}
+                        timeout={timeout}
+                        className={{
+                            notifyWrapper: className?.notifyWrapper,
+                        }}
+                        style={{
+                            notifyWrapper: style,
+                        }}
+                    />
+                </>
+            )}
         </div>
     );
 };

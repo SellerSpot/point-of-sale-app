@@ -4,5 +4,5 @@
  */
 
 import path from 'path';
-const resources = ['colors.scss'];
+const resources = ['_colors.scss', '_variables.scss', '_mixins.scss'];
 module.exports = resources.map((file) => path.resolve(__dirname, file));

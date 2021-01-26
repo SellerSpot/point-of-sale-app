@@ -57,7 +57,10 @@ const webpackConfiguration = (env: {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: require(path.join(process.cwd(), 'src/styles/index.ts')),
+                                resources: require(path.join(
+                                    process.cwd(),
+                                    'src/styles/__library.ts',
+                                )),
                             },
                         },
                     ],
@@ -72,7 +75,10 @@ const webpackConfiguration = (env: {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: require(path.join(process.cwd(), 'src/styles/index.ts')),
+                                resources: require(path.join(
+                                    process.cwd(),
+                                    'src/styles/__library.ts',
+                                )),
                             },
                         },
                     ],
