@@ -3,10 +3,12 @@ import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
-import { getInventoryStyles } from './inventory.styles';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 import { cssColors } from 'config/cssVariables';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
+import styles from './inventory.module.scss';
+import { BrandsHistory } from './components/BrandHistory/BrandHistory';
+import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -36,8 +38,6 @@ export const Inventory = (): JSX.Element => {
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
 
-    const styles = getInventoryStyles();
-
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
@@ -59,13 +59,13 @@ export const Inventory = (): JSX.Element => {
                         <CategoriesHistory />
                     </Route>
 
-                    {/* <Route path={ROUTES.INVENTORY_BRANDS}>
-                        <Brands />
+                    <Route path={ROUTES.INVENTORY_BRANDS}>
+                        <BrandsHistory />
                     </Route>
 
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
-                        <TaxBrackets />
-                    </Route> */}
+                        <TaxBracketsHistory />
+                    </Route>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>
                         <ProductsHistory />

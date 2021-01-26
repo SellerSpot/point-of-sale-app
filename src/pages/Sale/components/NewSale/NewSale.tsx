@@ -10,6 +10,9 @@ import { IGetProductFromServer } from 'typings/components/product.types';
 import { ISaleCartItem } from 'typings/components/sale.types';
 import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, getCartItems } from './newSale.actions';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { store } from 'store/store';
 
 export const NewSale = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -23,6 +26,17 @@ export const NewSale = (): JSX.Element => {
             setproductsData(productsData.data as IGetProductFromServer[]);
         }).call(null);
     }, []);
+
+    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
+        event.preventDefault();
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'newSaleSlider',
+                active: true,
+                autoFillData: null,
+            }),
+        );
+    });
 
     return (
         <div className={styles.newSaleWrapper}>

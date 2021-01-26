@@ -7,28 +7,32 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { AddCategoryFormSchema, IAddCategoryFormSchema } from 'typings/components/category.types';
+import {
+    AddTaxBracketFormSchema,
+    IAddTaxBracketFormSchema,
+} from 'typings/components/taxBracket.types';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
-import styles from './addCategory.module.css';
+import styles from './addTaxBracket.module.css';
 
 // holds the initial values for the form
-const formInitialValues: IAddCategoryFormSchema = {
+const formInitialValues: IAddTaxBracketFormSchema = {
     name: '',
+    taxPercent: 0,
 };
 
 /**
  * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
-export interface IAddCategoryProps {
+export interface IAddTaxBracketProps {
     callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
-export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
+export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addCategorySlider',
+                sliderName: 'addTaxBracketSlider',
                 active: false,
                 autoFillData: null,
             }),
@@ -42,10 +46,10 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
-    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY, () => {
+    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET, () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addCategorySlider',
+                sliderName: 'addTaxBracketSlider',
                 active: true,
                 autoFillData: null,
             }),
@@ -57,22 +61,22 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
     // getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
-        validationSchema: AddCategoryFormSchema,
-        onSubmit: (values: IAddCategoryFormSchema) => {
+        validationSchema: AddTaxBracketFormSchema,
+        onSubmit: (values: IAddTaxBracketFormSchema) => {
             console.log(values);
         },
     });
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
-            <div className={styles.pageTitleBar}>Add Category</div>
+            <div className={styles.pageTitleBar}>Add TaxBracket</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
                         name={'name'}
                         type={'text'}
-                        label={'Category Name'}
-                        placeHolder={'Eg. Soft Drinks'}
+                        label={'TaxBracket Name'}
+                        placeHolder={'Eg. CESS'}
                         required={true}
                         error={{
                             errorMessage: formFormik.errors.name ?? '',
@@ -86,12 +90,32 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
                         onChange={formFormik.handleChange}
                     />
                 </div>
+                <div className={styles.formGroup}>
+                    <InputField
+                        name={'taxPercent'}
+                        type={'number'}
+                        label={'TaxBracket Percent'}
+                        placeHolder={'Eg. 10%'}
+                        suffix={<p>%</p>}
+                        required={true}
+                        error={{
+                            errorMessage: formFormik.errors.taxPercent ?? '',
+                            showError:
+                                !lodash.isUndefined(formFormik.errors.taxPercent) &&
+                                formFormik.touched.taxPercent,
+                        }}
+                        selectTextOnFocus={true}
+                        value={formFormik.values.taxPercent.toString()}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
+                    />
+                </div>
             </div>
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Category'}
+                    label={'Add TaxBracket'}
                     tabIndex={0}
                     style={{
                         backgroundColor: cssColors['--inventory-color'],

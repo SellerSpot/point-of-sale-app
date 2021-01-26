@@ -1,7 +1,7 @@
-import { IGetBrand } from './brand.types';
+import { IGetBrandFromServer } from './brand.types';
 import { IGetCategoryFromServer } from './category.types';
 import { IGetStockUnit } from './stockUnit.types';
-import { IGetTaxBracket } from './taxBracket.types';
+import { IGetTaxBracketFromServer } from './taxBracket.types';
 import * as Yup from 'yup';
 
 /**
@@ -11,7 +11,7 @@ export interface IGetProductFromServer {
     _id: string;
     name: string;
     category: IGetCategoryFromServer;
-    brand: IGetBrand;
+    brand: IGetBrandFromServer;
     gtinNumber: string;
     mrpPrice: number;
     landingPrice: number;
@@ -21,7 +21,7 @@ export interface IGetProductFromServer {
         stockUnit: IGetStockUnit;
     };
     profitPercent: number;
-    taxBracket: IGetTaxBracket[];
+    taxBracket: IGetTaxBracketFromServer[];
 }
 
 /**
@@ -81,14 +81,14 @@ export interface IAddProductFormSchema {
     name: string;
     gtinNumber: string;
     category: IGetCategoryFromServer;
-    brand: IGetBrand;
+    brand: IGetBrandFromServer;
     landingPrice: number;
     profitPercent: number;
     sellingPrice: number;
     mrpPrice: number;
     availableStock: number;
     stockUnit: IGetStockUnit;
-    taxBracket: IGetTaxBracket[];
+    taxBracket: IGetTaxBracketFromServer[];
 }
 
 /**
@@ -96,7 +96,7 @@ export interface IAddProductFormSchema {
  */
 export interface IAddProductDropDownValuesData {
     categories?: IGetCategoryFromServer[];
-    brands?: IGetBrand[];
+    brands?: IGetBrandFromServer[];
     stockUnits?: IGetStockUnit[];
-    taxBrackets?: IGetTaxBracket[];
+    taxBrackets?: IGetTaxBracketFromServer[];
 }

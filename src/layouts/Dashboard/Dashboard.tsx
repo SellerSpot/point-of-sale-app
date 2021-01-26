@@ -4,7 +4,7 @@ import { ROUTES } from 'config/routes';
 import { Sales } from 'pages/Sale/Sale';
 import { LeftNav } from './components/LeftNav/LeftNav';
 import { Inventory } from 'pages/Inventory/Inventory';
-import styles from './dashboard.module.css';
+import styles from './dashboard.module.scss';
 
 const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 

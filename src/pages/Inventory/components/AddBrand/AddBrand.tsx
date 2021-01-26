@@ -7,12 +7,12 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { AddCategoryFormSchema, IAddCategoryFormSchema } from 'typings/components/category.types';
+import { AddBrandFormSchema, IAddBrandFormSchema } from 'typings/components/brand.types';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
-import styles from './addCategory.module.css';
+import styles from './addBrand.module.css';
 
 // holds the initial values for the form
-const formInitialValues: IAddCategoryFormSchema = {
+const formInitialValues: IAddBrandFormSchema = {
     name: '',
 };
 
@@ -20,15 +20,15 @@ const formInitialValues: IAddCategoryFormSchema = {
  * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
-export interface IAddCategoryProps {
+export interface IAddBrandProps {
     callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
-export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
+export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addCategorySlider',
+                sliderName: 'addBrandSlider',
                 active: false,
                 autoFillData: null,
             }),
@@ -42,10 +42,10 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
-    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY, () => {
+    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND, () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addCategorySlider',
+                sliderName: 'addBrandSlider',
                 active: true,
                 autoFillData: null,
             }),
@@ -57,22 +57,22 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
     // getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
-        validationSchema: AddCategoryFormSchema,
-        onSubmit: (values: IAddCategoryFormSchema) => {
+        validationSchema: AddBrandFormSchema,
+        onSubmit: (values: IAddBrandFormSchema) => {
             console.log(values);
         },
     });
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
-            <div className={styles.pageTitleBar}>Add Category</div>
+            <div className={styles.pageTitleBar}>Add Brand</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
                         name={'name'}
                         type={'text'}
-                        label={'Category Name'}
-                        placeHolder={'Eg. Soft Drinks'}
+                        label={'Brand Name'}
+                        placeHolder={'Eg.Pepsi'}
                         required={true}
                         error={{
                             errorMessage: formFormik.errors.name ?? '',
@@ -91,7 +91,7 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Category'}
+                    label={'Add Brand'}
                     tabIndex={0}
                     style={{
                         backgroundColor: cssColors['--inventory-color'],

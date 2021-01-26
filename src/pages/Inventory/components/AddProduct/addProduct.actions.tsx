@@ -1,8 +1,8 @@
 import requests from 'requests/requests';
-import { IGetBrand } from 'typings/components/brand.types';
+import { IGetBrandFromServer } from 'typings/components/brand.types';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
-import { IGetTaxBracket } from 'typings/components/taxBracket.types';
+import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
 import {
     IAddProductDropDownValuesData,
     IAddProductFormSchema,
@@ -19,7 +19,7 @@ export const fetchAddProductDropDownData = async (
     setDropDownValues: React.Dispatch<React.SetStateAction<IAddProductDropDownValuesData>>,
     setDropDownInitialValues: (
         category: IGetCategoryFromServer,
-        brand: IGetBrand,
+        brand: IGetBrandFromServer,
         stockUnit: IGetStockUnit,
     ) => void,
 ): Promise<void> => {
@@ -55,8 +55,8 @@ export const fetchAddProductDropDownData = async (
  * @param taxBracket The current taxBracket to check if it exists in the formik store
  */
 export const checkIfTaxItemIsSelected = (
-    taxBrackets: IGetTaxBracket[],
-    taxBracket: IGetTaxBracket,
+    taxBrackets: IGetTaxBracketFromServer[],
+    taxBracket: IGetTaxBracketFromServer,
 ): boolean => {
     for (let i = 0; i < taxBrackets.length; i++) {
         if (taxBrackets[i]._id === taxBracket._id) return true;

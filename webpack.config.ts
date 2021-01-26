@@ -39,7 +39,7 @@ const webpackConfiguration = (env: {
                     ],
                 },
                 {
-                    test: /\.(css|scss)$/,
+                    test: /\.(css|s[ac]ss)$/i,
                     use: [
                         'style-loader',
                         {
@@ -51,13 +51,32 @@ const webpackConfiguration = (env: {
                                 },
                             },
                         },
+                        {
+                            loader: 'sass-loader',
+                        },
+                        {
+                            loader: 'sass-resources-loader',
+                            options: {
+                                resources: require(path.join(process.cwd(), 'src/styles/index.ts')),
+                            },
+                        },
                     ],
-                    include: /\.module\.css$/,
+                    include: /\.module\.(css|s[ac]ss)$/i,
                 },
                 {
-                    test: /\.(css|scss)$/,
-                    use: ['style-loader', 'css-loader'],
-                    exclude: /\.module\.css$/,
+                    test: /\.(css|s[ac]ss)$/i,
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        'sass-loader',
+                        {
+                            loader: 'sass-resources-loader',
+                            options: {
+                                resources: require(path.join(process.cwd(), 'src/styles/index.ts')),
+                            },
+                        },
+                    ],
+                    exclude: /\.module\.(css|s[ac]ss)$/i,
                 },
             ],
         },

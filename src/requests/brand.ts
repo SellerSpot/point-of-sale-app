@@ -1,11 +1,11 @@
 import { API_ROUTES } from 'config/apiRoutes';
 import services from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
-import { IGetBrand } from 'typings/components/brand.types';
+import { IGetBrandFromServer } from 'typings/components/brand.types';
 
 interface IBrandApiResponse {
     status: boolean;
-    data?: IGetBrand[];
+    data?: IGetBrandFromServer[];
     error?: IApiServiceErrorResponse[];
 }
 
@@ -16,7 +16,7 @@ export const getBrands = async (): Promise<IBrandApiResponse> => {
     if (response.status) {
         return {
             status: true,
-            data: response.data as IGetBrand[],
+            data: response.data as IGetBrandFromServer[],
         };
     } else {
         return {
