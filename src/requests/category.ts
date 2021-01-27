@@ -1,5 +1,5 @@
 import { API_ROUTES } from 'config/apiRoutes';
-import services from 'services/services';
+import { apiService } from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
 
@@ -11,7 +11,7 @@ interface ICategoryApiResponse {
 
 export const getCategories = async (): Promise<ICategoryApiResponse> => {
     // Sending API request
-    const response = await services.ApiService.get(API_ROUTES.CATEGORY);
+    const response = await apiService.get(API_ROUTES.CATEGORY);
     // Parsing response
     if (response.status) {
         return {

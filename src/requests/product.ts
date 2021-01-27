@@ -1,5 +1,5 @@
 import { API_ROUTES } from 'config/apiRoutes';
-import services from 'services/services';
+import { apiService } from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
 import {
     IAddProductFormSchema,
@@ -22,7 +22,7 @@ interface IProductApiResponse {
  */
 export const getProducts = async (): Promise<IProductApiResponse> => {
     // Sending API request
-    const response = await services.ApiService.get(API_ROUTES.PRODUCT);
+    const response = await apiService.get(API_ROUTES.PRODUCT);
     // Parsing response
     if (response.status) {
         console.log(response.data);
@@ -63,7 +63,7 @@ export const createProduct = async (
         taxBracket: values.taxBracket.map((taxBracket) => taxBracket._id),
     };
     // Sending API request
-    const response = await services.ApiService.post(API_ROUTES.PRODUCT, dataToSend);
+    const response = await apiService.post(API_ROUTES.PRODUCT, dataToSend);
     if (response.status) {
         return {
             status: response.status,

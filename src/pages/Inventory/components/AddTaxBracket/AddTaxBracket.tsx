@@ -11,7 +11,7 @@ import {
     AddTaxBracketFormSchema,
     IAddTaxBracketFormSchema,
 } from 'typings/components/taxBracket.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import styles from './addTaxBracket.module.css';
 
 // holds the initial values for the form

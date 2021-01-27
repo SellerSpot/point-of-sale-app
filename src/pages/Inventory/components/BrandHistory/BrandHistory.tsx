@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getBrands } from 'requests/brand';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { IGetBrandFromServer } from 'typings/components/brand.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import {
     compileBrandsTableBodyData,
     handleBrandsHistoryTableRowClick,

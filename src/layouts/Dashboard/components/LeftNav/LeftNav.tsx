@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { cssColors } from 'config/cssVariables';
 import { HorizontalRule } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
-import { getLeftNavStyles } from './leftNav.styles';
+import { getLeftNavStyles } from './leftnav.styles';
 import { ICONS } from 'config/icons';
 
 interface INavItem {

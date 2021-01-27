@@ -8,7 +8,7 @@ import {
     IAddProductFormSchema,
     IPostCreateProductInServer,
 } from 'typings/components/product.types';
-import { introduceDelay } from 'utils/utils';
+import { introduceDelay } from 'utilities/general';
 
 /**
  * Used to fetch the values from database and prepare the AddProduct page

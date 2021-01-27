@@ -1,6 +1,5 @@
 import React from 'react';
-import lodash from 'lodash';
-import services from 'services/services';
+import { ComputeOpsService } from 'services/services';
 import { IGetSale } from 'typings/components/sale.types';
 import requests from 'requests/requests';
 
@@ -31,7 +30,7 @@ export const compileSaleTableBodyData = (salesHistoryData: IGetSale[]): JSX.Elem
             compiledData.push([
                 <p key={index}>{index + sNoIndexOffset}</p>,
                 <p key={sale.createdAt}>
-                    {services.ComputeOps.convertEpochTime(parseInt(sale.createdAt))}
+                    {ComputeOpsService.convertEpochTime(parseInt(sale.createdAt))}
                 </p>,
                 <p key={sale.status}>{sale.status}</p>,
                 <p key={sale.subTotal}>{sale.subTotal}</p>,

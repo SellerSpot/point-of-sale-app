@@ -24,7 +24,7 @@ import {
     IAddProductFormSchema,
 } from 'typings/components/product.types';
 import { IGetStockUnit } from 'typings/components/stockUnit.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import { checkIfTaxItemIsSelected, fetchAddProductDropDownData } from './addProduct.actions';
 import styles from './addProduct.module.css';
 

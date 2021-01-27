@@ -10,7 +10,7 @@ import { IGetProductFromServer } from 'typings/components/product.types';
 import { ISaleCartItem } from 'typings/components/sale.types';
 import { getProducts } from 'requests/product';
 import { compileProductsTableBodyData, getCartItems } from './newSale.actions';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { store } from 'store/store';
 

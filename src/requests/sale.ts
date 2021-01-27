@@ -1,5 +1,5 @@
 import { API_ROUTES } from 'config/apiRoutes';
-import services from 'services/services';
+import { apiService } from 'services/services';
 import { IApiServiceErrorResponse } from 'typings/common.types';
 import { IGetSale } from 'typings/components/sale.types';
 
@@ -11,7 +11,7 @@ interface ISaleApiResponse {
 
 export const getSales = async (): Promise<ISaleApiResponse> => {
     // Sending API request
-    const response = await services.ApiService.get(API_ROUTES.SALES);
+    const response = await apiService.get(API_ROUTES.SALES);
     // Parsing response
     if (response.status) {
         return {

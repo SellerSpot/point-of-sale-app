@@ -7,9 +7,8 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { cssColors } from 'config/cssVariables';
 import { compileSaleTableBodyData, getSaleHistoryData } from './saleHistory.actions';
 import { IGetSale } from 'typings/components/sale.types';
-import service from 'services/services';
 import { getSaleHistoryStyles } from './saleHistory.styles';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 
 export const SaleHistory = (): JSX.Element => {
     // To manage which tab is selected

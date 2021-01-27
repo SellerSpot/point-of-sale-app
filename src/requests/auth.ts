@@ -1,30 +1,16 @@
 import { API_ROUTES } from 'config/apiRoutes';
-import services from 'services/services';
-
-interface IAuthorizeTenantRequest {
-    domainName: string;
-}
-
-interface ITokenPayload {
-    name?: string;
-    _id?: string;
-    email?: string;
-}
-
-interface IAuthorizeTenantResponse {
-    status: boolean;
-    statusCode?: number;
-    data?: ITokenPayload & { tenantAppToken: string };
-    error?: unknown;
-}
+import { apiService } from 'services/services';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 export const authorizeTenant = async (
     domainName: string,
-): Promise<IAuthorizeTenantResponse['data'] | false> => {
+): Promise<pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse['data'] | false> => {
     try {
-        const response = (await services.ApiService.post(API_ROUTES.AUTH_AUTHORIZE_TENANT, <
-            IAuthorizeTenantRequest
-        >{ domainName })) as IAuthorizeTenantResponse;
+        const response = <pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse>(
+            await apiService.post(API_ROUTES.AUTH_AUTHORIZE_TENANT, <
+                pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
+            >{ domainName })
+        );
 
         if (response.status && response.data) {
             return Promise.resolve(response.data);

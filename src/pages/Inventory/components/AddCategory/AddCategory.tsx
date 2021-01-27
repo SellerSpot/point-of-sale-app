@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { AddCategoryFormSchema, IAddCategoryFormSchema } from 'typings/components/category.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import styles from './addCategory.module.css';
 
 // holds the initial values for the form

@@ -4,16 +4,18 @@ import { RootState } from '../store';
 interface ICoreState {
     isLoading: boolean;
     tenant?: {
-        _id: string;
-        name: string;
+        _id: string; // tenant id
+        name: string; // tenant name
         email: string;
+        auth?: {
+            _id: string; // user id
+            userName: string; // user name
+            userEmail: string; // user email
+        };
+        /**
+         * on unAunthenicated state token will have teanant details only on successfull authenctication token will have both tenant and user's details.
+         */
         token: string;
-    };
-    auth?: {
-        // will be wired with initial state later
-        userName: string;
-        userEmail: string;
-        authToken: string;
     };
 }
 

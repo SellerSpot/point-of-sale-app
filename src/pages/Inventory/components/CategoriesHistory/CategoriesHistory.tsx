@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getCategories } from 'requests/category';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import {
     compileCategoriesTableBodyData,
     handleCategoriesHistoryTableRowClick,

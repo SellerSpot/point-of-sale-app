@@ -1,20 +1,35 @@
 import path from 'path';
-import webpack, { Configuration } from 'webpack';
+import { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import packageJson from './package.json';
+import { getEnvironmentVariables } from './src/config/dotenv';
+import webpack from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const webpackConfiguration = (env: {
     production?: boolean;
     development?: boolean;
+    analyze?: boolean;
 }): Configuration => {
     const isProduction = env.production ? true : false;
+    const isAnalyze = env.analyze ? true : false;
+    1;
+    const envVariables = getEnvironmentVariables(isProduction);
+    const devPort = Number(JSON.parse(envVariables['process.env.PORT']));
     return {
         entry: './src',
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
-            plugins: [new TsconfigPathsPlugin()],
+            plugins: [
+                new TsconfigPathsPlugin({
+                    extensions: ['.ts', '.tsx', '.js', '.css', '.module.css'],
+                }),
+            ],
+            fallback: {
+                path: require.resolve('path-browserify'),
+                fs: require.resolve('fs'),
+            },
         },
         output: {
             path: path.join(__dirname, '/dist'),
@@ -31,7 +46,7 @@ const webpackConfiguration = (env: {
                     exclude: [/dist/, /node_modules/],
                 },
                 {
-                    test: /\.(png|jpe?g|gif|svg)$/i,
+                    test: /\.(png|jpe?g|gif|svg|ttf|woff|woff2)$/i,
                     use: [
                         {
                             loader: 'file-loader',
@@ -39,7 +54,7 @@ const webpackConfiguration = (env: {
                     ],
                 },
                 {
-                    test: /\.(css|s[ac]ss)$/i,
+                    test: /\.(css|scss)$/,
                     use: [
                         'style-loader',
                         {
@@ -51,61 +66,36 @@ const webpackConfiguration = (env: {
                                 },
                             },
                         },
-                        {
-                            loader: 'sass-loader',
-                        },
-                        {
-                            loader: 'sass-resources-loader',
-                            options: {
-                                resources: require(path.join(
-                                    process.cwd(),
-                                    'src/styles/__library.ts',
-                                )),
-                            },
-                        },
                     ],
-                    include: /\.module\.(css|s[ac]ss)$/i,
+                    include: /\.module\.css$/,
                 },
                 {
-                    test: /\.(css|s[ac]ss)$/i,
-                    use: [
-                        'style-loader',
-                        'css-loader',
-                        'sass-loader',
-                        {
-                            loader: 'sass-resources-loader',
-                            options: {
-                                resources: require(path.join(
-                                    process.cwd(),
-                                    'src/styles/__library.ts',
-                                )),
-                            },
-                        },
-                    ],
-                    exclude: /\.module\.(css|s[ac]ss)$/i,
+                    test: /\.(css|scss)$/,
+                    use: ['style-loader', 'css-loader'],
+                    exclude: /\.module\.css$/,
                 },
             ],
         },
         plugins: [
+            new webpack.DefinePlugin(envVariables), // setting environment variables
             new HtmlWebpackPlugin({
                 inject: true,
                 template: path.join(__dirname, '/public/index.html'),
-            }),
-            new webpack.DefinePlugin({
-                'process.env.ENV': JSON.stringify(isProduction ? 'production' : 'development'),
-                'process.env.APP_NAME': JSON.stringify(packageJson.name),
-                'process.env.APP_VERSION': JSON.stringify(packageJson.version),
+                favicon: path.join(__dirname, '/public/favicon.ico'),
             }),
             new ForkTsCheckerWebpackPlugin({
                 eslint: {
                     files: './src',
                 },
             }),
+            isAnalyze
+                ? new BundleAnalyzerPlugin({ analyzerMode: 'static' })
+                : new webpack.DefinePlugin({}),
         ],
         devServer: {
-            port: 8100,
+            port: devPort,
             open: true,
-            hot: true,
+            hot: false,
             contentBase: 'public',
             publicPath: '/',
             historyApiFallback: true,

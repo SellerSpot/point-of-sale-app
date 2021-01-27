@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getProducts } from 'requests/product';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { IGetProductFromServer } from 'typings/components/product.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import {
     compileProductsTableBodyData,
     handleProductsHistoryTableRowClick,

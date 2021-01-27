@@ -21,12 +21,13 @@
             "images/*": ["images/*"],
             "layouts/*": ["layouts/*"],
             "pages/*": ["pages/*"],
+            "requests/*": ["requests/*"],
             "services/*": ["services/*"],
             "store/*": ["store/*"],
             "styles/*": ["styles/*"],
-            "typings/*": ["typings/*"]
+            "typings/*": ["typings/*"],
+            "utilities/*": ["utilities/*"]
         }
     },
-    "include": ["src"],
-    "exclude": ["node_modules"]
+    "include": ["src"]
 }

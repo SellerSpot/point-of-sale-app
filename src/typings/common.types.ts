@@ -9,5 +9,5 @@ export interface IApiServiceResponse {
     status: boolean;
     statusCode?: number;
     data?: unknown;
-    error?: IApiServiceErrorResponse[];
+    error?: unknown;
 }

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getTaxBrackets } from 'requests/taxBracket';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utils/keyboardShortcuts';
+import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
 import {
     compileTaxBracketsTableBodyData,
     handleTaxBracketsHistoryTableRowClick,
