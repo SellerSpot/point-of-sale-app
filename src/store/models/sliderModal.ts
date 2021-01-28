@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { IGetBrandFromServer } from 'typings/components/brand.types';
+import { IGetBrandFromServer } from 'pages/Inventory/components/AddBrand/brand.types';
 import { IGetCategoryFromServer } from 'typings/components/category.types';
 import { IGetProductFromServer } from 'typings/components/product.types';
 import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
