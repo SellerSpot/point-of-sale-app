@@ -66,12 +66,37 @@ const webpackConfiguration = (env: {
                                 },
                             },
                         },
+                        {
+                            loader: 'sass-loader',
+                        },
+                        {
+                            loader: 'sass-resources-loader',
+                            options: {
+                                resources: require(path.join(
+                                    process.cwd(),
+                                    'src/styles/__library.ts',
+                                )),
+                            },
+                        },
                     ],
                     include: /\.module\.css$/,
                 },
                 {
                     test: /\.(css|scss)$/,
-                    use: ['style-loader', 'css-loader'],
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        'sass-loader',
+                        {
+                            loader: 'sass-resources-loader',
+                            options: {
+                                resources: require(path.join(
+                                    process.cwd(),
+                                    'src/styles/__library.ts',
+                                )),
+                            },
+                        },
+                    ],
                     exclude: /\.module\.css$/,
                 },
             ],

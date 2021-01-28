@@ -2,7 +2,7 @@ import React, { lazy, ReactElement, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 // import { Sales } from 'pages/Sale/Sale';
-// import { LeftNav } from './components/LeftNav/LeftNav';
+import { LeftNav } from './components/LeftNav/LeftNav';
 // import { Inventory } from 'pages/Inventory/Inventory';
 import styles from './dashboard.module.scss';
 
@@ -11,9 +11,9 @@ import styles from './dashboard.module.scss';
 export const Dashboard = (): ReactElement => {
     return (
         <div className={styles.dashboardWrapper}>
-            {/* <div className={styles.leftNavWrapper}>
+            <div className={styles.leftNavWrapper}>
                 <LeftNav />
-            </div> */}
+            </div>
             <div className={styles.mainBodyWrapper}>
                 <Switch>
                     {/* <Route path={ROUTES.INVENTORY}>

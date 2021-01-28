@@ -6,17 +6,17 @@ import { SliderModal } from '@sellerspot/universal-components';
 // import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { sliderModalSelector } from 'store/models/sliderModal';
+// import { sliderModalSelector } from 'store/models/sliderModal';
 
 const Sliders = (): ReactElement => {
-    const {
-        addProductSlider,
-        addCategorySlider,
-        checkoutSlider,
-        newSaleSlider,
-        addBrandSlider,
-        addTaxBracketSlider,
-    } = useSelector(sliderModalSelector);
+    // const {
+    //     addProductSlider,
+    //     addCategorySlider,
+    //     checkoutSlider,
+    //     newSaleSlider,
+    //     addBrandSlider,
+    //     addTaxBracketSlider,
+    // } = useSelector(sliderModalSelector);
 
     // state used to track the callbacks from the sliderModal
     const callBackStateTrack = useState(false);
