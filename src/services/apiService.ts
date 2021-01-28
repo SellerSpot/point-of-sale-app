@@ -1,5 +1,5 @@
-import { STATUS_CODES, pointOfSaleTypes } from '@sellerspot/universal-types';
-import Axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import Axios, { AxiosInstance } from 'axios';
 import { IApiServiceResponse } from 'typings/common.types';
 import { CONFIG } from '../config/config';
 
