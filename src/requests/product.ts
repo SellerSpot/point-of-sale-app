@@ -21,22 +21,23 @@ interface IProductApiResponse {
  * @type GET
  */
 export const getProducts = async (): Promise<IProductApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.PRODUCT);
-    // Parsing response
-    if (response.status) {
-        console.log(response.data);
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.PRODUCT);
+    // // Parsing response
+    // if (response.status) {
+    //     console.log(response.data);
 
-        return {
-            status: true,
-            data: response.data as IGetProductFromServer[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetProductFromServer[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };
 
 /**

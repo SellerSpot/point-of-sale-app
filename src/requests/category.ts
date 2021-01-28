@@ -10,18 +10,19 @@ interface ICategoryApiResponse {
 }
 
 export const getCategories = async (): Promise<ICategoryApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.CATEGORY);
-    // Parsing response
-    if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetCategoryFromServer[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.CATEGORY);
+    // // Parsing response
+    // if (response.status) {
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetCategoryFromServer[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };

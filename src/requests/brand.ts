@@ -10,18 +10,19 @@ interface IBrandApiResponse {
 }
 
 export const getBrands = async (): Promise<IBrandApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.BRAND);
-    // Parsing response
-    if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetBrandFromServer[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.BRAND);
+    // // Parsing response
+    // if (response.status) {
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetBrandFromServer[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };

@@ -10,18 +10,19 @@ interface IStockUnitApiResponse {
 }
 
 export const getStockUnits = async (): Promise<IStockUnitApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.STOCKUNIT);
-    // Parsing response
-    if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetStockUnit[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.STOCKUNIT);
+    // // Parsing response
+    // if (response.status) {
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetStockUnit[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };

@@ -10,18 +10,19 @@ interface ISaleApiResponse {
 }
 
 export const getSales = async (): Promise<ISaleApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.SALES);
-    // Parsing response
-    if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetSale[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.SALES);
+    // // Parsing response
+    // if (response.status) {
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetSale[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };

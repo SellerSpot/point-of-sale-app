@@ -10,18 +10,19 @@ interface ITaxBracketApiResponse {
 }
 
 export const getTaxBrackets = async (): Promise<ITaxBracketApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.TAXBRACKET);
-    // Parsing response
-    if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetTaxBracketFromServer[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
-    }
+    // // Sending API request
+    // const response = await apiService.get(API_ROUTES.TAXBRACKET);
+    // // Parsing response
+    // if (response.status) {
+    //     return {
+    //         status: true,
+    //         data: response.data as IGetTaxBracketFromServer[],
+    //     };
+    // } else {
+    //     return {
+    //         status: false,
+    //         error: response.error as IApiServiceErrorResponse[],
+    //     };
+    // }
+    return null;
 };

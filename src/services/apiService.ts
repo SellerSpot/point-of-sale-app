@@ -30,62 +30,6 @@ export default class ApiService {
         });
     };
 
-    // Main request handlers
-    public async get(route: string): Promise<IApiServiceResponse> {
-        try {
-            const requestUrl = `/${route}`;
-            const response = await this.onlineAxios.get(requestUrl);
-            // eslint-disable-next-line no-magic-numbers
-            if (response.status === 200) {
-                if (response.data.status) {
-                    switch (response.data.statusCode) {
-                        case STATUS_CODES.OK:
-                            return {
-                                status: true,
-                                data: response.data.data,
-                            };
-                        default:
-                            //! This is only if the server really messes up
-                            return {
-                                status: false,
-                                error: [
-                                    {
-                                        fieldName: 'commonMessage',
-                                        message: 'Unknown error recieved from server',
-                                    },
-                                ],
-                            };
-                    }
-                } else {
-                    return {
-                        status: false,
-                        error: response.data.error,
-                    };
-                }
-            } else {
-                return {
-                    status: false,
-                    error: [
-                        {
-                            fieldName: 'commonMessage',
-                            message: 'Unable to connect to the server',
-                        },
-                    ],
-                };
-            }
-        } catch (e) {
-            return {
-                status: false,
-                error: [
-                    {
-                        fieldName: 'commonMessage',
-                        message: e.message,
-                    },
-                ],
-            };
-        }
-    }
-
     public async post(route: string, data: unknown): Promise<IApiServiceResponse> {
         try {
             const requestUrl = `/${route}`;
