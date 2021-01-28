@@ -36,23 +36,17 @@ export default class ApiService {
     ): Promise<IApiServiceResponse> {
         try {
             const requestUrl = `/${pointOfSaleTypes.ROUTES[route]}`;
-            console.log(requestUrl);
             const response = await this.onlineAxios.post(requestUrl, data);
             if (response.status === 200) {
-                return response.data;
+                return Promise.resolve(response.data);
             } else {
-                throw 'error';
+                throw {
+                    status: false,
+                    error: 'Could not connect with server',
+                };
             }
         } catch (e) {
-            return {
-                status: false,
-                error: [
-                    {
-                        fieldName: 'commonMessage',
-                        message: e.message,
-                    },
-                ],
-            };
+            return Promise.reject(e);
         }
     }
 }
