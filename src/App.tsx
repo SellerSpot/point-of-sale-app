@@ -11,6 +11,7 @@ import './styles/core.scss';
 import commonStyles from 'styles/common.module.scss';
 import styles from 'styles/app.module.scss';
 import { authorizeTenant } from 'requests/auth';
+import { CONFIG } from 'config/config';
 
 initializeGlobalServices(); // application common initilizers goes here
 
@@ -27,6 +28,8 @@ export const App = (): ReactElement => {
             if (response.status) {
                 updateGlobalServices(response.data.token);
                 dispatch(updateTenant(response.data));
+            } else {
+                window.location.replace(CONFIG.LANDING_APP_URL);
             }
         }).call(null);
     }, []);

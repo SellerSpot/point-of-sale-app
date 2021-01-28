@@ -9,6 +9,7 @@ declare global {
             ONLINE_SERVER_API_URL: string;
             ONLINE_SERVER_SOCKET_URL: string;
             BASE_DOMAIN_NAME: string;
+            LANDING_APP_URL: string;
         }
     }
 }
