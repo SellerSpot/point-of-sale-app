@@ -24,7 +24,6 @@ export const App = (): ReactElement => {
         // do tenant authorization and release isLoading if valid
         (async () => {
             const domainName = window.location.hostname?.split('.')?.[0];
-            console.log(domainName);
             const response = await authorizeTenant(domainName);
             if (response.status) {
                 updateGlobalServices(response.data.token);
