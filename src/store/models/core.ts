@@ -1,31 +1,22 @@
 import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 interface ICoreState {
     isLoading: boolean;
-    tenant?: {
-        _id: string; // tenant id
-        name: string; // tenant name
-        email: string;
-        auth?: {
-            _id: string; // user id
-            userName: string; // user name
-            userEmail: string; // user email
-        };
-        /**
-         * on unAunthenicated state token will have teanant details only on successfull authenctication token will have both tenant and user's details.
-         */
-        token: string;
-    };
+    isAuthenticated: boolean;
+    tenant: pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse['data'];
 }
 
 const initialState: ICoreState = {
-    isLoading: false,
+    isLoading: true,
+    isAuthenticated: false,
     tenant: {
         _id: '',
         name: '',
         email: '',
         token: '',
+        auth: null,
     },
 };
 
@@ -38,6 +29,9 @@ const coreSlice = createSlice({
         },
         updateTenant: (state, { payload }: PayloadAction<ICoreState['tenant']>) => {
             state.tenant = payload;
+            if (payload?.auth?._id) state.isAuthenticated = true;
+            else state.isAuthenticated = false;
+            state.isLoading = false;
         },
     },
 });
