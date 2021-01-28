@@ -63,16 +63,17 @@ export const createProduct = async (
         },
         taxBracket: values.taxBracket.map((taxBracket) => taxBracket._id),
     };
-    // Sending API request
-    const response = await apiService.post(API_ROUTES.PRODUCT, dataToSend);
-    if (response.status) {
-        return {
-            status: response.status,
-            data: response.data as string,
-        };
-    }
-    return {
-        status: false,
-        error: response.error as IApiServiceErrorResponse[],
-    };
+    // // Sending API request
+    // const response = await apiService.post(API_ROUTES.PRODUCT, dataToSend);
+    // if (response.status) {
+    //     return {
+    //         status: response.status,
+    //         data: response.data as string,
+    //     };
+    // }
+    // return {
+    //     status: false,
+    //     error: response.error as IApiServiceErrorResponse[],
+    // };
+    return null;
 };

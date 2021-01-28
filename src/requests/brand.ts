@@ -10,8 +10,7 @@ interface IBrandApiResponse {
 }
 
 export const getBrands = async (): Promise<IBrandApiResponse> => {
-    // // Sending API request
-    // const response = await apiService.get(API_ROUTES.BRAND);
+    const response = await apiService.post('BRAND_GET_ALL_BRANDS');
     // // Parsing response
     // if (response.status) {
     //     return {

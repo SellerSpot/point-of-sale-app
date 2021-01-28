@@ -1,4 +1,3 @@
-import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services/services';
 import { pointOfSaleTypes, STATUS_CODES } from '@sellerspot/universal-types';
 
@@ -12,7 +11,7 @@ export const authorizeTenant = async (
     };
     try {
         const response = <pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse>(
-            await apiService.post(API_ROUTES.AUTH_AUTHORIZE_TENANT, <
+            await apiService.post('AUTHORIZE', <
                 pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
             >{ domainName })
         );

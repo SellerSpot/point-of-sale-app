@@ -1,4 +1,4 @@
-import { STATUS_CODES } from '@sellerspot/universal-types';
+import { STATUS_CODES, pointOfSaleTypes } from '@sellerspot/universal-types';
 import Axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { IApiServiceResponse } from 'typings/common.types';
 import { CONFIG } from '../config/config';
@@ -30,9 +30,13 @@ export default class ApiService {
         });
     };
 
-    public async post(route: string, data: unknown): Promise<IApiServiceResponse> {
+    public async post(
+        route: keyof typeof pointOfSaleTypes.ROUTES,
+        data?: unknown,
+    ): Promise<IApiServiceResponse> {
         try {
-            const requestUrl = `/${route}`;
+            const requestUrl = `/${pointOfSaleTypes.ROUTES[route]}`;
+            console.log(requestUrl);
             const response = await this.onlineAxios.post(requestUrl, data);
             if (response.status === 200) {
                 return response.data;
