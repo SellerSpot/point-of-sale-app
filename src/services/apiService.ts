@@ -90,42 +90,10 @@ export default class ApiService {
         try {
             const requestUrl = `/${route}`;
             const response = await this.onlineAxios.post(requestUrl, data);
-            // eslint-disable-next-line no-magic-numbers
             if (response.status === 200) {
-                if (response.data.status) {
-                    switch (response.data.statusCode) {
-                        case STATUS_CODES.CREATED:
-                            return {
-                                status: true,
-                                data: response.data,
-                            };
-                        default:
-                            return {
-                                status: false,
-                                error: [
-                                    {
-                                        fieldName: 'commonMessage',
-                                        message: 'Unknown error recieved from server',
-                                    },
-                                ],
-                            };
-                    }
-                } else {
-                    return {
-                        status: false,
-                        error: response.data.error,
-                    };
-                }
+                return response.data;
             } else {
-                return {
-                    status: false,
-                    error: [
-                        {
-                            fieldName: 'commonMessage',
-                            message: 'Unable to connect to the server',
-                        },
-                    ],
-                };
+                throw 'error';
             }
         } catch (e) {
             return {

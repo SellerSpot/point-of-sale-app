@@ -1,10 +1,15 @@
 import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services/services';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { pointOfSaleTypes, STATUS_CODES } from '@sellerspot/universal-types';
 
 export const authorizeTenant = async (
     domainName: string,
-): Promise<pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse['data'] | false> => {
+): Promise<pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse> => {
+    let resultResponse: pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse = {
+        status: false,
+        statusCode: STATUS_CODES.BAD_REQUEST,
+        error: 'Bad Request',
+    };
     try {
         const response = <pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse>(
             await apiService.post(API_ROUTES.AUTH_AUTHORIZE_TENANT, <
@@ -13,11 +18,17 @@ export const authorizeTenant = async (
         );
 
         if (response.status && response.data) {
-            return Promise.resolve(response.data);
+            resultResponse = response;
         } else {
-            throw 'Error';
+            throw response;
         }
     } catch (error) {
-        return Promise.resolve(false);
+        if (error.status && error.error) {
+            resultResponse = error;
+        } else {
+            resultResponse.error = error.message ?? error;
+        }
+    } finally {
+        return Promise.resolve(resultResponse);
     }
 };

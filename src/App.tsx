@@ -1,21 +1,34 @@
 import { Notify, Spinner } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
+import { initializeGlobalServices, updateGlobalServices } from 'config/globalConfig';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
 import React, { ReactElement, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { coreSelector } from 'store/models/core';
+import { coreSelector, updateTenant } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
 import './styles/core.scss';
 import commonStyles from 'styles/common.module.scss';
 import styles from 'styles/app.module.scss';
+import { authorizeTenant } from 'requests/auth';
+
+initializeGlobalServices(); // application common initilizers goes here
 
 export const App = (): ReactElement => {
     // Getting Notify selector
     const coreState = useSelector(coreSelector);
+    const dispatch = useDispatch();
     const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
     useEffect(() => {
         // do tenant authorization and release isLoading if valid
+        (async () => {
+            const domainName = window.location.hostname?.split('.')?.[0];
+            const response = await authorizeTenant(domainName);
+            if (response.status) {
+                updateGlobalServices(response.data.token);
+                dispatch(updateTenant(response.data));
+            }
+        }).call(null);
     }, []);
 
     return (
