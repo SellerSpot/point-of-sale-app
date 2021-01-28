@@ -1,2 +1,2 @@
-export * as apiService from './apiService';
-export * as computeService from './computeService';
+import ApiService from './apiService';
+export const apiService = new ApiService();
