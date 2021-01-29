@@ -1,7 +1,8 @@
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import Axios, { AxiosInstance } from 'axios';
-import { IApiServiceResponse } from 'typings/common.types';
+
 import { CONFIG } from '../config/config';
+import { IApiServiceResponse } from 'typings/common.types';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 export default class ApiService {
     private onlineAxios: AxiosInstance;
@@ -34,19 +35,28 @@ export default class ApiService {
         route: keyof typeof pointOfSaleTypes.ROUTES,
         data?: unknown,
     ): Promise<IApiServiceResponse> {
+        let returnData: IApiServiceResponse = null;
         try {
             const requestUrl = `/${pointOfSaleTypes.ROUTES[route]}`;
             const response = await this.onlineAxios.post(requestUrl, data);
             if (response.status === 200) {
-                return Promise.resolve(response.data);
+                returnData = {
+                    status: true,
+                    data: response.data,
+                };
             } else {
-                throw {
+                returnData = {
                     status: false,
                     error: 'Could not connect with server',
                 };
             }
-        } catch (e) {
-            return Promise.reject(e);
+        } catch (error) {
+            returnData = {
+                status: false,
+                error: error.message,
+            };
+        } finally {
+            return returnData;
         }
     }
 }
