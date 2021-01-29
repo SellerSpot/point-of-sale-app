@@ -7,7 +7,7 @@ import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 // import { cssColors } from 'config/cssVariables';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 import styles from './inventory.module.scss';
-// import { BrandsHistory } from './components/BrandHistory/BrandHistory';
+import { BrandsHistory } from './components/BrandsHistory/BrandsHistory';
 // import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
 
 export const Inventory = (): JSX.Element => {
@@ -50,9 +50,9 @@ export const Inventory = (): JSX.Element => {
                         <CategoriesHistory />
                     </Route>
 
-                    {/* <Route path={ROUTES.INVENTORY_BRANDS}>
+                    <Route path={ROUTES.INVENTORY_BRANDS}>
                         <BrandsHistory />
-                    </Route> */}
+                    </Route>
                     {/* 
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />
