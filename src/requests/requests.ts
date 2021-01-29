@@ -1,1 +1,1 @@
-export * as authRequests from './auth.requests';
+export * as authRequests from './auth';
