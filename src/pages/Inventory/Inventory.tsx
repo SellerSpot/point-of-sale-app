@@ -9,6 +9,7 @@ import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHist
 import styles from './inventory.module.scss';
 import { BrandsHistory } from './components/BrandsHistory/BrandsHistory';
 import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
+import { StockUnitsHistory } from './components/StockUnits/StockUnits';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -30,6 +31,10 @@ export const Inventory = (): JSX.Element => {
             name: 'Tax Brackets',
             route: ROUTES.INVENTORY_TAX_BRACKETS,
         },
+        {
+            name: 'Stock Units',
+            route: ROUTES.INVENTORY_STOCK_UNITS,
+        },
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
@@ -49,13 +54,14 @@ export const Inventory = (): JSX.Element => {
                     <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <CategoriesHistory />
                     </Route>
-
                     <Route path={ROUTES.INVENTORY_BRANDS}>
                         <BrandsHistory />
                     </Route>
-
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />
+                    </Route>
+                    <Route path={ROUTES.INVENTORY_STOCK_UNITS}>
+                        <StockUnitsHistory />
                     </Route>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>

@@ -14,4 +14,5 @@ export const ROUTES = inferRouteTypes({
     INVENTORY_CATEGORIES: '/inventory/categories',
     INVENTORY_BRANDS: '/inventory/brands',
     INVENTORY_TAX_BRACKETS: '/inventory/taxbrackets',
+    INVENTORY_STOCK_UNITS: '/inventory/stockunits',
 });
