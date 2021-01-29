@@ -1,12 +1,13 @@
-import React, { lazy, ReactElement, Suspense } from 'react';
+import React, { ReactElement, Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
+
+import { Inventory } from 'pages/Inventory/Inventory';
+import { LeftNav } from './components/LeftNav/LeftNav';
 import { ROUTES } from 'config/routes';
 import { Sales } from 'pages/Sale/Sale';
-import { LeftNav } from './components/LeftNav/LeftNav';
-import { Inventory } from 'pages/Inventory/Inventory';
 import styles from './dashboard.module.scss';
 
-// const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
+const SlidersComponent = lazy(() => import('./components/Sliders/Sliders'));
 
 export const Dashboard = (): ReactElement => {
     return (
@@ -33,9 +34,9 @@ export const Dashboard = (): ReactElement => {
                 </Switch>
             </div>
             {/* Full view sliders should be placed down here */}
-            {/* <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<div>Loading...</div>}>
                 <SlidersComponent />
-            </Suspense> */}
+            </Suspense>
         </div>
     );
 };

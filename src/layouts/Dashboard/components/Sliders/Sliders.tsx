@@ -1,36 +1,40 @@
+import React, { ReactElement, useState } from 'react';
+
+import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import { SliderModal } from '@sellerspot/universal-components';
+import { sliderModalSelector } from 'store/models/sliderModal';
+import { useSelector } from 'react-redux';
+
 // import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
 // import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 // import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 // import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
-// import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
-import React, { ReactElement, useState } from 'react';
-import { useSelector } from 'react-redux';
+
 // import { sliderModalSelector } from 'store/models/sliderModal';
 
 const Sliders = (): ReactElement => {
-    // const {
-    //     addProductSlider,
-    //     addCategorySlider,
-    //     checkoutSlider,
-    //     newSaleSlider,
-    //     addBrandSlider,
-    //     addTaxBracketSlider,
-    // } = useSelector(sliderModalSelector);
+    const {
+        // addProductSlider,
+        // addCategorySlider,
+        // checkoutSlider,
+        newSaleSlider,
+        // addBrandSlider,
+        // addTaxBracketSlider,
+    } = useSelector(sliderModalSelector);
 
     // state used to track the callbacks from the sliderModal
     const callBackStateTrack = useState(false);
 
     return (
         <>
-            {/* <SliderModal
+            <SliderModal
                 active={newSaleSlider.show}
                 sliderSize={'100%'}
                 onClickBackdrop={() => callBackStateTrack[1](true)}
                 onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <NewSale />
-            </SliderModal> */}
+            </SliderModal>
             {/* <SliderModal
                 active={addProductSlider.show}
                 sliderSize={'50%'}

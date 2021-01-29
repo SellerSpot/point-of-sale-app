@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+
 import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
+import { generalUtilities } from 'utilities/utilities';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import styles from './salesHistory.module.scss';
-import { generalUtilities } from 'utilities/utilities';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { useDispatch } from 'react-redux';
+
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { compileSaleTableBodyData, getSaleHistoryData } from './saleHistory.actions';
 
@@ -31,11 +34,12 @@ export const SalesHistory = (): JSX.Element => {
                     <Button
                         key={'newSaleBtn'}
                         label={`New Sale (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE})`}
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({ sliderName: 'newSaleSlider', active: true }),
-                        //     )
-                        // }
+                        status="default"
+                        onClick={() => {
+                            dispatch(
+                                toggleSliderModal({ sliderName: 'newSaleSlider', active: true }),
+                            );
+                        }}
                     />,
                 ]}
             />
