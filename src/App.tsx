@@ -1,17 +1,19 @@
+import './styles/core.scss';
+
 import { Notify, Spinner } from '@sellerspot/universal-components';
-import { ROUTES } from 'config/routes';
-import { initializeGlobalServices, updateGlobalServices } from 'config/globalConfig';
-import { Dashboard } from 'layouts/Dashboard/Dashboard';
 import React, { ReactElement, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { coreSelector, updateTenant } from 'store/models/core';
-import { notifySelector } from 'store/models/notify';
-import './styles/core.scss';
-import commonStyles from './styles/common.module.scss';
-import styles from './styles/app.module.scss';
+import { initializeGlobalServices, updateGlobalServices } from 'config/globalConfig';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { CONFIG } from 'config/config';
+import { Dashboard } from 'layouts/Dashboard/Dashboard';
+import { ROUTES } from 'config/routes';
 import { authRequests } from './requests/requests';
+import commonStyles from './styles/common.module.scss';
+import { notifySelector } from 'store/models/notify';
+import styles from './styles/app.module.scss';
 
 initializeGlobalServices(); // application common initilizers goes here
 
