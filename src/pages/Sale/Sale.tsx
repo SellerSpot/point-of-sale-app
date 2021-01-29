@@ -3,7 +3,7 @@ import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
 import { ROUTES } from '../../config/routes';
 import lodash from 'lodash';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { SaleHistory } from './components/SaleHistory/SaleHistory';
+import { SalesHistory } from './components/SalesHistory/SalesHistory';
 import styles from './sale.module.scss';
 
 export const Sales = (): JSX.Element => {
@@ -32,7 +32,7 @@ export const Sales = (): JSX.Element => {
                 <Switch>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.SALES_HISTORY}>
-                        <SaleHistory />
+                        <SalesHistory />
                     </Route>
                 </Switch>
             </div>

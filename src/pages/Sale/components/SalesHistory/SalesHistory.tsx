@@ -4,12 +4,12 @@ import { Button } from '@sellerspot/universal-components';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import { Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import styles from './saleHistory.module.scss';
+import styles from './salesHistory.module.scss';
 import { generalUtilities } from 'utilities/utilities';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { compileSaleTableBodyData, getSaleHistoryData } from './saleHistory.actions';
 
-export const SaleHistory = (): JSX.Element => {
+export const SalesHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
     const [salesHistoryData, setSalesHistoryData] = useState<
