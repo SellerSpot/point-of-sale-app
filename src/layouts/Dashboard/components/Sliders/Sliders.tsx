@@ -1,10 +1,9 @@
-import React, { ReactElement, useState } from 'react';
-
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
-import { SliderModal } from '@sellerspot/universal-components';
-import { sliderModalSelector } from 'store/models/sliderModal';
+import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { sliderModalSelector } from 'store/models/sliderModal';
+import { SliderModal } from '@sellerspot/universal-components';
 
 const Sliders = (): ReactElement => {
     const {
@@ -17,6 +16,8 @@ const Sliders = (): ReactElement => {
     } = useSelector(sliderModalSelector);
 
     // state used to track the callbacks from the sliderModal
+    // true - backdrop or esc event fired
+    // false - no event fired
     const callBackStateTrack = useState(false);
 
     return (
@@ -27,7 +28,7 @@ const Sliders = (): ReactElement => {
                 onClickBackdrop={() => callBackStateTrack[1](true)}
                 onClickEsc={() => callBackStateTrack[1](true)}
             >
-                <NewSale />
+                <NewSale callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             {/* <SliderModal
                 active={addProductSlider.show}

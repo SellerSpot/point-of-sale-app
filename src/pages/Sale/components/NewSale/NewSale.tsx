@@ -10,11 +10,36 @@ import { Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import styles from './newSale.module.scss';
 
-export const NewSale = (): JSX.Element => {
+/**
+ * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
+ * Callbacks operating the props state - onEscClick & onBackdropClick
+ */
+export interface INewSaleProps {
+    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [productsData, setproductsData] = useState<
         pointOfSaleTypes.productResponseTypes.IGetProducts['data']
     >(null);
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);
+
+    // used to handle the closing of the sliderModal
+    const handleCloseSlider = () => {
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'newSaleSlider',
+                active: false,
+            }),
+        );
+        props.callBackStateTrack[1](false);
+    };
+
+    useEffect(() => {
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0]]);
 
     useEffect(() => {
         (async () => {
