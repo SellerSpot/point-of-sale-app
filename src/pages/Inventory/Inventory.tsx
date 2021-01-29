@@ -3,7 +3,7 @@ import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
-// import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
+import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 // import { cssColors } from 'config/cssVariables';
 // import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 import styles from './inventory.module.scss';
@@ -58,9 +58,9 @@ export const Inventory = (): JSX.Element => {
                         <TaxBracketsHistory />
                     </Route> */}
                     {/* '/' route hence should be placed atlast */}
-                    {/* <Route path={ROUTES.INVENTORY_PRODUCTS}>
+                    <Route path={ROUTES.INVENTORY_PRODUCTS}>
                         <ProductsHistory />
-                    </Route> */}
+                    </Route>
                 </Switch>
             </div>
         </div>
