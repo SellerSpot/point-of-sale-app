@@ -5,7 +5,7 @@ import { ROUTES } from 'config/routes';
 import lodash from 'lodash';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 // import { cssColors } from 'config/cssVariables';
-// import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
+import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 import styles from './inventory.module.scss';
 // import { BrandsHistory } from './components/BrandHistory/BrandHistory';
 // import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
@@ -46,9 +46,9 @@ export const Inventory = (): JSX.Element => {
 
             <div className={styles.overallPageWrapper}>
                 <Switch>
-                    {/* <Route path={ROUTES.INVENTORY_CATEGORIES}>
+                    <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <CategoriesHistory />
-                    </Route> */}
+                    </Route>
 
                     {/* <Route path={ROUTES.INVENTORY_BRANDS}>
                         <BrandsHistory />
