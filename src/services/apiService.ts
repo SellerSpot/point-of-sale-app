@@ -1,6 +1,5 @@
 import Axios, { AxiosInstance } from 'axios';
-
-import { CONFIG } from '../config/config';
+import { CONFIG } from 'config/config';
 import { IApiServiceResponse } from 'typings/common.types';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 

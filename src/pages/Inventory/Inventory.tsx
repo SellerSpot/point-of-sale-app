@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
-import lodash from 'lodash';
-import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
-// import { cssColors } from 'config/cssVariables';
-import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
-import styles from './inventory.module.scss';
+import { findIndex } from 'lodash';
+import React, { useState } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { BrandsHistory } from './components/BrandsHistory/BrandsHistory';
-import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
+import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
+import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
 import { StockUnitsHistory } from './components/StockUnits/StockUnits';
+import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
+import styles from './inventory.module.scss';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -38,7 +37,7 @@ export const Inventory = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        return lodash.findIndex(tabs, { route: pathname });
+        return findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));

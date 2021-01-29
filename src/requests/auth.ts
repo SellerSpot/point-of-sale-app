@@ -1,4 +1,4 @@
-import { apiService } from '../services/services';
+import { apiService } from 'services/services';
 import { pointOfSaleTypes, STATUS_CODES } from '@sellerspot/universal-types';
 
 export const authorizeTenant = async (

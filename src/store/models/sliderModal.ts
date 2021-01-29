@@ -1,6 +1,5 @@
+import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
-
-import { RootState } from '../store';
 
 // import { IGetBrandFromServer } from 'pages/Inventory/components/AddBrand/brand.types';
 // import { IGetCategoryFromServer } from 'typings/components/category.types';

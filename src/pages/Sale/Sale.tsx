@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-import { ROUTES } from '../../config/routes';
-import lodash from 'lodash';
+import { ROUTES } from 'config/routes';
+import { findIndex } from 'lodash';
+import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { SalesHistory } from './components/SalesHistory/SalesHistory';
 import styles from './sale.module.scss';
@@ -17,7 +17,7 @@ export const Sales = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        return lodash.findIndex(tabs, { route: pathname });
+        return findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
