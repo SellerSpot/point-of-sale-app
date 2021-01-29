@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-
+import { useHotkeys } from 'react-hotkeys-hook';
+import { productRequests } from 'requests/requests';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
+import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { InputField } from '@sellerspot/universal-components';
 import { Table } from '@sellerspot/universal-components';
-import { generalUtilities } from 'utilities/utilities';
-import { store } from 'store/store';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import styles from './newSale.module.scss';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import { useHotkeys } from 'react-hotkeys-hook';
 
 export const NewSale = (): JSX.Element => {
-    // const [productsData, setproductsData] = useState<IGetProductFromServer[]>(null);
+    const [productsData, setproductsData] = useState<
+        pointOfSaleTypes.productResponseTypes.IGetProducts['data']
+    >(null);
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);
 
     useEffect(() => {
-        // (async () => {
-        //     const productsData = await getProducts();
-        //     setproductsData(productsData.data as IGetProductFromServer[]);
-        // }).call(null);
+        (async () => {
+            const productsData = await productRequests.getAllProducts();
+            setproductsData(productsData);
+        }).call(null);
     }, []);
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
@@ -51,11 +54,11 @@ export const NewSale = (): JSX.Element => {
                     <Button
                         type="button"
                         label="Return to Dashboard"
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
-                        //     )
-                        // }
+                        onClick={() =>
+                            store.dispatch(
+                                toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
+                            )
+                        }
                     />
                     <Button label="Calculator" />
                 </div>
@@ -89,14 +92,14 @@ export const NewSale = (): JSX.Element => {
                         <span>{'Order Total'}</span>
                         <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
                     </div>
-                    <Button
+                    {/* <Button
                         label="CHECKOUT"
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                        //     )
-                        // }
-                    />
+                        onClick={() =>
+                            store.dispatch(
+                                toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                            )
+                        }
+                    /> */}
                 </div>
             </div>
         </div>
