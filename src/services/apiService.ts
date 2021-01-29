@@ -31,13 +31,10 @@ export default class ApiService {
         });
     };
 
-    public async post(
-        route: keyof typeof pointOfSaleTypes.ROUTES,
-        data?: unknown,
-    ): Promise<IApiServiceResponse> {
+    public async post(route: string, data?: unknown): Promise<IApiServiceResponse> {
         let returnData: IApiServiceResponse = null;
         try {
-            const requestUrl = `/${pointOfSaleTypes.ROUTES[route]}`;
+            const requestUrl = `/${route}`;
             const response = await this.onlineAxios.post(requestUrl, data);
             if (response.status === 200) {
                 returnData = {
