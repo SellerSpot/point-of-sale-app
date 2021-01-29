@@ -59,6 +59,7 @@ export const LeftNav = (): JSX.Element => {
                 ROUTES.INVENTORY_CATEGORIES,
                 ROUTES.INVENTORY_PRODUCTS,
                 ROUTES.INVENTORY_TAX_BRACKETS,
+                ROUTES.INVENTORY_STOCK_UNITS,
             ],
         },
         {

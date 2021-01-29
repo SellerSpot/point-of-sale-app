@@ -51,6 +51,9 @@ export const Inventory = (): JSX.Element => {
 
             <div className={styles.overallPageWrapper}>
                 <Switch>
+                    <Route path={ROUTES.INVENTORY_STOCK_UNITS}>
+                        <StockUnitsHistory />
+                    </Route>
                     <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <CategoriesHistory />
                     </Route>
@@ -59,9 +62,6 @@ export const Inventory = (): JSX.Element => {
                     </Route>
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />
-                    </Route>
-                    <Route path={ROUTES.INVENTORY_STOCK_UNITS}>
-                        <StockUnitsHistory />
                     </Route>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>
