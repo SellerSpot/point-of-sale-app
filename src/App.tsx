@@ -10,8 +10,8 @@ import { notifySelector } from 'store/models/notify';
 import './styles/core.scss';
 import commonStyles from './styles/common.module.scss';
 import styles from './styles/app.module.scss';
-import { authorizeTenant } from 'requests/auth';
 import { CONFIG } from 'config/config';
+import { authRequests } from './requests/requests';
 
 initializeGlobalServices(); // application common initilizers goes here
 
@@ -24,7 +24,7 @@ export const App = (): ReactElement => {
         // do tenant authorization and release isLoading if valid
         (async () => {
             const domainName = window.location.hostname?.split('.')?.[0];
-            const response = await authorizeTenant(domainName);
+            const response = await authRequests.authorizeTenant(domainName);
             if (response.status) {
                 updateGlobalServices(response.data.token);
                 dispatch(updateTenant(response.data));
