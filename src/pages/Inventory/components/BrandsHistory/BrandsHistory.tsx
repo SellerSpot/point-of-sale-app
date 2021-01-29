@@ -1,24 +1,28 @@
 import { Button, Table } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
+
+import { MetaCard } from 'components/MetaCard/MetaCard';
+import { generalUtilities } from 'utilities/utilities';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import styles from './brandsHistory.module.scss';
+import { toggleSliderModal } from 'store/models/sliderModal';
 import { useDispatch } from 'react-redux';
+
 // import { getBrands } from 'requests/brand';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { IGetBrandFromServer } from 'pages/Inventory/components/AddBrand/brand.types';
-import { generalUtilities } from 'utilities/utilities';
+
 // import {
 //     compileBrandsTableBodyData,
 //     handleBrandsHistoryTableRowClick,
 // } from './brandHistory.actions';
-import styles from './brandsHistory.module.scss';
 
 export const BrandsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [brandData, setBrandsData] = useState<pointOfSaleTypes.brandResponseTypes.IGetAllBrands>(
-        null,
-    );
+    const [brandData, setBrandsData] = useState<
+        pointOfSaleTypes.brandResponseTypes.IGetAllBrands['data']
+    >(null);
 
     useEffect(() => {
         // (async () => {
@@ -37,14 +41,14 @@ export const BrandsHistory = (): JSX.Element => {
                     <Button
                         key={'addBrand'}
                         label={`Add Brand (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND})`}
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({
-                        //             sliderName: 'addBrandSlider',
-                        //             active: true,
-                        //         }),
-                        //     )
-                        // }
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({
+                                    sliderName: 'addBrandSlider',
+                                    active: true,
+                                }),
+                            )
+                        }
                     />,
                 ]}
             />

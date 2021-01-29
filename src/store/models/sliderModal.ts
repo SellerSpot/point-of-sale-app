@@ -20,10 +20,9 @@ export interface SliderModalInitialState {
     //     show: boolean;
     //     autoFillData?: IGetCategoryFromServer;
     // };
-    // addBrandSlider: {
-    //     show: boolean;
-    //     autoFillData?: IGetBrandFromServer;
-    // };
+    addBrandSlider: {
+        show: boolean;
+    };
     // addTaxBracketSlider: {
     //     show: boolean;
     //     autoFillData?: IGetTaxBracketFromServer;
@@ -44,9 +43,9 @@ const initialState: SliderModalInitialState = {
     // addCategorySlider: {
     //     show: false,
     // },
-    // addBrandSlider: {
-    //     show: false,
-    // },
+    addBrandSlider: {
+        show: false,
+    },
     // addTaxBracketSlider: {
     //     show: false,
     // },
