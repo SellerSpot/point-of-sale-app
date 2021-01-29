@@ -1,0 +1,19 @@
+.saleHistoryWrapper {
+    display: grid;
+    overflow: hidden;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+
+    gap: 10px;
+    grid-template-rows: 90px 1fr;
+}
+.metaCardWrapper {
+    width: 100%;
+    height: 100%;
+}
+.tableWrapper {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
