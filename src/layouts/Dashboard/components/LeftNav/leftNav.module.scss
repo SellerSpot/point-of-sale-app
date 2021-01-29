@@ -25,14 +25,14 @@
     font-weight: 600;
     cursor: pointer;
     transition: color $transition-duration;
+}
 
-    :hover {
-        background-color: $tertiary-background-color;
-    }
+.navItem:hover {
+    background-color: $tertiary-background-color;
+}
 
-    :active {
-        background-color: $tertiary-background-color;
-    }
+.navItem:active {
+    background-color: $tertiary-background-color;
 }
 
 .navIcon {

@@ -18,10 +18,10 @@
         padding: 0 10px;
         height: 100%;
         cursor: pointer;
+    }
 
-        :hover {
-            background-color: $tertiary-background-color;
-        }
+    .tab:hover {
+        background-color: $tertiary-background-color;
     }
 
     .tabTitle {
