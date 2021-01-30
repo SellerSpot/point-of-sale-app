@@ -1,13 +1,16 @@
 {
     "version": "2.0.0",
+    "windows": {
+        "command": "cmd"
+    },
     "tasks": [
         {
-            "label": "npm_link_universal-types",
+            "label": "npm-link-universal-types",
             "type": "shell",
-            "command": "[ -d '../universal-types/dist' ] && [ -d './node_modules/@sellerspot/universal-types' ] && npm link ../universal-types/",
+            "command": "npm link ../universal-types",
             "group": "none",
             "presentation": {
-                "group": "npm_link",
+                "group": "npm-link",
                 "focus": true,
                 "reveal": "always",
                 "panel": "new",
@@ -19,11 +22,11 @@
             "problemMatcher": []
         },
         {
-            "label": "npm_link_universal-components",
+            "label": "npm-link-universal-components",
             "type": "shell",
-            "command": "[ -d '../universal-components/dist' ] && [ -d './node_modules/@sellerspot/universal-components' ] && npm link ../universal-components/",
+            "command": "npm link ../universal-components/",
             "presentation": {
-                "group": "npm_link",
+                "group": "npm-link",
                 "focus": true,
                 "reveal": "always",
                 "panel": "new",
@@ -35,18 +38,33 @@
             "problemMatcher": []
         },
         {
-            "label": "npm_link_all",
+            "label": "npm-link-all",
             "type": "shell",
             "command": "",
             "group": "none",
             "presentation": {
                 "focus": true,
-                "group": "npm_link",
+                "group": "npm-link",
                 "reveal": "silent",
                 "panel": "new",
                 "showReuseMessage": false
             },
-            "dependsOn": ["npm_link_universal-types", "npm_link_universal-components"],
+            "dependsOn": ["npm-link-universal-types", "npm-link-universal-components"],
+            "runOptions": {
+                "runOn": "default"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "open-terminal",
+            "type": "shell",
+            "command": "start ./terminal.bat",
+            "group": "none",
+            "presentation": {
+                "focus": true,
+                "reveal": "always",
+                "panel": "dedicated"
+            },
             "runOptions": {
                 "runOn": "default"
             },
