@@ -1,7 +1,4 @@
-# Vscode tasks
-tasks.json
-
-.vscode
+.vscode/settings.json
 
 # Logs
 logs
