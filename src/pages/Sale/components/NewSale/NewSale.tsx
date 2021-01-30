@@ -7,7 +7,7 @@ import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { handleCloseSlider } from './newSale.action';
+import { compileProductsTableBodyData, handleCloseSlider } from './newSale.action';
 import styles from './newSale.module.scss';
 
 /**
@@ -19,8 +19,8 @@ export interface INewSaleProps {
 }
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
-    const [productsData, setProductsData] = useState<
-        pointOfSaleTypes.productResponseTypes.IGetProducts['data']
+    const [searchResults, setSearchResults] = useState<
+        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
     >(null);
     const [searchQuery, setSearchQuery] = useState('');
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
@@ -29,7 +29,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const queryServer = useCallback(
         debounce(async (query: string) => {
             if (query.length > 0) {
-                console.log(await productRequests.searchProduct(query));
+                setSearchResults(await productRequests.searchProduct(query));
             }
         }, 400),
         [],
@@ -80,8 +80,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         <p key={'Available Stock'}>{'Available Stock'}</p>,
                         <p key={'Price'}>{'Price'}</p>,
                     ]}
-                    // rowData={compileProductsTableBodyData(productsData)}
-                    rowData={[]}
+                    rowData={compileProductsTableBodyData(searchResults)}
                 />
                 <div className={styles.extraControlsCard}>
                     <Button
@@ -125,14 +124,14 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         <span>{'Order Total'}</span>
                         <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
                     </div>
-                    {/* <Button
+                    <Button
                         label="CHECKOUT"
-                        onClick={() =>
-                            store.dispatch(
-                                toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                            )
-                        }
-                    /> */}
+                        // onClick={() =>
+                        //     store.dispatch(
+                        //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                        //     )
+                        // }
+                    />
                 </div>
             </div>
         </div>

@@ -21,17 +21,16 @@ export const getAllProducts = async (): Promise<
  */
 export const searchProduct = async (
     query: string,
-): Promise<pointOfSaleTypes.productResponseTypes.IGetProducts['data']> => {
+): Promise<pointOfSaleTypes.productResponseTypes.ISearchProduct['data']> => {
     const response = await apiService.post(
         `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_SEARCH_PRODUCT}`,
         {
             query,
         },
     );
-    console.log(response.data);
-
-    if (response.status) {
-        return response.data as pointOfSaleTypes.productResponseTypes.IGetProducts['data'];
+    const responseData = response.data as pointOfSaleTypes.productResponseTypes.ISearchProduct;
+    if (responseData.status) {
+        return responseData.data;
     }
     return null;
 };
