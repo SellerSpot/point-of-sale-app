@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
-import { Button } from '@sellerspot/universal-components';
-import { InputField } from '@sellerspot/universal-components';
-import { Table } from '@sellerspot/universal-components';
+import { Button, InputField, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { handleCloseSlider } from './newSale.action';
 import styles from './newSale.module.scss';
 
 /**
@@ -19,34 +19,38 @@ export interface INewSaleProps {
 }
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
-    const [productsData, setproductsData] = useState<
+    const [productsData, setProductsData] = useState<
         pointOfSaleTypes.productResponseTypes.IGetProducts['data']
     >(null);
-    // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
 
-    // used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'newSaleSlider',
-                active: false,
-            }),
-        );
-        props.callBackStateTrack[1](false);
+    // used to query the server to fetch product suggestions
+    const queryServer = useCallback(
+        debounce(async (query: string) => {
+            if (query.length > 0) {
+                console.log(await productRequests.searchProduct(query));
+            }
+        }, 400),
+        [],
+    );
+
+    /**
+     * Used to handle the user typing in the New Sale page
+     * @param query Query typed by the user in the search bar
+     */
+    const handleProductNameSearch = async (query: string): Promise<void> => {
+        setSearchQuery(query);
+        // const searchedProducts = await productRequests.searchProduct(query);
+        queryServer(query);
+        // console.log(searchedProducts);
     };
 
     useEffect(() => {
         if (props.callBackStateTrack[0]) {
-            handleCloseSlider();
+            handleCloseSlider(props.callBackStateTrack[1]);
         }
     }, [props.callBackStateTrack[0]]);
-
-    useEffect(() => {
-        (async () => {
-            const productsData = await productRequests.getAllProducts();
-            setproductsData(productsData);
-        }).call(null);
-    }, []);
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
@@ -61,7 +65,11 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     return (
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
-                <InputField placeHolder="Product Name / Code" onChange={(): void => void 0} />
+                <InputField
+                    placeHolder="Product Name / Code"
+                    value={searchQuery}
+                    onChange={(event) => handleProductNameSearch(event.target.value)}
+                />
                 <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,

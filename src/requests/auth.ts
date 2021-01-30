@@ -10,14 +10,13 @@ export const authorizeTenant = async (
         error: 'Bad Request',
     };
     try {
-        const response = <pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse>(
-            await apiService.post('AUTHORIZE', <
-                pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
-            >{ domainName })
-        );
+        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHORIZE, <
+            pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
+        >{ domainName });
+        const responseData = response.data as pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse;
 
-        if (response.status && response.data) {
-            resultResponse = response;
+        if (responseData.status && responseData.data) {
+            resultResponse = responseData;
         } else {
             throw response;
         }
