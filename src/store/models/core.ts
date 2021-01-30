@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RootState } from 'store/store';
+import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 interface ICoreState {

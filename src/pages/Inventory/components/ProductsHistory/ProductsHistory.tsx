@@ -1,30 +1,32 @@
-import { css } from '@emotion/css';
 import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { MetaCard } from 'components/MetaCard/MetaCard';
-import { cssColors } from 'config/cssVariables';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getProducts } from 'requests/product';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import { IGetProductFromServer } from 'typings/components/product.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
-import {
-    compileProductsTableBodyData,
-    handleProductsHistoryTableRowClick,
-} from './productsHistory.actions';
-import styles from './productsHistory.module.css';
+// import { getProducts } from 'requests/product';
+// import { toggleSliderModal } from 'store/models/sliderModal';
+// import { IGetProductFromServer } from 'typings/components/product.types';
+import { generalUtilities } from 'utilities/utilities';
+// import {
+//     compileProductsTableBodyData,
+//     handleProductsHistoryTableRowClick,
+// } from './productsHistory.actions';
+import styles from './productsHistory.module.scss';
 
 export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [productsData, setProductsData] = useState<IGetProductFromServer[]>(null);
+    const [
+        productsData,
+        setProductsData,
+    ] = useState<pointOfSaleTypes.productResponseTypes.IGetProducts>(null);
 
     useEffect(() => {
-        (async () => {
-            // To populate the table
-            const productsData = await getProducts();
-            setProductsData(productsData.data as IGetProductFromServer[]);
-        }).call(null);
+        // (async () => {
+        //     // To populate the table
+        //     const productsData = await getProducts();
+        //     setProductsData(productsData.data as IGetProductFromServer[]);
+        // }).call(null);
     }, []);
 
     return (
@@ -35,21 +37,16 @@ export const ProductsHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addProduct'}
-                        label={`Add Product (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
-                        style={{
-                            color: cssColors['--inventory-color'],
-                            backgroundColor: cssColors['--primary-background-color'],
-                            borderColor: cssColors['--inventory-color'],
-                        }}
-                        onClick={() =>
-                            dispatch(
-                                toggleSliderModal({ sliderName: 'addProductSlider', active: true }),
-                            )
-                        }
+                        label={`Add Product (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
+                        // onClick={() =>
+                        //     dispatch(
+                        //         toggleSliderModal({ sliderName: 'addProductSlider', active: true }),
+                        //     )
+                        // }
                     />,
                 ]}
             />
-            <div className={styles.tableWrapper}>
+            {/* <div className={styles.tableWrapper}>
                 <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
@@ -75,7 +72,7 @@ export const ProductsHistory = (): JSX.Element => {
                         },
                     }}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };

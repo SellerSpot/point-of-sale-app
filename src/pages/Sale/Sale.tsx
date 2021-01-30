@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-import { ROUTES } from '../../config/routes';
-import lodash from 'lodash';
+import { ROUTES } from 'config/routes';
+import { findIndex } from 'lodash';
+import React, { useState } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { SaleHistory } from './components/SaleHistory/SaleHistory';
-import { getSaleStyles } from './sale.styles';
+import { SalesHistory } from './components/SalesHistory/SalesHistory';
+import styles from './sale.module.scss';
 
 export const Sales = (): JSX.Element => {
     const history = useHistory();
@@ -17,12 +17,10 @@ export const Sales = (): JSX.Element => {
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        return lodash.findIndex(tabs, { route: pathname });
+        return findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
-
-    const styles = getSaleStyles();
 
     return (
         <div className={styles.salesWrapper}>
@@ -34,7 +32,7 @@ export const Sales = (): JSX.Element => {
                 <Switch>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.SALES_HISTORY}>
-                        <SaleHistory />
+                        <SalesHistory />
                     </Route>
                 </Switch>
             </div>

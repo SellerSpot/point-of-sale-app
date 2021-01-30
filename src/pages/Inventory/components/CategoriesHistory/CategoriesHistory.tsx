@@ -1,30 +1,33 @@
-import { css } from '@emotion/css';
 import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { MetaCard } from 'components/MetaCard/MetaCard';
-import { cssColors } from 'config/cssVariables';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCategories } from 'requests/category';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import { IGetCategoryFromServer } from 'typings/components/category.types';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
-import {
-    compileCategoriesTableBodyData,
-    handleCategoriesHistoryTableRowClick,
-} from './categoriesHistory.actions';
-import styles from './categoriesHistory.module.css';
+// import { getCategories } from 'requests/category';
+// import { toggleSliderModal } from 'store/models/sliderModal';
+import { generalUtilities } from 'utilities/utilities';
+// import {
+//     compileCategoriesTableBodyData,
+//     handleCategoriesHistoryTableRowClick,
+// } from './categoriesHistory.actions';
+import styles from './categoriesHistory.module.scss';
 
 export const CategoriesHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [categoriesData, setCategoriesData] = useState<IGetCategoryFromServer[]>(null);
+    const [
+        categoriesData,
+        setCategoriesData,
+    ] = useState<pointOfSaleTypes.categoryResponseTypes.IGetAllCategories>(null);
 
     useEffect(() => {
-        (async () => {
-            // To populate the table
-            const categoriesData = await getCategories();
-            setCategoriesData(categoriesData.data as IGetCategoryFromServer[]);
-        }).call(null);
+        // (async () => {
+        //     // To populate the table
+        //     const categoriesData = await getCategories();
+        //     setCategoriesData(
+        //         categoriesData.data as pointOfSaleTypes.categoryResponseTypes.IGetAllCategories,
+        //     );
+        // }).call(null);
     }, []);
 
     return (
@@ -35,24 +38,20 @@ export const CategoriesHistory = (): JSX.Element => {
                 buttons={[
                     <Button
                         key={'addCategory'}
-                        label={`Add Category (${GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY})`}
-                        style={{
-                            color: cssColors['--inventory-color'],
-                            backgroundColor: cssColors['--primary-background-color'],
-                            borderColor: cssColors['--inventory-color'],
-                        }}
-                        onClick={() =>
-                            dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addCategorySlider',
-                                    active: true,
-                                }),
-                            )
-                        }
+                        label={`Add Category (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY})`}
+
+                        // onClick={() =>
+                        //     dispatch(
+                        //         toggleSliderModal({
+                        //             sliderName: 'addCategorySlider',
+                        //             active: true,
+                        //         }),
+                        //     )
+                        // }
                     />,
                 ]}
             />
-            <div className={styles.tableWrapper}>
+            {/* <div className={styles.tableWrapper}>
                 <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
@@ -73,7 +72,7 @@ export const CategoriesHistory = (): JSX.Element => {
                         },
                     }}
                 />
-            </div>
+            </div> */}
         </div>
     );
 };

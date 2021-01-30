@@ -7,7 +7,6 @@ export interface IApiServiceErrorResponse {
 
 export interface IApiServiceResponse {
     status: boolean;
-    statusCode?: number;
     data?: unknown;
-    error?: unknown;
+    error?: string;
 }

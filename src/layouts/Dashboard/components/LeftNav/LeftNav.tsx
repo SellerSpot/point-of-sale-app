@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { cssColors } from 'config/cssVariables';
 import { HorizontalRule } from '@sellerspot/universal-components';
 import { ROUTES } from 'config/routes';
-import { getLeftNavStyles } from './leftnav.styles';
 import { ICONS } from 'config/icons';
+import styles from './leftNav.module.scss';
+import commonStyles from '../../../../styles/common.module.scss';
+import cn from 'classnames';
 
 interface INavItem {
-    color: string;
+    colorClass: string;
     Icon: React.ComponentType;
     title: string;
     active: boolean;
@@ -16,21 +17,18 @@ interface INavItem {
     onClick: () => void;
 }
 
-const NavItem = ({ Icon, color, onClick, title }: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
-    const styles = getLeftNavStyles();
-
+const NavItem = ({
+    Icon,
+    colorClass,
+    onClick,
+    title,
+}: Omit<INavItem, 'activeRoutes'>): JSX.Element => {
     return (
-        <div
-            className={styles.navItem}
-            style={{
-                color,
-            }}
-            onClick={onClick}
-        >
-            <div className={styles.navIcon}>
+        <div className={styles.navItem} onClick={onClick}>
+            <div className={cn(styles.navIcon, colorClass)}>
                 <Icon />
             </div>
-            <div className={styles.navTitle}>{title}</div>
+            <div className={cn(styles.navTitle, colorClass)}>{title}</div>
         </div>
     );
 };
@@ -45,14 +43,14 @@ export const LeftNav = (): JSX.Element => {
     const navItem: Omit<INavItem, 'active' | 'onClick'>[] = [
         {
             Icon: ICONS.saleLeftNavItem,
-            color: cssColors['--sales-color'],
+            colorClass: commonStyles.salesColor,
             title: 'sales',
             route: ROUTES.SALES,
             activeRoutes: [ROUTES.SALES],
         },
         {
             Icon: ICONS.inventoryLeftNavItem,
-            color: cssColors['--inventory-color'],
+            colorClass: commonStyles.inventoryColor,
             title: 'inventory',
             route: ROUTES.INVENTORY,
             activeRoutes: [
@@ -61,18 +59,18 @@ export const LeftNav = (): JSX.Element => {
                 ROUTES.INVENTORY_CATEGORIES,
                 ROUTES.INVENTORY_PRODUCTS,
                 ROUTES.INVENTORY_TAX_BRACKETS,
+                ROUTES.INVENTORY_STOCK_UNITS,
             ],
         },
         {
             Icon: ICONS.billLeftNavItem,
-            color: cssColors['--cashregister-color'],
+            colorClass: commonStyles.billingColor,
             title: 'Billing Setup',
             route: ROUTES.BILLING_SETUP,
             activeRoutes: [ROUTES.BILLING_SETUP],
         },
     ];
 
-    const styles = getLeftNavStyles();
     return (
         <div className={styles.leftNavWrapper}>
             <div className={styles.contentWrapper}>
@@ -101,7 +99,7 @@ export const LeftNav = (): JSX.Element => {
                         <NavItem
                             key={key}
                             Icon={item.Icon}
-                            color={isActive ? item.color : cssColors['--tertiary-font-color']}
+                            colorClass={isActive ? item.colorClass : commonStyles.defaultColor}
                             onClick={() => history.push(item.route)}
                             title={item.title}
                             route={item.route}

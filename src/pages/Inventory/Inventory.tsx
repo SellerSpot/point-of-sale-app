@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
 import { ITabBarProps, TabBar } from 'components/TabBar/TabBar';
-import { Route, Switch, useHistory } from 'react-router-dom';
 import { ROUTES } from 'config/routes';
-import lodash from 'lodash';
-import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
-import { cssColors } from 'config/cssVariables';
+import { findIndex } from 'lodash';
+import React, { useState } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import { BrandsHistory } from './components/BrandsHistory/BrandsHistory';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
-import styles from './inventory.module.scss';
-import { BrandsHistory } from './components/BrandHistory/BrandHistory';
+import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
+import { StockUnitsHistory } from './components/StockUnits/StockUnits';
 import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
+import styles from './inventory.module.scss';
 
 export const Inventory = (): JSX.Element => {
     const history = useHistory();
@@ -30,10 +30,14 @@ export const Inventory = (): JSX.Element => {
             name: 'Tax Brackets',
             route: ROUTES.INVENTORY_TAX_BRACKETS,
         },
+        {
+            name: 'Stock Units',
+            route: ROUTES.INVENTORY_STOCK_UNITS,
+        },
     ];
 
     const getCurrentTabIndex = (pathname: string): number => {
-        return lodash.findIndex(tabs, { route: pathname });
+        return findIndex(tabs, { route: pathname });
     };
 
     const [currentTab, setCurrentTab] = useState(getCurrentTabIndex(history.location.pathname));
@@ -41,28 +45,20 @@ export const Inventory = (): JSX.Element => {
     return (
         <div className={styles.inventoryWrapper}>
             <div className={styles.tabBarWrapper}>
-                <TabBar
-                    tabs={tabs}
-                    onSelect={setCurrentTab}
-                    selectedIndex={currentTab}
-                    style={{
-                        selectedTabStyle: {
-                            color: cssColors['--inventory-color'],
-                        },
-                    }}
-                />
+                <TabBar tabs={tabs} onSelect={setCurrentTab} selectedIndex={currentTab} />
             </div>
 
             <div className={styles.overallPageWrapper}>
                 <Switch>
+                    <Route path={ROUTES.INVENTORY_STOCK_UNITS}>
+                        <StockUnitsHistory />
+                    </Route>
                     <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <CategoriesHistory />
                     </Route>
-
                     <Route path={ROUTES.INVENTORY_BRANDS}>
                         <BrandsHistory />
                     </Route>
-
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />
                     </Route>

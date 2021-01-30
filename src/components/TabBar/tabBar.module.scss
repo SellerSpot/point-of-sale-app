@@ -1,0 +1,38 @@
+.tabBarWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 20px;
+    width: 100%;
+    height: 50px;
+    border-radius: $border-radius;
+    background-color: $primary-background-color;
+    box-shadow: $shadow;
+
+    user-select: none;
+
+    .tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .tab:hover {
+        background-color: $tertiary-background-color;
+    }
+
+    .tabTitle {
+        color: $primary-font-color;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: $font-size-default;
+        transition: color $transition-duration;
+    }
+
+    .selectedTab {
+        color: $sales-color;
+    }
+}

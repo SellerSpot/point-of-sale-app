@@ -1,4 +1,3 @@
-import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services/services';
 import { pointOfSaleTypes, STATUS_CODES } from '@sellerspot/universal-types';
 
@@ -11,14 +10,13 @@ export const authorizeTenant = async (
         error: 'Bad Request',
     };
     try {
-        const response = <pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse>(
-            await apiService.post(API_ROUTES.AUTH_AUTHORIZE_TENANT, <
-                pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
-            >{ domainName })
-        );
+        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHORIZE, <
+            pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
+        >{ domainName });
+        const responseData = response.data as pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse;
 
-        if (response.status && response.data) {
-            resultResponse = response;
+        if (responseData.status && responseData.data) {
+            resultResponse = responseData;
         } else {
             throw response;
         }

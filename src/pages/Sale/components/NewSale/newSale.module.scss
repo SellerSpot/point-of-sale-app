@@ -1,0 +1,68 @@
+.newSaleWrapper {
+    display: grid;
+    overflow: hidden;
+    padding: 10px;
+    width: 100vw;
+    height: 100vh;
+    background-color: $secondary-background-color;
+
+    gap: 10px;
+    grid-template-columns: 65% 1fr;
+    grid-template-rows: 1fr;
+}
+.leftPanel {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 40px 1fr 100px;
+}
+.rightPanel {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 250px;
+}
+.extraControlsCard {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: $border-radius;
+    background-color: $primary-background-color;
+    box-shadow: $shadow;
+}
+.calculationCard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    width: 100%;
+    height: 100%;
+    border-radius: $border-radius;
+    background-color: $primary-background-color;
+    box-shadow: $shadow;
+
+    gap: 15px;
+}
+.calculationEntry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 700;
+    font-size: $font-size-small-heading;
+}
+
+.orderTotalText {
+    font-size: $font-size-extra-large;
+}

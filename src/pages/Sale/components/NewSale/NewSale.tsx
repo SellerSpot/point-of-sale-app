@@ -1,39 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button } from '@sellerspot/universal-components';
-import { InputField } from '@sellerspot/universal-components';
-import { Table } from '@sellerspot/universal-components';
-import { cssColors, cssVariables } from 'config/cssVariables';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import { getNewSaleStyles } from './NewSale.styles';
-import { IGetProductFromServer } from 'typings/components/product.types';
-import { ISaleCartItem } from 'typings/components/sale.types';
-import { getProducts } from 'requests/product';
-import { compileProductsTableBodyData, getCartItems } from './newSale.actions';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/keyboardShortcuts';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { store } from 'store/store';
+import 'react-base-table/styles.css';
 
-export const NewSale = (): JSX.Element => {
-    const dispatch = useDispatch();
-    const styles = getNewSaleStyles();
-    const [productsData, setproductsData] = useState<IGetProductFromServer[]>(null);
-    const [cartData, setCartData] = useState<ISaleCartItem[]>(null);
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
+import Table, { Column } from 'react-base-table';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { productRequests } from 'requests/requests';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, InputField } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { compileProductsTableBodyData, handleCloseSlider } from './newSale.action';
+import styles from './newSale.module.scss';
+
+/**
+ * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
+ * Callbacks operating the props state - onEscClick & onBackdropClick
+ */
+export interface INewSaleProps {
+    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+
+export const NewSale = (props: INewSaleProps): JSX.Element => {
+    const [searchResults, setSearchResults] = useState<
+        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
+    >(null);
+    const [width, setWidth] = useState(window.innerWidth);
+    const updateDimensions = () => {
+        setWidth(window.innerWidth);
+    };
+    const [searchQuery, setSearchQuery] = useState('');
+    // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
+
+    // used to query the server to fetch product suggestions
+    const queryServer = useCallback(
+        debounce(async (query: string) => {
+            if (query.length > 0) {
+                setSearchResults(await productRequests.searchProduct(query));
+            }
+        }, 400),
+        [],
+    );
+
+    /**
+     * Used to handle the user typing in the New Sale page
+     * @param query Query typed by the user in the search bar
+     */
+    const handleProductNameSearch = async (query: string): Promise<void> => {
+        setSearchQuery(query);
+        // const searchedProducts = await productRequests.searchProduct(query);
+        queryServer(query);
+        // console.log(searchedProducts);
+    };
 
     useEffect(() => {
-        (async () => {
-            const productsData = await getProducts();
-            setproductsData(productsData.data as IGetProductFromServer[]);
-        }).call(null);
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider(props.callBackStateTrack[1]);
+        }
+    }, [props.callBackStateTrack[0]]);
+
+    useEffect(() => {
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
     }, []);
 
-    useHotkeys(GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
+    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
         store.dispatch(
             toggleSliderModal({
                 sliderName: 'newSaleSlider',
                 active: true,
-                autoFillData: null,
             }),
         );
     });
@@ -41,48 +77,29 @@ export const NewSale = (): JSX.Element => {
     return (
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
-                <InputField placeHolder="Product Name / Code" onChange={(): void => void 0} />
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Code'}>{'Code'}</p>,
-                        <p key={'Brand'}>{'Brand'}</p>,
-                        <p key={'Category'}>{'Category'}</p>,
-                        <p key={'Available Stock'}>{'Available Stock'}</p>,
-                        <p key={'Price'}>{'Price'}</p>,
-                    ]}
-                    rowData={compileProductsTableBodyData(productsData)}
+                <InputField
+                    placeHolder="Product Name / Code"
+                    value={searchQuery}
+                    onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
+                <Table width={width / 1.562} data={[]}>
+                    <Column key="asd" title={'value'} dataKey={'value'} width={100} />
+                </Table>
                 <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
                         label="Return to Dashboard"
-                        style={{
-                            marginRight: 'auto',
-                            width: 'auto',
-                            backgroundColor: cssColors['--danger-color'],
-                            color: cssColors['--light-font-color'],
-                        }}
                         onClick={() =>
-                            dispatch(
+                            store.dispatch(
                                 toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
                             )
                         }
                     />
-                    <Button
-                        label="Calculator"
-                        style={{
-                            width: 'auto',
-                            color: cssColors['--sales-color'],
-                            backgroundColor: 'transparent',
-                            borderColor: cssColors['--sales-color'],
-                        }}
-                    />
+                    <Button label="Calculator" />
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                <Table
+                {/* <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
                         <p key={'Item Name'}>{'Item Name'}</p>,
@@ -90,8 +107,9 @@ export const NewSale = (): JSX.Element => {
                         <p key={'Sub-Total'}>{'Sub-Total'}</p>,
                         <p key={'Discount'}>{'Discount'}</p>,
                     ]}
-                    rowData={getCartItems(cartData)}
-                />
+                    // rowData={getCartItems(cartData)}
+                    rowData={[]}
+                /> */}
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>
@@ -107,22 +125,15 @@ export const NewSale = (): JSX.Element => {
                     </div>
                     <div className={styles.calculationEntry}>
                         <span>{'Order Total'}</span>
-                        <span style={{ fontSize: cssVariables['--font-size-extra-large'] }}>
-                            {'₹ 250.00'}
-                        </span>
+                        <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
                     </div>
                     <Button
                         label="CHECKOUT"
-                        style={{
-                            height: '50px',
-                            color: cssColors['--light-font-color'],
-                            backgroundColor: cssColors['--sales-color'],
-                        }}
-                        onClick={() =>
-                            dispatch(
-                                toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                            )
-                        }
+                        // onClick={() =>
+                        //     store.dispatch(
+                        //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                        //     )
+                        // }
                     />
                 </div>
             </div>

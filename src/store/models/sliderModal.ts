@@ -1,62 +1,56 @@
-import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import { IGetBrandFromServer } from 'typings/components/brand.types';
-import { IGetCategoryFromServer } from 'typings/components/category.types';
-import { IGetProductFromServer } from 'typings/components/product.types';
-import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
-import { RootState } from '../store';
+import { RootState } from 'store/store';
+import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
-type TSliderAutofill =
-    | IGetProductFromServer
-    | IGetCategoryFromServer
-    | IGetBrandFromServer
-    | IGetTaxBracketFromServer;
+// import { IGetBrandFromServer } from 'pages/Inventory/components/AddBrand/brand.types';
+// import { IGetCategoryFromServer } from 'typings/components/category.types';
+// import { IGetProductFromServer } from 'typings/components/product.types';
+// import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
 
 export interface SliderModalInitialState {
     newSaleSlider: {
         show: boolean;
         autoFillData?: null;
     };
-    addProductSlider: {
-        show: boolean;
-        autoFillData?: IGetProductFromServer;
-    };
-    addCategorySlider: {
-        show: boolean;
-        autoFillData?: IGetCategoryFromServer;
-    };
+    // addProductSlider: {
+    //     show: boolean;
+    //     autoFillData?: IGetProductFromServer;
+    // };
+    // addCategorySlider: {
+    //     show: boolean;
+    //     autoFillData?: IGetCategoryFromServer;
+    // };
     addBrandSlider: {
         show: boolean;
-        autoFillData?: IGetBrandFromServer;
     };
-    addTaxBracketSlider: {
-        show: boolean;
-        autoFillData?: IGetTaxBracketFromServer;
-    };
-    checkoutSlider: {
-        show: boolean;
-        autoFillData?: null;
-    };
+    // addTaxBracketSlider: {
+    //     show: boolean;
+    //     autoFillData?: IGetTaxBracketFromServer;
+    // };
+    // checkoutSlider: {
+    //     show: boolean;
+    //     autoFillData?: null;
+    // };
 }
 
 const initialState: SliderModalInitialState = {
     newSaleSlider: {
         show: false,
     },
-    addProductSlider: {
-        show: false,
-    },
-    addCategorySlider: {
-        show: false,
-    },
+    // addProductSlider: {
+    //     show: false,
+    // },
+    // addCategorySlider: {
+    //     show: false,
+    // },
     addBrandSlider: {
         show: false,
     },
-    addTaxBracketSlider: {
-        show: false,
-    },
-    checkoutSlider: {
-        show: false,
-    },
+    // addTaxBracketSlider: {
+    //     show: false,
+    // },
+    // checkoutSlider: {
+    //     show: false,
+    // },
 };
 
 const sliderModalSlice = createSlice({
@@ -70,11 +64,9 @@ const sliderModalSlice = createSlice({
             }: PayloadAction<{
                 sliderName: keyof SliderModalInitialState;
                 active: boolean;
-                autoFillData?: TSliderAutofill;
             }>,
         ) => {
             state[payload.sliderName].show = payload.active;
-            state[payload.sliderName].autoFillData = payload.autoFillData;
         },
     },
 });

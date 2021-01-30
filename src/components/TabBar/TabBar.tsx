@@ -1,20 +1,13 @@
+import { merge } from 'lodash';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { getTabBarStyles, IGetTabBarStyles } from './tabBar.styles';
-import { cx } from '@emotion/css';
-import lodash from 'lodash';
+import styles from './tabBar.module.scss';
+import cn from 'classnames';
 
 export interface ITabBarProps {
     tabs: { name: string; route?: string }[];
     selectedIndex: number;
     onSelect: (selectedIndex: number) => void;
-    style?: {
-        tabBarWrapperStyle?: React.CSSProperties;
-        tabStyle?: React.CSSProperties;
-        tabTitleStyle?: React.CSSProperties;
-        selectedTabStyle?: React.CSSProperties;
-    };
-    className?: IGetTabBarStyles;
 }
 
 export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element => {
@@ -23,17 +16,12 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
     const defaultProps: ITabBarProps = {
         tabs: [],
         selectedIndex: 0,
-        style: {},
         onSelect: () => void 0,
     };
-    const requiredProps = lodash.merge(defaultProps, props);
-    const styles = getTabBarStyles();
+    const requiredProps = merge(defaultProps, props);
 
     return (
-        <div
-            className={cx(styles.tabBarWrapper, requiredProps.className?.tabBarWrapper)}
-            style={requiredProps.style?.tabBarWrapperStyle}
-        >
+        <div className={styles.tabBarWrapper}>
             {requiredProps.tabs.map((tab, index) => {
                 return (
                     <div
@@ -42,19 +30,12 @@ export const TabBar: React.FC<ITabBarProps> = (props: ITabBarProps): JSX.Element
                             history.push(tab.route ?? '#');
                         }}
                         key={index}
-                        className={cx(styles.tab, requiredProps.className?.tab)}
-                        style={requiredProps.style?.tabStyle}
+                        className={styles.tab}
                     >
                         <div
-                            className={cx(cx(styles.tabTitle, requiredProps.className?.tabTitle), {
-                                [cx(styles.selectedTab, requiredProps.className?.tabTitle)]:
-                                    index === requiredProps.selectedIndex ? true : false,
+                            className={cn(styles.tabTitle, {
+                                [styles.selectedTab]: index === requiredProps.selectedIndex,
                             })}
-                            style={
-                                index === requiredProps.selectedIndex
-                                    ? requiredProps.style?.selectedTabStyle
-                                    : null
-                            }
                         >
                             {tab.name}
                         </div>

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction, Selector } from '@reduxjs/toolkit';
-import lodash from 'lodash';
-import { RootState } from '../store';
+import { merge } from 'lodash';
+import { RootState } from 'store/store';
+import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
 interface InitialState {
     notifyId: string | number;
@@ -22,8 +22,8 @@ const notify = createSlice({
     initialState,
     reducers: {
         showNotify: (state: InitialState, { payload }: PayloadAction<InitialState>) => {
-            console.log(lodash.merge(initialState, payload));
-            state = lodash.merge(initialState, payload);
+            console.log(merge(initialState, payload));
+            state = merge(initialState, payload);
         },
     },
 });

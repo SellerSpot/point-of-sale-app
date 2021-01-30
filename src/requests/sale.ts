@@ -1,27 +1,14 @@
-import { API_ROUTES } from 'config/apiRoutes';
 import { apiService } from 'services/services';
-import { IApiServiceErrorResponse } from 'typings/common.types';
-import { IGetSale } from 'typings/components/sale.types';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
-interface ISaleApiResponse {
-    status: boolean;
-    data?: IGetSale[];
-    error?: IApiServiceErrorResponse[];
-}
-
-export const getSales = async (): Promise<ISaleApiResponse> => {
-    // Sending API request
-    const response = await apiService.get(API_ROUTES.SALES);
-    // Parsing response
+export const fetchAllSales = async (): Promise<
+    pointOfSaleTypes.saleResponseTypes.IGetSales['data']
+> => {
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.SALE}/${pointOfSaleTypes.ROUTES.SALE_GET_ALL_SALES}`,
+    );
     if (response.status) {
-        return {
-            status: true,
-            data: response.data as IGetSale[],
-        };
-    } else {
-        return {
-            status: false,
-            error: response.error as IApiServiceErrorResponse[],
-        };
+        return response.data as pointOfSaleTypes.saleResponseTypes.IGetSales['data'];
     }
+    return null;
 };
