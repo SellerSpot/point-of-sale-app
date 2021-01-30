@@ -1,11 +1,14 @@
+import 'react-base-table/styles.css';
+
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
+import Table, { Column } from 'react-base-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
-import { Button, InputField, Table } from '@sellerspot/universal-components';
+import { Button, InputField } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { compileProductsTableBodyData, handleCloseSlider } from './newSale.action';
 import styles from './newSale.module.scss';
@@ -22,6 +25,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [searchResults, setSearchResults] = useState<
         pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
     >(null);
+    const [width, setWidth] = useState(window.innerWidth);
+    const updateDimensions = () => {
+        setWidth(window.innerWidth);
+    };
     const [searchQuery, setSearchQuery] = useState('');
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
 
@@ -52,6 +59,11 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
+    useEffect(() => {
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
+
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
         store.dispatch(
@@ -70,18 +82,9 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     value={searchQuery}
                     onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Code'}>{'Code'}</p>,
-                        <p key={'Brand'}>{'Brand'}</p>,
-                        <p key={'Category'}>{'Category'}</p>,
-                        <p key={'Available Stock'}>{'Available Stock'}</p>,
-                        <p key={'Price'}>{'Price'}</p>,
-                    ]}
-                    rowData={compileProductsTableBodyData(searchResults)}
-                />
+                <Table width={width / 1.562} data={[]}>
+                    <Column key="asd" title={'value'} dataKey={'value'} width={100} />
+                </Table>
                 <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
@@ -96,7 +99,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                <Table
+                {/* <Table
                     headers={[
                         <p key={'S.No'}>{'S.No'}</p>,
                         <p key={'Item Name'}>{'Item Name'}</p>,
@@ -106,7 +109,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     ]}
                     // rowData={getCartItems(cartData)}
                     rowData={[]}
-                />
+                /> */}
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>
