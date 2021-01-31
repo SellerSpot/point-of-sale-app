@@ -1,0 +1,26 @@
+@import 'colors';
+
+.danger {
+    background: $danger-color;
+    color: $light-font-color;
+}
+
+.success {
+    background: $success-color;
+    color: $light-font-color;
+}
+
+.warning {
+    background: $warning-color;
+    color: $primary-font-color;
+}
+
+.info {
+    background: $info-color;
+    color: $light-font-color;
+}
+
+.default {
+    background: $light-font-color;
+    color: $primary-font-color;
+}

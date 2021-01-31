@@ -1,0 +1,12 @@
+.sectionTitleWrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 18px;
+    font-weight: bold;
+    color: $primary-font-color;
+    padding: 10px 10px;
+    cursor: pointer;
+    user-select: none;
+}

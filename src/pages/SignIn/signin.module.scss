@@ -1,0 +1,56 @@
+.signInWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.signInContainer {
+    text-align: left;
+    margin-top: 20%;
+    width: 500px;
+}
+
+.signInTitle {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.formContainer {
+    position: relative;
+}
+
+.inputGroup {
+    position: relative;
+    margin-top: 25px;
+}
+
+/* redirect action */
+.redirectActionHolder {
+    position: absolute;
+    font-size: 20px;
+    width: auto;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* forgot password holder */
+.forgotPasswordHolder {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.submitButton {
+    background: $warning-color !important;
+    color: $light-font-color !important;
+    font-size: 18 !important;
+    height: 50 !important;
+    font-weight: 'bold' !important;
+}

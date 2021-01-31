@@ -1,6 +1,10 @@
 const inferRouteTypes = <T extends { [key: string]: string }>(arg: T): T => arg; // Infering types from Route object with autocomplete support.
 
 export const ROUTES = inferRouteTypes({
+    // Auth routes
+    Auth: '/auth',
+    AUTH_SIGN_IN: '/auth/signin', // no signup fo pos app - users will be added by owner
+    AUTH_FORGOT: '/auth/forgot',
     // Base routes
     DASHBOARD: '/',
     SALES: '/',

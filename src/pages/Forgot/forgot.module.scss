@@ -1,0 +1,47 @@
+.forgotWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.forgotContainer {
+    text-align: left;
+    margin-top: 20%;
+    width: 500px;
+}
+
+.forgotTitle {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.forgotInstructions {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.formContainer {
+    position: relative;
+}
+
+.inputGroup {
+    position: relative;
+    margin-top: 25px;
+}
+
+/* redirect action */
+.redirectActionHolder {
+    position: absolute;
+    font-size: 20px;
+    width: auto;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

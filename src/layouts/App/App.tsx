@@ -1,4 +1,6 @@
-import './styles/core.scss';
+import '../../styles/core.scss';
+import styles from './app.module.scss';
+import commonStyles from '../../styles/common.module.scss';
 
 import { CONFIG } from 'config/config';
 import { initializeGlobalServices, updateGlobalServices } from 'config/globalConfig';
@@ -6,13 +8,12 @@ import { ROUTES } from 'config/routes';
 import { Dashboard } from 'layouts/Dashboard/Dashboard';
 import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { coreSelector, updateTenant } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
 import { Notify, Spinner } from '@sellerspot/universal-components';
-import { authRequests } from './requests/requests';
-import styles from './styles/app.module.scss';
-import commonStyles from './styles/common.module.scss';
+import { authRequests } from '../../requests/requests';
+import { Auth } from 'layouts/Auth/Auth';
 
 initializeGlobalServices(); // application common initilizers goes here
 
@@ -20,7 +21,8 @@ export const App = (): ReactElement => {
     // Getting Notify selector
     const coreState = useSelector(coreSelector);
     const dispatch = useDispatch();
-    const { notifyId, content, timeout, className, style } = useSelector(notifySelector);
+    const notifyState = useSelector(notifySelector);
+
     useEffect(() => {
         // do tenant authorization and release isLoading if valid
         (async () => {
@@ -44,21 +46,29 @@ export const App = (): ReactElement => {
             ) : (
                 <>
                     <Switch>
+                        <Route path={ROUTES.Auth}>
+                            {!coreState.isAuthenticated ? (
+                                <Auth />
+                            ) : (
+                                <Redirect to={ROUTES.DASHBOARD} />
+                            )}
+                        </Route>
                         {/* All other routes should be nested above this route because it is '/' route hence should be placed atlast */}
                         <Route path={ROUTES.DASHBOARD}>
-                            <Dashboard />
+                            {coreState.isAuthenticated ? (
+                                <Dashboard />
+                            ) : (
+                                <Redirect to={ROUTES.Auth} />
+                            )}
                         </Route>
                     </Switch>
-                    {/* All globally available components (via store) should be nested below  */}
+                    {/* global components */}
                     <Notify
-                        notifyId={notifyId}
-                        content={content}
-                        timeout={timeout}
-                        className={{
-                            notifyWrapper: className?.notifyWrapper,
-                        }}
+                        notifyId={notifyState.notifyId}
+                        content={notifyState.content}
+                        timeout={notifyState.timeOut}
                         style={{
-                            notifyWrapper: style,
+                            notifyWrapper: notifyState.styles,
                         }}
                     />
                 </>
