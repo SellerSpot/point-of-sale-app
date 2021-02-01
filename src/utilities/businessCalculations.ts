@@ -7,7 +7,7 @@ import { isUndefined } from 'lodash';
  */
 export const xPercentOfY = (props: { x: number; y: number }): number => (props.x / 100) * props.y;
 
-//~ SPECIALISED COMPUTATION FUNCTIONS
+//~ ITEM COMPUTATION FUNCTIONS
 
 /**
  * * ITEM_SUB_TOTAL - Cost of item before applying tax or discounts
@@ -28,8 +28,7 @@ export const computeItemTotal = (props: {
     };
     itemQuantity?: number;
 }): number => {
-    // holds the final subtotal value
-    let total = 0;
+    let itemTotal = 0;
     // applying discount calculations
     if (!isUndefined(props.itemDiscount)) {
         if (!isUndefined(props.itemDiscount.percent)) {
@@ -41,17 +40,16 @@ export const computeItemTotal = (props: {
     // tax calculations
     if (!isUndefined(props.itemTaxPercents)) {
         props.itemTaxPercents.map((taxPercent) => {
-            total += xPercentOfY({ x: taxPercent, y: props.itemPrice });
+            itemTotal += xPercentOfY({ x: taxPercent, y: props.itemPrice });
         });
     }
-    // multiplying value by the quantity
-    total *= props.itemQuantity;
+    itemTotal *= props.itemQuantity;
 
-    return parseInt(total.toFixed(3));
+    return parseInt(itemTotal.toFixed(3));
 };
 
 /**
- * * Computes the total tax amount to be applied on an item
+ * * ITEM_TOTAL_TAX - Computes the total tax amount to be applied on an item
  */
 export const computeItemTotalTax = (props: {
     itemTaxPercents: number[];
@@ -70,7 +68,21 @@ export const computeItemTotalTax = (props: {
 };
 
 /**
- * * Computes the total taxes for a collection of items
- * @param props
+ * * ITEM_TOTAL_DISCOUNT - Computes the total discount amount to be applied on the item
  */
+export const computeItemTotalDicount = (props: {
+    itemDiscountPercent: number;
+    itemPrice: number;
+    itemQuantity: number;
+}) => {
+    let itemTotalDiscount =
+        xPercentOfY({
+            x: props.itemDiscountPercent,
+            y: props.itemPrice,
+        }) * props.itemQuantity;
+    return itemTotalDiscount;
+};
+
+//~ GRANDTOTAL COMPUTATION FUNCTIONS
+
 export const computeTotalTaxes = (props: { taxPercents: number[]; quantity: number }) => {};
