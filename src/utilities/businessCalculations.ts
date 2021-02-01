@@ -1,13 +1,13 @@
 import { isUndefined } from 'lodash';
 
-//~ GENERAL COMPUTATION FUNCTIONS
+//# GENERAL COMPUTATION FUNCTIONS
 
 /**
  * * Computes x % of y
  */
 export const xPercentOfY = (props: { x: number; y: number }): number => (props.x / 100) * props.y;
 
-//~ ITEM COMPUTATION FUNCTIONS
+//# ITEM COMPUTATION FUNCTIONS
 
 /**
  * * ITEM_SUB_TOTAL - Cost of item before applying tax or discounts
@@ -83,7 +83,7 @@ export const computeItemTotalDicount = (props: {
     return itemTotalDiscount;
 };
 
-//~ GRANDTOTAL COMPUTATION FUNCTIONS
+//# GRANDTOTAL COMPUTATION FUNCTIONS
 
 /**
  * * GRAND_TOTAL - Computes the total amount applied across all items
