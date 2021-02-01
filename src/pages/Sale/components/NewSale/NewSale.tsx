@@ -1,4 +1,4 @@
-import { RowClickedEvent } from 'ag-grid-community';
+import { CellValueChangedEvent, RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
@@ -7,6 +7,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
+import { computeSubtotal } from 'utilities/businessCalculations';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -62,8 +63,15 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     productCartInformation: [
                         ...oldCartData.productCartInformation,
                         {
+                            itemName: product.name,
                             discount: 0,
                             quantity: 1,
+                            subTotal: computeSubtotal({
+                                itemPrice: product.sellingPrice,
+                                taxPercents: product.taxBracket.map((taxBracket) =>
+                                    parseInt(taxBracket.taxPercent),
+                                ),
+                            }),
                         },
                     ],
                 };
@@ -113,6 +121,33 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
         pushProductIntoCart(searchResults.results[event.rowIndex]);
+    };
+
+    // handles cell values change in the NewSale cart table
+    const handleNewSaleCartTableCellValueChange = (event: CellValueChangedEvent) => {
+        setCartData(
+            (oldCartData): INewSaleCart => {
+                const productCartInformation = oldCartData.productCartInformation;
+                switch (event.column.getColId()) {
+                    case 'itemName':
+                        productCartInformation[event.rowIndex]['itemName'] = event.newValue;
+                        break;
+                    case 'discount':
+                        productCartInformation[event.rowIndex]['discount'] = event.newValue;
+                        break;
+                    case 'quantity':
+                        productCartInformation[event.rowIndex]['quantity'] = event.newValue;
+                        break;
+                    case 'subTotal':
+                        productCartInformation[event.rowIndex]['subTotal'] = event.newValue;
+                        break;
+                }
+                return {
+                    products: oldCartData.products,
+                    productCartInformation: productCartInformation,
+                };
+            },
+        );
     };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
@@ -166,6 +201,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Empty Cart</span>'
                         }
+                        onCellValueChanged={handleNewSaleCartTableCellValueChange}
                     />
                 </div>
                 <div className={styles.calculationCard}>

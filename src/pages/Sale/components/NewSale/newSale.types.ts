@@ -17,8 +17,10 @@ export interface INewSaleCart {
      * Holds the cart related information for the products in the same index position
      */
     productCartInformation: {
+        itemName: string;
         discount: number;
         quantity: number;
+        subTotal: number;
     }[];
 }
 

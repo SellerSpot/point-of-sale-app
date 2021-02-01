@@ -49,18 +49,10 @@ export const compileNewSaleCartTableRowData = (
         return cartData.products.map(
             (product, index): INewSaleCartTableColumns => {
                 return {
-                    itemName: product.name,
+                    itemName: cartData.productCartInformation[index].itemName,
                     discount: cartData.productCartInformation[index].discount,
                     quantity: cartData.productCartInformation[index].quantity,
-                    subTotal: computeSubtotal({
-                        itemPrice: product.sellingPrice,
-                        discount: {
-                            percent: cartData.productCartInformation[index].discount,
-                        },
-                        taxPercents: product.taxBracket.map((taxBracket) =>
-                            parseInt(taxBracket.taxPercent),
-                        ),
-                    }),
+                    subTotal: cartData.productCartInformation[index].subTotal,
                 };
             },
         );
