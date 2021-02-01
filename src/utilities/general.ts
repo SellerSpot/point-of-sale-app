@@ -1,4 +1,12 @@
 /**
+ * Contains all the common symbols used in the app
+ */
+export const COMMON_SYMBOLS = {
+    RUPEE_SYMBOL: '₹',
+    PERCENTAGE_SYMBOL: '%',
+};
+
+/**
  * Used to install a delay by awaiting this function
  * @param delay in seconds
  * @default

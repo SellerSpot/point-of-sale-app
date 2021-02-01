@@ -1,7 +1,7 @@
 import { RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
-import { debounce, merge } from 'lodash';
+import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
@@ -17,15 +17,7 @@ import {
     getNewSaleProductsTableColDef,
 } from './newSale.action';
 import styles from './newSale.module.scss';
-import { INewSaleCartTableColumns } from './newSale.types';
-
-/**
- * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface INewSaleProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-}
+import { INewSaleCart, INewSaleProps } from './newSale.types';
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [searchResults, setSearchResults] = useState<
@@ -34,9 +26,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         queryType: 'name',
         results: [],
     });
-    const [cartData, setCartData] = useState<
-        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results']
-    >([]);
+    const [cartData, setCartData] = useState<INewSaleCart>({
+        products: [],
+        productCartInformation: [],
+    });
     const [searchQuery, setSearchQuery] = useState('');
 
     // used to handle the closing of the sliderModal
@@ -57,13 +50,37 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
+    // used to push product into cart
+    const pushProductIntoCart = (
+        product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0],
+    ): void => {
+        // pushing item to cart
+        setCartData(
+            (oldCartData): INewSaleCart => {
+                return {
+                    products: [...oldCartData.products, product],
+                    productCartInformation: [
+                        ...oldCartData.productCartInformation,
+                        {
+                            discount: 0,
+                            quantity: 1,
+                        },
+                    ],
+                };
+            },
+        );
+        setSearchQuery('');
+        setSearchResults({
+            queryType: 'name',
+            results: [],
+        });
+    };
+
     // listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
         console.log('Search Updated - ' + searchResults.queryType);
         if (searchResults.queryType === 'barcode') {
-            // pushing item to cart
-            setCartData((oldCartData) => [...cartData, searchResults.results[0]]);
-            setSearchQuery('');
+            pushProductIntoCart(searchResults.results[0]);
         }
     }, [searchResults]);
 
@@ -95,12 +112,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     // handles clicking of row in new sale products table
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        setCartData((oldCartData) => [...cartData, searchResults.results[event.rowIndex]]);
-        setSearchQuery('');
-        setSearchResults({
-            queryType: 'name',
-            results: [],
-        });
+        pushProductIntoCart(searchResults.results[event.rowIndex]);
     };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {

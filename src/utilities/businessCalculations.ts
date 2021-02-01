@@ -9,7 +9,7 @@ interface IXPercentOfY {
  * @param x percentage
  * @param y value to find percentage of
  */
-export const xPercentOfY = (props: IXPercentOfY) => (props.x / 100) * props.y;
+export const xPercentOfY = (props: IXPercentOfY): number => (props.x / 100) * props.y;
 
 interface IComputeSubtotal {
     itemPrice: number;
@@ -18,13 +18,15 @@ interface IComputeSubtotal {
         percent?: number;
         value?: number;
     };
+    quantity?: number;
 }
 /**
  * Compute subtotal
  */
 export const computeSubtotal = (props: IComputeSubtotal): number => {
     // holds the final subtotal value
-    let subTotal: number = props.itemPrice;
+    let subTotal: number = props.itemPrice * (isUndefined(props.quantity) ? 1 : props.quantity);
+
     // tax calculations
     if (!isUndefined(props.taxPercents)) {
         props.taxPercents.map(

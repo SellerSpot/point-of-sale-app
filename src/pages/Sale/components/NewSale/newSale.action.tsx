@@ -3,8 +3,11 @@ import { isNull } from 'lodash';
 import React from 'react';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
+import { computeSubtotal } from 'utilities/businessCalculations';
+import { COMMON_SYMBOLS } from 'utilities/general';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import {
+    INewSaleCart,
     INewSaleCartTableColumns,
     INewSaleProductsTableColumns,
     NEW_SALE_CART_TABLE_COLUMNS,
@@ -40,16 +43,24 @@ export const compileNewSaleProductsTableRowData = (
  * @param cartData Products data returned from server
  */
 export const compileNewSaleCartTableRowData = (
-    cartData: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'],
+    cartData: INewSaleCart,
 ): INewSaleCartTableColumns[] => {
-    if (cartData.length > 0) {
-        return cartData.map(
-            (product): INewSaleCartTableColumns => {
+    if (cartData.products.length > 0) {
+        return cartData.products.map(
+            (product, index): INewSaleCartTableColumns => {
                 return {
                     itemName: product.name,
-                    discount: 0,
-                    quantity: 1,
-                    subTotal: 0,
+                    discount: cartData.productCartInformation[index].discount,
+                    quantity: cartData.productCartInformation[index].quantity,
+                    subTotal: computeSubtotal({
+                        itemPrice: product.sellingPrice,
+                        discount: {
+                            percent: cartData.productCartInformation[index].discount,
+                        },
+                        taxPercents: product.taxBracket.map((taxBracket) =>
+                            parseInt(taxBracket.taxPercent),
+                        ),
+                    }),
                 };
             },
         );
@@ -96,7 +107,7 @@ export const getNewSaleProductsTableColDef = (): ColDef[] => {
             flex: 1,
         },
         {
-            headerName: 'Price',
+            headerName: `Price ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
             field: NEW_SALE_PRODUCTS_TABLE_COLUMNS.PRICE,
             sortable: true,
             filter: true,
@@ -130,7 +141,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             flex: 1,
         },
         {
-            headerName: 'Sub-Total',
+            headerName: `Sub-Total ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
             field: NEW_SALE_CART_TABLE_COLUMNS.SUB_TOTAL,
             sortable: true,
             filter: true,
@@ -139,7 +150,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             flex: 1,
         },
         {
-            headerName: 'Discount',
+            headerName: `Discount ( ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL} )`,
             field: NEW_SALE_CART_TABLE_COLUMNS.DISCOUNT,
             sortable: true,
             filter: true,
