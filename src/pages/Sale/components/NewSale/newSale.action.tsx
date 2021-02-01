@@ -69,7 +69,7 @@ export const getNewSaleProductsTableColDef = (): ColDef[] => {
             sortable: true,
             filter: true,
             resizable: true,
-            flex: 1,
+            flex: 2,
         },
         {
             headerName: 'GTIN Number',
@@ -118,7 +118,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             filter: true,
             resizable: true,
             editable: true,
-            flex: 1,
+            flex: 2,
         },
         {
             headerName: 'Quantity',

@@ -1,3 +1,4 @@
+import { RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce, merge } from 'lodash';
@@ -91,6 +92,17 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         queryServer(query);
     };
 
+    // handles clicking of row in new sale products table
+    const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
+        // pushing item to cart
+        setCartData((oldCartData) => [...cartData, searchResults.results[event.rowIndex]]);
+        setSearchQuery('');
+        setSearchResults({
+            queryType: 'name',
+            results: [],
+        });
+    };
+
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
         store.dispatch(
@@ -111,6 +123,9 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 />
                 <div className={cn('ag-theme-alpine')}>
                     <AgGridReact
+                        rowSelection={'single'}
+                        onRowClicked={handleNewSaleProductTableRowClick}
+                        suppressCellSelection={true}
                         columnDefs={getNewSaleProductsTableColDef()}
                         rowData={compileNewSaleProductsTableRowData(searchResults)}
                         overlayNoRowsTemplate={
