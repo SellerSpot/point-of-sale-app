@@ -1,6 +1,6 @@
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
-import { debounce } from 'lodash';
+import { debounce, merge } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
@@ -10,11 +10,13 @@ import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import {
+    compileNewSaleCartTableRowData,
     compileNewSaleProductsTableRowData,
     getNewSaleCartTableColDef,
     getNewSaleProductsTableColDef,
 } from './newSale.action';
 import styles from './newSale.module.scss';
+import { INewSaleCartTableColumns } from './newSale.types';
 
 /**
  * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
@@ -31,8 +33,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         queryType: 'name',
         results: [],
     });
+    const [cartData, setCartData] = useState<
+        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results']
+    >([]);
     const [searchQuery, setSearchQuery] = useState('');
-    // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
@@ -45,11 +49,22 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         props.callBackStateTrack[1](false);
     };
 
+    // used to handle the closing operations of the sliderModel
     useEffect(() => {
         if (props.callBackStateTrack[0]) {
             handleCloseSlider();
         }
     }, [props.callBackStateTrack[0]]);
+
+    // listening to the search result to push the barcode products directory to the cart
+    useEffect(() => {
+        console.log('Search Updated - ' + searchResults.queryType);
+        if (searchResults.queryType === 'barcode') {
+            // pushing item to cart
+            setCartData((oldCartData) => [...cartData, searchResults.results[0]]);
+            setSearchQuery('');
+        }
+    }, [searchResults]);
 
     // used to query the server to fetch product suggestions
     const queryServer = useCallback(
@@ -98,9 +113,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     <AgGridReact
                         columnDefs={getNewSaleProductsTableColDef()}
                         rowData={compileNewSaleProductsTableRowData(searchResults)}
-                        overlayLoadingTemplate={
-                            '<span className="ag-overlay-loading-center">Please wait while your rows are loading</span>'
-                        }
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Please search for products using the search box above</span>'
                         }
@@ -121,7 +133,13 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
-                    <AgGridReact columnDefs={getNewSaleCartTableColDef()} />
+                    <AgGridReact
+                        columnDefs={getNewSaleCartTableColDef()}
+                        rowData={compileNewSaleCartTableRowData(cartData)}
+                        overlayNoRowsTemplate={
+                            '<span className="ag-overlay-loading-center">Empty Cart</span>'
+                        }
+                    />
                 </div>
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>

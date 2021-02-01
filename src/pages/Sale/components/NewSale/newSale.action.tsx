@@ -4,22 +4,12 @@ import React from 'react';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-
-interface INewSaleProductsTableColumns {
-    itemName: string;
-    gtinNumber: string;
-    brand: string;
-    category: string;
-    price: string;
-}
-// holds the table columns for NewSale Products table
-enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
-    ITEM_NAME = 'itemName',
-    GTIN_NUMBER = 'gtinNumber',
-    BRAND = 'brand',
-    CATEGORY = 'category',
-    PRICE = 'price',
-}
+import {
+    INewSaleCartTableColumns,
+    INewSaleProductsTableColumns,
+    NEW_SALE_CART_TABLE_COLUMNS,
+    NEW_SALE_PRODUCTS_TABLE_COLUMNS,
+} from './newSale.types';
 
 /**
  * Used to compile the row data for New Sale Products Table
@@ -28,7 +18,7 @@ enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
 export const compileNewSaleProductsTableRowData = (
     productsData: pointOfSaleTypes.productResponseTypes.ISearchProduct['data'],
 ): INewSaleProductsTableColumns[] => {
-    if (productsData?.results.length > 0) {
+    if (productsData?.results.length > 0 && productsData?.queryType === 'name') {
         return productsData.results.map(
             (product): INewSaleProductsTableColumns => {
                 return {
@@ -37,6 +27,29 @@ export const compileNewSaleProductsTableRowData = (
                     gtinNumber: product.gtinNumber,
                     itemName: product.name,
                     price: product.sellingPrice.toString(),
+                };
+            },
+        );
+    } else {
+        return [];
+    }
+};
+
+/**
+ * Used to compile the row data for New Sale Cart Table
+ * @param cartData Products data returned from server
+ */
+export const compileNewSaleCartTableRowData = (
+    cartData: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'],
+): INewSaleCartTableColumns[] => {
+    if (cartData.length > 0) {
+        return cartData.map(
+            (product): INewSaleCartTableColumns => {
+                return {
+                    itemName: product.name,
+                    discount: 0,
+                    quantity: 1,
+                    subTotal: 0,
                 };
             },
         );
@@ -100,34 +113,38 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
     return [
         {
             headerName: 'Item Name',
-            field: 'itemName',
+            field: NEW_SALE_CART_TABLE_COLUMNS.ITEM_NAME,
             sortable: true,
             filter: true,
             resizable: true,
+            editable: true,
             flex: 1,
         },
         {
             headerName: 'Quantity',
-            field: 'quantity',
+            field: NEW_SALE_CART_TABLE_COLUMNS.QUANTITY,
             sortable: true,
             filter: true,
             resizable: true,
+            editable: true,
             flex: 1,
         },
         {
             headerName: 'Sub-Total',
-            field: 'subtotal',
+            field: NEW_SALE_CART_TABLE_COLUMNS.SUB_TOTAL,
             sortable: true,
             filter: true,
             resizable: true,
+            editable: true,
             flex: 1,
         },
         {
             headerName: 'Discount',
-            field: 'discount',
+            field: NEW_SALE_CART_TABLE_COLUMNS.DISCOUNT,
             sortable: true,
             filter: true,
             resizable: true,
+            editable: true,
             flex: 1,
         },
     ];
