@@ -58,6 +58,7 @@ const [user, setUser] = useState<User | null>(null);
 -   [CSS Modules](https://marketplace.visualstudio.com/items?itemName=clinyong.vscode-css-modules)
 -   [CSSComb](https://marketplace.visualstudio.com/items?itemName=mrmlnc.vscode-csscomb)
 -   [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports)
+-   [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
 
 ---
 
