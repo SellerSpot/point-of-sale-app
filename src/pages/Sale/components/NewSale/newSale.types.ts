@@ -21,6 +21,7 @@ export interface INewSaleCart {
         discount: number;
         quantity: number;
         subTotal: number;
+        total: number;
     }[];
 }
 

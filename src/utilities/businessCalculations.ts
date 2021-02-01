@@ -13,6 +13,17 @@ export const xPercentOfY = (props: IXPercentOfY): number => (props.x / 100) * pr
 
 interface IComputeSubtotal {
     itemPrice: number;
+    quantity: number;
+}
+/**
+ * ITEM_SUB_TOTAL - Only the price of the item with it's quantity without tax or discount calculations
+ * @param props itemPrice and quantity
+ */
+export const computeItemSubtotal = (props: IComputeSubtotal): number =>
+    parseInt((props.itemPrice * props.quantity).toFixed(3));
+
+interface IComputeItemTotal {
+    itemPrice: number;
     taxPercents?: number[];
     discount?: {
         percent?: number;
@@ -20,26 +31,30 @@ interface IComputeSubtotal {
     };
     quantity?: number;
 }
-/**
- * Compute subtotal
- */
-export const computeSubtotal = (props: IComputeSubtotal): number => {
-    // holds the final subtotal value
-    let subTotal: number = props.itemPrice * (isUndefined(props.quantity) ? 1 : props.quantity);
 
-    // tax calculations
-    if (!isUndefined(props.taxPercents)) {
-        props.taxPercents.map(
-            (taxPercent) => (subTotal += xPercentOfY({ x: taxPercent, y: props.itemPrice })),
-        );
-    }
-    // discount calculations
+/**
+ * ITEM_TOTAL - Complete computed pricing for the item with tax and discount calculations, etc
+ * @param props all details realting to item pricing and quantity
+ */
+export const computeItemTotal = (props: IComputeItemTotal): number => {
+    // holds the final subtotal value
+    let total: number = 0;
+    // applying discount calculations
     if (!isUndefined(props.discount)) {
         if (!isUndefined(props.discount.percent)) {
-            subTotal += xPercentOfY({ x: props.discount.percent, y: props.itemPrice });
+            props.itemPrice -= xPercentOfY({ x: props.discount.percent, y: props.itemPrice });
         } else if (!isUndefined(props.discount.value)) {
-            subTotal -= props.discount.value;
+            props.itemPrice -= props.discount.value;
         }
     }
-    return subTotal;
+    // tax calculations
+    if (!isUndefined(props.taxPercents)) {
+        props.taxPercents.map((taxPercent) => {
+            total += xPercentOfY({ x: taxPercent, y: props.itemPrice });
+        });
+    }
+    // multiplying value by the quantity
+    total *= props.quantity;
+
+    return parseInt(total.toFixed(3));
 };

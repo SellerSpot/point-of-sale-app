@@ -22,7 +22,6 @@ const notify = createSlice({
     initialState,
     reducers: {
         showNotify: (state: InitialState, { payload }: PayloadAction<InitialState>) => {
-            console.log(merge(initialState, payload));
             state = merge(initialState, payload);
         },
     },

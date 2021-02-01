@@ -1,6 +1,5 @@
 import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
-import { isNull, merge } from 'lodash';
-import React from 'react';
+import { merge } from 'lodash';
 import {
     IInitialStateNewSale,
     initialStateNewSale,
@@ -8,10 +7,9 @@ import {
     setSearchQuery,
     setSearchResults,
 } from 'store/models/newSale';
-import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
-import { computeSubtotal } from 'utilities/businessCalculations';
-import { COMMON_SYMBOLS } from 'utilities/general';
+import { computeItemSubtotal, computeItemTotal } from 'utilities/businessCalculations';
+import { COMMON_REGEXPS, COMMON_SYMBOLS } from 'utilities/general';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import {
     INewSaleCart,
@@ -112,6 +110,7 @@ export const getNewSaleProductsTableColDef = (): ColDef[] => {
             filter: true,
             resizable: true,
             flex: 1,
+            valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
         },
     ];
 };
@@ -129,6 +128,10 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 2,
+            valueParser: (parserParams) =>
+                COMMON_REGEXPS.STRING_WITH_SPACE_BETWEEN.test(parserParams.newValue)
+                    ? parserParams.newValue
+                    : parserParams.oldValue,
         },
         {
             headerName: 'Quantity',
@@ -138,6 +141,12 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+            valueParser: (parserParams) =>
+                COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
+                    ? parserParams.newValue >= 0
+                        ? parseInt(parserParams.newValue)
+                        : parserParams.oldValue
+                    : parserParams.oldValue,
         },
         {
             headerName: `Sub-Total ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
@@ -145,8 +154,8 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             sortable: true,
             filter: true,
             resizable: true,
-            editable: true,
             flex: 1,
+            valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
         },
         {
             headerName: `Discount ( ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL} )`,
@@ -156,8 +165,25 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+            valueFormatter: (formatterParams) =>
+                `${formatterParams.value} ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL}`,
+            valueParser: (parserParams) =>
+                COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
+                    ? parserParams.newValue <= 100 && parserParams.newValue >= 0
+                        ? parseInt(parserParams.newValue)
+                        : parserParams.oldValue
+                    : parserParams.oldValue,
         },
     ];
+};
+
+// compute total subTotal
+export const computeTotalSubtotalNewSale = (cartData: IInitialStateNewSale['cartData']): string => {
+    let totalSubTotal = 0;
+    for (let index = 0; index < cartData.productCartInformation.length; index++) {
+        totalSubTotal += cartData.productCartInformation[index].subTotal;
+    }
+    return totalSubTotal.toString();
 };
 
 /**
@@ -183,8 +209,15 @@ export const pushProductIntoCart = (
                     itemName: product.name,
                     discount: 0,
                     quantity: 1,
-                    subTotal: computeSubtotal({
+                    subTotal: computeItemSubtotal({
                         itemPrice: product.sellingPrice,
+                        quantity: 1,
+                    }),
+                    total: computeItemTotal({
+                        itemPrice: product.sellingPrice,
+                        discount: {
+                            percent: 0,
+                        },
                         taxPercents: product.taxBracket.map((taxBracket) =>
                             parseInt(taxBracket.taxPercent),
                         ),
@@ -208,19 +241,48 @@ export const handleNewSaleCartTableCellValueChange = (
     event: CellValueChangedEvent,
 ): void => {
     // creating a clone to work with
-    const productCartInformation = merge({}, oldCartData.productCartInformation);
+    const productCartInformation: INewSaleCart['productCartInformation'] = merge(
+        [],
+        oldCartData.productCartInformation,
+    );
     switch (event.column.getColId()) {
         case 'itemName':
             productCartInformation[event.rowIndex]['itemName'] = event.newValue;
             break;
+
         case 'discount':
             productCartInformation[event.rowIndex]['discount'] = event.newValue;
+            // computing the new total
+            productCartInformation[event.rowIndex]['total'] = computeItemTotal({
+                itemPrice: oldCartData.products[event.rowIndex].sellingPrice,
+                discount: {
+                    percent: productCartInformation[event.rowIndex]['discount'],
+                },
+                quantity: productCartInformation[event.rowIndex]['quantity'],
+                taxPercents: oldCartData.products[event.rowIndex].taxBracket.map((taxBracket) =>
+                    parseInt(taxBracket.taxPercent),
+                ),
+            });
             break;
+
         case 'quantity':
             productCartInformation[event.rowIndex]['quantity'] = event.newValue;
-            break;
-        case 'subTotal':
-            productCartInformation[event.rowIndex]['subTotal'] = event.newValue;
+            // computing the new total
+            productCartInformation[event.rowIndex]['total'] = computeItemTotal({
+                itemPrice: oldCartData.products[event.rowIndex].sellingPrice,
+                discount: {
+                    percent: productCartInformation[event.rowIndex]['discount'],
+                },
+                quantity: productCartInformation[event.rowIndex]['quantity'],
+                taxPercents: oldCartData.products[event.rowIndex].taxBracket.map((taxBracket) =>
+                    parseInt(taxBracket.taxPercent),
+                ),
+            });
+            // computing the new subtotal
+            productCartInformation[event.rowIndex]['subTotal'] = computeItemSubtotal({
+                itemPrice: oldCartData.products[event.rowIndex].sellingPrice,
+                quantity: productCartInformation[event.rowIndex]['quantity'],
+            });
             break;
     }
     store.dispatch(

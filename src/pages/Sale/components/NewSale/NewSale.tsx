@@ -1,28 +1,19 @@
-import { CellValueChangedEvent, RowClickedEvent } from 'ag-grid-community';
+import { RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { productRequests } from 'requests/requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
-import { computeSubtotal } from 'utilities/businessCalculations';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import {
-    compileNewSaleCartTableRowData,
-    compileNewSaleProductsTableRowData,
-    getNewSaleCartTableColDef,
-    getNewSaleProductsTableColDef,
-    handleNewSaleCartTableCellValueChange,
-    pushProductIntoCart,
-} from './newSale.action';
+import * as newSaleActions from './newSale.action';
 import styles from './newSale.module.scss';
-import { INewSaleCart, INewSaleProps } from './newSale.types';
+import { INewSaleProps } from './newSale.types';
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
     // subscribing to state
@@ -49,7 +40,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     // listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
         if (searchResults.queryType === 'barcode') {
-            pushProductIntoCart(cartData, searchResults.results[0]);
+            newSaleActions.pushProductIntoCart(cartData, searchResults.results[0]);
         }
     }, [searchResults]);
 
@@ -84,7 +75,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     // handles clicking of row in new sale products table
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+        newSaleActions.pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
     };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
@@ -110,8 +101,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         rowSelection={'single'}
                         onRowClicked={handleNewSaleProductTableRowClick}
                         suppressCellSelection={true}
-                        columnDefs={getNewSaleProductsTableColDef()}
-                        rowData={compileNewSaleProductsTableRowData(searchResults)}
+                        columnDefs={newSaleActions.getNewSaleProductsTableColDef()}
+                        rowData={newSaleActions.compileNewSaleProductsTableRowData(searchResults)}
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Please search for products using the search box above</span>'
                         }
@@ -133,20 +124,20 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
                     <AgGridReact
-                        columnDefs={getNewSaleCartTableColDef()}
-                        rowData={compileNewSaleCartTableRowData(cartData)}
+                        columnDefs={newSaleActions.getNewSaleCartTableColDef()}
+                        rowData={newSaleActions.compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Empty Cart</span>'
                         }
                         onCellValueChanged={(event) =>
-                            handleNewSaleCartTableCellValueChange(cartData, event)
+                            newSaleActions.handleNewSaleCartTableCellValueChange(cartData, event)
                         }
                     />
                 </div>
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>
-                        <span>{'₹ 200.00'}</span>
+                        <span>{`₹ ${newSaleActions.computeTotalSubtotalNewSale(cartData)}`}</span>
                     </div>
                     <div className={styles.calculationEntry}>
                         <span>{'Add Taxes'}</span>
