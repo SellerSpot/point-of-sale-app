@@ -9,7 +9,7 @@ export interface INewSaleProps {
 }
 
 /**
- * Interface for the cart in the New Sale Page
+ * Interface for the cartData redux store in the New Sale Page
  */
 export interface INewSaleCart {
     products: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'];
@@ -18,13 +18,19 @@ export interface INewSaleCart {
      */
     productCartInformation: {
         itemName: string;
-        discount: number;
-        price: number;
-        quantity: number;
-        subTotal?: number;
-        totalTaxes?: number;
-        total?: number;
+        itemDiscountPercent: number;
+        itemPrice: number;
+        itemQuantity: number;
+        itemTotal: number;
+        itemSubTotal: number;
+        itemTotalTax: number;
+        itemTotalDiscount: number;
     }[];
+    totals: {
+        grandTotal: number;
+        grandTotalTax: number;
+        grandTotalDiscount: number;
+    };
 }
 
 /**

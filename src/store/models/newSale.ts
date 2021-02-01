@@ -6,11 +6,6 @@ import { pointOfSaleTypes } from '@sellerspot/universal-types';
 export interface IInitialStateNewSale {
     searchResults: pointOfSaleTypes.productResponseTypes.ISearchProduct['data'];
     cartData: INewSaleCart;
-    totals: {
-        grandTotal: number;
-        grandTotalTax: number;
-        grandTotalDiscount: number;
-    };
     searchQuery: string;
 }
 
@@ -22,11 +17,11 @@ export const initialStateNewSale: IInitialStateNewSale = {
     cartData: {
         products: [],
         productCartInformation: [],
-    },
-    totals: {
-        grandTotal: 0,
-        grandTotalTax: 0,
-        grandTotalDiscount: 0,
+        totals: {
+            grandTotal: 0,
+            grandTotalTax: 0,
+            grandTotalDiscount: 0,
+        },
     },
     searchQuery: '',
 };
@@ -53,12 +48,6 @@ const newSale = createSlice({
         ) => {
             state.searchQuery = payload;
         },
-        setGrandTotals: (
-            state: IInitialStateNewSale,
-            { payload }: PayloadAction<IInitialStateNewSale['totals']>,
-        ) => {
-            state.totals = payload;
-        },
     },
 });
 
@@ -66,7 +55,7 @@ const newSale = createSlice({
 export default newSale.reducer;
 
 // Exporting actions
-export const { setSearchResults, setCartData, setSearchQuery, setGrandTotals } = newSale.actions;
+export const { setSearchResults, setCartData, setSearchQuery } = newSale.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
 export const newSaleSelector: Selector<RootState, IInitialStateNewSale> = (state: RootState) =>

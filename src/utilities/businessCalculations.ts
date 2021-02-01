@@ -21,31 +21,11 @@ export const computeItemSubtotal = (props: { itemPrice: number; itemQuantity: nu
  */
 export const computeItemTotal = (props: {
     itemPrice: number;
-    itemTaxPercents?: number[];
-    itemDiscount?: {
-        percent?: number;
-        value?: number;
-    };
-    itemQuantity?: number;
+    itemTotalTax: number;
+    itemTotalDiscount: number;
+    itemQuantity: number;
 }): number => {
-    let itemTotal = 0;
-    // applying discount calculations
-    if (!isUndefined(props.itemDiscount)) {
-        if (!isUndefined(props.itemDiscount.percent)) {
-            props.itemPrice -= xPercentOfY({ x: props.itemDiscount.percent, y: props.itemPrice });
-        } else if (!isUndefined(props.itemDiscount.value)) {
-            props.itemPrice -= props.itemDiscount.value;
-        }
-    }
-    // tax calculations
-    if (!isUndefined(props.itemTaxPercents)) {
-        props.itemTaxPercents.map((taxPercent) => {
-            itemTotal += xPercentOfY({ x: taxPercent, y: props.itemPrice });
-        });
-    }
-    itemTotal *= props.itemQuantity;
-
-    return parseInt(itemTotal.toFixed(3));
+    return (props.itemPrice + props.itemTotalTax - props.itemTotalDiscount) * props.itemQuantity;
 };
 
 /**
