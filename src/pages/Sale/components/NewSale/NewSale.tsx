@@ -1,8 +1,7 @@
-import 'react-base-table/styles.css';
-
+import { AgGridReact } from 'ag-grid-react';
+import cn from 'classnames';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import Table, { Column } from 'react-base-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { productRequests } from 'requests/requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
@@ -82,9 +81,52 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     value={searchQuery}
                     onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
-                <Table width={width / 1.562} data={[]}>
-                    <Column key="asd" title={'value'} dataKey={'value'} width={100} />
-                </Table>
+                <div className={cn('ag-theme-alpine')}>
+                    <AgGridReact
+                        columnDefs={[
+                            {
+                                headerName: 'Status',
+                                field: 'status',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Created At',
+                                field: 'createdAt',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Sub-Total',
+                                field: 'taxation',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Taxation',
+                                field: 'status',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Grand Total',
+                                field: 'grandTotal',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                        ]}
+                    />
+                </div>
                 <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
@@ -99,17 +141,44 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                {/* <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Quantity'}>{'Quantity'}</p>,
-                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
-                        <p key={'Discount'}>{'Discount'}</p>,
-                    ]}
-                    // rowData={getCartItems(cartData)}
-                    rowData={[]}
-                /> */}
+                <div className={'ag-theme-alpine'}>
+                    <AgGridReact
+                        columnDefs={[
+                            {
+                                headerName: 'Item Name',
+                                field: 'itemName',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Quantity',
+                                field: 'quantity',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Sub-Total',
+                                field: 'subtotal',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                            {
+                                headerName: 'Discount',
+                                field: 'discount',
+                                sortable: true,
+                                filter: true,
+                                resizable: true,
+                                flex: 1,
+                            },
+                        ]}
+                    />
+                </div>
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
                         <span>{'Sub-Total'}</span>

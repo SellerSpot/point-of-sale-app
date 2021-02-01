@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-
-import { Button } from '@sellerspot/universal-components';
+import { AgGridReact } from 'ag-grid-react';
+import cn from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
-import { Table } from '@sellerspot/universal-components';
-import { compileSaleHistoryTableData } from './salesHistory.action';
-import { generalUtilities } from 'utilities/utilities';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { saleRequests } from 'requests/requests';
-import styles from './salesHistory.module.scss';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { saleRequests } from 'requests/requests';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { generalUtilities } from 'utilities/utilities';
+import { Button } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { compileSaleHistoryTableData } from './salesHistory.action';
+import styles from './salesHistory.module.scss';
 
 export const SalesHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -42,17 +42,50 @@ export const SalesHistory = (): JSX.Element => {
                     />,
                 ]}
             />
-            <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Created At'}>{'Created'}</p>,
-                        <p key={'Status'}>{'Status'}</p>,
-                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
-                        <p key={'Taxation'}>{'Taxation'}</p>,
-                        <p key={'Grand Total'}>{'Grand Total'}</p>,
+            <div className={cn('ag-theme-alpine', styles.tableWrapper)}>
+                <AgGridReact
+                    columnDefs={[
+                        {
+                            headerName: 'Status',
+                            field: 'status',
+                            sortable: true,
+                            filter: true,
+                            resizable: true,
+                            flex: 1,
+                        },
+                        {
+                            headerName: 'Created At',
+                            field: 'createdAt',
+                            sortable: true,
+                            filter: true,
+                            resizable: true,
+                            flex: 1,
+                        },
+                        {
+                            headerName: 'Sub-Total',
+                            field: 'taxation',
+                            sortable: true,
+                            filter: true,
+                            resizable: true,
+                            flex: 1,
+                        },
+                        {
+                            headerName: 'Taxation',
+                            field: 'status',
+                            sortable: true,
+                            filter: true,
+                            resizable: true,
+                            flex: 1,
+                        },
+                        {
+                            headerName: 'Grand Total',
+                            field: 'grandTotal',
+                            sortable: true,
+                            filter: true,
+                            resizable: true,
+                            flex: 1,
+                        },
                     ]}
-                    rowData={compileSaleHistoryTableData(salesHistoryData)}
                 />
             </div>
         </div>
