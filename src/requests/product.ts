@@ -32,5 +32,8 @@ export const searchProduct = async (
     if (responseData.status) {
         return responseData.data;
     }
-    return null;
+    return {
+        queryType: 'name',
+        results: [],
+    };
 };

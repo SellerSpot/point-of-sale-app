@@ -27,7 +27,10 @@ export interface INewSaleProps {
 export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [searchResults, setSearchResults] = useState<
         pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
-    >(null);
+    >({
+        queryType: 'name',
+        results: [],
+    });
     const [searchQuery, setSearchQuery] = useState('');
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
 
@@ -63,6 +66,12 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      * @param query Query typed by the user in the search bar
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
+        if (query.length === 0) {
+            setSearchResults({
+                queryType: 'name',
+                results: [],
+            });
+        }
         setSearchQuery(query);
         queryServer(query);
     };
@@ -89,6 +98,12 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     <AgGridReact
                         columnDefs={getNewSaleProductsTableColDef()}
                         rowData={compileNewSaleProductsTableRowData(searchResults)}
+                        overlayLoadingTemplate={
+                            '<span className="ag-overlay-loading-center">Please wait while your rows are loading</span>'
+                        }
+                        overlayNoRowsTemplate={
+                            '<span className="ag-overlay-loading-center">Please search for products using the search box above</span>'
+                        }
                     />
                 </div>
                 <div className={styles.extraControlsCard}>

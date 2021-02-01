@@ -28,8 +28,6 @@ enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
 export const compileNewSaleProductsTableRowData = (
     productsData: pointOfSaleTypes.productResponseTypes.ISearchProduct['data'],
 ): INewSaleProductsTableColumns[] => {
-    console.log(productsData);
-
     if (productsData?.results.length > 0) {
         return productsData.results.map(
             (product): INewSaleProductsTableColumns => {
@@ -43,7 +41,7 @@ export const compileNewSaleProductsTableRowData = (
             },
         );
     } else {
-        [];
+        return [];
     }
 };
 
