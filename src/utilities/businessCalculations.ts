@@ -11,8 +11,12 @@ export const xPercentOfY = (props: { x: number; y: number }): number =>
 /**
  * * ITEM_SUB_TOTAL - Cost of item before applying tax or discounts
  */
-export const computeItemSubtotal = (props: { itemPrice: number; itemQuantity: number }): number => {
-    return parseInt((props.itemPrice * props.itemQuantity).toFixed(2));
+export const computeItemSubtotal = (props: {
+    itemPrice: number;
+    itemQuantity: number;
+    itemTotalDiscount: number;
+}): number => {
+    return parseInt(((props.itemPrice - props.itemTotalDiscount) * props.itemQuantity).toFixed(2));
 };
 
 /**
@@ -39,12 +43,13 @@ export const computeItemTotalTax = (props: {
     itemTaxPercents: number[];
     itemPrice: number;
     itemQuantity: number;
+    itemTotalDiscount: number;
 }): number => {
     let itemTotalTax = 0;
     for (let index = 0; index < props.itemTaxPercents.length; index++) {
         itemTotalTax += xPercentOfY({
             x: props.itemTaxPercents[index],
-            y: props.itemPrice,
+            y: props.itemPrice - props.itemTotalDiscount,
         });
     }
     itemTotalTax *= props.itemQuantity;
@@ -54,7 +59,7 @@ export const computeItemTotalTax = (props: {
 /**
  * * ITEM_TOTAL_DISCOUNT - Computes the total discount amount to be applied on the item
  */
-export const computeItemTotalDicount = (props: {
+export const computeItemTotalDiscount = (props: {
     itemDiscountPercent: number;
     itemPrice: number;
     itemQuantity: number;

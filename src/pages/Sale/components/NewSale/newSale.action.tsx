@@ -14,7 +14,7 @@ import {
     computeGrandTotalTax,
     computeItemSubtotal,
     computeItemTotal,
-    computeItemTotalDicount,
+    computeItemTotalDiscount,
     computeItemTotalTax,
 } from 'utilities/businessCalculations';
 import { COMMON_REGEXPS, COMMON_SYMBOLS } from 'utilities/general';
@@ -186,20 +186,23 @@ export const pushProductIntoCart = (
     const itemQuantity = 1;
     const itemDiscountPercent = 0;
     // fetching required values
+    const itemTotalDiscount = computeItemTotalDiscount({
+        itemDiscountPercent,
+        itemPrice: product.sellingPrice,
+        itemQuantity,
+    });
     const itemSubTotal = computeItemSubtotal({
         itemPrice: product.sellingPrice,
         itemQuantity,
+        itemTotalDiscount,
     });
     const itemTotalTax = computeItemTotalTax({
         itemPrice: product.sellingPrice,
         itemQuantity,
         itemTaxPercents: product.taxBracket.map((taxBracket) => parseInt(taxBracket.taxPercent)),
+        itemTotalDiscount,
     });
-    const itemTotalDiscount = computeItemTotalDicount({
-        itemDiscountPercent,
-        itemPrice: product.sellingPrice,
-        itemQuantity,
-    });
+
     const itemTotal = computeItemTotal({
         itemPrice: product.sellingPrice,
         itemTotalDiscount,
@@ -257,13 +260,21 @@ export const recomputeCartValues = (
     cartData: IInitialStateNewSale['cartData'],
     rowIndex: number,
 ): void => {
+    console.log(cartData.productCartInformation[rowIndex]);
+
     // getting current item details
     const currentProduct = cartData.products[rowIndex];
     const currentCartInformation = cartData.productCartInformation[rowIndex];
     // fetching required values
+    currentCartInformation.itemTotalDiscount = computeItemTotalDiscount({
+        itemDiscountPercent: currentCartInformation.itemDiscountPercent,
+        itemPrice: currentCartInformation.itemPrice,
+        itemQuantity: currentCartInformation.itemQuantity,
+    });
     currentCartInformation.itemSubTotal = computeItemSubtotal({
         itemPrice: currentCartInformation.itemPrice,
         itemQuantity: currentCartInformation.itemQuantity,
+        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
     });
     currentCartInformation.itemTotalTax = computeItemTotalTax({
         itemPrice: currentCartInformation.itemPrice,
@@ -271,12 +282,9 @@ export const recomputeCartValues = (
         itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
             parseInt(taxBracket.taxPercent),
         ),
+        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
     });
-    currentCartInformation.itemTotalDiscount = computeItemTotalDicount({
-        itemDiscountPercent: currentCartInformation.itemDiscountPercent,
-        itemPrice: currentCartInformation.itemPrice,
-        itemQuantity: currentCartInformation.itemQuantity,
-    });
+
     currentCartInformation.itemTotal = computeItemTotal({
         itemPrice: currentCartInformation.itemPrice,
         itemTotalDiscount: currentCartInformation.itemTotalDiscount,
