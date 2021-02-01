@@ -12,6 +12,7 @@ import {
     computeGrandTotal,
     computeGrandTotalDiscount,
     computeGrandTotalTax,
+    computeItemPrice,
     computeItemSubtotal,
     computeItemTotal,
     computeItemTotalDiscount,
@@ -194,18 +195,20 @@ export const pushProductIntoCart = (
     const itemSubTotal = computeItemSubtotal({
         itemPrice: product.sellingPrice,
         itemQuantity,
-        itemTotalDiscount,
+    });
+    const itemPrice = computeItemPrice({
+        itemPrice: itemSubTotal,
+        itemTotalDiscount: itemTotalDiscount,
+        itemQuantity,
     });
     const itemTotalTax = computeItemTotalTax({
-        itemPrice: product.sellingPrice,
+        itemPrice: itemPrice,
         itemQuantity,
         itemTaxPercents: product.taxBracket.map((taxBracket) => parseInt(taxBracket.taxPercent)),
-        itemTotalDiscount,
     });
 
     const itemTotal = computeItemTotal({
-        itemPrice: product.sellingPrice,
-        itemTotalDiscount,
+        itemPrice: itemPrice,
         itemQuantity,
         itemTotalTax,
     });
@@ -260,8 +263,6 @@ export const recomputeCartValues = (
     cartData: IInitialStateNewSale['cartData'],
     rowIndex: number,
 ): void => {
-    console.log(cartData.productCartInformation[rowIndex]);
-
     // getting current item details
     const currentProduct = cartData.products[rowIndex];
     const currentCartInformation = cartData.productCartInformation[rowIndex];
@@ -274,23 +275,27 @@ export const recomputeCartValues = (
     currentCartInformation.itemSubTotal = computeItemSubtotal({
         itemPrice: currentCartInformation.itemPrice,
         itemQuantity: currentCartInformation.itemQuantity,
+    });
+    // keeping price separate because it is affected by the discount
+    const itemPriceTemp = computeItemPrice({
+        itemPrice: currentCartInformation.itemPrice,
         itemTotalDiscount: currentCartInformation.itemTotalDiscount,
+        itemQuantity: currentCartInformation.itemQuantity,
     });
     currentCartInformation.itemTotalTax = computeItemTotalTax({
-        itemPrice: currentCartInformation.itemPrice,
+        itemPrice: itemPriceTemp,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
             parseInt(taxBracket.taxPercent),
         ),
-        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
     });
 
     currentCartInformation.itemTotal = computeItemTotal({
-        itemPrice: currentCartInformation.itemPrice,
-        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
+        itemPrice: itemPriceTemp,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTotalTax: currentCartInformation.itemTotalTax,
     });
+
     // updating the object with new values
     cartData.productCartInformation[rowIndex] = currentCartInformation;
     // updating totals
