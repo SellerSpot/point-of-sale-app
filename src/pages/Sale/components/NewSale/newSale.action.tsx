@@ -1,5 +1,5 @@
 import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
-import { isNull } from 'lodash';
+import { isNull, merge } from 'lodash';
 import React from 'react';
 import {
     IInitialStateNewSale,
@@ -207,7 +207,8 @@ export const handleNewSaleCartTableCellValueChange = (
     oldCartData: IInitialStateNewSale['cartData'],
     event: CellValueChangedEvent,
 ): void => {
-    const productCartInformation = oldCartData.productCartInformation;
+    // creating a clone to work with
+    const productCartInformation = merge({}, oldCartData.productCartInformation);
     switch (event.column.getColId()) {
         case 'itemName':
             productCartInformation[event.rowIndex]['itemName'] = event.newValue;
