@@ -40,6 +40,25 @@
     background-color: $primary-background-color;
     box-shadow: $shadow;
 }
+.rightPanelBottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 5px;
+}
+.cartMetaCard {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: $border-radius;
+    background-color: $primary-background-color;
+    box-shadow: $shadow;
+}
 .calculationCard {
     display: flex;
     align-items: center;

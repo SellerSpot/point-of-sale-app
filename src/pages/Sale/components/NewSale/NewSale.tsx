@@ -134,31 +134,36 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         }
                     />
                 </div>
-                <div className={styles.calculationCard}>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Total Sub-Total'}</span>
-                        <span>{`₹ ${newSaleActions.computeTotalSubTotalNewSale(cartData)}`}</span>
+                <div className={styles.rightPanelBottom}>
+                    <div className={styles.cartMetaCard}></div>
+                    <div className={styles.calculationCard}>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Total Sub-Total'}</span>
+                            <span>{`₹ ${newSaleActions.computeTotalSubTotalNewSale(
+                                cartData,
+                            )}`}</span>
+                        </div>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Total Taxes'}</span>
+                            <span>{'₹ 50.00'}</span>
+                        </div>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Total Discount'}</span>
+                            <span>{'- ₹ 20.00'}</span>
+                        </div>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Order Total'}</span>
+                            <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
+                        </div>
+                        <Button
+                            label="CHECKOUT"
+                            // onClick={() =>
+                            //     store.dispatch(
+                            //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                            //     )
+                            // }
+                        />
                     </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Total Taxes'}</span>
-                        <span>{'₹ 50.00'}</span>
-                    </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Total Discount'}</span>
-                        <span>{'- ₹ 20.00'}</span>
-                    </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Order Total'}</span>
-                        <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
-                    </div>
-                    <Button
-                        label="CHECKOUT"
-                        // onClick={() =>
-                        //     store.dispatch(
-                        //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                        //     )
-                        // }
-                    />
                 </div>
             </div>
         </div>
