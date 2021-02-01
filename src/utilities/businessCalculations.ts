@@ -55,7 +55,7 @@ export const computeItemTotalTax = (props: {
     itemTaxPercents: number[];
     itemPrice: number;
     itemQuantity: number;
-}) => {
+}): number => {
     let itemTotalTax = 0;
     for (let index = 0; index < props.itemTaxPercents.length; index++) {
         itemTotalTax += xPercentOfY({
@@ -74,7 +74,7 @@ export const computeItemTotalDicount = (props: {
     itemDiscountPercent: number;
     itemPrice: number;
     itemQuantity: number;
-}) => {
+}): number => {
     let itemTotalDiscount =
         xPercentOfY({
             x: props.itemDiscountPercent,
@@ -85,4 +85,35 @@ export const computeItemTotalDicount = (props: {
 
 //~ GRANDTOTAL COMPUTATION FUNCTIONS
 
-export const computeTotalTaxes = (props: { taxPercents: number[]; quantity: number }) => {};
+/**
+ * * GRAND_TOTAL - Computes the total amount applied across all items
+ */
+export const computeGrandTotal = (props: { itemTotals: number[] }): number => {
+    let grandTotal = 0;
+    for (let index = 0; index < props.itemTotals.length; index++) {
+        grandTotal += props.itemTotals[index];
+    }
+    return grandTotal;
+};
+
+/**
+ * * GRAND_TOTAL_TAX - Computes the total taxes amount applied across all items
+ */
+export const computeGrandTotalTax = (props: { itemTotalTaxes: number[] }): number => {
+    let grandTotalTax = 0;
+    for (let index = 0; index < props.itemTotalTaxes.length; index++) {
+        grandTotalTax += props.itemTotalTaxes[index];
+    }
+    return grandTotalTax;
+};
+
+/**
+ * * GRAND_TOTAL_DISCOUNT - Computes the total discounts amount applied across all items
+ */
+export const computeGrandTotalDiscount = (props: { itemTotalDiscounts: number[] }) => {
+    let grandTotalDiscount = 0;
+    for (let index = 0; index < props.itemTotalDiscounts.length; index++) {
+        grandTotalDiscount += props.itemTotalDiscounts[index];
+    }
+    return grandTotalDiscount;
+};
