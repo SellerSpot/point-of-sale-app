@@ -10,6 +10,8 @@ import { Button, InputField } from '@sellerspot/universal-components';
 import { SectionTitle } from 'components/SectionTitle/SectionTitle';
 import { Space } from 'components/Space/Space';
 import { showMessage } from 'utilities/notify';
+import { authenticateUser } from 'requests/auth';
+import { updateTenant } from 'store/models/core';
 
 export const SignIn = (): ReactElement => {
     const history = useHistory();
@@ -32,14 +34,20 @@ export const SignIn = (): ReactElement => {
                 email,
                 password,
             };
-            // const response = await socketService.request('AUTH_SIGN_IN', data);
-            // const tenantData = response.data as IAuthResposne;
-            // // updating the globals to know that the new token has arrived.
-            // updateGlobalServices(tenantData.token);
-            // batch(() => {});
+            const response = await authenticateUser(data);
+            if (response?.status && response?.data?.token && response?.data?.auth) {
+                // updating the globals to know that the new token has arrived.
+                batch(() => {
+                    updateGlobalServices(response.data.token);
+                    dispatch(updateTenant(response.data));
+                });
+            } else {
+                throw response.error;
+            }
         } catch (error) {
             console.error(error);
-            showMessage('Email or password is incorrect!', 'danger');
+            showMessage(error ?? error.message, 'danger');
+        } finally {
             setIsProcessing(false);
         }
     };

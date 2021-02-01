@@ -25,16 +25,20 @@ export const App = (): ReactElement => {
 
     useEffect(() => {
         // do tenant authorization and release isLoading if valid
-        (async () => {
-            const domainName = window.location.hostname?.split('.')?.[0];
-            const response = await authRequests.authorizeTenant(domainName);
-            if (response.status) {
-                updateGlobalServices(response.data.token);
-                dispatch(updateTenant(response.data));
-            } else {
-                window.location.replace(CONFIG.LANDING_APP_URL);
-            }
-        }).call(null);
+        if (!coreState.isAuthorized && !coreState.isAuthenticated)
+            (async () => {
+                const domainName = window.location.hostname?.split('.')?.[0];
+                const response = await authRequests.authorizeTenant(domainName);
+                if (response.status) {
+                    updateGlobalServices(response.data.token);
+                    dispatch(updateTenant(response.data));
+                } else {
+                    window.location.replace(CONFIG.LANDING_APP_URL);
+                }
+            }).call(null);
+        else {
+            // may we need to verify the available token (for validity) later
+        }
     }, []);
 
     return (
