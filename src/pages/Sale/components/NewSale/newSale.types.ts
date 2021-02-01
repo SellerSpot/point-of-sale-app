@@ -19,6 +19,7 @@ export interface INewSaleCart {
     productCartInformation: {
         itemName: string;
         discount: number;
+        price: number;
         quantity: number;
         subTotal: number;
         total: number;
@@ -30,9 +31,6 @@ export interface INewSaleCart {
  */
 export interface INewSaleProductsTableColumns {
     itemName: string;
-    gtinNumber: string;
-    brand: string;
-    category: string;
     price: string;
 }
 
@@ -41,9 +39,6 @@ export interface INewSaleProductsTableColumns {
  */
 export enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
     ITEM_NAME = 'itemName',
-    GTIN_NUMBER = 'gtinNumber',
-    BRAND = 'brand',
-    CATEGORY = 'category',
     PRICE = 'price',
 }
 
@@ -53,14 +48,16 @@ export enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
 export interface INewSaleCartTableColumns {
     itemName: string;
     quantity: number;
-    subTotal: number;
+    price: number;
     discount: number;
+    total: number;
 }
 
 // Holds the table columns for NewSale Products table
 export enum NEW_SALE_CART_TABLE_COLUMNS {
     ITEM_NAME = 'itemName',
     QUANTITY = 'quantity',
-    SUB_TOTAL = 'subTotal',
+    PRICE = 'price',
     DISCOUNT = 'discount',
+    TOTAL = 'total',
 }

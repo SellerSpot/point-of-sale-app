@@ -38,7 +38,7 @@ interface IComputeItemTotal {
  */
 export const computeItemTotal = (props: IComputeItemTotal): number => {
     // holds the final subtotal value
-    let total: number = 0;
+    let total = 0;
     // applying discount calculations
     if (!isUndefined(props.discount)) {
         if (!isUndefined(props.discount.percent)) {

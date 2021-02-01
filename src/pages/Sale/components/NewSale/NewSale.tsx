@@ -104,11 +104,11 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         columnDefs={newSaleActions.getNewSaleProductsTableColDef()}
                         rowData={newSaleActions.compileNewSaleProductsTableRowData(searchResults)}
                         overlayNoRowsTemplate={
-                            '<span className="ag-overlay-loading-center">Please search for products using the search box above</span>'
+                            '<span className="ag-overlay-loading-center">Search for products using the<br>search box above</span>'
                         }
                     />
                 </div>
-                <div className={styles.extraControlsCard}>
+                {/* <div className={styles.extraControlsCard}>
                     <Button
                         type="button"
                         label="Return to Dashboard"
@@ -119,7 +119,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         }
                     />
                     <Button label="Calculator" />
-                </div>
+                </div> */}
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
@@ -136,11 +136,11 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 </div>
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>
-                        <span>{'Sub-Total'}</span>
-                        <span>{`₹ ${newSaleActions.computeTotalSubtotalNewSale(cartData)}`}</span>
+                        <span>{'Total Sub-Total'}</span>
+                        <span>{`₹ ${newSaleActions.computeTotalSubTotalNewSale(cartData)}`}</span>
                     </div>
                     <div className={styles.calculationEntry}>
-                        <span>{'Add Taxes'}</span>
+                        <span>{'Total Taxes'}</span>
                         <span>{'₹ 50.00'}</span>
                     </div>
                     <div className={styles.calculationEntry}>
