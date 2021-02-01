@@ -1,17 +1,23 @@
-import { Button, Table } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { getProductsHistoryTableColDef } from './productsHistory.actions';
+import styles from './productsHistory.module.scss';
+
 // import { getProducts } from 'requests/product';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { IGetProductFromServer } from 'typings/components/product.types';
-import { generalUtilities } from 'utilities/utilities';
+
 // import {
 //     compileProductsTableBodyData,
 //     handleProductsHistoryTableRowClick,
 // } from './productsHistory.actions';
-import styles from './productsHistory.module.scss';
 
 export const ProductsHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -28,7 +34,6 @@ export const ProductsHistory = (): JSX.Element => {
         //     setProductsData(productsData.data as IGetProductFromServer[]);
         // }).call(null);
     }, []);
-
     return (
         <div className={styles.productsWrapper}>
             <MetaCard
@@ -46,33 +51,9 @@ export const ProductsHistory = (): JSX.Element => {
                     />,
                 ]}
             />
-            {/* <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Code'}>{'Code'}</p>,
-                        <p key={'Brand'}>{'Brand'}</p>,
-                        <p key={'Category'}>{'Category'}</p>,
-                        <p key={'Available Stock'}>{'Available Stock'}</p>,
-                        <p key={'Price'}>{'Price'}</p>,
-                    ]}
-                    rowData={compileProductsTableBodyData(productsData)}
-                    className={{
-                        bodyRow: css`
-                            :hover {
-                                cursor: pointer;
-                                background-color: ${cssColors['--secondary-background-color']};
-                            }
-                        `,
-                    }}
-                    onClick={{
-                        rowClick: (index: number) => {
-                            handleProductsHistoryTableRowClick(productsData[index]);
-                        },
-                    }}
-                />
-            </div> */}
+            <div className={classNames('ag-theme-alpine')}>
+                <AgGridReact columnDefs={getProductsHistoryTableColDef()} />s
+            </div>
         </div>
     );
 };

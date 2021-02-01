@@ -1,17 +1,24 @@
-import { Button, Table } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { AgGridReact } from 'ag-grid-react';
+import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { getTaxBracketsHistoryTableColDef } from './taxBracketHistory.actions';
+import styles from './taxBracketsHistory.module.scss';
+
 // import { getTaxBrackets } from 'requests/taxBracket';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
-import { generalUtilities } from 'utilities/utilities';
+
+
 // import {
 //     compileTaxBracketsTableBodyData,
 //     handleTaxBracketsHistoryTableRowClick,
 // } from './taxBracketsHistory.actions';
-import styles from './taxBracketsHistory.module.scss';
+
 
 export const TaxBracketsHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -49,29 +56,9 @@ export const TaxBracketsHistory = (): JSX.Element => {
                     />,
                 ]}
             />
-            {/* <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'taxBracketName'}>{'Tax-Bracket Name'}</p>,
-                        <p key={'taxBracketPercent'}>{'Tax-Bracket Percent'}</p>,
-                    ]}
-                    rowData={compileTaxBracketsTableBodyData(taxBracketsData)}
-                    className={{
-                        bodyRow: css`
-                            :hover {
-                                cursor: pointer;
-                                background-color: ${cssColors['--secondary-background-color']};
-                            }
-                        `,
-                    }}
-                    onClick={{
-                        rowClick: (index: number) => {
-                            handleTaxBracketsHistoryTableRowClick(taxBracketsData[index]);
-                        },
-                    }}
-                />
-            </div> */}
+            <div className={classNames('ag-theme-alpine')}>
+                <AgGridReact columnDefs={getTaxBracketsHistoryTableColDef()} />
+            </div>
         </div>
     );
 };
