@@ -4,7 +4,9 @@ import cn from 'classnames';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useSelector } from 'react-redux';
 import { productRequests } from 'requests/requests';
+import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { computeSubtotal } from 'utilities/businessCalculations';
@@ -16,22 +18,15 @@ import {
     compileNewSaleProductsTableRowData,
     getNewSaleCartTableColDef,
     getNewSaleProductsTableColDef,
+    handleNewSaleCartTableCellValueChange,
+    pushProductIntoCart,
 } from './newSale.action';
 import styles from './newSale.module.scss';
 import { INewSaleCart, INewSaleProps } from './newSale.types';
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
-    const [searchResults, setSearchResults] = useState<
-        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
-    >({
-        queryType: 'name',
-        results: [],
-    });
-    const [cartData, setCartData] = useState<INewSaleCart>({
-        products: [],
-        productCartInformation: [],
-    });
-    const [searchQuery, setSearchQuery] = useState('');
+    // subscribing to state
+    const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
@@ -51,44 +46,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
-    // used to push product into cart
-    const pushProductIntoCart = (
-        product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0],
-    ): void => {
-        // pushing item to cart
-        setCartData(
-            (oldCartData): INewSaleCart => {
-                return {
-                    products: [...oldCartData.products, product],
-                    productCartInformation: [
-                        ...oldCartData.productCartInformation,
-                        {
-                            itemName: product.name,
-                            discount: 0,
-                            quantity: 1,
-                            subTotal: computeSubtotal({
-                                itemPrice: product.sellingPrice,
-                                taxPercents: product.taxBracket.map((taxBracket) =>
-                                    parseInt(taxBracket.taxPercent),
-                                ),
-                            }),
-                        },
-                    ],
-                };
-            },
-        );
-        setSearchQuery('');
-        setSearchResults({
-            queryType: 'name',
-            results: [],
-        });
-    };
-
     // listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
-        console.log('Search Updated - ' + searchResults.queryType);
         if (searchResults.queryType === 'barcode') {
-            pushProductIntoCart(searchResults.results[0]);
+            pushProductIntoCart(cartData, searchResults.results[0]);
         }
     }, [searchResults]);
 
@@ -96,7 +57,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const queryServer = useCallback(
         debounce(async (query: string) => {
             if (query.length > 0) {
-                setSearchResults(await productRequests.searchProduct(query));
+                store.dispatch(setSearchResults(await productRequests.searchProduct(query)));
             }
         }, 400),
         [],
@@ -108,46 +69,22 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
         if (query.length === 0) {
-            setSearchResults({
-                queryType: 'name',
-                results: [],
-            });
+            store.dispatch(
+                setSearchResults({
+                    queryType: 'name',
+                    results: [],
+                }),
+            );
         }
-        setSearchQuery(query);
+        store.dispatch(setSearchQuery(query));
+        // call to send query to server to fetch suggestions
         queryServer(query);
     };
 
     // handles clicking of row in new sale products table
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        pushProductIntoCart(searchResults.results[event.rowIndex]);
-    };
-
-    // handles cell values change in the NewSale cart table
-    const handleNewSaleCartTableCellValueChange = (event: CellValueChangedEvent) => {
-        setCartData(
-            (oldCartData): INewSaleCart => {
-                const productCartInformation = oldCartData.productCartInformation;
-                switch (event.column.getColId()) {
-                    case 'itemName':
-                        productCartInformation[event.rowIndex]['itemName'] = event.newValue;
-                        break;
-                    case 'discount':
-                        productCartInformation[event.rowIndex]['discount'] = event.newValue;
-                        break;
-                    case 'quantity':
-                        productCartInformation[event.rowIndex]['quantity'] = event.newValue;
-                        break;
-                    case 'subTotal':
-                        productCartInformation[event.rowIndex]['subTotal'] = event.newValue;
-                        break;
-                }
-                return {
-                    products: oldCartData.products,
-                    productCartInformation: productCartInformation,
-                };
-            },
-        );
+        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
     };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
@@ -201,7 +138,9 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Empty Cart</span>'
                         }
-                        onCellValueChanged={handleNewSaleCartTableCellValueChange}
+                        onCellValueChanged={(event) =>
+                            handleNewSaleCartTableCellValueChange(cartData, event)
+                        }
                     />
                 </div>
                 <div className={styles.calculationCard}>

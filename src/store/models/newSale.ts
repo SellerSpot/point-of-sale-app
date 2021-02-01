@@ -1,16 +1,15 @@
-import { merge } from 'lodash';
 import { INewSaleCart } from 'pages/Sale/components/NewSale/newSale.types';
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
-interface InitialState {
+export interface IInitialStateNewSale {
     searchResults: pointOfSaleTypes.productResponseTypes.ISearchProduct['data'];
     cartData: INewSaleCart;
     searchQuery: string;
 }
 
-const initialState: InitialState = {
+export const initialStateNewSale: IInitialStateNewSale = {
     searchResults: {
         queryType: 'name',
         results: [],
@@ -24,23 +23,23 @@ const initialState: InitialState = {
 
 const newSale = createSlice({
     name: 'newSale',
-    initialState,
+    initialState: initialStateNewSale,
     reducers: {
         setSearchResults: (
-            state: InitialState,
-            { payload }: PayloadAction<InitialState['searchResults']>,
+            state: IInitialStateNewSale,
+            { payload }: PayloadAction<IInitialStateNewSale['searchResults']>,
         ) => {
             state.searchResults = payload;
         },
         setCartData: (
-            state: InitialState,
-            { payload }: PayloadAction<InitialState['cartData']>,
+            state: IInitialStateNewSale,
+            { payload }: PayloadAction<IInitialStateNewSale['cartData']>,
         ) => {
             state.cartData = payload;
         },
         setSearchQuery: (
-            state: InitialState,
-            { payload }: PayloadAction<InitialState['searchQuery']>,
+            state: IInitialStateNewSale,
+            { payload }: PayloadAction<IInitialStateNewSale['searchQuery']>,
         ) => {
             state.searchQuery = payload;
         },
@@ -54,5 +53,5 @@ export default newSale.reducer;
 export const { setSearchResults, setCartData, setSearchQuery } = newSale.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
-export const newSaleSelector: Selector<RootState, InitialState> = (state: RootState) =>
+export const newSaleSelector: Selector<RootState, IInitialStateNewSale> = (state: RootState) =>
     state.newSale;

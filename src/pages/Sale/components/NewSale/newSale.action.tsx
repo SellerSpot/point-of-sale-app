@@ -1,6 +1,13 @@
-import { ColDef } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
 import { isNull } from 'lodash';
 import React from 'react';
+import {
+    IInitialStateNewSale,
+    initialStateNewSale,
+    setCartData,
+    setSearchQuery,
+    setSearchResults,
+} from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { computeSubtotal } from 'utilities/businessCalculations';
@@ -151,4 +158,74 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             flex: 1,
         },
     ];
+};
+
+/**
+ * STATE UPDATE ACTIONS
+ */
+
+/**
+ * Used to push product into cart
+ * @param oldCartData The latest cart information from the store
+ * @param product The single product to push into cart
+ */
+export const pushProductIntoCart = (
+    oldCartData: IInitialStateNewSale['cartData'],
+    product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0],
+): void => {
+    // pushing item to cart
+    store.dispatch(
+        setCartData({
+            products: [...oldCartData.products, product],
+            productCartInformation: [
+                ...oldCartData.productCartInformation,
+                {
+                    itemName: product.name,
+                    discount: 0,
+                    quantity: 1,
+                    subTotal: computeSubtotal({
+                        itemPrice: product.sellingPrice,
+                        taxPercents: product.taxBracket.map((taxBracket) =>
+                            parseInt(taxBracket.taxPercent),
+                        ),
+                    }),
+                },
+            ],
+        }),
+    );
+    // resetting the other fields
+    store.dispatch(setSearchQuery(initialStateNewSale.searchQuery));
+    store.dispatch(setSearchResults(initialStateNewSale.searchResults));
+};
+
+/**
+ * Handles the inline cell value change in the cart table
+ * @param oldCartData Latest cart state of the new sale page
+ * @param event event from ag-grid
+ */
+export const handleNewSaleCartTableCellValueChange = (
+    oldCartData: IInitialStateNewSale['cartData'],
+    event: CellValueChangedEvent,
+): void => {
+    const productCartInformation = oldCartData.productCartInformation;
+    switch (event.column.getColId()) {
+        case 'itemName':
+            productCartInformation[event.rowIndex]['itemName'] = event.newValue;
+            break;
+        case 'discount':
+            productCartInformation[event.rowIndex]['discount'] = event.newValue;
+            break;
+        case 'quantity':
+            productCartInformation[event.rowIndex]['quantity'] = event.newValue;
+            break;
+        case 'subTotal':
+            productCartInformation[event.rowIndex]['subTotal'] = event.newValue;
+            break;
+    }
+    store.dispatch(
+        setCartData({
+            products: oldCartData.products,
+            productCartInformation: productCartInformation,
+        }),
+    );
 };
