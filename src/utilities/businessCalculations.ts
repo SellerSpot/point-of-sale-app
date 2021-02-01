@@ -1,11 +1,10 @@
-import { isUndefined } from 'lodash';
-
 //# GENERAL COMPUTATION FUNCTIONS
 
 /**
  * * Computes x % of y
  */
-export const xPercentOfY = (props: { x: number; y: number }): number => (props.x / 100) * props.y;
+export const xPercentOfY = (props: { x: number; y: number }): number =>
+    parseInt(((props.x / 100) * props.y).toFixed(2));
 
 //# ITEM COMPUTATION FUNCTIONS
 
@@ -13,7 +12,7 @@ export const xPercentOfY = (props: { x: number; y: number }): number => (props.x
  * * ITEM_SUB_TOTAL - Cost of item before applying tax or discounts
  */
 export const computeItemSubtotal = (props: { itemPrice: number; itemQuantity: number }): number => {
-    return parseInt((props.itemPrice * props.itemQuantity).toFixed(3));
+    return parseInt((props.itemPrice * props.itemQuantity).toFixed(2));
 };
 
 /**
@@ -25,7 +24,12 @@ export const computeItemTotal = (props: {
     itemTotalDiscount: number;
     itemQuantity: number;
 }): number => {
-    return (props.itemPrice + props.itemTotalTax - props.itemTotalDiscount) * props.itemQuantity;
+    return parseInt(
+        (
+            (props.itemPrice + props.itemTotalTax - props.itemTotalDiscount) *
+            props.itemQuantity
+        ).toFixed(2),
+    );
 };
 
 /**
@@ -44,7 +48,7 @@ export const computeItemTotalTax = (props: {
         });
     }
     itemTotalTax *= props.itemQuantity;
-    return itemTotalTax;
+    return parseInt(itemTotalTax.toFixed(2));
 };
 
 /**
@@ -55,11 +59,13 @@ export const computeItemTotalDicount = (props: {
     itemPrice: number;
     itemQuantity: number;
 }): number => {
-    return (
-        xPercentOfY({
-            x: props.itemDiscountPercent,
-            y: props.itemPrice,
-        }) * props.itemQuantity
+    return parseInt(
+        (
+            xPercentOfY({
+                x: props.itemDiscountPercent,
+                y: props.itemPrice,
+            }) * props.itemQuantity
+        ).toFixed(2),
     );
 };
 
@@ -73,7 +79,7 @@ export const computeGrandTotal = (props: { itemTotals: number[] }): number => {
     for (let index = 0; index < props.itemTotals.length; index++) {
         grandTotal += props.itemTotals[index];
     }
-    return grandTotal;
+    return parseInt(grandTotal.toFixed(2));
 };
 
 /**
@@ -84,7 +90,7 @@ export const computeGrandTotalTax = (props: { itemTotalTaxes: number[] }): numbe
     for (let index = 0; index < props.itemTotalTaxes.length; index++) {
         grandTotalTax += props.itemTotalTaxes[index];
     }
-    return grandTotalTax;
+    return parseInt(grandTotalTax.toFixed(2));
 };
 
 /**
@@ -95,5 +101,5 @@ export const computeGrandTotalDiscount = (props: { itemTotalDiscounts: number[] 
     for (let index = 0; index < props.itemTotalDiscounts.length; index++) {
         grandTotalDiscount += props.itemTotalDiscounts[index];
     }
-    return grandTotalDiscount;
+    return parseInt(grandTotalDiscount.toFixed(2));
 };

@@ -146,7 +146,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             flex: 1,
             valueFormatter: (formatterParams) =>
-                `${formatterParams.value} ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL}`,
+                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${formatterParams.value}`,
         },
     ];
 };
@@ -262,11 +262,11 @@ export const recomputeCartValues = (
     const currentCartInformation = cartData.productCartInformation[rowIndex];
     // fetching required values
     currentCartInformation.itemSubTotal = computeItemSubtotal({
-        itemPrice: currentProduct.sellingPrice,
+        itemPrice: currentCartInformation.itemPrice,
         itemQuantity: currentCartInformation.itemQuantity,
     });
     currentCartInformation.itemTotalTax = computeItemTotalTax({
-        itemPrice: currentProduct.sellingPrice,
+        itemPrice: currentCartInformation.itemPrice,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
             parseInt(taxBracket.taxPercent),
@@ -274,11 +274,11 @@ export const recomputeCartValues = (
     });
     currentCartInformation.itemTotalDiscount = computeItemTotalDicount({
         itemDiscountPercent: currentCartInformation.itemDiscountPercent,
-        itemPrice: currentProduct.sellingPrice,
+        itemPrice: currentCartInformation.itemPrice,
         itemQuantity: currentCartInformation.itemQuantity,
     });
     currentCartInformation.itemTotal = computeItemTotal({
-        itemPrice: currentProduct.sellingPrice,
+        itemPrice: currentCartInformation.itemPrice,
         itemTotalDiscount: currentCartInformation.itemTotalDiscount,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTotalTax: currentCartInformation.itemTotalTax,
@@ -315,19 +315,19 @@ export const handleNewSaleCartTableCellValueChange = (
     // updating the required value
     switch (event.column.getColId() as keyof INewSaleCartTableColumns) {
         case 'itemName':
-            cartData.productCartInformation[event.rowIndex]['itemName'] = event.data;
+            cartData.productCartInformation[event.rowIndex]['itemName'] = event.newValue;
             break;
         case 'itemPrice':
-            cartData.productCartInformation[event.rowIndex]['itemPrice'] = event.data;
+            cartData.productCartInformation[event.rowIndex]['itemPrice'] = event.newValue;
             break;
         case 'itemDiscountPercent':
-            cartData.productCartInformation[event.rowIndex]['itemDiscountPercent'] = event.data;
+            cartData.productCartInformation[event.rowIndex]['itemDiscountPercent'] = event.newValue;
             break;
         case 'itemQuantity':
-            cartData.productCartInformation[event.rowIndex]['itemQuantity'] = event.data;
+            cartData.productCartInformation[event.rowIndex]['itemQuantity'] = event.newValue;
             break;
         case 'itemTotal':
-            cartData.productCartInformation[event.rowIndex]['itemTotal'] = event.data;
+            cartData.productCartInformation[event.rowIndex]['itemTotal'] = event.newValue;
             break;
     }
     recomputeCartValues(cartData, event.rowIndex);
