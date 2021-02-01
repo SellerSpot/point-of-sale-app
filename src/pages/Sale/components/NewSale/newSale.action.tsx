@@ -177,7 +177,10 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
     ];
 };
 
-// compute total subTotal
+/**
+ * Compute total subTotal to add items in cart
+ * @param cartData Current state of cart store
+ */
 export const computeTotalSubtotalNewSale = (cartData: IInitialStateNewSale['cartData']): string => {
     let totalSubTotal = 0;
     for (let index = 0; index < cartData.productCartInformation.length; index++) {
