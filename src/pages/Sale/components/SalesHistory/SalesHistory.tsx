@@ -8,7 +8,7 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { compileSaleHistoryTableData } from './salesHistory.action';
+import { compileSaleHistoryTableData, getSalesHistoryTableColDef } from './salesHistory.action';
 import styles from './salesHistory.module.scss';
 
 export const SalesHistory = (): JSX.Element => {
@@ -43,50 +43,7 @@ export const SalesHistory = (): JSX.Element => {
                 ]}
             />
             <div className={cn('ag-theme-alpine', styles.tableWrapper)}>
-                <AgGridReact
-                    columnDefs={[
-                        {
-                            headerName: 'Status',
-                            field: 'status',
-                            sortable: true,
-                            filter: true,
-                            resizable: true,
-                            flex: 1,
-                        },
-                        {
-                            headerName: 'Created At',
-                            field: 'createdAt',
-                            sortable: true,
-                            filter: true,
-                            resizable: true,
-                            flex: 1,
-                        },
-                        {
-                            headerName: 'Sub-Total',
-                            field: 'taxation',
-                            sortable: true,
-                            filter: true,
-                            resizable: true,
-                            flex: 1,
-                        },
-                        {
-                            headerName: 'Taxation',
-                            field: 'status',
-                            sortable: true,
-                            filter: true,
-                            resizable: true,
-                            flex: 1,
-                        },
-                        {
-                            headerName: 'Grand Total',
-                            field: 'grandTotal',
-                            sortable: true,
-                            filter: true,
-                            resizable: true,
-                            flex: 1,
-                        },
-                    ]}
-                />
+                <AgGridReact columnDefs={getSalesHistoryTableColDef()} />
             </div>
         </div>
     );

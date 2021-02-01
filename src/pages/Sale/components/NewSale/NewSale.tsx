@@ -9,7 +9,11 @@ import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { compileProductsTableBodyData, handleCloseSlider } from './newSale.action';
+import {
+    compileNewSaleProductsTableRowData,
+    getNewSaleCartTableColDef,
+    getNewSaleProductsTableColDef,
+} from './newSale.action';
 import styles from './newSale.module.scss';
 
 /**
@@ -24,12 +28,25 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [searchResults, setSearchResults] = useState<
         pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
     >(null);
-    const [width, setWidth] = useState(window.innerWidth);
-    const updateDimensions = () => {
-        setWidth(window.innerWidth);
-    };
     const [searchQuery, setSearchQuery] = useState('');
     // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
+
+    // used to handle the closing of the sliderModal
+    const handleCloseSlider = () => {
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'newSaleSlider',
+                active: false,
+            }),
+        );
+        props.callBackStateTrack[1](false);
+    };
+
+    useEffect(() => {
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0]]);
 
     // used to query the server to fetch product suggestions
     const queryServer = useCallback(
@@ -47,21 +64,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
         setSearchQuery(query);
-        // const searchedProducts = await productRequests.searchProduct(query);
         queryServer(query);
-        // console.log(searchedProducts);
     };
-
-    useEffect(() => {
-        if (props.callBackStateTrack[0]) {
-            handleCloseSlider(props.callBackStateTrack[1]);
-        }
-    }, [props.callBackStateTrack[0]]);
-
-    useEffect(() => {
-        window.addEventListener('resize', updateDimensions);
-        return () => window.removeEventListener('resize', updateDimensions);
-    }, []);
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
@@ -83,48 +87,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 />
                 <div className={cn('ag-theme-alpine')}>
                     <AgGridReact
-                        columnDefs={[
-                            {
-                                headerName: 'Status',
-                                field: 'status',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Created At',
-                                field: 'createdAt',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Sub-Total',
-                                field: 'taxation',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Taxation',
-                                field: 'status',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Grand Total',
-                                field: 'grandTotal',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                        ]}
+                        columnDefs={getNewSaleProductsTableColDef()}
+                        rowData={compileNewSaleProductsTableRowData(searchResults)}
                     />
                 </div>
                 <div className={styles.extraControlsCard}>
@@ -142,42 +106,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
-                    <AgGridReact
-                        columnDefs={[
-                            {
-                                headerName: 'Item Name',
-                                field: 'itemName',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Quantity',
-                                field: 'quantity',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Sub-Total',
-                                field: 'subtotal',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                            {
-                                headerName: 'Discount',
-                                field: 'discount',
-                                sortable: true,
-                                filter: true,
-                                resizable: true,
-                                flex: 1,
-                            },
-                        ]}
-                    />
+                    <AgGridReact columnDefs={getNewSaleCartTableColDef()} />
                 </div>
                 <div className={styles.calculationCard}>
                     <div className={styles.calculationEntry}>

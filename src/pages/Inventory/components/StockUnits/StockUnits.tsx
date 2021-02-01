@@ -17,8 +17,6 @@ import { getStockUnitsHistoryTableColDef } from './stockUnitsHistory.actions';
 //     handleCategoriesHistoryTableRowClick,
 // } from './categoriesHistory.actions';
 
-
-
 export const StockUnitsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();

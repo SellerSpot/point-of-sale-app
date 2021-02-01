@@ -12,12 +12,10 @@ import styles from './categoriesHistory.module.scss';
 // import { getCategories } from 'requests/category';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 
-
 // import {
 //     compileCategoriesTableBodyData,
 //     handleCategoriesHistoryTableRowClick,
 // } from './categoriesHistory.actions';
-
 
 export const CategoriesHistory = (): JSX.Element => {
     // To manage which tab is selected

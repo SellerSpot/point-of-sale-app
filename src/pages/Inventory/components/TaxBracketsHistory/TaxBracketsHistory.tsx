@@ -13,12 +13,10 @@ import styles from './taxBracketsHistory.module.scss';
 // import { toggleSliderModal } from 'store/models/sliderModal';
 // import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
 
-
 // import {
 //     compileTaxBracketsTableBodyData,
 //     handleTaxBracketsHistoryTableRowClick,
 // } from './taxBracketsHistory.actions';
-
 
 export const TaxBracketsHistory = (): JSX.Element => {
     // To manage which tab is selected
