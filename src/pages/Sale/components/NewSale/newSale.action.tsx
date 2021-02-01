@@ -63,7 +63,7 @@ export const compileNewSaleProductsTableRowData = (
             (product): INewSaleProductsTableColumns => {
                 return {
                     itemName: product.name,
-                    price: product.sellingPrice.toString(),
+                    itemPrice: product.sellingPrice.toString(),
                 };
             },
         );

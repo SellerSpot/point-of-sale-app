@@ -38,7 +38,7 @@ export interface INewSaleCart {
  */
 export interface INewSaleProductsTableColumns {
     itemName: string;
-    price: string;
+    itemPrice: string;
 }
 
 /**

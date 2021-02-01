@@ -115,18 +115,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         }
                     />
                 </div>
-                {/* <div className={styles.extraControlsCard}>
-                    <Button
-                        type="button"
-                        label="Return to Dashboard"
-                        onClick={() =>
-                            store.dispatch(
-                                toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
-                            )
-                        }
-                    />
-                    <Button label="Calculator" />
-                </div> */}
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
