@@ -130,7 +130,17 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     />
                 </div>
                 <div className={styles.rightPanelBottom}>
-                    <div className={styles.cartMetaCard}></div>
+                    <div className={styles.cartMetaCard}>
+                        {cartData.productCartInformation.length > 0 ? (
+                            <div>
+                                <h4>Calculation Write Up</h4>
+                                <div className={styles.calculationWriteUp}>
+                                    <span>{'Total Taxes'}</span>
+                                    <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Taxes'}</span>
