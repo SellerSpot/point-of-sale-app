@@ -11,7 +11,14 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
-import * as newSaleActions from './newSale.action';
+import {
+    compileNewSaleCartTableRowData,
+    compileNewSaleProductsTableRowData,
+    getNewSaleCartTableColDef,
+    getNewSaleProductsTableColDef,
+    handleNewSaleCartTableCellValueChange,
+    pushProductIntoCart,
+} from './newSale.action';
 import styles from './newSale.module.scss';
 import { INewSaleProps } from './newSale.types';
 
@@ -40,7 +47,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     // listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
         if (searchResults.queryType === 'barcode') {
-            newSaleActions.pushProductIntoCart(cartData, searchResults.results[0]);
+            pushProductIntoCart(cartData, searchResults.results[0]);
         }
     }, [searchResults]);
 
@@ -75,7 +82,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     // handles clicking of row in new sale products table
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        newSaleActions.pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
     };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
@@ -101,8 +108,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         rowSelection={'single'}
                         onRowClicked={handleNewSaleProductTableRowClick}
                         suppressCellSelection={true}
-                        columnDefs={newSaleActions.getNewSaleProductsTableColDef()}
-                        rowData={newSaleActions.compileNewSaleProductsTableRowData(searchResults)}
+                        columnDefs={getNewSaleProductsTableColDef()}
+                        rowData={compileNewSaleProductsTableRowData(searchResults)}
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Search for products using the<br>search box above</span>'
                         }
@@ -124,13 +131,13 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
                     <AgGridReact
-                        columnDefs={newSaleActions.getNewSaleCartTableColDef()}
-                        rowData={newSaleActions.compileNewSaleCartTableRowData(cartData)}
+                        columnDefs={getNewSaleCartTableColDef()}
+                        rowData={compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={
                             '<span className="ag-overlay-loading-center">Empty Cart</span>'
                         }
                         onCellValueChanged={(event) =>
-                            newSaleActions.handleNewSaleCartTableCellValueChange(cartData, event)
+                            handleNewSaleCartTableCellValueChange(cartData, event)
                         }
                     />
                 </div>
@@ -138,22 +145,18 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     <div className={styles.cartMetaCard}></div>
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
-                            <span>{'Total Sub-Total'}</span>
-                            <span>{`₹ ${newSaleActions.computeTotalSubTotalNewSale(
-                                cartData,
-                            )}`}</span>
-                        </div>
-                        <div className={styles.calculationEntry}>
                             <span>{'Total Taxes'}</span>
-                            <span>{'₹ 50.00'}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Discount'}</span>
-                            <span>{'- ₹ 20.00'}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalDiscount}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
-                            <span>{'Order Total'}</span>
-                            <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
+                            <span>{'Grand Total'}</span>
+                            <span
+                                className={styles.orderTotalText}
+                            >{`₹ ${cartData.totals.grandTotal}`}</span>
                         </div>
                         <Button
                             label="CHECKOUT"

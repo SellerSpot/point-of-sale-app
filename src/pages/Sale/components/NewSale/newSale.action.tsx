@@ -23,8 +23,6 @@ import {
     INewSaleCart,
     INewSaleCartTableColumns,
     INewSaleProductsTableColumns,
-    NEW_SALE_CART_TABLE_COLUMNS,
-    NEW_SALE_PRODUCTS_TABLE_COLUMNS,
 } from './newSale.types';
 
 //# TABLE FUNCTIONS
@@ -36,7 +34,7 @@ export const getNewSaleProductsTableColDef = (): ColDef[] => {
     return [
         {
             headerName: 'Item Name',
-            field: NEW_SALE_PRODUCTS_TABLE_COLUMNS.ITEM_NAME,
+            field: 'itemName' as keyof INewSaleProductsTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -44,7 +42,7 @@ export const getNewSaleProductsTableColDef = (): ColDef[] => {
         },
         {
             headerName: `Price ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
-            field: NEW_SALE_PRODUCTS_TABLE_COLUMNS.PRICE,
+            field: 'itemPrice' as keyof INewSaleProductsTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -81,7 +79,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
     return [
         {
             headerName: 'Item Name',
-            field: NEW_SALE_CART_TABLE_COLUMNS.ITEM_NAME,
+            field: 'itemName' as keyof INewSaleCartTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -94,7 +92,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         },
         {
             headerName: 'Quantity',
-            field: NEW_SALE_CART_TABLE_COLUMNS.QUANTITY,
+            field: 'itemQuantity' as keyof INewSaleCartTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -109,7 +107,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         },
         {
             headerName: `Price ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
-            field: NEW_SALE_PRODUCTS_TABLE_COLUMNS.PRICE,
+            field: 'itemPrice' as keyof INewSaleCartTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -125,7 +123,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         },
         {
             headerName: `Discount ( ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL} )`,
-            field: NEW_SALE_CART_TABLE_COLUMNS.DISCOUNT,
+            field: 'itemDiscountPercent' as keyof INewSaleCartTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -142,7 +140,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         },
         {
             headerName: `Total ( ${COMMON_SYMBOLS.RUPEE_SYMBOL} )`,
-            field: NEW_SALE_CART_TABLE_COLUMNS.TOTAL,
+            field: 'itemTotal' as keyof INewSaleCartTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -164,10 +162,10 @@ export const compileNewSaleCartTableRowData = (
             (cartProduct): INewSaleCartTableColumns => {
                 return {
                     itemName: cartProduct.itemName,
-                    discount: cartProduct.itemDiscountPercent,
-                    price: cartProduct.itemPrice,
-                    quantity: cartProduct.itemQuantity,
-                    total: cartProduct.itemTotal,
+                    itemDiscountPercent: cartProduct.itemDiscountPercent,
+                    itemPrice: cartProduct.itemPrice,
+                    itemQuantity: cartProduct.itemQuantity,
+                    itemTotal: cartProduct.itemTotal,
                 };
             },
         );
@@ -226,7 +224,6 @@ export const pushProductIntoCart = (
             itemTotalTax,
         ],
     });
-
     // pushing item to cart
     store.dispatch(
         setCartData({
@@ -259,7 +256,50 @@ export const pushProductIntoCart = (
 export const recomputeCartValues = (
     cartData: IInitialStateNewSale['cartData'],
     rowIndex: number,
-): void => {};
+): void => {
+    // getting current item details
+    const currentProduct = cartData.products[rowIndex];
+    const currentCartInformation = cartData.productCartInformation[rowIndex];
+    // fetching required values
+    currentCartInformation.itemSubTotal = computeItemSubtotal({
+        itemPrice: currentProduct.sellingPrice,
+        itemQuantity: currentCartInformation.itemQuantity,
+    });
+    currentCartInformation.itemTotalTax = computeItemTotalTax({
+        itemPrice: currentProduct.sellingPrice,
+        itemQuantity: currentCartInformation.itemQuantity,
+        itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
+            parseInt(taxBracket.taxPercent),
+        ),
+    });
+    currentCartInformation.itemTotalDiscount = computeItemTotalDicount({
+        itemDiscountPercent: currentCartInformation.itemDiscountPercent,
+        itemPrice: currentProduct.sellingPrice,
+        itemQuantity: currentCartInformation.itemQuantity,
+    });
+    currentCartInformation.itemTotal = computeItemTotal({
+        itemPrice: currentProduct.sellingPrice,
+        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
+        itemQuantity: currentCartInformation.itemQuantity,
+        itemTotalTax: currentCartInformation.itemTotalTax,
+    });
+    // updating the object with new values
+    cartData.productCartInformation[rowIndex] = currentCartInformation;
+    // updating totals
+    cartData.totals.grandTotal = computeGrandTotal({
+        itemTotals: [...cartData.productCartInformation.map((product) => product.itemTotal)],
+    });
+    cartData.totals.grandTotalDiscount = computeGrandTotalDiscount({
+        itemTotalDiscounts: [
+            ...cartData.productCartInformation.map((product) => product.itemTotalDiscount),
+        ],
+    });
+    cartData.totals.grandTotalTax = computeGrandTotalTax({
+        itemTotalTaxes: [...cartData.productCartInformation.map((product) => product.itemTotalTax)],
+    });
+    // updating state
+    store.dispatch(setCartData(cartData));
+};
 
 /**
  * Handles the inline cell value change in the cart table
@@ -272,28 +312,23 @@ export const handleNewSaleCartTableCellValueChange = (
 ): void => {
     // creating a clone to work with
     const cartData: INewSaleCart = merge({}, currentCartData);
-    switch (event.column.getColId()) {
-        case NEW_SALE_CART_TABLE_COLUMNS.ITEM_NAME:
-            cartData.productCartInformation[event.rowIndex][NEW_SALE_CART_TABLE_COLUMNS.ITEM_NAME] =
-                event.newValue;
+    // updating the required value
+    switch (event.column.getColId() as keyof INewSaleCartTableColumns) {
+        case 'itemName':
+            cartData.productCartInformation[event.rowIndex]['itemName'] = event.data;
             break;
-
-        case NEW_SALE_CART_TABLE_COLUMNS.DISCOUNT:
-            cartData.productCartInformation[event.rowIndex][NEW_SALE_CART_TABLE_COLUMNS.DISCOUNT] =
-                event.newValue;
-            recomputeCartValues(cartData, event.rowIndex);
+        case 'itemPrice':
+            cartData.productCartInformation[event.rowIndex]['itemPrice'] = event.data;
             break;
-
-        case NEW_SALE_CART_TABLE_COLUMNS.PRICE:
-            cartData.productCartInformation[event.rowIndex][NEW_SALE_CART_TABLE_COLUMNS.PRICE] =
-                event.newValue;
-            recomputeCartValues(cartData, event.rowIndex);
+        case 'itemDiscountPercent':
+            cartData.productCartInformation[event.rowIndex]['itemDiscountPercent'] = event.data;
             break;
-
-        case NEW_SALE_CART_TABLE_COLUMNS.QUANTITY:
-            cartData.productCartInformation[event.rowIndex][NEW_SALE_CART_TABLE_COLUMNS.QUANTITY] =
-                event.newValue;
-            recomputeCartValues(cartData, event.rowIndex);
+        case 'itemQuantity':
+            cartData.productCartInformation[event.rowIndex]['itemQuantity'] = event.data;
+            break;
+        case 'itemTotal':
+            cartData.productCartInformation[event.rowIndex]['itemTotal'] = event.data;
             break;
     }
+    recomputeCartValues(cartData, event.rowIndex);
 };

@@ -42,29 +42,12 @@ export interface INewSaleProductsTableColumns {
 }
 
 /**
- * Holds the table columns for NewSale Products table
- */
-export enum NEW_SALE_PRODUCTS_TABLE_COLUMNS {
-    ITEM_NAME = 'itemName',
-    PRICE = 'price',
-}
-
-/**
  * Interface for the cart table in New Sale Page
  */
 export interface INewSaleCartTableColumns {
     itemName: string;
-    quantity: number;
-    price: number;
-    discount: number;
-    total: number;
-}
-
-// Holds the table columns for NewSale Products table
-export enum NEW_SALE_CART_TABLE_COLUMNS {
-    ITEM_NAME = 'itemName',
-    QUANTITY = 'quantity',
-    PRICE = 'price',
-    DISCOUNT = 'discount',
-    TOTAL = 'total',
+    itemQuantity: number;
+    itemPrice: number;
+    itemDiscountPercent: number;
+    itemTotal: number;
 }
