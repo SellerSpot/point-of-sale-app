@@ -1,0 +1,81 @@
+// animation keyframes
+@keyframes fadeEffectAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes logoImageBounceAnimation {
+    from {
+        margin-top: -100%;
+    }
+
+    to {
+        margin-top: 0;
+    }
+}
+
+// css
+.authWrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 40% 1fr;
+}
+.promotionHolder {
+    position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    background: #f6f6f6;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.promotionImage {
+    position: absolute;
+    bottom: -14px;
+    left: 10%;
+    width: 80%;
+    animation: fadeEffectAnimation 1s;
+}
+
+.logoHolder {
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 25%;
+    animation: fadeEffectAnimation 0.5s;
+    position: relative;
+}
+
+.logoImage {
+    width: 100px;
+    position: absolute;
+    animation: logoImageBounceAnimation 1s;
+}
+
+.logoTitle {
+    font-size: 35px;
+    font-weight: bold;
+    color: #ff9800;
+    letter-spacing: 5px;
+    margin-top: 170px;
+    text-align: center;
+}
+
+.mainContentHolder {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -1,5 +1,5 @@
 import { FaBoxOpen, FaStore } from 'react-icons/fa';
-import { IoMdCart } from 'react-icons/io';
+import { IoMdCart, IoMdLogOut } from 'react-icons/io';
 import { RiBillLine } from 'react-icons/ri';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 
@@ -9,4 +9,5 @@ export const ICONS = {
     inventoryLeftNavItem: FaBoxOpen,
     billLeftNavItem: RiBillLine,
     leftCaretBack: MdKeyboardArrowLeft,
+    logout: IoMdLogOut,
 };

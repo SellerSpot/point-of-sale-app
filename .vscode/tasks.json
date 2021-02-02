@@ -3,8 +3,7 @@
     "windows": {
         "command": "cmd"
     },
-    "tasks": [
-        {
+    "tasks": [{
             "label": "npm-link-universal-types",
             "type": "shell",
             "command": "npm link ../universal-types",
@@ -61,9 +60,12 @@
             "command": "start ./terminal.bat",
             "group": "none",
             "presentation": {
-                "focus": true,
-                "reveal": "always",
-                "panel": "dedicated"
+                "focus": false,
+                "reveal": "never",
+                "panel": "new",
+                "clear": true,
+                "showReuseMessage": false,
+                "revealProblems": "never"
             },
             "runOptions": {
                 "runOn": "default"

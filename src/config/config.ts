@@ -3,5 +3,8 @@ export const CONFIG = {
     ONLINE_SERVER_API_URL: process.env.ONLINE_SERVER_API_URL,
     ONLINE_SERVER_SOCKET_URL: process.env.ONLINE_SERVER_SOCKET_URL,
     LANDING_APP_URL: process.env.LANDING_APP_URL,
+
+    // REDUX PERSIST STATE
+    REUDX_CORE_STATE: 'coreState',
 };
 // For any url do not suffix '/' (standard followd in this project) (nest / at use time if needed )

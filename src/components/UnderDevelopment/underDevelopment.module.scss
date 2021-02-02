@@ -1,0 +1,18 @@
+.underDevelopmentWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.illustrationImageHolder {
+    width: 40%;
+}
+
+.underDevelopmentTitle {
+    font-size: 22px;
+    font-weight: bold;
+}
