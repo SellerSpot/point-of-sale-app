@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { getAllProducts } from 'requests/product';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -11,15 +13,6 @@ import {
     getProductsHistoryTableColDef,
 } from './productsHistory.actions';
 import styles from './productsHistory.module.scss';
-
-// import { getProducts } from 'requests/product';
-// import { toggleSliderModal } from 'store/models/sliderModal';
-// import { IGetProductFromServer } from 'typings/components/product.types';
-
-// import {
-//     compileProductsTableBodyData,
-//     handleProductsHistoryTableRowClick,
-// } from './productsHistory.actions';
 
 export const ProductsHistory = (): JSX.Element => {
     const [productsData, setProductsData] = useState<
@@ -45,11 +38,11 @@ export const ProductsHistory = (): JSX.Element => {
                     <Button
                         key={'addProduct'}
                         label={`Add Product (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({ sliderName: 'addProductSlider', active: true }),
-                        //     )
-                        // }
+                        onClick={() =>
+                            store.dispatch(
+                                toggleSliderModal({ sliderName: 'addProductSlider', active: true }),
+                            )
+                        }
                     />,
                 ]}
             />

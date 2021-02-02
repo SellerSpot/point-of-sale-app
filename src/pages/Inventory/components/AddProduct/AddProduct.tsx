@@ -81,7 +81,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND, () => {
+    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT, () => {
         store.dispatch(
             toggleSliderModal({
                 sliderName: 'addProductSlider',
@@ -90,7 +90,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         );
     });
 
-    // getting sliderState to listen to when the slider is invoked
+    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // getting formik instance to handle form operations
     const formFormik = useFormik({

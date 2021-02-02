@@ -5,7 +5,7 @@ import { pointOfSaleTypes } from '@sellerspot/universal-types';
  * Fetches all stockUnit from the database
  */
 export const getAllStockUnits = async (): Promise<
-    pointOfSaleTypes.stockUnitResponseTypes.IGetStockUnit['data']
+    pointOfSaleTypes.stockUnitResponseTypes.IGetAllStockUnits['data']
 > => {
     const response = await apiService.post(
         `${pointOfSaleTypes.ROUTES.STOCK_UNIT}/${pointOfSaleTypes.ROUTES.STOCKUNIT_GET_ALL_STOCKUNITS}`,
