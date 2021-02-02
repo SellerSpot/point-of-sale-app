@@ -10,8 +10,9 @@ export const getAllProducts = async (): Promise<
     const response = await apiService.post(
         `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_GET_ALL_PRODUCTS}`,
     );
-    if (response.status) {
-        return response.data as pointOfSaleTypes.productResponseTypes.IGetProducts['data'];
+    const responseData = response.data as pointOfSaleTypes.productResponseTypes.IGetProducts;
+    if (responseData.status) {
+        return responseData.data;
     }
     return null;
 };

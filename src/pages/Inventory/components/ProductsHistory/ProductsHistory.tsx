@@ -1,13 +1,16 @@
-import { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { getAllProducts } from 'requests/product';
 import { generalUtilities } from 'utilities/utilities';
-import { Button, Table } from '@sellerspot/universal-components';
+import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { getProductsHistoryTableColDef } from './productsHistory.actions';
+import {
+    compileProductsHistoryTableBodyData,
+    getProductsHistoryTableColDef,
+} from './productsHistory.actions';
 import styles from './productsHistory.module.scss';
 
 // import { getProducts } from 'requests/product';
@@ -20,19 +23,17 @@ import styles from './productsHistory.module.scss';
 // } from './productsHistory.actions';
 
 export const ProductsHistory = (): JSX.Element => {
-    // To manage which tab is selected
-    const dispatch = useDispatch();
-    const [
-        productsData,
-        setProductsData,
-    ] = useState<pointOfSaleTypes.productResponseTypes.IGetProducts>(null);
+    const [productsData, setProductsData] = useState<
+        pointOfSaleTypes.productResponseTypes.IGetProducts['data']
+    >([]);
 
     useEffect(() => {
-        // (async () => {
-        //     // To populate the table
-        //     const productsData = await getProducts();
-        //     setProductsData(productsData.data as IGetProductFromServer[]);
-        // }).call(null);
+        (async () => {
+            // To populate the table
+            const productsData = await getAllProducts();
+            // updating local state
+            setProductsData(productsData);
+        }).call(null);
     }, []);
     return (
         <div className={styles.productsWrapper}>
@@ -52,7 +53,11 @@ export const ProductsHistory = (): JSX.Element => {
                 ]}
             />
             <div className={classNames('ag-theme-alpine')}>
-                <AgGridReact columnDefs={getProductsHistoryTableColDef()} />s
+                <AgGridReact
+                    columnDefs={getProductsHistoryTableColDef()}
+                    rowData={compileProductsHistoryTableBodyData(productsData)}
+                />
+                s
             </div>
         </div>
     );

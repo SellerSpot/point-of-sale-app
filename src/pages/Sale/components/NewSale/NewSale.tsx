@@ -18,7 +18,7 @@ import {
     getNewSaleProductsTableColDef,
     handleNewSaleCartTableCellValueChange,
     pushProductIntoCart,
-} from './newSale.action';
+} from './newSale.actions';
 import styles from './newSale.module.scss';
 import { INewSaleProps } from './newSale.types';
 
