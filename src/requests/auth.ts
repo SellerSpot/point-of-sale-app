@@ -45,7 +45,6 @@ export const authenticateUser = async ({
             pointOfSaleTypes.authRequestTypes.IAuthenticateUserRequest
         >{ email, password });
         const responseData = response.data as pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse;
-
         if (responseData.status && responseData.data) {
             resultResponse = responseData;
         } else {
