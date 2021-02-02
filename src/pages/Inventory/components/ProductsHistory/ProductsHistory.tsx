@@ -2,7 +2,6 @@ import { AgGridReact } from 'ag-grid-react';
 import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { getAllProducts } from 'requests/product';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
@@ -24,9 +23,10 @@ import styles from './productsHistory.module.scss';
 
 export const ProductsHistory = (): JSX.Element => {
     const [productsData, setProductsData] = useState<
-        pointOfSaleTypes.productResponseTypes.IGetProducts['data']
+        pointOfSaleTypes.productResponseTypes.IGetAllProducts['data']
     >([]);
 
+    // getting all products
     useEffect(() => {
         (async () => {
             // To populate the table
@@ -35,6 +35,7 @@ export const ProductsHistory = (): JSX.Element => {
             setProductsData(productsData);
         }).call(null);
     }, []);
+
     return (
         <div className={styles.productsWrapper}>
             <MetaCard

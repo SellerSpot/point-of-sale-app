@@ -58,7 +58,7 @@ export const getProductsHistoryTableColDef = (): ColDef[] => {
  * * Used to comile the rows for the productsHistory table
  */
 export const compileProductsHistoryTableBodyData = (
-    productsData: pointOfSaleTypes.productResponseTypes.IGetProducts['data'],
+    productsData: pointOfSaleTypes.productResponseTypes.IGetAllProducts['data'],
 ): IProductsHistoryTableColumns[] => {
     if (productsData.length > 0) {
         return productsData.map(

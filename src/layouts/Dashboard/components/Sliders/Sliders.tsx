@@ -1,4 +1,5 @@
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
+import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import { SliderModal } from '@sellerspot/universal-components';
 
 const Sliders = (): ReactElement => {
     const {
-        // addProductSlider,
+        addProductSlider,
         // addCategorySlider,
         // checkoutSlider,
         newSaleSlider,
@@ -30,14 +31,14 @@ const Sliders = (): ReactElement => {
             >
                 <NewSale callBackStateTrack={callBackStateTrack} />
             </SliderModal>
-            {/* <SliderModal
+            <SliderModal
                 active={addProductSlider.show}
                 sliderSize={'50%'}
                 onClickBackdrop={() => callBackStateTrack[1](true)}
                 onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <AddProduct callBackStateTrack={callBackStateTrack} />
-            </SliderModal> */}
+            </SliderModal>
             <SliderModal
                 active={addBrandSlider.show}
                 sliderSize={'30%'}

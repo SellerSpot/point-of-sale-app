@@ -10,7 +10,7 @@ import { Route, Switch } from 'react-router-dom';
 import { coreSelector, updateTenant } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
 import { Notify, Spinner } from '@sellerspot/universal-components';
-import { authRequests } from './requests/requests';
+import { authRequests } from './requests';
 import styles from './styles/app.module.scss';
 import commonStyles from './styles/common.module.scss';
 

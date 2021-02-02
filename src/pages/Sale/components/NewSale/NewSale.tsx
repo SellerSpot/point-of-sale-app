@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import React, { useCallback, useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
-import { productRequests } from 'requests/requests';
+import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';

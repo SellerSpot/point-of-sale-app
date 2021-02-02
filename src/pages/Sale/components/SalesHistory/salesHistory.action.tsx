@@ -52,7 +52,7 @@ export const getSalesHistoryTableColDef = (): ColDef[] => {
 
 // Compile data to show in table
 export const compileSaleHistoryTableData = (
-    salesHistoryData: pointOfSaleTypes.saleResponseTypes.IGetSales['data'],
+    salesHistoryData: pointOfSaleTypes.saleResponseTypes.IGetAllSales['data'],
 ): JSX.Element[][] => {
     // eslint-disable-next-line no-magic-numbers
     if (salesHistoryData?.length > 0) {

@@ -24,7 +24,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
     const [
         taxBracketsData,
         setTaxBracketsData,
-    ] = useState<pointOfSaleTypes.taxBracketResponseTypes.IGetTaxBrackets>(null);
+    ] = useState<pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets>(null);
 
     useEffect(() => {
         // (async () => {

@@ -1,4 +1,4 @@
-import { apiService } from 'services/services';
+import { apiService } from 'services';
 import { store } from 'store/store';
 
 export const initializeGlobalServices = async (): Promise<void> => {

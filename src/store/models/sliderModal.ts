@@ -11,10 +11,10 @@ export interface SliderModalInitialState {
         show: boolean;
         autoFillData?: null;
     };
-    // addProductSlider: {
-    //     show: boolean;
-    //     autoFillData?: IGetProductFromServer;
-    // };
+    addProductSlider: {
+        show: boolean;
+        // autoFillData?: IGetProductFromServer;
+    };
     // addCategorySlider: {
     //     show: boolean;
     //     autoFillData?: IGetCategoryFromServer;
@@ -36,9 +36,9 @@ const initialState: SliderModalInitialState = {
     newSaleSlider: {
         show: false,
     },
-    // addProductSlider: {
-    //     show: false,
-    // },
+    addProductSlider: {
+        show: false,
+    },
     // addCategorySlider: {
     //     show: false,
     // },

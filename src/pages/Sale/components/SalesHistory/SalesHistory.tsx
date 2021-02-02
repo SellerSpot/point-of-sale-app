@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { saleRequests } from 'requests/requests';
+import { saleRequests } from 'requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
@@ -15,7 +15,7 @@ export const SalesHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
     const [salesHistoryData, setSalesHistoryData] = useState<
-        pointOfSaleTypes.saleResponseTypes.IGetSales['data']
+        pointOfSaleTypes.saleResponseTypes.IGetAllSales['data']
     >(null);
 
     useEffect(() => {
