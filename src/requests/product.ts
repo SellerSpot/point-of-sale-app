@@ -1,17 +1,18 @@
-import { apiService } from 'services/services';
+import { apiService } from 'services';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 /**
  * Used to get all products from database
  */
 export const getAllProducts = async (): Promise<
-    pointOfSaleTypes.productResponseTypes.IGetProducts['data']
+    pointOfSaleTypes.productResponseTypes.IGetAllProducts['data']
 > => {
     const response = await apiService.post(
         `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_GET_ALL_PRODUCTS}`,
     );
-    if (response.status) {
-        return response.data as pointOfSaleTypes.productResponseTypes.IGetProducts['data'];
+    const responseData = response.data as pointOfSaleTypes.productResponseTypes.IGetAllProducts;
+    if (responseData.status) {
+        return responseData.data;
     }
     return null;
 };
@@ -32,5 +33,8 @@ export const searchProduct = async (
     if (responseData.status) {
         return responseData.data;
     }
-    return null;
+    return {
+        queryType: 'name',
+        results: [],
+    };
 };

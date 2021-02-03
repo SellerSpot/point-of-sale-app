@@ -1,12 +1,14 @@
-import { Button, Table } from '@sellerspot/universal-components';
-import React, { useEffect, useState } from 'react';
-
+import { AgGridReact } from 'ag-grid-react';
+import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
-import { generalUtilities } from 'utilities/utilities';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import styles from './brandsHistory.module.scss';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { getBrandsHistoryTableColDef } from './brandsHistory.actions';
+import styles from './brandsHistory.module.scss';
 
 // import { getBrands } from 'requests/brand';
 // import { toggleSliderModal } from 'store/models/sliderModal';
@@ -52,28 +54,9 @@ export const BrandsHistory = (): JSX.Element => {
                     />,
                 ]}
             />
-            {/* <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Brand Name'}>{'Brand Name'}</p>,
-                    ]}
-                    rowData={compileBrandsTableBodyData(brandData)}
-                    className={{
-                        bodyRow: css`
-                            :hover {
-                                cursor: pointer;
-                                background-color: ${cssColors['--secondary-background-color']};
-                            }
-                        `,
-                    }}
-                    onClick={{
-                        rowClick: (index: number) => {
-                            handleBrandsHistoryTableRowClick(brandData[index]);
-                        },
-                    }}
-                />
-            </div> */}
+            <div className={classNames('ag-theme-alpine')}>
+                <AgGridReact columnDefs={getBrandsHistoryTableColDef()} />
+            </div>
         </div>
     );
 };

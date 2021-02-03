@@ -1,42 +1,61 @@
-import 'react-base-table/styles.css';
-
+import { RowClickedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import cn from 'classnames';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
-import Table, { Column } from 'react-base-table';
+import React, { useCallback, useEffect } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { productRequests } from 'requests/requests';
+import { useSelector } from 'react-redux';
+import { productRequests } from 'requests';
+import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { compileProductsTableBodyData, handleCloseSlider } from './newSale.action';
+import {
+    compileNewSaleCartTableRowData,
+    compileNewSaleProductsTableRowData,
+    getNewSaleCartTableColDef,
+    getNewSaleProductsTableColDef,
+    handleNewSaleCartTableCellValueChange,
+    pushProductIntoCart,
+} from './newSale.actions';
 import styles from './newSale.module.scss';
-
-/**
- * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface INewSaleProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-}
+import { INewSaleProps } from './newSale.types';
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
-    const [searchResults, setSearchResults] = useState<
-        pointOfSaleTypes.productResponseTypes.ISearchProduct['data']
-    >(null);
-    const [width, setWidth] = useState(window.innerWidth);
-    const updateDimensions = () => {
-        setWidth(window.innerWidth);
+    // subscribing to state
+    const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
+
+    // used to handle the closing of the sliderModal
+    const handleCloseSlider = () => {
+        store.dispatch(
+            toggleSliderModal({
+                sliderName: 'newSaleSlider',
+                active: false,
+            }),
+        );
+        props.callBackStateTrack[1](false);
     };
-    const [searchQuery, setSearchQuery] = useState('');
-    // const [cartData, setCartData] = useState<ISaleCartItem[]>(null);`
+
+    // used to handle the closing operations of the sliderModel
+    useEffect(() => {
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0]]);
+
+    // listening to the search result to push the barcode products directory to the cart
+    useEffect(() => {
+        if (searchResults.queryType === 'barcode') {
+            pushProductIntoCart(cartData, searchResults.results[0]);
+        }
+    }, [searchResults]);
 
     // used to query the server to fetch product suggestions
     const queryServer = useCallback(
         debounce(async (query: string) => {
             if (query.length > 0) {
-                setSearchResults(await productRequests.searchProduct(query));
+                store.dispatch(setSearchResults(await productRequests.searchProduct(query)));
             }
         }, 400),
         [],
@@ -47,22 +66,24 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      * @param query Query typed by the user in the search bar
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
-        setSearchQuery(query);
-        // const searchedProducts = await productRequests.searchProduct(query);
+        if (query.length === 0) {
+            store.dispatch(
+                setSearchResults({
+                    queryType: 'name',
+                    results: [],
+                }),
+            );
+        }
+        store.dispatch(setSearchQuery(query));
+        // call to send query to server to fetch suggestions
         queryServer(query);
-        // console.log(searchedProducts);
     };
 
-    useEffect(() => {
-        if (props.callBackStateTrack[0]) {
-            handleCloseSlider(props.callBackStateTrack[1]);
-        }
-    }, [props.callBackStateTrack[0]]);
-
-    useEffect(() => {
-        window.addEventListener('resize', updateDimensions);
-        return () => window.removeEventListener('resize', updateDimensions);
-    }, []);
+    // handles clicking of row in new sale products table
+    const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
+        // pushing item to cart
+        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+    };
 
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
@@ -82,59 +103,68 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     value={searchQuery}
                     onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
-                <Table width={width / 1.562} data={[]}>
-                    <Column key="asd" title={'value'} dataKey={'value'} width={100} />
-                </Table>
-                <div className={styles.extraControlsCard}>
-                    <Button
-                        type="button"
-                        label="Return to Dashboard"
-                        onClick={() =>
-                            store.dispatch(
-                                toggleSliderModal({ sliderName: 'newSaleSlider', active: false }),
-                            )
+                <div className={cn('ag-theme-alpine')}>
+                    <AgGridReact
+                        rowSelection={'single'}
+                        onRowClicked={handleNewSaleProductTableRowClick}
+                        suppressCellSelection={true}
+                        columnDefs={getNewSaleProductsTableColDef()}
+                        rowData={compileNewSaleProductsTableRowData(searchResults)}
+                        overlayNoRowsTemplate={
+                            '<span className="ag-overlay-loading-center">Search for products using the<br>search box above</span>'
                         }
                     />
-                    <Button label="Calculator" />
                 </div>
             </div>
             <div className={styles.rightPanel}>
-                {/* <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Item Name'}>{'Item Name'}</p>,
-                        <p key={'Quantity'}>{'Quantity'}</p>,
-                        <p key={'Sub-Total'}>{'Sub-Total'}</p>,
-                        <p key={'Discount'}>{'Discount'}</p>,
-                    ]}
-                    // rowData={getCartItems(cartData)}
-                    rowData={[]}
-                /> */}
-                <div className={styles.calculationCard}>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Sub-Total'}</span>
-                        <span>{'₹ 200.00'}</span>
-                    </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Add Taxes'}</span>
-                        <span>{'₹ 50.00'}</span>
-                    </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Total Discount'}</span>
-                        <span>{'- ₹ 20.00'}</span>
-                    </div>
-                    <div className={styles.calculationEntry}>
-                        <span>{'Order Total'}</span>
-                        <span className={styles.orderTotalText}>{'₹ 250.00'}</span>
-                    </div>
-                    <Button
-                        label="CHECKOUT"
-                        // onClick={() =>
-                        //     store.dispatch(
-                        //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                        //     )
-                        // }
+                <div className={'ag-theme-alpine'}>
+                    <AgGridReact
+                        columnDefs={getNewSaleCartTableColDef()}
+                        rowData={compileNewSaleCartTableRowData(cartData)}
+                        overlayNoRowsTemplate={
+                            '<span className="ag-overlay-loading-center">Empty Cart</span>'
+                        }
+                        onCellValueChanged={(event) =>
+                            handleNewSaleCartTableCellValueChange(cartData, event)
+                        }
                     />
+                </div>
+                <div className={styles.rightPanelBottom}>
+                    <div className={styles.cartMetaCard}>
+                        {cartData.productCartInformation.length > 0 ? (
+                            <div>
+                                <h4>Calculation Write Up</h4>
+                                <div className={styles.calculationWriteUp}>
+                                    <span>{'Total Taxes'}</span>
+                                    <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
+                    <div className={styles.calculationCard}>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Total Taxes'}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
+                        </div>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Total Discount'}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalDiscount}`}</span>
+                        </div>
+                        <div className={styles.calculationEntry}>
+                            <span>{'Grand Total'}</span>
+                            <span
+                                className={styles.orderTotalText}
+                            >{`₹ ${cartData.totals.grandTotal}`}</span>
+                        </div>
+                        <Button
+                            label="CHECKOUT"
+                            // onClick={() =>
+                            //     store.dispatch(
+                            //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
+                            //     )
+                            // }
+                        />
+                    </div>
                 </div>
             </div>
         </div>

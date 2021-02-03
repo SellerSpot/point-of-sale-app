@@ -1,16 +1,21 @@
-import { Button, Table } from '@sellerspot/universal-components';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import { AgGridReact } from 'ag-grid-react';
+import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, Table } from '@sellerspot/universal-components';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import styles from './stockUnits.module.scss';
+import { getStockUnitsHistoryTableColDef } from './stockUnitsHistory.actions';
+
 // import { getCategories } from 'requests/category';
 // import { toggleSliderModal } from 'store/models/sliderModal';
-import { generalUtilities } from 'utilities/utilities';
+
 // import {
 //     compileCategoriesTableBodyData,
 //     handleCategoriesHistoryTableRowClick,
 // } from './categoriesHistory.actions';
-import styles from './stockUnits.module.scss';
 
 export const StockUnitsHistory = (): JSX.Element => {
     // To manage which tab is selected
@@ -51,28 +56,9 @@ export const StockUnitsHistory = (): JSX.Element => {
                     />,
                 ]}
             />
-            {/* <div className={styles.tableWrapper}>
-                <Table
-                    headers={[
-                        <p key={'S.No'}>{'S.No'}</p>,
-                        <p key={'Brand Name'}>{'Brand Name'}</p>,
-                    ]}
-                    rowData={compileCategoriesTableBodyData(categoriesData)}
-                    className={{
-                        bodyRow: css`
-                            :hover {
-                                cursor: pointer;
-                                background-color: ${cssColors['--secondary-background-color']};
-                            }
-                        `,
-                    }}
-                    onClick={{
-                        rowClick: (index: number) => {
-                            handleCategoriesHistoryTableRowClick(categoriesData[index]);
-                        },
-                    }}
-                />
-            </div> */}
+            <div className={classNames('ag-theme-alpine')}>
+                <AgGridReact columnDefs={getStockUnitsHistoryTableColDef()} />
+            </div>
         </div>
     );
 };

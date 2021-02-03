@@ -16,8 +16,8 @@ export const compileProductsTableBodyData = (
                 <p key={index}>{index + 1}</p>,
                 <p key={product.name}>{product.name}</p>,
                 <p key={product.gtinNumber}>{product.gtinNumber}</p>,
-                <p key={product.brand}>{product.brand}</p>, // change types
-                <p key={product.category}>{product.category}</p>, // change types
+                <p key={product.brand._id}>{product.brand.name}</p>, // change types
+                <p key={product.category._id}>{product.category.name}</p>, // change types
                 <p key={product.stockInformation.availableStock}>
                     {product.stockInformation.availableStock}
                 </p>,

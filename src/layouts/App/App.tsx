@@ -12,7 +12,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { coreSelector, updateTenant } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
 import { Notify, Spinner } from '@sellerspot/universal-components';
-import { authRequests } from '../../requests/requests';
+import { authRequests } from 'requests';
 import { Auth } from 'layouts/Auth/Auth';
 
 initializeGlobalServices(); // application common initilizers goes here

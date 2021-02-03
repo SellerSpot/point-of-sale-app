@@ -1,4 +1,20 @@
 /**
+ * Contains all the common symbols used in the app
+ */
+export const COMMON_SYMBOLS = {
+    RUPEE_SYMBOL: '₹',
+    PERCENTAGE_SYMBOL: '%',
+};
+
+/**
+ *
+ */
+export const COMMON_REGEXPS = {
+    ONLY_NUMBERS: new RegExp('^[0-9]*$'),
+    STRING_WITH_SPACE_BETWEEN: new RegExp('^[a-zA-Z0-9_][a-zA-Z0-9_ ]*[a-zA-Z0-9_]$'),
+};
+
+/**
  * Used to install a delay by awaiting this function
  * @param delay in seconds
  * @default

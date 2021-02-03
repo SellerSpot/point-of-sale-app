@@ -1,8 +1,11 @@
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from 'store/store';
 import { BrowserRouter } from 'react-router-dom';
+import { store } from 'store/store';
 import { App } from './layouts/App/App';
 
 ReactDOM.render(
