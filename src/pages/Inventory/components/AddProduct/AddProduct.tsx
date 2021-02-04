@@ -17,7 +17,7 @@ import {
     InputField,
 } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { checkIfTaxItemIsSelected, compileProductMetaDataOptions } from './addProduct.actions';
+import { checkIfTaxItemIsSelected, compileProductSpecialOptions } from './addProduct.actions';
 import styles from './addProduct.module.scss';
 import {
     AddProductFormSchema,
@@ -39,7 +39,7 @@ const formInitialValues: IAddProductFormSchema = {
     mrpPrice: 0,
     availableStock: 0,
     stockUnit: null,
-    taxBracket: [],
+    taxBrackets: [],
 };
 
 /**
@@ -50,6 +50,7 @@ export interface IAddProductProps {
     callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 export const AddProduct = (props: IAddProductProps): JSX.Element => {
+    //# VALUE HOOKS
     // holds the available metadata for a product
     const [productMetaDataOptions, setProductMetaDataOptions] = useState<IProductMetaDataOptions>({
         brands: [],
@@ -62,7 +63,8 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
-    // used to handle the closing of the sliderModal
+    //# CRITICAL FUNCTIONS
+    // * used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
@@ -72,27 +74,6 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         );
         props.callBackStateTrack[1](false);
     };
-
-    // to manage focus for inputFields
-    useEffect(() => {
-        if (sliderState.addProductSlider.show) {
-            setFocusInputField(true);
-        }
-    }, [sliderState.addProductSlider.show]);
-
-    // to fetch all available metadata for a product
-    useEffect(() => {
-        (async () => {
-            setProductMetaDataOptions(await compileProductMetaDataOptions());
-        }).call(null);
-    }, []);
-
-    // to handle slider closing operations
-    useEffect(() => {
-        if (props.callBackStateTrack[0]) {
-            handleCloseSlider();
-        }
-    }, [props.callBackStateTrack[0]]);
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
@@ -107,6 +88,50 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
             formFormik.setSubmitting(false);
         },
     });
+
+    //# HOOKS
+
+    // * to manage focus for inputFields
+    useEffect(() => {
+        if (sliderState.addProductSlider.show) {
+            setFocusInputField(true);
+        }
+    }, [sliderState.addProductSlider.show]);
+
+    // * to fetch all available special options for a product and update in state
+    useEffect(() => {
+        (async () => {
+            const specialProductOptions = await compileProductSpecialOptions();
+            setProductMetaDataOptions(specialProductOptions);
+            // compiling default values for special options
+            const defaultCategory: IAddProductFormSchema['category'] =
+                specialProductOptions.categories.length > 0
+                    ? specialProductOptions.categories[0]
+                    : null;
+            const defaultBrand: IAddProductFormSchema['brand'] =
+                specialProductOptions.brands.length > 0 ? specialProductOptions.brands[0] : null;
+            const defaultStockUnit: IAddProductFormSchema['stockUnit'] =
+                specialProductOptions.stockUnits.length > 0
+                    ? specialProductOptions.stockUnits[0]
+                    : null;
+            const defaultTaxBrackets: IAddProductFormSchema['taxBrackets'] = [];
+            // setting values to form store
+            formFormik.setFieldValue('brand' as keyof IAddProductFormSchema, defaultBrand);
+            formFormik.setFieldValue('category' as keyof IAddProductFormSchema, defaultCategory);
+            formFormik.setFieldValue('stockUnit' as keyof IAddProductFormSchema, defaultStockUnit);
+            formFormik.setFieldValue(
+                'taxBrackets' as keyof IAddProductFormSchema,
+                defaultTaxBrackets,
+            );
+        }).call(null);
+    }, []);
+
+    // to handle slider closing operations
+    useEffect(() => {
+        if (props.callBackStateTrack[0]) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0]]);
 
     useHotkeys(
         generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
@@ -172,8 +197,8 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
-                                'category',
-                                productMetaDataOptions.categories[index],
+                                'category' as keyof IAddProductFormSchema,
+                                productMetaDataOptions.categories[index]._id,
                             );
                         }}
                     />
@@ -183,7 +208,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                             return <p key={index}>{brand.name}</p>;
                         })}
                         onSelect={(index) => {
-                            formFormik.setFieldValue('brand', productMetaDataOptions.brands[index]);
+                            formFormik.setFieldValue(
+                                'brand' as keyof IAddProductFormSchema,
+                                productMetaDataOptions.brands[index],
+                            );
                         }}
                     />
                 </div>
@@ -281,7 +309,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         placeHolder={'Available Stock'}
                         value={formFormik.values.availableStock?.toString()}
                         onChange={(event) =>
-                            formFormik.setFieldValue('availableStock', event.target.value)
+                            formFormik.setFieldValue(
+                                'availableStock' as keyof IAddProductFormSchema,
+                                event.target.value,
+                            )
                         }
                         error={{
                             errorMessage: formFormik.errors.sellingPrice ?? '',
@@ -297,7 +328,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
-                                'stockUnit',
+                                'stockUnit' as keyof IAddProductFormSchema,
                                 productMetaDataOptions.stockUnits[index],
                             );
                         }}
@@ -311,22 +342,25 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                                 groupLabel={index === 0 ? 'Tax Bracket' : null}
                                 label={taxBracket.name}
                                 checked={checkIfTaxItemIsSelected(
-                                    productMetaDataOptions.taxBrackets,
+                                    formFormik.values.taxBrackets,
                                     taxBracket,
                                 )}
                                 onChange={(event) => {
                                     if (event.target.checked) {
-                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        const taxBracketValues = formFormik.values.taxBrackets;
                                         taxBracketValues.push(taxBracket);
-                                        formFormik.setFieldValue('taxBracket', taxBracketValues);
+                                        formFormik.setFieldValue(
+                                            'taxBrackets' as keyof IAddProductFormSchema,
+                                            taxBracketValues,
+                                        );
                                     } else {
-                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        const taxBracketValues = formFormik.values.taxBrackets;
                                         // finding index of the taxBracket to remove and removing it
                                         for (let i = 0; i < taxBracketValues.length; i++) {
                                             if (taxBracketValues[i]._id === taxBracket._id) {
                                                 taxBracketValues.splice(i, 1);
                                                 formFormik.setFieldValue(
-                                                    'taxBracket',
+                                                    'taxBrackets' as keyof IAddProductFormSchema,
                                                     taxBracketValues,
                                                 );
 

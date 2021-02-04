@@ -57,7 +57,7 @@ export const createProduct = async (
                 availableStock: data.availableStock,
                 stockUnit: data.stockUnit,
             },
-            taxBracket: data.taxBracket,
+            taxBracket: data.taxBrackets,
             gtinNumber: data.gtinNumber,
             landingPrice: data.landingPrice,
             mrpPrice: data.mrpPrice,

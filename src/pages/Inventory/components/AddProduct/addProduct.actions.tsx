@@ -3,9 +3,9 @@ import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { IProductMetaDataOptions } from './addProduct.types';
 
 /**
- * * Compile the object containing the available metadata options for a product
+ * * Compile the object containing the available special options for a product
  */
-export const compileProductMetaDataOptions = async (): Promise<IProductMetaDataOptions> => {
+export const compileProductSpecialOptions = async (): Promise<IProductMetaDataOptions> => {
     return {
         brands: await brandRequests.getAllBrands(),
         categories: await categoryRequests.getAllCategories(),

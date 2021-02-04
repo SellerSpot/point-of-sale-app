@@ -25,7 +25,7 @@ export interface IAddProductFormSchema {
     mrpPrice: number;
     availableStock: number;
     stockUnit: pointOfSaleTypes.stockUnitResponseTypes.IGetStockUnit['data'];
-    taxBracket: pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data'];
+    taxBrackets: pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data'];
 }
 
 /**
