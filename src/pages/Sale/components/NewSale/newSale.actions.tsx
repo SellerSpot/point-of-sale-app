@@ -1,5 +1,6 @@
 import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
-import { merge } from 'lodash';
+import { find, isNull, isUndefined, merge } from 'lodash';
+import React from 'react';
 import {
     IInitialStateNewSale,
     initialStateNewSale,
@@ -7,6 +8,7 @@ import {
     setSearchQuery,
     setSearchResults,
 } from 'store/models/newSale';
+import { toggleSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import {
     computeGrandTotal,
@@ -27,6 +29,32 @@ import {
 } from './newSale.types';
 
 //# TABLE FUNCTIONS
+
+// Compile data to show in table
+export const compileProductsTableBodyData = (
+    productsData: pointOfSaleTypes.productResponseTypes.ISearchProduct['data'],
+): JSX.Element[][] => {
+    if (!isNull(productsData) && productsData.results?.length > 0) {
+        // To hold the compiled table data
+        const compiledData: JSX.Element[][] = [];
+        productsData.results.map((product, index) => {
+            compiledData.push([
+                <p key={index}>{index + 1}</p>,
+                <p key={product.name}>{product.name}</p>,
+                <p key={product.gtinNumber}>{product.gtinNumber}</p>,
+                <p key={product.brand._id}>{product.brand.name}</p>, // change types
+                <p key={product.category._id}>{product.category.name}</p>, // change types
+                <p key={product.stockInformation.availableStock}>
+                    {product.stockInformation.availableStock}
+                </p>,
+                <p key={product.sellingPrice}>{product.sellingPrice}</p>,
+            ]);
+        });
+        return compiledData;
+    } else {
+        return [];
+    }
+};
 
 /**
  * * Gets the column definition for the newSale products table
@@ -175,6 +203,21 @@ export const compileNewSaleCartTableRowData = (
     }
 };
 
+/**
+ * * To prevent duplicate entries in the cart
+ */
+export const checkIfProductAlreadyExistsInCart = (props: {
+    currentCartData: IInitialStateNewSale['cartData'];
+    product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0];
+}): number => {
+    for (let i = 0; i < props.currentCartData.products.length; i++) {
+        if (props.currentCartData.products[i].name === props.product.name) {
+            return i;
+        }
+    }
+    return -1;
+};
+
 //# STATE UPDATE FUNCTIONS
 
 /**
@@ -184,76 +227,94 @@ export const pushProductIntoCart = (
     currentCartData: IInitialStateNewSale['cartData'],
     product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0],
 ): void => {
-    const itemQuantity = 1;
-    const itemDiscountPercent = 0;
-    // fetching required values
-    const itemTotalDiscount = computeItemTotalDiscount({
-        itemDiscountPercent,
-        itemPrice: product.sellingPrice,
-        itemQuantity,
+    const indexIfProductAlreadyExistsInCart = checkIfProductAlreadyExistsInCart({
+        currentCartData,
+        product,
     });
-    const itemSubTotal = computeItemSubtotal({
-        itemPrice: product.sellingPrice,
-        itemQuantity,
-    });
-    const itemPrice = computeItemPrice({
-        itemPrice: itemSubTotal,
-        itemTotalDiscount: itemTotalDiscount,
-        itemQuantity,
-    });
-    const itemTotalTax = computeItemTotalTax({
-        itemPrice: itemPrice,
-        itemQuantity,
-        itemTaxPercents: product.taxBracket.map((taxBracket) => parseInt(taxBracket.taxPercent)),
-    });
+    // if the product already exists
+    if (indexIfProductAlreadyExistsInCart !== -1) {
+        handleReAddProductToCart({
+            currentCartData,
+            rowIndex: indexIfProductAlreadyExistsInCart,
+        });
+    } else {
+        const itemQuantity = 1;
+        const itemDiscountPercent = 0;
+        // fetching required values
+        const itemTotalDiscount = computeItemTotalDiscount({
+            itemDiscountPercent,
+            itemPrice: product.sellingPrice,
+            itemQuantity,
+        });
+        const itemSubTotal = computeItemSubtotal({
+            itemPrice: product.sellingPrice,
+            itemQuantity,
+        });
+        const itemPrice = computeItemPrice({
+            itemPrice: itemSubTotal,
+            itemTotalDiscount: itemTotalDiscount,
+            itemQuantity,
+        });
+        const itemTotalTax = computeItemTotalTax({
+            itemPrice: itemPrice,
+            itemQuantity,
+            itemTaxPercents: product.taxBracket.map((taxBracket) =>
+                parseInt(taxBracket.taxPercent),
+            ),
+        });
 
-    const itemTotal = computeItemTotal({
-        itemPrice: itemPrice,
-        itemQuantity,
-        itemTotalTax,
-    });
-    const grandTotal = computeGrandTotal({
-        itemTotals: [
-            ...currentCartData.productCartInformation.map((product) => product.itemTotal),
-            itemTotal,
-        ],
-    });
-    const grandTotalDiscount = computeGrandTotalDiscount({
-        itemTotalDiscounts: [
-            ...currentCartData.productCartInformation.map((product) => product.itemTotalDiscount),
-            itemTotalDiscount,
-        ],
-    });
-    const grandTotalTax = computeGrandTotalTax({
-        itemTotalTaxes: [
-            ...currentCartData.productCartInformation.map((product) => product.itemTotalTax),
+        const itemTotal = computeItemTotal({
+            itemPrice: itemPrice,
+            itemQuantity,
             itemTotalTax,
-        ],
-    });
-    // pushing item to cart
-    store.dispatch(
-        setCartData({
-            products: [...currentCartData.products, product],
-            productCartInformation: [
-                ...currentCartData.productCartInformation,
-                {
-                    itemName: product.name,
-                    itemDiscountPercent,
-                    itemQuantity,
-                    itemPrice: product.sellingPrice,
-                    itemSubTotal,
-                    itemTotalTax,
-                    itemTotalDiscount,
-                    itemTotal,
-                },
+        });
+        const grandTotal = computeGrandTotal({
+            itemTotals: [
+                ...currentCartData.productCartInformation.map((product) => product.itemTotal),
+                itemTotal,
             ],
-            totals: {
-                grandTotal,
-                grandTotalDiscount,
-                grandTotalTax,
-            },
-        }),
-    );
+        });
+        const grandTotalDiscount = computeGrandTotalDiscount({
+            itemTotalDiscounts: [
+                ...currentCartData.productCartInformation.map(
+                    (product) => product.itemTotalDiscount,
+                ),
+                itemTotalDiscount,
+            ],
+        });
+        const grandTotalTax = computeGrandTotalTax({
+            itemTotalTaxes: [
+                ...currentCartData.productCartInformation.map((product) => product.itemTotalTax),
+                itemTotalTax,
+            ],
+        });
+
+        // pushing item to cart
+        store.dispatch(
+            setCartData({
+                products: [product, ...currentCartData.products],
+                productCartInformation: [
+                    {
+                        itemName: product.name,
+                        itemDiscountPercent,
+                        itemQuantity,
+                        itemPrice: product.sellingPrice,
+                        itemSubTotal,
+                        itemTotalTax,
+                        itemTotalDiscount,
+                        itemTotal,
+                    },
+                    ...currentCartData.productCartInformation,
+                ],
+                totals: {
+                    grandTotal,
+                    grandTotalDiscount,
+                    grandTotalTax,
+                },
+            }),
+        );
+    }
+
     // resetting the other fields
     store.dispatch(setSearchQuery(initialStateNewSale.searchQuery));
     store.dispatch(setSearchResults(initialStateNewSale.searchResults));
@@ -344,4 +405,19 @@ export const handleNewSaleCartTableCellValueChange = (
             break;
     }
     recomputeCartValues(cartData, event.rowIndex);
+};
+
+/**
+ * Handle reAdding a product to cart
+ */
+export const handleReAddProductToCart = (props: {
+    currentCartData: IInitialStateNewSale['cartData'];
+    rowIndex: number;
+}): void => {
+    // creating a clone to work with
+    const cartData: INewSaleCart = merge({}, props.currentCartData);
+    const currentProductQuantityInCart =
+        cartData.productCartInformation[props.rowIndex].itemQuantity;
+    cartData.productCartInformation[props.rowIndex].itemQuantity = currentProductQuantityInCart + 1;
+    recomputeCartValues(cartData, props.rowIndex);
 };
