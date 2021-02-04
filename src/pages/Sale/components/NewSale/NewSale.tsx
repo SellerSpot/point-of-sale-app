@@ -2,13 +2,19 @@ import { RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { productRequests } from 'requests';
-import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
+import {
+    appendToSearchQuery,
+    newSaleSelector,
+    setSearchQuery,
+    setSearchResults,
+} from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
-import { store } from 'store/store';
+import { RootState, store } from 'store/store';
+import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import {
@@ -25,6 +31,12 @@ import { INewSaleProps } from './newSale.types';
 export const NewSale = (props: INewSaleProps): JSX.Element => {
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
+    // state to keep track of if the inputField focus should be refocused
+    const [shouldSearchBarRefocus, setShouldSearchBarRefocus] = useState(true);
+    // state to handle the focus state of the searchBar
+    const [searchBarFocused, setSearchBarFocused] = useState(true);
+    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
@@ -36,6 +48,17 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         );
         props.callBackStateTrack[1](false);
     };
+
+    // used to handle searchbar refocussing procedure
+    useEffect(() => {
+        // calling default focus
+        if (sliderState.newSaleSlider.show) {
+            setSearchBarFocused(true);
+            document.addEventListener('keydown', handleKeydown);
+        } else {
+            document.removeEventListener('keydown', handleKeydown);
+        }
+    }, [sliderState.newSaleSlider.show]);
 
     // used to handle the closing operations of the sliderModel
     useEffect(() => {
@@ -50,6 +73,18 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             pushProductIntoCart(cartData, searchResults.results[0]);
         }
     }, [searchResults]);
+
+    // used to handle newSale page keydown event
+    const handleKeydown = useCallback(async (event: KeyboardEvent) => {
+        // checking if it is a key that produces a character
+        if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
+            if (shouldSearchBarRefocus) {
+                store.dispatch(appendToSearchQuery(event.key));
+                await introduceDelay(1);
+                setSearchBarFocused(true);
+            }
+        }
+    }, []);
 
     // used to query the server to fetch product suggestions
     const queryServer = useCallback(
@@ -83,8 +118,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
         pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+        setSearchBarFocused(true);
     };
 
+    // listening for the new sale shortcut call
     useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
         event.preventDefault();
         store.dispatch(
@@ -99,12 +136,16 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField
-                    placeHolder="Product Name / Code"
+                    label={'Code, Product Name or use the barcode scanner'}
+                    focus={searchBarFocused}
+                    setFocus={setSearchBarFocused}
+                    placeHolder=""
                     value={searchQuery}
                     onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
                 <div className={cn('ag-theme-alpine')}>
                     <AgGridReact
+                        suppressDragLeaveHidesColumns
                         rowSelection={'single'}
                         onRowClicked={handleNewSaleProductTableRowClick}
                         suppressCellSelection={true}
@@ -119,6 +160,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
                     <AgGridReact
+                        suppressDragLeaveHidesColumns
                         columnDefs={getNewSaleCartTableColDef()}
                         rowData={compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={
@@ -127,19 +169,17 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         onCellValueChanged={(event) =>
                             handleNewSaleCartTableCellValueChange(cartData, event)
                         }
+                        onCellEditingStopped={(event) => {
+                            setSearchBarFocused(true);
+                        }}
                     />
                 </div>
                 <div className={styles.rightPanelBottom}>
                     <div className={styles.cartMetaCard}>
-                        {cartData.productCartInformation.length > 0 ? (
-                            <div>
-                                <h4>Calculation Write Up</h4>
-                                <div className={styles.calculationWriteUp}>
-                                    <span>{'Total Taxes'}</span>
-                                    <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
-                                </div>
-                            </div>
-                        ) : null}
+                        <Button
+                            onClick={() => window.open('calculator:///', 'noopener,noreferrer')}
+                            label={'Calculator'}
+                        />
                     </div>
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
@@ -158,6 +198,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         </div>
                         <Button
                             label="CHECKOUT"
+                            onClick={() => {
+                                console.log('setting to true');
+                                setSearchBarFocused(true);
+                            }}
                             // onClick={() =>
                             //     store.dispatch(
                             //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
