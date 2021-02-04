@@ -1,4 +1,4 @@
-import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
 import { find, isNull, isUndefined, merge } from 'lodash';
 import React from 'react';
 import {
@@ -114,6 +114,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.STRING_WITH_SPACE_BETWEEN.test(parserParams.newValue)
                     ? parserParams.newValue
@@ -127,6 +128,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
                     ? parserParams.newValue >= 0
@@ -142,6 +144,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+
             valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
@@ -158,6 +161,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
+
             valueFormatter: (formatterParams) =>
                 `${formatterParams.value} ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL}`,
             valueParser: (parserParams) =>
@@ -174,6 +178,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             filter: true,
             resizable: true,
             flex: 1,
+
             valueFormatter: (formatterParams) =>
                 `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${formatterParams.value}`,
         },
@@ -226,6 +231,7 @@ export const checkIfProductAlreadyExistsInCart = (props: {
 export const pushProductIntoCart = (
     currentCartData: IInitialStateNewSale['cartData'],
     product: pointOfSaleTypes.productResponseTypes.ISearchProduct['data']['results'][0],
+    cartTableGridApi: GridApi,
 ): void => {
     const indexIfProductAlreadyExistsInCart = checkIfProductAlreadyExistsInCart({
         currentCartData,

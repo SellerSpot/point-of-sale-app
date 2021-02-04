@@ -1,4 +1,4 @@
-import { RowClickedEvent } from 'ag-grid-community';
+import { GridApi, RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
@@ -9,6 +9,7 @@ import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import {
@@ -32,6 +33,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const [inputIsFromHandleKeydown, setInputIsFromHandleKeyDown] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // holds the GridApi for the cart table
+    const [cartTableGridApi, setCartTableGridApi] = useState<GridApi>(null);
 
     //# CRITICAL FUNCTIONS
 
@@ -99,7 +102,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     //* push data from products table to cart
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+        pushProductIntoCart(cartData, searchResults.results[event.rowIndex], cartTableGridApi);
         setSearchBarFocused(true);
     };
 
@@ -127,7 +130,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     //* listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
         if (searchResults.queryType === 'barcode') {
-            pushProductIntoCart(cartData, searchResults.results[0]);
+            pushProductIntoCart(cartData, searchResults.results[0], cartTableGridApi);
         }
     }, [searchResults]);
 
@@ -188,6 +191,12 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         onCellEditingStopped={(_) => {
                             setSearchBarFocused(true);
                         }}
+                        onGridReady={(event) => {
+                            setCartTableGridApi(event.api);
+                        }}
+                        defaultColDef={{
+                            enableCellChangeFlash: true,
+                        }}
                     />
                 </div>
                 <div className={styles.rightPanelBottom}>
@@ -215,8 +224,9 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         <Button
                             label="CHECKOUT"
                             onClick={() => {
-                                console.log('setting to true');
-                                setSearchBarFocused(true);
+                                cartTableGridApi.flashCells({
+                                    columns: ['itemQuantity'],
+                                });
                             }}
                             // onClick={() =>
                             //     store.dispatch(
