@@ -6,15 +6,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { productRequests } from 'requests';
-import {
-    appendToSearchQuery,
-    newSaleSelector,
-    setSearchQuery,
-    setSearchResults,
-} from 'store/models/newSale';
+import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import {
@@ -33,7 +27,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
     // state to handle the focus state of the searchBar
     const [searchBarFocused, setSearchBarFocused] = useState(true);
-    const [isFromHandleKeydown, setIsFromHandleKeyDown] = useState(false);
+    // used to help identify if the input is from direct input or using eventListeners (to prevent double input bug)
+    const [inputIsFromHandleKeydown, setInputIsFromHandleKeyDown] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
@@ -52,6 +47,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     useEffect(() => {
         // calling default focus
         if (sliderState.newSaleSlider.show) {
+            // setting focus towards the searchBar
             setSearchBarFocused(true);
             document.addEventListener('keydown', handleKeydown);
         } else {
@@ -81,7 +77,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 setSearchBarFocused(true);
                 const newSearchQuery = searchQuery + event.key;
                 store.dispatch(setSearchQuery(newSearchQuery));
-                setIsFromHandleKeyDown(true);
+                setInputIsFromHandleKeyDown(true);
                 // await introduceDelay(1);
                 // call to send query to server to fetch suggestions
                 queryServer(newSearchQuery);
@@ -105,8 +101,8 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      * @param query Query typed by the user in the search bar
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
-        if (isFromHandleKeydown) {
-            setIsFromHandleKeyDown(false);
+        if (inputIsFromHandleKeydown) {
+            setInputIsFromHandleKeyDown(false);
             return;
         }
         if (query.length === 0) {
