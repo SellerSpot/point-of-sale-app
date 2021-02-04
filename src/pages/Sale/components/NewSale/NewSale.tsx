@@ -118,15 +118,21 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     };
 
     // listening for the new sale shortcut call
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
-        event.preventDefault();
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'newSaleSlider',
-                active: true,
-            }),
-        );
-    });
+    useHotkeys(
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE,
+        (event) => {
+            event.preventDefault();
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'newSaleSlider',
+                    active: true,
+                }),
+            );
+        },
+        {
+            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
+        },
+    );
 
     return (
         <div className={styles.newSaleWrapper}>

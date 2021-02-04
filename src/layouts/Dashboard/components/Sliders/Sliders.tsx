@@ -33,7 +33,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={addProductSlider.show}
-                sliderSize={'50%'}
+                sliderSize={'40%'}
                 onClickBackdrop={() => callBackStateTrack[1](true)}
                 onClickEsc={() => callBackStateTrack[1](true)}
             >

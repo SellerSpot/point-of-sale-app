@@ -55,6 +55,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         stockUnits: [],
         taxBrackets: [],
     });
+    // state to manage the focus state of the first inputField
+    const [focusInputField, setFocusInputField] = useState(false);
+    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
@@ -66,6 +70,13 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         );
         props.callBackStateTrack[1](false);
     };
+
+    // to manage focus for inputFields
+    useEffect(() => {
+        if (sliderState.addProductSlider.show) {
+            setFocusInputField(true);
+        }
+    }, [sliderState.addProductSlider.show]);
 
     // to fetch all available metadata for a product
     useEffect(() => {
@@ -81,17 +92,6 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0]]);
 
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT, () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'addProductSlider',
-                active: true,
-            }),
-        );
-    });
-
-    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
-    const sliderState = useSelector((state: RootState) => state.sliderModal);
     // getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
@@ -101,12 +101,28 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         },
     });
 
+    useHotkeys(
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
+        () => {
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addProductSlider',
+                    active: true,
+                }),
+            );
+        },
+        {
+            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
+        },
+    );
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
             <div className={styles.pageTitleBar}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
+                        focus={focusInputField}
+                        setFocus={setFocusInputField}
                         name={'name' as pointOfSaleTypes.productResponseTypes.fieldNames}
                         type={'text'}
                         label={'Product Name'}
