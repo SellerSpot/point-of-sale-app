@@ -12,7 +12,7 @@ export interface IProductMetaDataOptions {
 }
 
 /**
- * * Interface for the AddBrand form
+ * * Interface for the AddProduct form
  */
 export interface IAddProductFormSchema {
     name: string;
@@ -29,7 +29,7 @@ export interface IAddProductFormSchema {
 }
 
 /**
- * * Yup schema for the AddBrand form
+ * * Yup schema for the AddProduct form
  */
 export const AddProductFormSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),

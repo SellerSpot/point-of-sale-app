@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
-import { isUndefined } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
+import { productRequests } from 'requests';
+import { showNotify } from 'store/models/notify';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
@@ -15,7 +17,7 @@ import {
     InputField,
 } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { compileProductMetaDataOptions } from './addProduct.actions';
+import { checkIfTaxItemIsSelected, compileProductMetaDataOptions } from './addProduct.actions';
 import styles from './addProduct.module.scss';
 import {
     AddProductFormSchema,
@@ -96,8 +98,13 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     const formFormik = useFormik({
         initialValues: formInitialValues,
         validationSchema: AddProductFormSchema,
-        onSubmit: (values: IAddProductFormSchema) => {
-            console.log(values);
+        onSubmit: async (values: IAddProductFormSchema) => {
+            formFormik.setSubmitting(true);
+            const response = await productRequests.createProduct(values);
+            // if(!isNull(response)){
+            //     showNotify
+            // }
+            formFormik.setSubmitting(false);
         },
     });
 
@@ -184,7 +191,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                     ruleWidth={'75%'}
                     style={{
                         horizontalRuleWrapperStyle: {
-                            paddingTop: 5,
+                            paddingTop: 0,
                             paddingBottom: 20,
                         },
                     }}
@@ -303,7 +310,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                                 key={index}
                                 groupLabel={index === 0 ? 'Tax Bracket' : null}
                                 label={taxBracket.name}
-                                checked={false}
+                                checked={checkIfTaxItemIsSelected(
+                                    productMetaDataOptions.taxBrackets,
+                                    taxBracket,
+                                )}
                                 onChange={(event) => {
                                     if (event.target.checked) {
                                         const taxBracketValues = formFormik.values.taxBracket;

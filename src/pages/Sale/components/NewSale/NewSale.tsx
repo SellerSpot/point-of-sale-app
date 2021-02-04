@@ -33,6 +33,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
     // state to handle the focus state of the searchBar
     const [searchBarFocused, setSearchBarFocused] = useState(true);
+    const [isFromHandleKeydown, setIsFromHandleKeyDown] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
@@ -73,14 +74,21 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     }, [searchResults]);
 
     // used to handle newSale page keydown event
-    const handleKeydown = useCallback(async (event: KeyboardEvent) => {
-        // checking if it is a key that produces a character
-        if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
-            store.dispatch(appendToSearchQuery(event.key));
-            await introduceDelay(1);
-            setSearchBarFocused(true);
-        }
-    }, []);
+    const handleKeydown = useCallback(
+        async (event: KeyboardEvent) => {
+            // checking if it is a key that produces a character
+            if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
+                setSearchBarFocused(true);
+                const newSearchQuery = searchQuery + event.key;
+                store.dispatch(setSearchQuery(newSearchQuery));
+                setIsFromHandleKeyDown(true);
+                // await introduceDelay(1);
+                // call to send query to server to fetch suggestions
+                queryServer(newSearchQuery);
+            }
+        },
+        [searchQuery],
+    );
 
     // used to query the server to fetch product suggestions
     const queryServer = useCallback(
@@ -97,6 +105,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
      * @param query Query typed by the user in the search bar
      */
     const handleProductNameSearch = async (query: string): Promise<void> => {
+        if (isFromHandleKeydown) {
+            setIsFromHandleKeyDown(false);
+            return;
+        }
         if (query.length === 0) {
             store.dispatch(
                 setSearchResults({
@@ -138,7 +150,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField
-                    label={'Code, Product Name or use the barcode scanner'}
+                    label={'Code, Product Name or use the Barcode scanner'}
                     focus={searchBarFocused}
                     setFocus={setSearchBarFocused}
                     placeHolder=""
