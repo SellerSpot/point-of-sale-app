@@ -31,8 +31,6 @@ import { INewSaleProps } from './newSale.types';
 export const NewSale = (props: INewSaleProps): JSX.Element => {
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
-    // state to keep track of if the inputField focus should be refocused
-    const [shouldSearchBarRefocus, setShouldSearchBarRefocus] = useState(true);
     // state to handle the focus state of the searchBar
     const [searchBarFocused, setSearchBarFocused] = useState(true);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
@@ -78,11 +76,9 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const handleKeydown = useCallback(async (event: KeyboardEvent) => {
         // checking if it is a key that produces a character
         if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
-            if (shouldSearchBarRefocus) {
-                store.dispatch(appendToSearchQuery(event.key));
-                await introduceDelay(1);
-                setSearchBarFocused(true);
-            }
+            store.dispatch(appendToSearchQuery(event.key));
+            await introduceDelay(1);
+            setSearchBarFocused(true);
         }
     }, []);
 
