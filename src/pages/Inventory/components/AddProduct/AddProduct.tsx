@@ -71,6 +71,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
             toggleSliderModal({
                 sliderName: 'addProductSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1](false);
@@ -103,6 +104,12 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     useEffect(() => {
         if (sliderState.addProductSlider.show) {
             setFocusInputField(true);
+            // checking if any autofill data is present
+            if (!isNull(sliderState.addProductSlider.autoFillData)) {
+                const autoFillData = sliderState.addProductSlider.autoFillData;
+                // pushing data to formik state
+                formFormik.setValues(autoFillData);
+            }
         }
     }, [sliderState.addProductSlider.show]);
 
@@ -149,6 +156,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                 toggleSliderModal({
                     sliderName: 'addProductSlider',
                     active: true,
+                    autoFillData: null,
                 }),
             );
         },

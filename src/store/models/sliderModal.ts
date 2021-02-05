@@ -1,3 +1,8 @@
+import { IAddBrandFormSchema } from 'pages/Inventory/components/AddBrand/addBrand.types';
+import { IAddCategoryFormSchema } from 'pages/Inventory/components/AddCategory/addCategory.types';
+import { IAddProductFormSchema } from 'pages/Inventory/components/AddProduct/addProduct.types';
+import { IAddStockUnitFormSchema } from 'pages/Inventory/components/AddStockUnit/addStockUnit.types';
+import { IAddTaxBracketFormSchema } from 'pages/Inventory/components/AddTaxBracket/addTaxBracket.types';
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
@@ -13,19 +18,23 @@ export interface SliderModalInitialState {
     };
     addProductSlider: {
         show: boolean;
-        // autoFillData?: IGetProductFromServer;
+        autoFillData?: IAddProductFormSchema;
     };
     addCategorySlider: {
         show: boolean;
+        autoFillData?: IAddCategoryFormSchema;
     };
     addBrandSlider: {
         show: boolean;
+        autoFillData?: IAddBrandFormSchema;
     };
     addTaxBracketSlider: {
         show: boolean;
+        autoFillData?: IAddTaxBracketFormSchema;
     };
     addStockUnitSlider: {
         show: boolean;
+        autoFillData?: IAddStockUnitFormSchema;
     };
     // checkoutSlider: {
     //     show: boolean;
@@ -36,21 +45,27 @@ export interface SliderModalInitialState {
 const initialState: SliderModalInitialState = {
     newSaleSlider: {
         show: false,
+        autoFillData: null,
     },
     addProductSlider: {
         show: false,
+        autoFillData: null,
     },
     addCategorySlider: {
         show: false,
+        autoFillData: null,
     },
     addBrandSlider: {
         show: false,
+        autoFillData: null,
     },
     addTaxBracketSlider: {
         show: false,
+        autoFillData: null,
     },
     addStockUnitSlider: {
         show: false,
+        autoFillData: null,
     },
     // checkoutSlider: {
     //     show: false,
@@ -68,9 +83,11 @@ const sliderModalSlice = createSlice({
             }: PayloadAction<{
                 sliderName: keyof SliderModalInitialState;
                 active: boolean;
+                autoFillData: IAddProductFormSchema;
             }>,
         ) => {
             state[payload.sliderName].show = payload.active;
+            state[payload.sliderName].autoFillData = payload.autoFillData;
         },
     },
 });
