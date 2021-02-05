@@ -1,5 +1,5 @@
 import { Formik, useFormik } from 'formik';
-import { isUndefined } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
@@ -40,6 +40,7 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
             toggleSliderModal({
                 sliderName: 'addStockUnitSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1](false);
@@ -71,6 +72,12 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
     useEffect(() => {
         if (sliderState.addStockUnitSlider.show) {
             setFocusInputField(true);
+            // checking if any autofill data is present
+            if (!isNull(sliderState.addStockUnitSlider.autoFillData)) {
+                const autoFillData = sliderState.addStockUnitSlider.autoFillData;
+                // pushing data to formik state
+                formFormik.setValues(autoFillData);
+            }
         }
     }, [sliderState.addStockUnitSlider.show]);
 
@@ -90,6 +97,7 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
                 toggleSliderModal({
                     sliderName: 'addStockUnitSlider',
                     active: true,
+                    autoFillData: null,
                 }),
             );
         },
