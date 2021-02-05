@@ -1,6 +1,6 @@
-import { apiService } from 'services';
-import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { IAddProductFormSchema } from 'pages/Inventory/components/AddProduct/addProduct.types';
+import { apiService } from 'services';
+import { STATUS_CODES, pointOfSaleTypes } from '@sellerspot/universal-types';
 
 /**
  * Used to get all products from database
@@ -46,33 +46,39 @@ export const searchProduct = async (
 export const createProduct = async (
     data: IAddProductFormSchema,
 ): Promise<pointOfSaleTypes.productResponseTypes.ICreateProduct> => {
+    // compiling data to push to server
+    const productToAdd: pointOfSaleTypes.productRequestTypes.ICreateProduct = {
+        brand: data.brand._id,
+        category: data.category._id,
+        name: data.name,
+        sellingPrice: data.sellingPrice,
+        stockInformation: {
+            availableStock: data.availableStock,
+            stockUnit: data.stockUnit._id,
+        },
+        taxBracket: data.taxBrackets.map((taxBracket) => taxBracket._id),
+        gtinNumber: data.gtinNumber,
+        landingPrice: data.landingPrice,
+        mrpPrice: data.mrpPrice,
+        profitPercent: data.profitPercent,
+    };
     const response = await apiService.post(
         `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_CREATE_PRODUCT}`,
-        <pointOfSaleTypes.productRequestTypes.ICreateProduct>{
-            brand: data.brand,
-            category: data.category,
-            name: data.name,
-            sellingPrice: data.sellingPrice,
-            stockInformation: {
-                availableStock: data.availableStock,
-                stockUnit: data.stockUnit,
-            },
-            taxBracket: data.taxBrackets,
-            gtinNumber: data.gtinNumber,
-            landingPrice: data.landingPrice,
-            mrpPrice: data.mrpPrice,
-            profitPercent: data.profitPercent,
-        },
+        productToAdd,
     );
     const responseData = response.data as pointOfSaleTypes.productResponseTypes.ICreateProduct;
-    console.log(responseData);
 
-    // if (responseData.status) {
-    //     return responseData.data;
-    // } else {
-    //     return {
-
-    //     }
-    // }
-    return null;
+    if (responseData.status) {
+        return {
+            status: true,
+            statusCode: STATUS_CODES.CREATED,
+            data: responseData.data,
+        };
+    } else {
+        return {
+            status: false,
+            statusCode: responseData.statusCode,
+            error: responseData.error,
+        };
+    }
 };

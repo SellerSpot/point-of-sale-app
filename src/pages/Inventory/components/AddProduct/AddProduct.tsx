@@ -8,6 +8,7 @@ import { productRequests } from 'requests';
 import { showNotify } from 'store/models/notify';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import {
     Button,
@@ -81,10 +82,17 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         validationSchema: AddProductFormSchema,
         onSubmit: async (values: IAddProductFormSchema) => {
             formFormik.setSubmitting(true);
+
             const response = await productRequests.createProduct(values);
-            // if(!isNull(response)){
-            //     showNotify
-            // }
+            if (response) {
+                showMessage('Product added to database!', 'success');
+                formFormik.resetForm();
+                setFocusInputField(true);
+            } else {
+                response.error.map((error) => {
+                    formFormik.setFieldError(error.name, error.message);
+                });
+            }
             formFormik.setSubmitting(false);
         },
     });
