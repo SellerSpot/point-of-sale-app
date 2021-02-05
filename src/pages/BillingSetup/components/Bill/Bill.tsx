@@ -2,13 +2,16 @@ import cn from 'classnames';
 import dummyLogo from 'images/logo.png';
 import React, { ReactElement } from 'react';
 import commonStyle from 'styles/common.module.scss';
+import { generalUtilities } from 'utilities/utilities';
+import {
+    calculateTotalSavings,
+    compileProductListingInPurchaseInvoiceForBill,
+} from './bill.actions';
 import style from './bill.module.scss';
-export interface IBillProps {
-    billReference: React.RefObject<HTMLDivElement>;
-}
+import { IBillProps } from './bill.types';
 
 export const Bill = (props: IBillProps): ReactElement => {
-    const { billReference } = props;
+    const { billReference, saleData, paymentInformation } = props;
     return (
         <div ref={billReference} className={style.billWrapper}>
             <div className={style.billHeader}>
@@ -78,46 +81,7 @@ export const Bill = (props: IBillProps): ReactElement => {
                     <div className={cn(commonStyle.textAlignRight)}>Tax</div>
                     <div className={cn(commonStyle.textAlignRight)}>Total</div>
                 </div>
-                <div
-                    className={cn(
-                        style.billTableNode,
-                        style.purchaseInvoiceTable,
-                        style.billTableNodeContent,
-                    )}
-                >
-                    <div className={cn(commonStyle.textAlignCenter)}>1.</div>
-                    <div className={cn(commonStyle.textAlignLeft)}>
-                        Philips Wireless Bluetooth Speaker
-                    </div>
-                    <div className={cn(commonStyle.textAlignRight)}>2</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
-                    <div className={cn(commonStyle.textAlignRight)}>
-                        ₹ 1,44.00 <br />@ 8%
-                    </div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
-                </div>
-                <div
-                    className={cn(
-                        style.billTableNode,
-                        style.purchaseInvoiceTable,
-                        style.billTableNodeContent,
-                    )}
-                >
-                    <div className={cn(commonStyle.textAlignCenter)}>2.</div>
-                    <div className={cn(commonStyle.textAlignLeft)}>
-                        Philips Wireless Bluetooth Speaker
-                    </div>
-                    <div className={cn(commonStyle.textAlignRight)}>2</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 2,000.00</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,800.00</div>
-                    <div className={cn(commonStyle.textAlignRight)}>
-                        ₹ 1,44.00 <br />@ 8%
-                    </div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 83.16</div>
-                    <div className={cn(commonStyle.textAlignRight)}>₹ 1,739.16</div>
-                </div>
+                {compileProductListingInPurchaseInvoiceForBill(props.saleData)}
             </div>
 
             <div className={style.PageBreak}></div>
@@ -125,36 +89,40 @@ export const Bill = (props: IBillProps): ReactElement => {
                 <div className={cn(style.advertisementHolder)}>Thanks for Shopping with us!</div>
                 <div className={cn(style.grandTotalWrapper)}>
                     <div className={cn(style.grandTotalHolder)}>
-                        <div className={cn(style.grandTotalTitle)}>Item Subtotal</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 12,600.00</div>
-                    </div>
-                    <div className={cn(style.grandTotalHolder)}>
                         <div className={cn(style.grandTotalTitle)}>Total Discount</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 1,224.00</div>
-                    </div>
-                    <div className={cn(style.grandTotalHolder)}>
-                        <div className={cn(style.grandTotalTitle)}>Diwali Discount</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 243.72 @ 2%</div>
+                        <div
+                            className={cn(style.grandTotalValue)}
+                        >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.totals.grandTotalDiscount}`}</div>
                     </div>
                     <div className={cn(style.grandTotalHolder)}>
                         <div className={cn(style.grandTotalTitle)}>Total Tax</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 623.16</div>
+                        <div
+                            className={cn(style.grandTotalValue)}
+                        >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.totals.grandTotalTax}`}</div>
                     </div>
                     <div className={cn(style.grandTotalHolder, style.grandTotalLarge)}>
                         <div className={cn(style.grandTotalTitle)}>Invoice Total</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 11,999.16</div>
+                        <div
+                            className={cn(style.grandTotalValue)}
+                        >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.totals.grandTotal}`}</div>
                     </div>
                     <div className={cn(style.grandTotalHolder)}>
                         <div className={cn(style.grandTotalTitle)}>Paid</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 12,000.00</div>
+                        <div
+                            className={cn(style.grandTotalValue)}
+                        >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${paymentInformation.paid}`}</div>
                     </div>
                     <div className={cn(style.grandTotalHolder)}>
                         <div className={cn(style.grandTotalTitle)}>Balance</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 0.84</div>
+                        <div
+                            className={cn(style.grandTotalValue)}
+                        >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${paymentInformation.balance}`}</div>
                     </div>
                     <div className={cn(style.grandTotalHolder)}>
                         <div className={cn(style.grandTotalTitle)}>You Saved</div>
-                        <div className={cn(style.grandTotalValue)}>₹ 10,000.84</div>
+                        <div className={cn(style.grandTotalValue)}>{`${
+                            generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                        } ${calculateTotalSavings(saleData)}`}</div>
                     </div>
                 </div>
             </div>

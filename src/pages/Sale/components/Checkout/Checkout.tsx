@@ -86,8 +86,8 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     useHotkeys(
         generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT,
         (event) => {
-            if (sliderState.newSaleSlider.show) {
-                event.preventDefault();
+            event.preventDefault();
+            if (sliderState.newSaleSlider.show && newSaleState.cartData.products.length > 0) {
                 store.dispatch(
                     toggleSliderModal({
                         sliderName: 'checkoutSlider',
@@ -106,7 +106,14 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         <div className={cn(styles.checkoutWrapper)}>
             <div className={cn(styles.checkoutBillPreviewWrapper)}>
                 <div className={cn(styles.checkoutBillPreviewHolder)}>
-                    <Bill billReference={billReference} />
+                    <Bill
+                        billReference={billReference}
+                        saleData={newSaleState.cartData}
+                        paymentInformation={{
+                            balance: calculateBalanceOwed(),
+                            paid: amountPaid,
+                        }}
+                    />
                 </div>
             </div>
             <div className={cn(styles.checkoutBillingDetailsWrapper)}>

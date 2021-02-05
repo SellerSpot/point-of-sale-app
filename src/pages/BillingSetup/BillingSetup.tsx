@@ -17,7 +17,7 @@ export const BillingSetup = (): ReactElement => {
             </div>
             <div className={styles.billPreviewSection}>
                 <div className={styles.billPreview}>
-                    <Bill billReference={billReference} />
+                    {/* <Bill billReference={billReference} /> */}
                 </div>
             </div>
         </div>

@@ -228,6 +228,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         </div>
                         <Button
                             label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}
+                            status={cartData.products.length > 0 ? 'default' : 'disabled'}
                             onClick={() =>
                                 store.dispatch(
                                     toggleSliderModal({
