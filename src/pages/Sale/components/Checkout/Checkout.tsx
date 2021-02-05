@@ -9,7 +9,7 @@ import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
-import { Button, InputField } from '@sellerspot/universal-components';
+import { Button, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import styles from './checkout.module.scss';
 
 export interface ICheckoutProps {
@@ -29,6 +29,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     const [paidFieldFocused, setPaidFieldFocused] = useState(false);
     // holds the value of amount paid by the customer
     const [amountPaid, setAmountPaid] = useState(0);
+    // used to handle printing process of the bill
     const handlePrint = useReactToPrint({
         content: () => billReference.current,
         onAfterPrint: () =>
@@ -113,6 +114,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
                     <div>{'Total Taxes'}</div>
                     <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalTax}`}</div>
                 </div>
+
                 <div className={styles.calculationEntry}>
                     <div>{'Total Discount'}</div>
                     <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalDiscount}`}</div>
@@ -121,6 +123,19 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
                     <div>{'Order Total'}</div>
                     <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotal}`}</div>
                 </div>
+                <HorizontalRule
+                    ruleWidth={'100%'}
+                    style={{
+                        horizontalRuleWrapperStyle: {
+                            padding: 0,
+                            margin: 0,
+                        },
+                        horizontalRuler: {
+                            padding: 0,
+                            margin: 0,
+                        },
+                    }}
+                />
                 <div className={styles.calculationEntry}>
                     <div>{'Paid'}</div>
                     <div className={styles.paidField}>
