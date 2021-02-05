@@ -1,5 +1,5 @@
 import { Formik, useFormik } from 'formik';
-import { isUndefined } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
@@ -40,6 +40,7 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
             toggleSliderModal({
                 sliderName: 'addBrandSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1](false);
@@ -71,6 +72,12 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     useEffect(() => {
         if (sliderState.addBrandSlider.show) {
             setFocusInputField(true);
+            // checking if any autofill data is present
+            if (!isNull(sliderState.addBrandSlider.autoFillData)) {
+                const autoFillData = sliderState.addBrandSlider.autoFillData;
+                // pushing data to formik state
+                formFormik.setValues(autoFillData);
+            }
         }
     }, [sliderState.addBrandSlider.show]);
 
@@ -89,6 +96,7 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
                 toggleSliderModal({
                     sliderName: 'addBrandSlider',
                     active: true,
+                    autoFillData: null,
                 }),
             );
         },
