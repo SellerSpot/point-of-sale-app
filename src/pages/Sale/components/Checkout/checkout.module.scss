@@ -1,0 +1,68 @@
+.checkoutWrapper {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    background: $primary-background-color;
+
+    grid-template-columns: 2fr 1fr;
+}
+
+.checkoutBillPreviewWrapper {
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 50px 0;
+    width: 100%;
+    height: 100%;
+    background: $tertiary-background-color;
+}
+
+.checkoutBillPreviewHolder {
+    width: 90%;
+    height: auto;
+}
+
+.checkoutBillingDetailsWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+
+    gap: 15px;
+}
+
+.calculationEntry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 700;
+    font-size: $font-size-small-heading;
+}
+
+.paidField {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.balance {
+    color: $danger-color;
+}
+
+.orderTotal {
+    font-size: $font-size-master;
+}
+
+.customerPaid {
+    font-size: $font-size-master;
+}
+
+.balance {
+    font-size: $font-size-master;
+}

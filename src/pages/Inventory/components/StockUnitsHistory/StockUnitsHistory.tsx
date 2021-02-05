@@ -3,46 +3,46 @@ import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { taxBracketRequests } from 'requests';
+import { stockUnitRequests } from 'requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
-import { Button } from '@sellerspot/universal-components';
+import { Button, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { IAddTaxBracketFormSchema } from '../AddTaxBracket/addTaxBracket.types';
+import { IAddStockUnitFormSchema } from '../AddStockUnit/addStockUnit.types';
 import {
-    compileTaxBracketsHistoryTableBodyData,
-    getTaxBracketsHistoryTableColDef,
-} from './taxBracketHistory.actions';
-import styles from './taxBracketsHistory.module.scss';
+    compileStockUnitsHistoryTableBodyData,
+    getStockUnitsHistoryTableColDef,
+} from './stockUnitsHistory.actions';
+import styles from './stockUnitshistory.module.scss';
 
-export const TaxBracketsHistory = (): JSX.Element => {
+export const StockUnitsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [taxBracketsData, setTaxBracketsData] = useState<
-        pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data']
-    >(null);
+    const [stockUnitsData, setStockUnitsData] = useState<
+        pointOfSaleTypes.categoryResponseTypes.IGetAllCategories['data']
+    >([]);
 
     useEffect(() => {
         (async () => {
             // To populate the table
-            const taxBracketsData = await taxBracketRequests.getAllTaxBrackets();
-            setTaxBracketsData(taxBracketsData);
+            const stockUnitsData = await stockUnitRequests.getAllStockUnits();
+            setStockUnitsData(stockUnitsData);
         }).call(null);
     }, []);
 
     return (
-        <div className={styles.taxBracketWrapper}>
+        <div className={styles.stockUnitsWrapper}>
             <MetaCard
                 title="Sample Description"
                 secondaryText={'Sample Data'}
                 buttons={[
                     <Button
-                        key={'addTaxBracket'}
-                        label={`Add Tax-Bracket (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET})`}
+                        key={'addStockUnits'}
+                        label={`Add Stock Unit (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_STOCKUNIT})`}
                         onClick={() =>
                             dispatch(
                                 toggleSliderModal({
-                                    sliderName: 'addTaxBracketSlider',
+                                    sliderName: 'addStockUnitSlider',
                                     active: true,
                                     autoFillData: null,
                                 }),
@@ -53,18 +53,17 @@ export const TaxBracketsHistory = (): JSX.Element => {
             />
             <div className={classNames('ag-theme-alpine')}>
                 <AgGridReact
-                    columnDefs={getTaxBracketsHistoryTableColDef()}
-                    rowData={compileTaxBracketsHistoryTableBodyData(taxBracketsData)}
+                    columnDefs={getStockUnitsHistoryTableColDef()}
+                    rowData={compileStockUnitsHistoryTableBodyData(stockUnitsData)}
                     suppressCellSelection
                     onRowClicked={(event) => {
                         // compiling data for autofill
-                        const autoFillData: IAddTaxBracketFormSchema = {
-                            name: taxBracketsData[event.rowIndex].name,
-                            taxPercent: taxBracketsData[event.rowIndex].taxPercent,
+                        const autoFillData: IAddStockUnitFormSchema = {
+                            name: stockUnitsData[event.rowIndex].name,
                         };
                         dispatch(
                             toggleSliderModal({
-                                sliderName: 'addTaxBracketSlider',
+                                sliderName: 'addStockUnitSlider',
                                 active: true,
                                 autoFillData,
                             }),

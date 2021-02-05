@@ -1,3 +1,4 @@
+import { IAddCategoryFormSchema } from 'pages/Inventory/components/AddCategory/addCategory.types';
 import { apiService } from 'services';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
@@ -15,4 +16,21 @@ export const getAllCategories = async (): Promise<
         return responseData.data;
     }
     return [];
+};
+
+/**
+ * Creates a new category in database
+ */
+export const createCategory = async (
+    formData: IAddCategoryFormSchema,
+): Promise<pointOfSaleTypes.categoryResponseTypes.ICreateCategory> => {
+    // compiling data to send to server
+    const data: pointOfSaleTypes.categoryRequestTypes.ICreateCategory = {
+        name: formData.name,
+    };
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.CATEGORY}/${pointOfSaleTypes.ROUTES.CATEGORY_CREATE_CATEGORY}`,
+        data,
+    );
+    return response.data as pointOfSaleTypes.categoryResponseTypes.ICreateCategory;
 };

@@ -1,11 +1,15 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
-import { isUndefined } from 'lodash';
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
+import { productRequests } from 'requests';
+import { showNotify } from 'store/models/notify';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import {
     Button,
@@ -15,7 +19,7 @@ import {
     InputField,
 } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { compileProductMetaDataOptions } from './addProduct.actions';
+import { checkIfTaxItemIsSelected, compileProductSpecialOptions } from './addProduct.actions';
 import styles from './addProduct.module.scss';
 import {
     AddProductFormSchema,
@@ -37,7 +41,7 @@ const formInitialValues: IAddProductFormSchema = {
     mrpPrice: 0,
     availableStock: 0,
     stockUnit: null,
-    taxBracket: [],
+    taxBrackets: [],
 };
 
 /**
@@ -45,9 +49,13 @@ const formInitialValues: IAddProductFormSchema = {
  * * Callbacks operating the props state - onEscClick & onBackdropClick
  */
 export interface IAddProductProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
 }
 export const AddProduct = (props: IAddProductProps): JSX.Element => {
+    //# VALUE HOOKS
     // holds the available metadata for a product
     const [productMetaDataOptions, setProductMetaDataOptions] = useState<IProductMetaDataOptions>({
         brands: [],
@@ -55,58 +63,122 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         stockUnits: [],
         taxBrackets: [],
     });
+    // state to manage the focus state of the first inputField
+    const [focusInputField, setFocusInputField] = useState(false);
+    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
 
-    // used to handle the closing of the sliderModal
+    //# CRITICAL FUNCTIONS
+    // * used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
                 sliderName: 'addProductSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            addProductSlider: false,
+        });
     };
 
-    // to fetch all available metadata for a product
+    // getting formik instance to handle form operations
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: AddProductFormSchema,
+        onSubmit: async (values: IAddProductFormSchema) => {
+            formFormik.setSubmitting(true);
+
+            const response = await productRequests.createProduct(values);
+            if (response.status) {
+                showMessage('Product added to database!', 'success');
+                formFormik.resetForm();
+                setFocusInputField(true);
+            } else {
+                response.error.map((error) => {
+                    formFormik.setFieldError(error.name, error.message);
+                });
+            }
+            formFormik.setSubmitting(false);
+        },
+    });
+
+    //# HOOKS
+
+    // * to manage focus for inputFields
+    useEffect(() => {
+        if (sliderState.addProductSlider.show) {
+            setFocusInputField(true);
+            // checking if any autofill data is present
+            if (!isNull(sliderState.addProductSlider.autoFillData)) {
+                const autoFillData = sliderState.addProductSlider.autoFillData;
+                // pushing data to formik state
+                formFormik.setValues(autoFillData);
+            }
+        }
+    }, [sliderState.addProductSlider.show]);
+
+    // * to fetch all available special options for a product and update in state
     useEffect(() => {
         (async () => {
-            setProductMetaDataOptions(await compileProductMetaDataOptions());
+            const specialProductOptions = await compileProductSpecialOptions();
+            setProductMetaDataOptions(specialProductOptions);
+            // compiling default values for special options
+            const defaultCategory: IAddProductFormSchema['category'] =
+                specialProductOptions.categories.length > 0
+                    ? specialProductOptions.categories[0]
+                    : null;
+            const defaultBrand: IAddProductFormSchema['brand'] =
+                specialProductOptions.brands.length > 0 ? specialProductOptions.brands[0] : null;
+            const defaultStockUnit: IAddProductFormSchema['stockUnit'] =
+                specialProductOptions.stockUnits.length > 0
+                    ? specialProductOptions.stockUnits[0]
+                    : null;
+            const defaultTaxBrackets: IAddProductFormSchema['taxBrackets'] = [];
+            // setting values to form store
+            formFormik.setFieldValue('brand' as keyof IAddProductFormSchema, defaultBrand);
+            formFormik.setFieldValue('category' as keyof IAddProductFormSchema, defaultCategory);
+            formFormik.setFieldValue('stockUnit' as keyof IAddProductFormSchema, defaultStockUnit);
+            formFormik.setFieldValue(
+                'taxBrackets' as keyof IAddProductFormSchema,
+                defaultTaxBrackets,
+            );
         }).call(null);
     }, []);
 
     // to handle slider closing operations
     useEffect(() => {
-        if (props.callBackStateTrack[0]) {
+        if (props.callBackStateTrack[0].addProductSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [props.callBackStateTrack[0].addProductSlider]);
 
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT, () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'addProductSlider',
-                active: true,
-            }),
-        );
-    });
-
-    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
-    const sliderState = useSelector((state: RootState) => state.sliderModal);
-    // getting formik instance to handle form operations
-    const formFormik = useFormik({
-        initialValues: formInitialValues,
-        validationSchema: AddProductFormSchema,
-        onSubmit: (values: IAddProductFormSchema) => {
-            console.log(values);
+    useHotkeys(
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
+        (event) => {
+            event.preventDefault();
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addProductSlider',
+                    active: true,
+                    autoFillData: null,
+                }),
+            );
         },
-    });
-
+        {
+            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
+        },
+    );
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
             <div className={styles.pageTitleBar}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
+                        focus={focusInputField}
+                        setFocus={setFocusInputField}
                         name={'name' as pointOfSaleTypes.productResponseTypes.fieldNames}
                         type={'text'}
                         label={'Product Name'}
@@ -149,8 +221,8 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
-                                'category',
-                                productMetaDataOptions.categories[index],
+                                'category' as keyof IAddProductFormSchema,
+                                productMetaDataOptions.categories[index]._id,
                             );
                         }}
                     />
@@ -160,7 +232,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                             return <p key={index}>{brand.name}</p>;
                         })}
                         onSelect={(index) => {
-                            formFormik.setFieldValue('brand', productMetaDataOptions.brands[index]);
+                            formFormik.setFieldValue(
+                                'brand' as keyof IAddProductFormSchema,
+                                productMetaDataOptions.brands[index],
+                            );
                         }}
                     />
                 </div>
@@ -168,7 +243,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                     ruleWidth={'75%'}
                     style={{
                         horizontalRuleWrapperStyle: {
-                            paddingTop: 5,
+                            paddingTop: 0,
                             paddingBottom: 20,
                         },
                     }}
@@ -258,7 +333,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         placeHolder={'Available Stock'}
                         value={formFormik.values.availableStock?.toString()}
                         onChange={(event) =>
-                            formFormik.setFieldValue('availableStock', event.target.value)
+                            formFormik.setFieldValue(
+                                'availableStock' as keyof IAddProductFormSchema,
+                                event.target.value,
+                            )
                         }
                         error={{
                             errorMessage: formFormik.errors.sellingPrice ?? '',
@@ -274,7 +352,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                         })}
                         onSelect={(index) => {
                             formFormik.setFieldValue(
-                                'stockUnit',
+                                'stockUnit' as keyof IAddProductFormSchema,
                                 productMetaDataOptions.stockUnits[index],
                             );
                         }}
@@ -287,20 +365,26 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                                 key={index}
                                 groupLabel={index === 0 ? 'Tax Bracket' : null}
                                 label={taxBracket.name}
-                                checked={false}
+                                checked={checkIfTaxItemIsSelected(
+                                    formFormik.values.taxBrackets,
+                                    taxBracket,
+                                )}
                                 onChange={(event) => {
                                     if (event.target.checked) {
-                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        const taxBracketValues = formFormik.values.taxBrackets;
                                         taxBracketValues.push(taxBracket);
-                                        formFormik.setFieldValue('taxBracket', taxBracketValues);
+                                        formFormik.setFieldValue(
+                                            'taxBrackets' as keyof IAddProductFormSchema,
+                                            taxBracketValues,
+                                        );
                                     } else {
-                                        const taxBracketValues = formFormik.values.taxBracket;
+                                        const taxBracketValues = formFormik.values.taxBrackets;
                                         // finding index of the taxBracket to remove and removing it
                                         for (let i = 0; i < taxBracketValues.length; i++) {
                                             if (taxBracketValues[i]._id === taxBracket._id) {
                                                 taxBracketValues.splice(i, 1);
                                                 formFormik.setFieldValue(
-                                                    'taxBracket',
+                                                    'taxBrackets' as keyof IAddProductFormSchema,
                                                     taxBracketValues,
                                                 );
 

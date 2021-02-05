@@ -1,34 +1,36 @@
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
-import { brandRequests } from 'requests';
+import { taxBracketRequests } from 'requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { COMMON_SYMBOLS } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
-import styles from './addBrand.module.scss';
-import { AddBrandFormSchema, IAddBrandFormSchema } from './addBrand.types';
+import styles from './addTaxBracket.module.scss';
+import { AddTaxBracketFormSchema, IAddTaxBracketFormSchema } from './addTaxBracket.types';
 
 // holds the initial values for the form
-const formInitialValues: IAddBrandFormSchema = {
+const formInitialValues: IAddTaxBracketFormSchema = {
     name: '',
+    taxPercent: '',
 };
 
 /**
  * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
-export interface IAddBrandProps {
+export interface IAddTaxBracketProps {
     callBackStateTrack: [
         ICallBackStateTrack,
         React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
     ];
 }
-export const AddBrand = (props: IAddBrandProps): JSX.Element => {
+export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     //# VALUE HOOKS
 
     // getting sliderState to listen to when the slider is invoked
@@ -42,26 +44,26 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addBrandSlider',
+                sliderName: 'addTaxBracketSlider',
                 active: false,
                 autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
             ...props.callBackStateTrack[0],
-            addBrandSlider: false,
+            addTaxBracketSlider: false,
         });
     };
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
-        validationSchema: AddBrandFormSchema,
-        onSubmit: async (values: IAddBrandFormSchema) => {
+        validationSchema: AddTaxBracketFormSchema,
+        onSubmit: async (values: IAddTaxBracketFormSchema) => {
             formFormik.setSubmitting(true);
-            const response = await brandRequests.createBrand(values);
+            const response = await taxBracketRequests.createTaxBracket(values);
             if (response.status) {
-                showMessage('Brand added to database!', 'success');
+                showMessage('TaxBracket added to database!', 'success');
                 formFormik.resetForm();
                 setFocusInputField(true);
             } else {
@@ -77,31 +79,31 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addBrandSlider.show) {
+        if (sliderState.addTaxBracketSlider.show) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addBrandSlider.autoFillData)) {
-                const autoFillData = sliderState.addBrandSlider.autoFillData;
+            if (!isNull(sliderState.addTaxBracketSlider.autoFillData)) {
+                const autoFillData = sliderState.addTaxBracketSlider.autoFillData;
                 // pushing data to formik state
                 formFormik.setValues(autoFillData);
             }
         }
-    }, [sliderState.addBrandSlider.show]);
+    }, [sliderState.addTaxBracketSlider.show]);
 
     useEffect(() => {
-        if (props.callBackStateTrack[0].addBrandSlider) {
+        if (props.callBackStateTrack[0].addTaxBracketSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0].addBrandSlider]);
+    }, [props.callBackStateTrack[0].addTaxBracketSlider]);
 
     // * Used to contol slider models visibility
     useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND,
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET,
         (event) => {
             event.preventDefault();
             store.dispatch(
                 toggleSliderModal({
-                    sliderName: 'addBrandSlider',
+                    sliderName: 'addTaxBracketSlider',
                     active: true,
                     autoFillData: null,
                 }),
@@ -114,16 +116,16 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
-            <div className={styles.pageTitleBar}>Add Brand</div>
+            <div className={styles.pageTitleBar}>Add TaxBracket</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
                         focus={focusInputField}
                         setFocus={setFocusInputField}
-                        name={'name'}
+                        name={'name' as keyof IAddTaxBracketFormSchema}
                         type={'text'}
-                        label={'Brand Name'}
-                        placeHolder={'Eg.Pepsi'}
+                        label={'TaxBracket Name'}
+                        placeHolder={'Eg.GST'}
                         required={true}
                         error={{
                             errorMessage: formFormik.errors.name ?? '',
@@ -136,12 +138,32 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
                         onChange={formFormik.handleChange}
                     />
                 </div>
+                <div className={styles.formGroup}>
+                    <InputField
+                        name={'taxPercent' as keyof IAddTaxBracketFormSchema}
+                        type={'text'}
+                        label={'TaxBracket Percent'}
+                        placeHolder={'Eg.8'}
+                        suffix={<p>{COMMON_SYMBOLS.PERCENTAGE_SYMBOL}</p>}
+                        required={true}
+                        error={{
+                            errorMessage: formFormik.errors.name ?? '',
+                            showError:
+                                !isUndefined(formFormik.errors.taxPercent) &&
+                                formFormik.touched.taxPercent,
+                        }}
+                        selectTextOnFocus={true}
+                        value={formFormik.values.taxPercent}
+                        onBlur={formFormik.handleBlur}
+                        onChange={formFormik.handleChange}
+                    />
+                </div>
             </div>
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Brand'}
+                    label={'Add TaxBracket'}
                     tabIndex={0}
                 />
                 <Button

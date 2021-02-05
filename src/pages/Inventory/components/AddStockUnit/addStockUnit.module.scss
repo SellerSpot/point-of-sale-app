@@ -1,0 +1,71 @@
+.pageWrapper {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    background: var('--primary-background-color');
+
+    grid-template-rows: 50px 1fr 70px;
+}
+
+.pageHeader {
+    display: grid;
+    padding: 0 10px;
+    width: 100%;
+    height: 50px;
+
+    grid-template-columns: 30px 1fr;
+    grid-template-rows: 1fr;
+}
+
+.pageHeaderBackIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.pageTitleBar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    width: 100%;
+    height: 100%;
+    background-color: var('--primary-background-color');
+    color: var('--primary-font-color');
+    font-weight: bold;
+    font-size: var('--font-size-header');
+}
+
+.pageBody {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 20px;
+    padding-top: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.formGroup {
+    margin-bottom: 10px;
+}
+
+.formGroupSplitEqual {
+    display: grid;
+
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.pageFooter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    width: 100%;
+    height: 100%;
+
+    gap: 10px;
+}

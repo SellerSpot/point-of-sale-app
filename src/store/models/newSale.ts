@@ -48,6 +48,12 @@ const newSale = createSlice({
         ) => {
             state.searchQuery = payload;
         },
+        appendToSearchQuery: (
+            state: IInitialStateNewSale,
+            { payload }: PayloadAction<IInitialStateNewSale['searchQuery']>,
+        ) => {
+            state.searchQuery += payload;
+        },
     },
 });
 
@@ -55,7 +61,12 @@ const newSale = createSlice({
 export default newSale.reducer;
 
 // Exporting actions
-export const { setSearchResults, setCartData, setSearchQuery } = newSale.actions;
+export const {
+    setSearchResults,
+    setCartData,
+    setSearchQuery,
+    appendToSearchQuery,
+} = newSale.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
 export const newSaleSelector: Selector<RootState, IInitialStateNewSale> = (state: RootState) =>

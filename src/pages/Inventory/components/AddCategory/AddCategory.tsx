@@ -4,17 +4,17 @@ import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
-import { brandRequests } from 'requests';
+import { brandRequests, categoryRequests } from 'requests';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
-import styles from './addBrand.module.scss';
-import { AddBrandFormSchema, IAddBrandFormSchema } from './addBrand.types';
+import styles from './addCategory.module.scss';
+import { AddCategoryFormSchema, IAddCategoryFormSchema } from './addCategory.types';
 
 // holds the initial values for the form
-const formInitialValues: IAddBrandFormSchema = {
+const formInitialValues: IAddCategoryFormSchema = {
     name: '',
 };
 
@@ -22,13 +22,13 @@ const formInitialValues: IAddBrandFormSchema = {
  * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
-export interface IAddBrandProps {
+export interface IAddCategoryProps {
     callBackStateTrack: [
         ICallBackStateTrack,
         React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
     ];
 }
-export const AddBrand = (props: IAddBrandProps): JSX.Element => {
+export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
     //# VALUE HOOKS
 
     // getting sliderState to listen to when the slider is invoked
@@ -42,26 +42,26 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
-                sliderName: 'addBrandSlider',
+                sliderName: 'addCategorySlider',
                 active: false,
                 autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
             ...props.callBackStateTrack[0],
-            addBrandSlider: false,
+            addCategorySlider: false,
         });
     };
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
-        validationSchema: AddBrandFormSchema,
-        onSubmit: async (values: IAddBrandFormSchema) => {
+        validationSchema: AddCategoryFormSchema,
+        onSubmit: async (values: IAddCategoryFormSchema) => {
             formFormik.setSubmitting(true);
-            const response = await brandRequests.createBrand(values);
+            const response = await categoryRequests.createCategory(values);
             if (response.status) {
-                showMessage('Brand added to database!', 'success');
+                showMessage('Category added to database!', 'success');
                 formFormik.resetForm();
                 setFocusInputField(true);
             } else {
@@ -77,31 +77,31 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addBrandSlider.show) {
+        if (sliderState.addCategorySlider.show) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addBrandSlider.autoFillData)) {
-                const autoFillData = sliderState.addBrandSlider.autoFillData;
+            if (!isNull(sliderState.addCategorySlider.autoFillData)) {
+                const autoFillData = sliderState.addCategorySlider.autoFillData;
                 // pushing data to formik state
                 formFormik.setValues(autoFillData);
             }
         }
-    }, [sliderState.addBrandSlider.show]);
+    }, [sliderState.addCategorySlider.show]);
 
     useEffect(() => {
-        if (props.callBackStateTrack[0].addBrandSlider) {
+        if (props.callBackStateTrack[0].addCategorySlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0].addBrandSlider]);
+    }, [props.callBackStateTrack[0].addCategorySlider]);
 
     // * Used to contol slider models visibility
     useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND,
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY,
         (event) => {
             event.preventDefault();
             store.dispatch(
                 toggleSliderModal({
-                    sliderName: 'addBrandSlider',
+                    sliderName: 'addCategorySlider',
                     active: true,
                     autoFillData: null,
                 }),
@@ -114,7 +114,7 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
-            <div className={styles.pageTitleBar}>Add Brand</div>
+            <div className={styles.pageTitleBar}>Add Category</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
@@ -122,8 +122,8 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
                         setFocus={setFocusInputField}
                         name={'name'}
                         type={'text'}
-                        label={'Brand Name'}
-                        placeHolder={'Eg.Pepsi'}
+                        label={'Category Name'}
+                        placeHolder={'Eg.Drinks'}
                         required={true}
                         error={{
                             errorMessage: formFormik.errors.name ?? '',
@@ -141,7 +141,7 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Brand'}
+                    label={'Add Category'}
                     tabIndex={0}
                 />
                 <Button

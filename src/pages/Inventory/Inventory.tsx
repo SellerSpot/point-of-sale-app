@@ -6,7 +6,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import { BrandsHistory } from './components/BrandsHistory/BrandsHistory';
 import { CategoriesHistory } from './components/CategoriesHistory/CategoriesHistory';
 import { ProductsHistory } from './components/ProductsHistory/ProductsHistory';
-import { StockUnitsHistory } from './components/StockUnits/StockUnits';
+import { StockUnitsHistory } from './components/StockUnitsHistory/StockUnitsHistory';
 import { TaxBracketsHistory } from './components/TaxBracketsHistory/TaxBracketsHistory';
 import styles from './inventory.module.scss';
 

@@ -12,7 +12,7 @@ export interface IProductMetaDataOptions {
 }
 
 /**
- * * Interface for the AddBrand form
+ * * Interface for the AddProduct form
  */
 export interface IAddProductFormSchema {
     name: string;
@@ -25,11 +25,11 @@ export interface IAddProductFormSchema {
     mrpPrice: number;
     availableStock: number;
     stockUnit: pointOfSaleTypes.stockUnitResponseTypes.IGetStockUnit['data'];
-    taxBracket: pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data'];
+    taxBrackets: pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data'];
 }
 
 /**
- * * Yup schema for the AddBrand form
+ * * Yup schema for the AddProduct form
  */
 export const AddProductFormSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),

@@ -1,14 +1,15 @@
-import { RowClickedEvent } from 'ag-grid-community';
+import { GridApi, RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { toggleSliderModal } from 'store/models/sliderModal';
-import { store } from 'store/store';
+import { RootState, store } from 'store/store';
+import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import {
@@ -23,49 +24,72 @@ import styles from './newSale.module.scss';
 import { INewSaleProps } from './newSale.types';
 
 export const NewSale = (props: INewSaleProps): JSX.Element => {
+    //# VALUE HOOKS
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
+    // state to handle the focus state of the searchBar
+    const [searchBarFocused, setSearchBarFocused] = useState(true);
+    // used to help identify if the input is from direct input or using eventListeners (to prevent double input bug)
+    const [inputIsFromHandleKeydown, setInputIsFromHandleKeyDown] = useState(false);
+    // getting sliderState to listen to when the slider is invoked to autopopulate if needed
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // holds the GridApi for the cart table
+    const [cartTableGridApi, setCartTableGridApi] = useState<GridApi>(null);
 
-    // used to handle the closing of the sliderModal
+    //# CRITICAL FUNCTIONS
+
+    //* handles the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
             toggleSliderModal({
                 sliderName: 'newSaleSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            newSaleSlider: false,
+        });
     };
 
-    // used to handle the closing operations of the sliderModel
-    useEffect(() => {
-        if (props.callBackStateTrack[0]) {
-            handleCloseSlider();
-        }
-    }, [props.callBackStateTrack[0]]);
+    //* handles ANYWHERE keydown event to focus it to inputField
+    const handleKeydown = useCallback(
+        async (event: KeyboardEvent) => {
+            // checking if it is a key that produces a character and that it is not from an inputElement
+            if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
+                setSearchBarFocused(true);
+                const newSearchQuery = searchQuery + event.key;
+                store.dispatch(setSearchQuery(newSearchQuery));
+                // setting flag to inform that the input if from the event listener
+                setInputIsFromHandleKeyDown(true);
+                // call to send query to server to fetch suggestions
+                queryServer(newSearchQuery);
+            }
+        },
+        [searchQuery],
+    );
 
-    // listening to the search result to push the barcode products directory to the cart
-    useEffect(() => {
-        if (searchResults.queryType === 'barcode') {
-            pushProductIntoCart(cartData, searchResults.results[0]);
-        }
-    }, [searchResults]);
-
-    // used to query the server to fetch product suggestions
+    //* query the server to fetch product suggestions on searchBar type
     const queryServer = useCallback(
         debounce(async (query: string) => {
             if (query.length > 0) {
-                store.dispatch(setSearchResults(await productRequests.searchProduct(query)));
+                const searchedProducts = await productRequests.searchProduct(query);
+                store.dispatch(setSearchResults(searchedProducts));
             }
         }, 400),
         [],
     );
 
-    /**
-     * Used to handle the user typing in the New Sale page
-     * @param query Query typed by the user in the search bar
-     */
+    //* used to handle the user typing in the SearchField
     const handleProductNameSearch = async (query: string): Promise<void> => {
+        // handling if the character is from the event listener (to prevent a double input bug)
+        if (inputIsFromHandleKeydown) {
+            // resetting the eventListener input
+            setInputIsFromHandleKeyDown(false);
+            return;
+        }
+        // if search field is empty, clear the search results
         if (query.length === 0) {
             store.dispatch(
                 setSearchResults({
@@ -79,32 +103,73 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         queryServer(query);
     };
 
-    // handles clicking of row in new sale products table
+    //* push data from products table to cart
     const handleNewSaleProductTableRowClick = (event: RowClickedEvent) => {
         // pushing item to cart
-        pushProductIntoCart(cartData, searchResults.results[event.rowIndex]);
+        pushProductIntoCart(cartData, searchResults.results[event.rowIndex], cartTableGridApi);
+        setSearchBarFocused(true);
     };
 
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE, (event) => {
-        event.preventDefault();
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'newSaleSlider',
-                active: true,
-            }),
-        );
-    });
+    //# HOOK CALLS
+
+    //* used to handle searchbar refocussing procedure
+    useEffect(() => {
+        // calling default focus
+        if (sliderState.newSaleSlider.show) {
+            // setting focus towards the searchBar
+            setSearchBarFocused(true);
+            document.addEventListener('keydown', handleKeydown);
+        } else {
+            document.removeEventListener('keydown', handleKeydown);
+        }
+    }, [sliderState.newSaleSlider.show]);
+
+    //* used to handle the closing operations of the sliderModel
+    useEffect(() => {
+        if (props.callBackStateTrack[0].newSaleSlider) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0].newSaleSlider]);
+
+    //* listening to the search result to push the barcode products directory to the cart
+    useEffect(() => {
+        if (searchResults.queryType === 'barcode') {
+            pushProductIntoCart(cartData, searchResults.results[0], cartTableGridApi);
+        }
+    }, [searchResults]);
+
+    //* listening for the new sale shortcut call
+    useHotkeys(
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE,
+        (event) => {
+            event.preventDefault();
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'newSaleSlider',
+                    active: true,
+                    autoFillData: null,
+                }),
+            );
+        },
+        {
+            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
+        },
+    );
 
     return (
         <div className={styles.newSaleWrapper}>
             <div className={styles.leftPanel}>
                 <InputField
-                    placeHolder="Product Name / Code"
+                    label={'Code, Product Name or use the Barcode scanner'}
+                    focus={searchBarFocused}
+                    setFocus={setSearchBarFocused}
+                    placeHolder=""
                     value={searchQuery}
                     onChange={(event) => handleProductNameSearch(event.target.value)}
                 />
                 <div className={cn('ag-theme-alpine')}>
                     <AgGridReact
+                        suppressDragLeaveHidesColumns
                         rowSelection={'single'}
                         onRowClicked={handleNewSaleProductTableRowClick}
                         suppressCellSelection={true}
@@ -119,6 +184,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
                     <AgGridReact
+                        suppressDragLeaveHidesColumns
                         columnDefs={getNewSaleCartTableColDef()}
                         rowData={compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={
@@ -127,19 +193,23 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         onCellValueChanged={(event) =>
                             handleNewSaleCartTableCellValueChange(cartData, event)
                         }
+                        onCellEditingStopped={(_) => {
+                            setSearchBarFocused(true);
+                        }}
+                        onGridReady={(event) => {
+                            setCartTableGridApi(event.api);
+                        }}
+                        defaultColDef={{
+                            enableCellChangeFlash: true,
+                        }}
                     />
                 </div>
                 <div className={styles.rightPanelBottom}>
                     <div className={styles.cartMetaCard}>
-                        {cartData.productCartInformation.length > 0 ? (
-                            <div>
-                                <h4>Calculation Write Up</h4>
-                                <div className={styles.calculationWriteUp}>
-                                    <span>{'Total Taxes'}</span>
-                                    <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
-                                </div>
-                            </div>
-                        ) : null}
+                        <Button
+                            onClick={() => window.open('calculator:///', 'noopener,noreferrer')}
+                            label={'Calculator'}
+                        />
                     </div>
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
@@ -157,12 +227,17 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                             >{`₹ ${cartData.totals.grandTotal}`}</span>
                         </div>
                         <Button
-                            label="CHECKOUT"
-                            // onClick={() =>
-                            //     store.dispatch(
-                            //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                            //     )
-                            // }
+                            label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}
+                            status={cartData.products.length > 0 ? 'default' : 'disabled'}
+                            onClick={() =>
+                                store.dispatch(
+                                    toggleSliderModal({
+                                        sliderName: 'checkoutSlider',
+                                        active: true,
+                                        autoFillData: null,
+                                    }),
+                                )
+                            }
                         />
                     </div>
                 </div>

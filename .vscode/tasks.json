@@ -3,57 +3,7 @@
     "windows": {
         "command": "cmd"
     },
-    "tasks": [{
-            "label": "npm-link-universal-types",
-            "type": "shell",
-            "command": "npm link ../universal-types",
-            "group": "none",
-            "presentation": {
-                "group": "npm-link",
-                "focus": true,
-                "reveal": "always",
-                "panel": "new",
-                "showReuseMessage": false
-            },
-            "runOptions": {
-                "runOn": "default"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "npm-link-universal-components",
-            "type": "shell",
-            "command": "npm link ../universal-components/",
-            "presentation": {
-                "group": "npm-link",
-                "focus": true,
-                "reveal": "always",
-                "panel": "new",
-                "showReuseMessage": false
-            },
-            "runOptions": {
-                "runOn": "default"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "npm-link-all",
-            "type": "shell",
-            "command": "",
-            "group": "none",
-            "presentation": {
-                "focus": true,
-                "group": "npm-link",
-                "reveal": "silent",
-                "panel": "new",
-                "showReuseMessage": false
-            },
-            "dependsOn": ["npm-link-universal-types", "npm-link-universal-components"],
-            "runOptions": {
-                "runOn": "default"
-            },
-            "problemMatcher": []
-        },
+    "tasks": [
         {
             "label": "open-terminal",
             "type": "shell",
