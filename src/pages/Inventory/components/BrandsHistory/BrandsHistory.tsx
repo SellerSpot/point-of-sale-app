@@ -55,7 +55,7 @@ export const BrandsHistory = (): JSX.Element => {
                 <AgGridReact
                     columnDefs={getBrandsHistoryTableColDef()}
                     rowData={compileCategoriesHistoryTableBodyData(brandsData)}
-                    suppressRowClickSelection
+                    suppressCellSelection
                     onRowClicked={(event) => {
                         // compiling data for autofill
                         const autoFillData: IAddBrandFormSchema = {

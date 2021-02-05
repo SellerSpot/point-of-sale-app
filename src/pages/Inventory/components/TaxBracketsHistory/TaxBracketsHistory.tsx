@@ -3,35 +3,31 @@ import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { taxBracketRequests } from 'requests';
+import { toggleSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { getTaxBracketsHistoryTableColDef } from './taxBracketHistory.actions';
+import { IAddTaxBracketFormSchema } from '../AddTaxBracket/addTaxBracket.types';
+import {
+    compileTaxBracketsHistoryTableBodyData,
+    getTaxBracketsHistoryTableColDef,
+} from './taxBracketHistory.actions';
 import styles from './taxBracketsHistory.module.scss';
-
-// import { getTaxBrackets } from 'requests/taxBracket';
-// import { toggleSliderModal } from 'store/models/sliderModal';
-// import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
-
-// import {
-//     compileTaxBracketsTableBodyData,
-//     handleTaxBracketsHistoryTableRowClick,
-// } from './taxBracketsHistory.actions';
 
 export const TaxBracketsHistory = (): JSX.Element => {
     // To manage which tab is selected
     const dispatch = useDispatch();
-    const [
-        taxBracketsData,
-        setTaxBracketsData,
-    ] = useState<pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets>(null);
+    const [taxBracketsData, setTaxBracketsData] = useState<
+        pointOfSaleTypes.taxBracketResponseTypes.IGetAllTaxBrackets['data']
+    >(null);
 
     useEffect(() => {
-        // (async () => {
-        //     // To populate the table
-        //     const taxBracketsData = await getTaxBrackets();
-        //     setTaxBracketsData(taxBracketsData.data as IGetTaxBracketFromServer[]);
-        // }).call(null);
+        (async () => {
+            // To populate the table
+            const taxBracketsData = await taxBracketRequests.getAllTaxBrackets();
+            setTaxBracketsData(taxBracketsData);
+        }).call(null);
     }, []);
 
     return (
@@ -43,19 +39,38 @@ export const TaxBracketsHistory = (): JSX.Element => {
                     <Button
                         key={'addTaxBracket'}
                         label={`Add Tax-Bracket (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET})`}
-                        // onClick={() =>
-                        //     dispatch(
-                        //         toggleSliderModal({
-                        //             sliderName: 'addTaxBracketSlider',
-                        //             active: true,
-                        //         }),
-                        //     )
-                        // }
+                        onClick={() =>
+                            dispatch(
+                                toggleSliderModal({
+                                    sliderName: 'addTaxBracketSlider',
+                                    active: true,
+                                    autoFillData: null,
+                                }),
+                            )
+                        }
                     />,
                 ]}
             />
             <div className={classNames('ag-theme-alpine')}>
-                <AgGridReact columnDefs={getTaxBracketsHistoryTableColDef()} />
+                <AgGridReact
+                    columnDefs={getTaxBracketsHistoryTableColDef()}
+                    rowData={compileTaxBracketsHistoryTableBodyData(taxBracketsData)}
+                    suppressCellSelection
+                    onRowClicked={(event) => {
+                        // compiling data for autofill
+                        const autoFillData: IAddTaxBracketFormSchema = {
+                            name: taxBracketsData[event.rowIndex].name,
+                            taxPercent: taxBracketsData[event.rowIndex].taxPercent,
+                        };
+                        dispatch(
+                            toggleSliderModal({
+                                sliderName: 'addTaxBracketSlider',
+                                active: true,
+                                autoFillData,
+                            }),
+                        );
+                    }}
+                />
             </div>
         </div>
     );

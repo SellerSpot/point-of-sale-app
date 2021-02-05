@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { isUndefined } from 'lodash';
+import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
@@ -42,6 +42,7 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
             toggleSliderModal({
                 sliderName: 'addTaxBracketSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1](false);
@@ -73,6 +74,12 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     useEffect(() => {
         if (sliderState.addTaxBracketSlider.show) {
             setFocusInputField(true);
+            // checking if any autofill data is present
+            if (!isNull(sliderState.addTaxBracketSlider.autoFillData)) {
+                const autoFillData = sliderState.addTaxBracketSlider.autoFillData;
+                // pushing data to formik state
+                formFormik.setValues(autoFillData);
+            }
         }
     }, [sliderState.addTaxBracketSlider.show]);
 
@@ -91,6 +98,7 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
                 toggleSliderModal({
                     sliderName: 'addTaxBracketSlider',
                     active: true,
+                    autoFillData: null,
                 }),
             );
         },
