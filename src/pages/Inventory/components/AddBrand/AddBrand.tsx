@@ -1,15 +1,16 @@
-import { AddBrandFormSchema, IAddBrandFormSchema } from './addBrand.types';
-import { Button, InputField } from '@sellerspot/universal-components';
-import React, { useEffect } from 'react';
-import { RootState, store } from 'store/store';
-
-import { generalUtilities } from 'utilities/utilities';
+import { Formik, useFormik } from 'formik';
 import { isUndefined } from 'lodash';
-import styles from './addBrand.module.scss';
-import { toggleSliderModal } from 'store/models/sliderModal';
-import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
+import { brandRequests } from 'requests';
+import { toggleSliderModal } from 'store/models/sliderModal';
+import { RootState, store } from 'store/store';
+import { showMessage } from 'utilities/notify';
+import { generalUtilities } from 'utilities/utilities';
+import { Button, InputField } from '@sellerspot/universal-components';
+import styles from './addBrand.module.scss';
+import { AddBrandFormSchema, IAddBrandFormSchema } from './addBrand.types';
 
 // holds the initial values for the form
 const formInitialValues: IAddBrandFormSchema = {
@@ -24,6 +25,15 @@ export interface IAddBrandProps {
     callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 export const AddBrand = (props: IAddBrandProps): JSX.Element => {
+    //# VALUE HOOKS
+
+    // getting sliderState to listen to when the slider is invoked
+    const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // state to manage the focus state of the first inputField
+    const [focusInputField, setFocusInputField] = useState(false);
+
+    //# CRITICAL FUCNTIONS
+
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
@@ -35,31 +45,56 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
         props.callBackStateTrack[1](false);
     };
 
+    // getting formik instance to handle form operations
+    const formFormik = useFormik({
+        initialValues: formInitialValues,
+        validationSchema: AddBrandFormSchema,
+        onSubmit: async (values: IAddBrandFormSchema) => {
+            formFormik.setSubmitting(true);
+            const response = await brandRequests.createBrand(values);
+            if (response.status) {
+                showMessage('Brand added to database!', 'success');
+                formFormik.resetForm();
+                setFocusInputField(true);
+            } else {
+                response.error.map((error) => {
+                    formFormik.setFieldError(error.name, error.message);
+                });
+            }
+            formFormik.setSubmitting(false);
+        },
+    });
+
+    //# HOOKS
+
+    // * to manage focus for inputFields
+    useEffect(() => {
+        if (sliderState.addBrandSlider.show) {
+            setFocusInputField(true);
+        }
+    }, [sliderState.addBrandSlider.show]);
+
     useEffect(() => {
         if (props.callBackStateTrack[0]) {
             handleCloseSlider();
         }
     }, [props.callBackStateTrack[0]]);
 
-    useHotkeys(generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND, () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'addBrandSlider',
-                active: true,
-            }),
-        );
-    });
-
-    // getting sliderState to listen to when the slider is invoked
-    const sliderState = useSelector((state: RootState) => state.sliderModal);
-    // getting formik instance to handle form operations
-    const formFormik = useFormik({
-        initialValues: formInitialValues,
-        validationSchema: AddBrandFormSchema,
-        onSubmit: (values: IAddBrandFormSchema) => {
-            console.log(values);
+    // * Used to contol slider models visibility
+    useHotkeys(
+        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND,
+        () => {
+            store.dispatch(
+                toggleSliderModal({
+                    sliderName: 'addBrandSlider',
+                    active: true,
+                }),
+            );
         },
-    });
+        {
+            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
+        },
+    );
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
@@ -67,6 +102,8 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
                     <InputField
+                        focus={focusInputField}
+                        setFocus={setFocusInputField}
                         name={'name'}
                         type={'text'}
                         label={'Brand Name'}

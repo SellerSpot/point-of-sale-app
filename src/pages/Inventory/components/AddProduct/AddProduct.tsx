@@ -84,7 +84,7 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
             formFormik.setSubmitting(true);
 
             const response = await productRequests.createProduct(values);
-            if (response) {
+            if (response.status) {
                 showMessage('Product added to database!', 'success');
                 formFormik.resetForm();
                 setFocusInputField(true);

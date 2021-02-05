@@ -32,9 +32,9 @@ export const introduceDelay = async (delay = 4000): Promise<boolean> =>
  */
 export const GLOBAL_KEYBOARD_SHORTCUTS = {
     NEW_SALE: 'F1',
-    ADD_PRODUCT: 'SHIFT+P',
-    ADD_CATEGORY: 'SHIFT+C',
-    ADD_BRAND: 'SHIFT+B',
-    ADD_TAXBRACKET: 'SHIFT+T',
-    ADD_STOCKUNIT: 'SHIFT+S',
+    ADD_PRODUCT: 'F2',
+    ADD_CATEGORY: 'F3',
+    ADD_BRAND: 'F4',
+    ADD_TAXBRACKET: 'F5',
+    ADD_STOCKUNIT: 'F6',
 };

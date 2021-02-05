@@ -66,19 +66,5 @@ export const createProduct = async (
         `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_CREATE_PRODUCT}`,
         productToAdd,
     );
-    const responseData = response.data as pointOfSaleTypes.productResponseTypes.ICreateProduct;
-
-    if (responseData.status) {
-        return {
-            status: true,
-            statusCode: STATUS_CODES.CREATED,
-            data: responseData.data,
-        };
-    } else {
-        return {
-            status: false,
-            statusCode: responseData.statusCode,
-            error: responseData.error,
-        };
-    }
+    return response.data as pointOfSaleTypes.productResponseTypes.ICreateProduct;
 };
