@@ -36,7 +36,11 @@ export const SalesHistory = (): JSX.Element => {
                         status="default"
                         onClick={() => {
                             dispatch(
-                                toggleSliderModal({ sliderName: 'newSaleSlider', active: true }),
+                                toggleSliderModal({
+                                    sliderName: 'newSaleSlider',
+                                    active: true,
+                                    autoFillData: null,
+                                }),
                             );
                         }}
                     />,

@@ -36,10 +36,10 @@ export interface SliderModalInitialState {
         show: boolean;
         autoFillData?: IAddStockUnitFormSchema;
     };
-    // checkoutSlider: {
-    //     show: boolean;
-    //     autoFillData?: null;
-    // };
+    checkoutSlider: {
+        show: boolean;
+        autoFillData?: null;
+    };
 }
 
 const initialState: SliderModalInitialState = {
@@ -67,9 +67,9 @@ const initialState: SliderModalInitialState = {
         show: false,
         autoFillData: null,
     },
-    // checkoutSlider: {
-    //     show: false,
-    // },
+    checkoutSlider: {
+        show: false,
+    },
 };
 
 const sliderModalSlice = createSlice({

@@ -44,6 +44,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             toggleSliderModal({
                 sliderName: 'newSaleSlider',
                 active: false,
+                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1](false);
@@ -143,6 +144,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 toggleSliderModal({
                     sliderName: 'newSaleSlider',
                     active: true,
+                    autoFillData: null,
                 }),
             );
         },
@@ -223,16 +225,15 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         </div>
                         <Button
                             label="CHECKOUT"
-                            onClick={() => {
-                                cartTableGridApi.flashCells({
-                                    columns: ['itemQuantity'],
-                                });
-                            }}
-                            // onClick={() =>
-                            //     store.dispatch(
-                            //         toggleSliderModal({ sliderName: 'checkoutSlider', active: true }),
-                            //     )
-                            // }
+                            onClick={() =>
+                                store.dispatch(
+                                    toggleSliderModal({
+                                        sliderName: 'checkoutSlider',
+                                        active: true,
+                                        autoFillData: null,
+                                    }),
+                                )
+                            }
                         />
                     </div>
                 </div>

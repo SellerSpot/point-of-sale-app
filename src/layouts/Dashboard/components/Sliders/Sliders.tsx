@@ -3,6 +3,7 @@ import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory'
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/addStockUnit';
 import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
+import { Checkout } from 'pages/Sale/components/Checkout/Checkout';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -13,7 +14,7 @@ const Sliders = (): ReactElement => {
     const {
         addProductSlider,
         addCategorySlider,
-        // checkoutSlider,
+        checkoutSlider,
         newSaleSlider,
         addBrandSlider,
         addTaxBracketSlider,
@@ -76,14 +77,14 @@ const Sliders = (): ReactElement => {
             >
                 <AddStockUnit callBackStateTrack={callBackStateTrack} />
             </SliderModal>
-
-            {/* <SliderModal
+            <SliderModal
                 active={checkoutSlider.show}
                 sliderSize={'80%'}
-                onClickBackdrop={() => handleSliderClose('checkoutSlider')}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <Checkout />
-            </SliderModal> */}
+            </SliderModal>
         </>
     );
 };
