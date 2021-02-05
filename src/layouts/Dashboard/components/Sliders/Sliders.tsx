@@ -1,4 +1,5 @@
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
+import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useState } from 'react';
@@ -9,7 +10,7 @@ import { SliderModal } from '@sellerspot/universal-components';
 const Sliders = (): ReactElement => {
     const {
         addProductSlider,
-        // addCategorySlider,
+        addCategorySlider,
         // checkoutSlider,
         newSaleSlider,
         addBrandSlider,
@@ -48,14 +49,14 @@ const Sliders = (): ReactElement => {
                 <AddBrand callBackStateTrack={callBackStateTrack} />
             </SliderModal>
 
-            {/* <SliderModal
+            <SliderModal
                 active={addCategorySlider.show}
                 sliderSize={'30%'}
                 onClickBackdrop={() => callBackStateTrack[1](true)}
                 onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <AddCategory callBackStateTrack={callBackStateTrack} />
-            </SliderModal> */}
+            </SliderModal>
             {/* <SliderModal
                 active={addTaxBracketSlider.show}
                 sliderSize={'30%'}

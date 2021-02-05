@@ -143,7 +143,8 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     useHotkeys(
         generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
-        () => {
+        (event) => {
+            event.preventDefault();
             store.dispatch(
                 toggleSliderModal({
                     sliderName: 'addProductSlider',
