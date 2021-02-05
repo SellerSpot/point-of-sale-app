@@ -1,4 +1,5 @@
 import { Formik, useFormik } from 'formik';
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -22,7 +23,10 @@ const formInitialValues: IAddStockUnitFormSchema = {
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
 export interface IAddStockUnitProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
 }
 export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
     //# VALUE HOOKS
@@ -43,7 +47,10 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
                 autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            addStockUnitSlider: false,
+        });
     };
 
     //* getting formik instance to handle form operations
@@ -83,10 +90,10 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
 
     //* callback to close the slider
     useEffect(() => {
-        if (props.callBackStateTrack[0]) {
+        if (props.callBackStateTrack[0].addStockUnitSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [props.callBackStateTrack[0].addStockUnitSlider]);
 
     //* Used to contol slider models visibility
     useHotkeys(

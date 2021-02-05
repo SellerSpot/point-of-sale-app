@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -24,7 +25,10 @@ const formInitialValues: IAddTaxBracketFormSchema = {
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
 export interface IAddTaxBracketProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
 }
 export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     //# VALUE HOOKS
@@ -45,7 +49,10 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
                 autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            addTaxBracketSlider: false,
+        });
     };
 
     // getting formik instance to handle form operations
@@ -84,10 +91,10 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     }, [sliderState.addTaxBracketSlider.show]);
 
     useEffect(() => {
-        if (props.callBackStateTrack[0]) {
+        if (props.callBackStateTrack[0].addTaxBracketSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [props.callBackStateTrack[0].addTaxBracketSlider]);
 
     // * Used to contol slider models visibility
     useHotkeys(

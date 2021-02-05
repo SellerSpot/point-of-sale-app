@@ -1,3 +1,4 @@
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 /**
@@ -5,7 +6,10 @@ import { pointOfSaleTypes } from '@sellerspot/universal-types';
  * Callbacks operating the props state - onEscClick & onBackdropClick
  */
 export interface INewSaleProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
 }
 
 /**

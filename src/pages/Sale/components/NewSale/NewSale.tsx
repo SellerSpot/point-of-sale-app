@@ -47,7 +47,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            newSaleSlider: false,
+        });
     };
 
     //* handles ANYWHERE keydown event to focus it to inputField
@@ -123,10 +126,10 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
 
     //* used to handle the closing operations of the sliderModel
     useEffect(() => {
-        if (props.callBackStateTrack[0]) {
+        if (props.callBackStateTrack[0].newSaleSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [props.callBackStateTrack[0].newSaleSlider]);
 
     //* listening to the search result to push the barcode products directory to the cart
     useEffect(() => {

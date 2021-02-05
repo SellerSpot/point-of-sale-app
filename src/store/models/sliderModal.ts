@@ -6,12 +6,7 @@ import { IAddTaxBracketFormSchema } from 'pages/Inventory/components/AddTaxBrack
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
-// import { IGetBrandFromServer } from 'pages/Inventory/components/AddBrand/brand.types';
-// import { IGetCategoryFromServer } from 'typings/components/category.types';
-// import { IGetProductFromServer } from 'typings/components/product.types';
-// import { IGetTaxBracketFromServer } from 'typings/components/taxBracket.types';
-
-export interface SliderModalInitialState {
+export interface ISliderModalInitialState {
     newSaleSlider: {
         show: boolean;
         autoFillData?: null;
@@ -42,7 +37,7 @@ export interface SliderModalInitialState {
     };
 }
 
-const initialState: SliderModalInitialState = {
+const initialState: ISliderModalInitialState = {
     newSaleSlider: {
         show: false,
         autoFillData: null,
@@ -81,7 +76,7 @@ const sliderModalSlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                sliderName: keyof SliderModalInitialState;
+                sliderName: keyof ISliderModalInitialState;
                 active: boolean;
                 autoFillData:
                     | IAddProductFormSchema
@@ -103,6 +98,6 @@ export default sliderModalSlice.reducer;
 export const { toggleSliderModal } = sliderModalSlice.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
-export const sliderModalSelector: Selector<RootState, SliderModalInitialState> = (
+export const sliderModalSelector: Selector<RootState, ISliderModalInitialState> = (
     state: RootState,
 ) => state.sliderModal;

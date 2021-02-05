@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -48,7 +49,10 @@ const formInitialValues: IAddProductFormSchema = {
  * * Callbacks operating the props state - onEscClick & onBackdropClick
  */
 export interface IAddProductProps {
-    callBackStateTrack: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
 }
 export const AddProduct = (props: IAddProductProps): JSX.Element => {
     //# VALUE HOOKS
@@ -74,7 +78,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
                 autoFillData: null,
             }),
         );
-        props.callBackStateTrack[1](false);
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            addProductSlider: false,
+        });
     };
 
     // getting formik instance to handle form operations
@@ -143,10 +150,10 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // to handle slider closing operations
     useEffect(() => {
-        if (props.callBackStateTrack[0]) {
+        if (props.callBackStateTrack[0].addProductSlider) {
             handleCloseSlider();
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [props.callBackStateTrack[0].addProductSlider]);
 
     useHotkeys(
         generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,

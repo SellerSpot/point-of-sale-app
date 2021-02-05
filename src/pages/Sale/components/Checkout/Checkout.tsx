@@ -1,13 +1,20 @@
 import cn from 'classnames';
+import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
-import React, { ReactElement, useRef } from 'react';
+import React, { ReactElement, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import { toggleSliderModal } from 'store/models/sliderModal';
 import { Button } from '@sellerspot/universal-components';
 import styles from './checkout.module.scss';
 
-export const Checkout = (): ReactElement => {
+export interface ICheckoutProps {
+    callBackStateTrack: [
+        ICallBackStateTrack,
+        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+    ];
+}
+export const Checkout = (props: ICheckoutProps): ReactElement => {
     const dispatch = useDispatch();
     const billReference = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({
@@ -23,6 +30,27 @@ export const Checkout = (): ReactElement => {
                 ),
             ),
     });
+
+    // used to handle the closing of the sliderModal
+    const handleCloseSlider = () => {
+        dispatch(
+            toggleSliderModal({
+                sliderName: 'checkoutSlider',
+                active: false,
+                autoFillData: null,
+            }),
+        );
+        props.callBackStateTrack[1]({
+            ...props.callBackStateTrack[0],
+            newSaleSlider: false,
+        });
+    };
+
+    useEffect(() => {
+        if (props.callBackStateTrack[0].checkoutSlider) {
+            handleCloseSlider();
+        }
+    }, [props.callBackStateTrack[0].checkoutSlider]);
 
     return (
         <div className={cn(styles.checkoutWrapper)}>
