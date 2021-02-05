@@ -83,7 +83,11 @@ const sliderModalSlice = createSlice({
             }: PayloadAction<{
                 sliderName: keyof SliderModalInitialState;
                 active: boolean;
-                autoFillData: IAddProductFormSchema;
+                autoFillData:
+                    | IAddProductFormSchema
+                    | IAddCategoryFormSchema
+                    | IAddStockUnitFormSchema
+                    | IAddTaxBracketFormSchema;
             }>,
         ) => {
             state[payload.sliderName].show = payload.active;
