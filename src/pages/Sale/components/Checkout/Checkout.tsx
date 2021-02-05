@@ -42,7 +42,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         );
         props.callBackStateTrack[1]({
             ...props.callBackStateTrack[0],
-            newSaleSlider: false,
+            checkoutSlider: false,
         });
     };
 
