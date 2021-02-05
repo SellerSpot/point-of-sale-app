@@ -227,7 +227,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                             >{`₹ ${cartData.totals.grandTotal}`}</span>
                         </div>
                         <Button
-                            label="CHECKOUT"
+                            label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}
                             onClick={() =>
                                 store.dispatch(
                                     toggleSliderModal({

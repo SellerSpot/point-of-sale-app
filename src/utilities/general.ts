@@ -37,4 +37,6 @@ export const GLOBAL_KEYBOARD_SHORTCUTS = {
     ADD_BRAND: 'F4',
     ADD_TAXBRACKET: 'F5',
     ADD_STOCKUNIT: 'F6',
+    CHECKOUT: 'F11',
+    COMPLETE_SALE: 'F12',
 };

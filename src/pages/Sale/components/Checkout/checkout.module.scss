@@ -41,19 +41,28 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    color: $danger-color;
     font-weight: 700;
     font-size: $font-size-header;
 }
 
-.orderTotal {
-    font-size: $font-size-extra-large;
-}
-
-.customerPaid {
-    font-size: $font-size-extra-large;
+.paidField {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .balance {
-    font-size: $font-size-extra-large;
+    color: $danger-color;
+}
+
+.orderTotal {
+    font-size: $font-size-master;
+}
+
+.customerPaid {
+    font-size: $font-size-master;
+}
+
+.balance {
+    font-size: $font-size-master;
 }
