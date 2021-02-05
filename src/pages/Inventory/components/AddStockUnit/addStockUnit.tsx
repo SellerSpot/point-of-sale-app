@@ -127,7 +127,7 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
                 <Button
                     type="submit"
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add StockUnit'}
+                    label={'Add Stock Unit'}
                     tabIndex={0}
                 />
                 <Button
