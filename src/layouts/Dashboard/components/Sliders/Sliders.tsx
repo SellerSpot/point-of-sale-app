@@ -1,6 +1,7 @@
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
 import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
+import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/addStockUnit';
 import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useState } from 'react';
@@ -16,6 +17,7 @@ const Sliders = (): ReactElement => {
         newSaleSlider,
         addBrandSlider,
         addTaxBracketSlider,
+        addStockUnitSlider,
     } = useSelector(sliderModalSelector);
 
     // state used to track the callbacks from the sliderModal
@@ -65,6 +67,14 @@ const Sliders = (): ReactElement => {
                 onClickEsc={() => callBackStateTrack[1](true)}
             >
                 <AddTaxBracket callBackStateTrack={callBackStateTrack} />
+            </SliderModal>
+            <SliderModal
+                active={addStockUnitSlider.show}
+                sliderSize={'30%'}
+                onClickBackdrop={() => callBackStateTrack[1](true)}
+                onClickEsc={() => callBackStateTrack[1](true)}
+            >
+                <AddStockUnit callBackStateTrack={callBackStateTrack} />
             </SliderModal>
 
             {/* <SliderModal

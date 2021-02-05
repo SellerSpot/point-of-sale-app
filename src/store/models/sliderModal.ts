@@ -23,7 +23,9 @@ export interface SliderModalInitialState {
     };
     addTaxBracketSlider: {
         show: boolean;
-        autoFillData?: IGetTaxBracketFromServer;
+    };
+    addStockUnitSlider: {
+        show: boolean;
     };
     // checkoutSlider: {
     //     show: boolean;
@@ -45,6 +47,9 @@ const initialState: SliderModalInitialState = {
         show: false,
     },
     addTaxBracketSlider: {
+        show: false,
+    },
+    addStockUnitSlider: {
         show: false,
     },
     // checkoutSlider: {
