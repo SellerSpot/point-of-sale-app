@@ -8,14 +8,12 @@ import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newSaleSelector } from 'store/models/newSale';
-import { SLIDERS, openSliderModal, sliderModalSelector } from 'store/models/sliderModal';
+import { SLIDERS, TSliders, openSliderModal, sliderModalSelector } from 'store/models/sliderModal';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
 import { SliderModal } from '@sellerspot/universal-components';
 
 // type to compile the list of sliders
-export type TCallBackStateTrack = {
-    [key in SLIDERS]: boolean;
-};
+export type TCallBackStateTrack = (keyof TSliders)[];
 
 const Sliders = (): ReactElement => {
     const sliderState = useSelector(sliderModalSelector);
@@ -109,15 +107,7 @@ const Sliders = (): ReactElement => {
     // true - backdrop or esc event fired
     // false - no event fired
     // {[(keyof ISliders)]: boolean}
-    const callBackStateTrack = useState<TCallBackStateTrack>({
-        addProductSlider: false,
-        addCategorySlider: false,
-        checkoutSlider: false,
-        newSaleSlider: false,
-        addBrandSlider: false,
-        addTaxBracketSlider: false,
-        addStockUnitSlider: false,
-    });
+    const callBackStateTrack = useState<TCallBackStateTrack>([]);
 
     //# Slider Modal Event Listener setup
 
@@ -136,16 +126,10 @@ const Sliders = (): ReactElement => {
                 sliderSize={'100%'}
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.newSaleSlider) + 10 ?? 0}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        newSaleSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.newSaleSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        newSaleSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.newSaleSlider])
                 }
             >
                 <NewSale callBackStateTrack={callBackStateTrack} />
@@ -155,16 +139,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.addProductSlider) + 10 ?? 0}
                 sliderSize={'40%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addProductSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addProductSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addProductSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addProductSlider])
                 }
             >
                 <AddProduct callBackStateTrack={callBackStateTrack} />
@@ -174,16 +152,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.addBrandSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addBrandSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addBrandSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addBrandSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addBrandSlider])
                 }
             >
                 <AddBrand callBackStateTrack={callBackStateTrack} />
@@ -193,16 +165,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.addCategorySlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addCategorySlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addCategorySlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addCategorySlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addCategorySlider])
                 }
             >
                 <AddCategory callBackStateTrack={callBackStateTrack} />
@@ -212,16 +178,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.addTaxBracketSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addTaxBracketSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addTaxBracketSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addTaxBracketSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addTaxBracketSlider])
                 }
             >
                 <AddTaxBracket callBackStateTrack={callBackStateTrack} />
@@ -231,16 +191,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.addStockUnitSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addStockUnitSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addStockUnitSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addStockUnitSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.addStockUnitSlider])
                 }
             >
                 <AddStockUnit callBackStateTrack={callBackStateTrack} />
@@ -250,16 +204,10 @@ const Sliders = (): ReactElement => {
                 zIndex={sliderState.openSliders.indexOf(SLIDERS.checkoutSlider) + 10 ?? 0}
                 sliderSize={'80%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        checkoutSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.checkoutSlider])
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        checkoutSlider: true,
-                    })
+                    callBackStateTrack[1]([...callBackStateTrack[0], SLIDERS.checkoutSlider])
                 }
             >
                 <Checkout callBackStateTrack={callBackStateTrack} />

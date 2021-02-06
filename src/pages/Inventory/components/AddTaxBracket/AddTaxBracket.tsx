@@ -1,12 +1,12 @@
 import { useFormik } from 'formik';
 import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taxBracketRequests } from 'requests';
 import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { COMMON_SYMBOLS } from 'utilities/general';
+import { COMMON_SYMBOLS, handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
@@ -40,19 +40,6 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     const dispatch = useDispatch();
 
     //# CRITICAL FUCNTIONS
-
-    // used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        dispatch(
-            closeSliderModal({
-                sliderName: SLIDERS.addTaxBracketSlider,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            addTaxBracketSlider: false,
-        });
-    };
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
@@ -90,10 +77,19 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     }, [sliderState.openSliders]);
 
     useEffect(() => {
-        if (props.callBackStateTrack[0].addTaxBracketSlider) {
-            handleCloseSlider();
+        if (props.callBackStateTrack[0].includes(SLIDERS.addTaxBracketSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.addTaxBracketSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: props.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].addTaxBracketSlider]);
+    }, [props.callBackStateTrack[0]]);
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

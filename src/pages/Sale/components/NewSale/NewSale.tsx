@@ -1,14 +1,14 @@
 import { GridApi, RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
-import { debounce } from 'lodash';
+import { debounce, last } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { SLIDERS, closeSliderModal, openSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { introduceDelay } from 'utilities/general';
+import { handleCloseSlider, introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import {
@@ -38,19 +38,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
-
-    //* handles the closing of the sliderModal
-    const handleCloseSlider = () => {
-        dispatch(
-            closeSliderModal({
-                sliderName: SLIDERS.newSaleSlider,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            newSaleSlider: false,
-        });
-    };
 
     //* handles ANYWHERE keydown event to focus it to inputField
     const handleKeydown = useCallback(
@@ -125,10 +112,19 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
 
     //* used to handle the closing operations of the sliderModel
     useEffect(() => {
-        if (props.callBackStateTrack[0].newSaleSlider) {
-            handleCloseSlider();
+        if (props.callBackStateTrack[0].includes(SLIDERS.newSaleSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.newSaleSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: props.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].newSaleSlider]);
+    }, [props.callBackStateTrack[0]]);
 
     //* listening to the search result to push the barcode products directory to the cart
     useEffect(() => {

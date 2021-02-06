@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
 import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
 import {
     Button,
@@ -64,22 +65,8 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     const [focusInputField, setFocusInputField] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
-    // store dispatch
-    const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
-    // * used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        dispatch(
-            closeSliderModal({
-                sliderName: SLIDERS.addProductSlider,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            addProductSlider: false,
-        });
-    };
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
@@ -147,10 +134,19 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // to handle slider closing operations
     useEffect(() => {
-        if (props.callBackStateTrack[0].addProductSlider) {
-            handleCloseSlider();
+        if (props.callBackStateTrack[0].includes(SLIDERS.addProductSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.addProductSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: props.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].addProductSlider]);
+    }, [props.callBackStateTrack[0]]);
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

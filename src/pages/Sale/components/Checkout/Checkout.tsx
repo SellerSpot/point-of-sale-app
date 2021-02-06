@@ -1,12 +1,13 @@
 import cn from 'classnames';
 import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { last } from 'lodash';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
+import { GLOBAL_KEYBOARD_SHORTCUTS, handleCloseSlider } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import styles from './checkout.module.scss';
@@ -49,24 +50,20 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         return 0;
     };
 
-    // used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        dispatch(
-            closeSliderModal({
-                sliderName: SLIDERS.checkoutSlider,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            checkoutSlider: false,
-        });
-    };
-
     useEffect(() => {
-        if (props.callBackStateTrack[0].checkoutSlider) {
-            handleCloseSlider();
+        if (props.callBackStateTrack[0].includes(SLIDERS.checkoutSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.checkoutSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: props.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].checkoutSlider]);
+    }, [props.callBackStateTrack[0]]);
 
     //* used to handle searchbar refocussing procedure
     useEffect(() => {

@@ -1,3 +1,8 @@
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { last } from 'lodash';
+import { ISliderModalInitialState, SLIDERS, closeSliderModal } from 'store/models/sliderModal';
+import { store } from 'store/store';
+
 /**
  * Contains all the common symbols used in the app
  */
@@ -39,4 +44,27 @@ export const GLOBAL_KEYBOARD_SHORTCUTS = {
     ADD_STOCKUNIT: 'F6',
     CHECKOUT: 'F9',
     COMPLETE_SALE: 'F10',
+};
+
+/**
+ * Used to handle closing the sliderModal (closes the topmost sliderModal in the queue)
+ */
+export const handleCloseSlider = (props: {
+    sliderState: ISliderModalInitialState;
+    callBackStateTrack: [
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
+    ];
+    topMostSlider: SLIDERS;
+}): void => {
+    // closing the topmost slidermodal
+    store.dispatch(
+        closeSliderModal({
+            sliderName: props.topMostSlider,
+        }),
+    );
+    // updating sliderModal flag state
+    const sliderModalFlagState = props.callBackStateTrack[0];
+    sliderModalFlagState.pop();
+    props.callBackStateTrack[1](sliderModalFlagState);
 };
