@@ -6,5 +6,6 @@ export const CONFIG = {
 
     // REDUX PERSIST STATE
     REUDX_CORE_STATE: 'coreState',
+    APP_LOCATION: 'appLocation',
 };
 // For any url do not suffix '/' (standard followd in this project) (nest / at use time if needed )

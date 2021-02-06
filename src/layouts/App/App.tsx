@@ -9,7 +9,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { authRequests } from 'requests';
-import { coreSelector, logoutUser, updateLoading, updateTenant } from 'store/models/core';
+import { coreSelector, updateLoading, updateTenant } from 'store/models/core';
 import { notifySelector } from 'store/models/notify';
 import { Notify, Spinner } from '@sellerspot/universal-components';
 import commonStyles from '../../styles/common.module.scss';
