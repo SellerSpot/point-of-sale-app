@@ -19,7 +19,7 @@ export enum SLIDERS {
 // type to compile the list of sliders
 export type TSliders = {
     [key in SLIDERS]: {
-        autoFillData?:
+        autoFillData:
             | IAddProductFormSchema
             | IAddCategoryFormSchema
             | IAddBrandFormSchema
@@ -53,7 +53,9 @@ const initialState: ISliderModalInitialState = {
         addStockUnitSlider: {
             autoFillData: null,
         },
-        checkoutSlider: {},
+        checkoutSlider: {
+            autoFillData: null,
+        },
     },
     openSliders: [],
 };
@@ -83,6 +85,7 @@ const sliderModalSlice = createSlice({
             } else {
                 // slider not already open
                 state.openSliders.push(payload.sliderName);
+                state.sliders[payload.sliderName].autoFillData = payload.autoFillData;
             }
         },
         closeSliderModal: (
@@ -97,6 +100,7 @@ const sliderModalSlice = createSlice({
             const thisSliderModalPosition = state.openSliders.indexOf(payload.sliderName);
             if (thisSliderModalPosition > -1) {
                 state.openSliders.splice(thisSliderModalPosition, 1);
+                state.sliders[payload.sliderName].autoFillData = null;
             }
         },
     },
