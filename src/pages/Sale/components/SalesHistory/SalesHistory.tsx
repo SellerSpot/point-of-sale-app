@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { saleRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -12,7 +12,7 @@ import { compileSaleHistoryTableData, getSalesHistoryTableColDef } from './sales
 import styles from './salesHistory.module.scss';
 
 export const SalesHistory = (): JSX.Element => {
-    // To manage which tab is selected
+    // store dispatch
     const dispatch = useDispatch();
     const [salesHistoryData, setSalesHistoryData] = useState<
         pointOfSaleTypes.saleResponseTypes.IGetAllSales['data']
@@ -36,10 +36,9 @@ export const SalesHistory = (): JSX.Element => {
                         status="default"
                         onClick={() => {
                             dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'newSaleSlider',
-                                    active: true,
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: 'newSaleSlider',
                                 }),
                             );
                         }}

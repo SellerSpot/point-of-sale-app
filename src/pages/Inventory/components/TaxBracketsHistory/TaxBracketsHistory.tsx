@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { taxBracketRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -41,10 +41,9 @@ export const TaxBracketsHistory = (): JSX.Element => {
                         label={`Add Tax-Bracket (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET})`}
                         onClick={() =>
                             dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addTaxBracketSlider',
-                                    active: true,
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: 'addTaxBracketSlider',
                                 }),
                             )
                         }
@@ -63,10 +62,9 @@ export const TaxBracketsHistory = (): JSX.Element => {
                             taxPercent: taxBracketsData[event.rowIndex].taxPercent,
                         };
                         dispatch(
-                            toggleSliderModal({
-                                sliderName: 'addTaxBracketSlider',
-                                active: true,
+                            openSliderModal({
                                 autoFillData,
+                                sliderName: 'addTaxBracketSlider',
                             }),
                         );
                     }}

@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { brandRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -41,10 +41,9 @@ export const BrandsHistory = (): JSX.Element => {
                         label={`Add Brand (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND})`}
                         onClick={() =>
                             dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addBrandSlider',
-                                    active: true,
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: 'addBrandSlider',
                                 }),
                             )
                         }
@@ -62,10 +61,9 @@ export const BrandsHistory = (): JSX.Element => {
                             name: brandsData[event.rowIndex].name,
                         };
                         dispatch(
-                            toggleSliderModal({
-                                sliderName: 'addBrandSlider',
-                                active: true,
+                            openSliderModal({
                                 autoFillData,
+                                sliderName: 'addBrandSlider',
                             }),
                         );
                     }}

@@ -3,14 +3,11 @@ import { useFormik } from 'formik';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
-import { showNotify } from 'store/models/notify';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { showMessage } from 'utilities/notify';
-import { generalUtilities } from 'utilities/utilities';
 import {
     Button,
     Checkbox,
@@ -67,15 +64,15 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     const [focusInputField, setFocusInputField] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // store dispatch
+    const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
     // * used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
+        dispatch(
+            closeSliderModal({
                 sliderName: 'addProductSlider',
-                active: false,
-                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
@@ -109,16 +106,16 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addProductSlider.show) {
+        if (sliderState.openSliders.includes('addProductSlider')) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addProductSlider.autoFillData)) {
-                const autoFillData = sliderState.addProductSlider.autoFillData;
+            if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
+                const autoFillData = sliderState.sliders.addProductSlider.autoFillData;
                 // pushing data to formik state
                 formFormik.setValues(autoFillData);
             }
         }
-    }, [sliderState.addProductSlider.show]);
+    }, [sliderState.openSliders]);
 
     // * to fetch all available special options for a product and update in state
     useEffect(() => {
@@ -155,22 +152,6 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
         }
     }, [props.callBackStateTrack[0].addProductSlider]);
 
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'addProductSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
             <div className={styles.pageTitleBar}>Add Product</div>

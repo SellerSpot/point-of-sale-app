@@ -2,10 +2,9 @@ import { useFormik } from 'formik';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { taxBracketRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { COMMON_SYMBOLS } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
@@ -37,16 +36,16 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // state to manage the focus state of the first inputField
     const [focusInputField, setFocusInputField] = useState(false);
+    // store dispatch
+    const dispatch = useDispatch();
 
     //# CRITICAL FUCNTIONS
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
+        dispatch(
+            closeSliderModal({
                 sliderName: 'addTaxBracketSlider',
-                active: false,
-                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
@@ -79,40 +78,22 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addTaxBracketSlider.show) {
+        if (sliderState.openSliders.includes('addTaxBracketSlider')) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addTaxBracketSlider.autoFillData)) {
-                const autoFillData = sliderState.addTaxBracketSlider.autoFillData;
+            if (!isNull(sliderState.sliders.addTaxBracketSlider.autoFillData)) {
+                const autoFillData = sliderState.sliders.addTaxBracketSlider.autoFillData;
                 // pushing data to formik state
                 formFormik.setValues(autoFillData);
             }
         }
-    }, [sliderState.addTaxBracketSlider.show]);
+    }, [sliderState.openSliders]);
 
     useEffect(() => {
         if (props.callBackStateTrack[0].addTaxBracketSlider) {
             handleCloseSlider();
         }
     }, [props.callBackStateTrack[0].addTaxBracketSlider]);
-
-    // * Used to contol slider models visibility
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'addTaxBracketSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

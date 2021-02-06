@@ -3,11 +3,10 @@ import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { closeSliderModal, openSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
@@ -35,16 +34,16 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // holds the GridApi for the cart table
     const [cartTableGridApi, setCartTableGridApi] = useState<GridApi>(null);
+    // store dispatch
+    const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
 
     //* handles the closing of the sliderModal
     const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
+        dispatch(
+            closeSliderModal({
                 sliderName: 'newSaleSlider',
-                active: false,
-                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
@@ -115,14 +114,14 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.newSaleSlider.show) {
+        if (sliderState.openSliders.includes('newSaleSlider')) {
             // setting focus towards the searchBar
             setSearchBarFocused(true);
             document.addEventListener('keydown', handleKeydown);
         } else {
             document.removeEventListener('keydown', handleKeydown);
         }
-    }, [sliderState.newSaleSlider.show]);
+    }, [sliderState.openSliders]);
 
     //* used to handle the closing operations of the sliderModel
     useEffect(() => {
@@ -137,24 +136,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             pushProductIntoCart(cartData, searchResults.results[0], cartTableGridApi);
         }
     }, [searchResults]);
-
-    //* listening for the new sale shortcut call
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'newSaleSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
 
     return (
         <div className={styles.newSaleWrapper}>
@@ -229,15 +210,19 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         <Button
                             label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}
                             status={cartData.products.length > 0 ? 'default' : 'disabled'}
-                            onClick={() =>
-                                store.dispatch(
-                                    toggleSliderModal({
-                                        sliderName: 'checkoutSlider',
-                                        active: true,
-                                        autoFillData: null,
-                                    }),
-                                )
-                            }
+                            onClick={() => {
+                                if (
+                                    sliderState.openSliders.includes('newSaleSlider') &&
+                                    cartData.products.length > 0
+                                ) {
+                                    dispatch(
+                                        openSliderModal({
+                                            autoFillData: null,
+                                            sliderName: 'checkoutSlider',
+                                        }),
+                                    );
+                                }
+                            }}
                         />
                     </div>
                 </div>

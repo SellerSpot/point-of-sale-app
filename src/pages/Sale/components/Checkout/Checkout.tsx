@@ -2,10 +2,9 @@ import cn from 'classnames';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
@@ -35,10 +34,8 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         onAfterPrint: () =>
             new Promise(() =>
                 dispatch(
-                    toggleSliderModal({
+                    closeSliderModal({
                         sliderName: 'checkoutSlider',
-                        active: false,
-                        autoFillData: null,
                     }),
                 ),
             ),
@@ -55,10 +52,8 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         dispatch(
-            toggleSliderModal({
+            closeSliderModal({
                 sliderName: 'checkoutSlider',
-                active: false,
-                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
@@ -76,31 +71,11 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.checkoutSlider.show) {
+        if (sliderState.openSliders.includes('checkoutSlider')) {
             // setting focus towards the searchBar
             setPaidFieldFocused(true);
         }
-    }, [sliderState.checkoutSlider.show]);
-
-    //* listening for the new sale shortcut call
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT,
-        (event) => {
-            event.preventDefault();
-            if (sliderState.newSaleSlider.show && newSaleState.cartData.products.length > 0) {
-                store.dispatch(
-                    toggleSliderModal({
-                        sliderName: 'checkoutSlider',
-                        active: true,
-                        autoFillData: null,
-                    }),
-                );
-            }
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
+    }, [sliderState.openSliders]);
 
     return (
         <div className={cn(styles.checkoutWrapper)}>

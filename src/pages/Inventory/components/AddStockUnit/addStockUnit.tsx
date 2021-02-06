@@ -2,10 +2,9 @@ import { Formik, useFormik } from 'formik';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useSelector } from 'react-redux';
 import { brandRequests, categoryRequests, stockUnitRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
@@ -41,10 +40,8 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
     //* used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
         store.dispatch(
-            toggleSliderModal({
+            closeSliderModal({
                 sliderName: 'addStockUnitSlider',
-                active: false,
-                autoFillData: null,
             }),
         );
         props.callBackStateTrack[1]({
@@ -77,16 +74,16 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
 
     //* to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addStockUnitSlider.show) {
+        if (sliderState.openSliders.includes('addStockUnitSlider')) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addStockUnitSlider.autoFillData)) {
-                const autoFillData = sliderState.addStockUnitSlider.autoFillData;
+            if (!isNull(sliderState.sliders.addStockUnitSlider.autoFillData)) {
+                const autoFillData = sliderState.sliders.addStockUnitSlider.autoFillData;
                 // pushing data to formik state
                 formFormik.setValues(autoFillData);
             }
         }
-    }, [sliderState.addStockUnitSlider.show]);
+    }, [sliderState.openSliders]);
 
     //* callback to close the slider
     useEffect(() => {
@@ -94,24 +91,6 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
             handleCloseSlider();
         }
     }, [props.callBackStateTrack[0].addStockUnitSlider]);
-
-    //* Used to contol slider models visibility
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_STOCKUNIT,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'addStockUnitSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

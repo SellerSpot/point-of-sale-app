@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { stockUnitRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -41,10 +41,9 @@ export const StockUnitsHistory = (): JSX.Element => {
                         label={`Add Stock Unit (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_STOCKUNIT})`}
                         onClick={() =>
                             dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addStockUnitSlider',
-                                    active: true,
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: 'addStockUnitSlider',
                                 }),
                             )
                         }
@@ -62,10 +61,9 @@ export const StockUnitsHistory = (): JSX.Element => {
                             name: stockUnitsData[event.rowIndex].name,
                         };
                         dispatch(
-                            toggleSliderModal({
-                                sliderName: 'addStockUnitSlider',
-                                active: true,
+                            openSliderModal({
                                 autoFillData,
+                                sliderName: 'addStockUnitSlider',
                             }),
                         );
                     }}
