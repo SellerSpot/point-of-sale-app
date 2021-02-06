@@ -80,3 +80,27 @@
 .calculationWriteUp {
     font-size: $font-size-secondary;
 }
+
+//# CART ACTION BUTTON STYLES
+
+.cartActionButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 40px;
+}
+
+.cartActionButton {
+    padding: 1px !important;
+    width: 100% !important;
+    height: 40px !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    color: grey;
+}
+
+.cartActionButton:hover {
+    color: black !important;
+}

@@ -162,6 +162,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                 <div className={'ag-theme-alpine'}>
                     <AgGridReact
                         suppressDragLeaveHidesColumns
+                        suppressCellSelection
                         columnDefs={getNewSaleCartTableColDef()}
                         rowData={compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={

@@ -1,6 +1,7 @@
 import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
 import { find, isNull, isUndefined, merge } from 'lodash';
 import React from 'react';
+import { MdDelete, MdMoreVert } from 'react-icons/md';
 import {
     IInitialStateNewSale,
     initialStateNewSale,
@@ -20,7 +21,9 @@ import {
     computeItemTotalTax,
 } from 'utilities/businessCalculations';
 import { COMMON_REGEXPS, COMMON_SYMBOLS } from 'utilities/general';
+import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import styles from './newSale.module.scss';
 import {
     INewSaleCart,
     INewSaleCartTableColumns,
@@ -181,7 +184,36 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             valueFormatter: (formatterParams) =>
                 `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${formatterParams.value}`,
         },
+        {
+            headerName: `Actions`,
+            field: 'itemActions' as keyof INewSaleCartTableColumns,
+            sortable: true,
+            filter: true,
+            resizable: true,
+            width: 120,
+            cellRendererFramework: getCartActionButtons,
+        },
     ];
+};
+
+//* used to get the action buttons for the cart table
+const getCartActionButtons = (params: unknown): JSX.Element => {
+    return (
+        <div className={styles.cartActionButtonWrapper}>
+            <Button
+                className={styles.cartActionButton}
+                key={'asdf'}
+                label={<MdMoreVert size={20} />}
+                onClick={(_) => alert('Edit')}
+            />
+            <Button
+                className={styles.cartActionButton}
+                key={'asdf'}
+                label={<MdDelete size={20} />}
+                onClick={(_) => alert('Delete')}
+            />
+        </div>
+    );
 };
 
 /**
