@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { taxBracketRequests } from 'requests';
-import { openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -43,7 +43,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
                             dispatch(
                                 openSliderModal({
                                     autoFillData: null,
-                                    sliderName: 'addTaxBracketSlider',
+                                    sliderName: SLIDERS.addTaxBracketSlider,
                                 }),
                             )
                         }
@@ -64,7 +64,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
                         dispatch(
                             openSliderModal({
                                 autoFillData,
-                                sliderName: 'addTaxBracketSlider',
+                                sliderName: SLIDERS.addTaxBracketSlider,
                             }),
                         );
                     }}

@@ -1,10 +1,10 @@
 import { Formik, useFormik } from 'formik';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { brandRequests } from 'requests';
-import { closeSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
@@ -23,8 +23,8 @@ const formInitialValues: IAddBrandFormSchema = {
  */
 export interface IAddBrandProps {
     callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
     ];
 }
 export const AddBrand = (props: IAddBrandProps): JSX.Element => {
@@ -43,7 +43,7 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     const handleCloseSlider = () => {
         dispatch(
             closeSliderModal({
-                sliderName: 'addBrandSlider',
+                sliderName: SLIDERS.addBrandSlider,
             }),
         );
         props.callBackStateTrack[1]({
@@ -76,13 +76,13 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.openSliders.includes('addBrandSlider')) {
+        if (sliderState.openSliders.includes(SLIDERS.addBrandSlider)) {
             setFocusInputField(true);
             // checking if any autofill data is present
             if (!isNull(sliderState.sliders.addBrandSlider.autoFillData)) {
                 const autoFillData = sliderState.sliders.addBrandSlider.autoFillData;
                 // pushing data to formik state
-                formFormik.setValues(autoFillData);
+                formFormik.setValues(autoFillData as IAddBrandFormSchema);
             }
         }
     }, [sliderState.openSliders]);

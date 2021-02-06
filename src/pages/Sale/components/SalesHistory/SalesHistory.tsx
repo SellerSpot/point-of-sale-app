@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { saleRequests } from 'requests';
-import { openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -38,7 +38,7 @@ export const SalesHistory = (): JSX.Element => {
                             dispatch(
                                 openSliderModal({
                                     autoFillData: null,
-                                    sliderName: 'newSaleSlider',
+                                    sliderName: SLIDERS.newSaleSlider,
                                 }),
                             );
                         }}

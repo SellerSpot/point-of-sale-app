@@ -6,33 +6,31 @@ import { IAddTaxBracketFormSchema } from 'pages/Inventory/components/AddTaxBrack
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
-interface ISliders {
-    newSaleSlider: {
-        autoFillData?: null;
-    };
-    addProductSlider: {
-        autoFillData?: IAddProductFormSchema;
-    };
-    addCategorySlider: {
-        autoFillData?: IAddCategoryFormSchema;
-    };
-    addBrandSlider: {
-        autoFillData?: IAddBrandFormSchema;
-    };
-    addTaxBracketSlider: {
-        autoFillData?: IAddTaxBracketFormSchema;
-    };
-    addStockUnitSlider: {
-        autoFillData?: IAddStockUnitFormSchema;
-    };
-    checkoutSlider: {
-        autoFillData?: null;
-    };
+export enum SLIDERS {
+    'newSaleSlider' = 'newSaleSlider',
+    'addProductSlider' = 'addProductSlider',
+    'addCategorySlider' = 'addCategorySlider',
+    'addBrandSlider' = 'addBrandSlider',
+    'addTaxBracketSlider' = 'addTaxBracketSlider',
+    'addStockUnitSlider' = 'addStockUnitSlider',
+    'checkoutSlider' = 'checkoutSlider',
 }
 
+// type to compile the list of sliders
+export type TSliders = {
+    [key in SLIDERS]: {
+        autoFillData?:
+            | IAddProductFormSchema
+            | IAddCategoryFormSchema
+            | IAddBrandFormSchema
+            | IAddTaxBracketFormSchema
+            | IAddStockUnitFormSchema;
+    };
+};
+
 export interface ISliderModalInitialState {
-    sliders: ISliders;
-    openSliders: (keyof ISliders)[];
+    sliders: TSliders;
+    openSliders: (keyof TSliders)[];
 }
 
 const initialState: ISliderModalInitialState = {

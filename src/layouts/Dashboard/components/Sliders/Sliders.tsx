@@ -8,21 +8,14 @@ import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newSaleSelector } from 'store/models/newSale';
-import { openSliderModal, sliderModalSelector } from 'store/models/sliderModal';
-import { store } from 'store/store';
+import { SLIDERS, openSliderModal, sliderModalSelector } from 'store/models/sliderModal';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
 import { SliderModal } from '@sellerspot/universal-components';
 
-// Interface for callBackStateTrack
-export interface ICallBackStateTrack {
-    addProductSlider: boolean;
-    addCategorySlider: boolean;
-    checkoutSlider: boolean;
-    newSaleSlider: boolean;
-    addBrandSlider: boolean;
-    addTaxBracketSlider: boolean;
-    addStockUnitSlider: boolean;
-}
+// type to compile the list of sliders
+export type TCallBackStateTrack = {
+    [key in SLIDERS]: boolean;
+};
 
 const Sliders = (): ReactElement => {
     const sliderState = useSelector(sliderModalSelector);
@@ -38,7 +31,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'newSaleSlider',
+                        sliderName: SLIDERS.newSaleSlider,
                     }),
                 );
             }
@@ -48,7 +41,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'addProductSlider',
+                        sliderName: SLIDERS.addProductSlider,
                     }),
                 );
             }
@@ -58,7 +51,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'addCategorySlider',
+                        sliderName: SLIDERS.addCategorySlider,
                     }),
                 );
             }
@@ -68,7 +61,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'addBrandSlider',
+                        sliderName: SLIDERS.addBrandSlider,
                     }),
                 );
             }
@@ -78,7 +71,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'addTaxBracketSlider',
+                        sliderName: SLIDERS.addTaxBracketSlider,
                     }),
                 );
             }
@@ -88,7 +81,7 @@ const Sliders = (): ReactElement => {
                 dispatch(
                     openSliderModal({
                         autoFillData: null,
-                        sliderName: 'addStockUnitSlider',
+                        sliderName: SLIDERS.addStockUnitSlider,
                     }),
                 );
             }
@@ -97,13 +90,13 @@ const Sliders = (): ReactElement => {
                 event.preventDefault();
                 // only enabling this slider if the new sale cart is not empty and the new sale slider is open
                 if (
-                    sliderState.openSliders.includes('newSaleSlider') &&
+                    sliderState.openSliders.includes(SLIDERS.newSaleSlider) &&
                     newSaleState.cartData.products.length > 0
                 ) {
                     dispatch(
                         openSliderModal({
                             autoFillData: null,
-                            sliderName: 'checkoutSlider',
+                            sliderName: SLIDERS.checkoutSlider,
                         }),
                     );
                 }
@@ -115,7 +108,8 @@ const Sliders = (): ReactElement => {
     // state used to track the callbacks from the sliderModal
     // true - backdrop or esc event fired
     // false - no event fired
-    const callBackStateTrack = useState<ICallBackStateTrack>({
+    // {[(keyof ISliders)]: boolean}
+    const callBackStateTrack = useState<TCallBackStateTrack>({
         addProductSlider: false,
         addCategorySlider: false,
         checkoutSlider: false,
@@ -138,9 +132,9 @@ const Sliders = (): ReactElement => {
     return (
         <>
             <SliderModal
-                active={sliderState.openSliders.includes('newSaleSlider')}
+                active={sliderState.openSliders.includes(SLIDERS.newSaleSlider)}
                 sliderSize={'100%'}
-                zIndex={sliderState.openSliders.indexOf('newSaleSlider') + 10 ?? 0}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.newSaleSlider) + 10 ?? 0}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
                         ...callBackStateTrack[0],
@@ -157,8 +151,8 @@ const Sliders = (): ReactElement => {
                 <NewSale callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('addProductSlider')}
-                zIndex={sliderState.openSliders.indexOf('addProductSlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.addProductSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addProductSlider) + 10 ?? 0}
                 sliderSize={'40%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -176,8 +170,8 @@ const Sliders = (): ReactElement => {
                 <AddProduct callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('addBrandSlider')}
-                zIndex={sliderState.openSliders.indexOf('addBrandSlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.addBrandSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addBrandSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -195,8 +189,8 @@ const Sliders = (): ReactElement => {
                 <AddBrand callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('addCategorySlider')}
-                zIndex={sliderState.openSliders.indexOf('addCategorySlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.addCategorySlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addCategorySlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -214,8 +208,8 @@ const Sliders = (): ReactElement => {
                 <AddCategory callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('addTaxBracketSlider')}
-                zIndex={sliderState.openSliders.indexOf('addTaxBracketSlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.addTaxBracketSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addTaxBracketSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -233,8 +227,8 @@ const Sliders = (): ReactElement => {
                 <AddTaxBracket callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('addStockUnitSlider')}
-                zIndex={sliderState.openSliders.indexOf('addStockUnitSlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.addStockUnitSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addStockUnitSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -252,8 +246,8 @@ const Sliders = (): ReactElement => {
                 <AddStockUnit callBackStateTrack={callBackStateTrack} />
             </SliderModal>
             <SliderModal
-                active={sliderState.openSliders.includes('checkoutSlider')}
-                zIndex={sliderState.openSliders.indexOf('checkoutSlider') + 10 ?? 0}
+                active={sliderState.openSliders.includes(SLIDERS.checkoutSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.checkoutSlider) + 10 ?? 0}
                 sliderSize={'80%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({

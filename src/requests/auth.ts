@@ -67,7 +67,6 @@ export const verifyToken = async (): Promise<boolean> => {
     try {
         const response = await apiService.post(pointOfSaleTypes.ROUTES.VERIFY_TOKEN);
         const responseData = response.data as pointOfSaleTypes.authResponseTypes.IVerifyTokenResponse;
-        console.log(responseData);
 
         if (responseData.status && responseData.data) {
             resultResponse = true;

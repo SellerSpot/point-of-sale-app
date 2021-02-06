@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
-import { closeSliderModal, openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal, openSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { introduceDelay } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
@@ -43,7 +43,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     const handleCloseSlider = () => {
         dispatch(
             closeSliderModal({
-                sliderName: 'newSaleSlider',
+                sliderName: SLIDERS.newSaleSlider,
             }),
         );
         props.callBackStateTrack[1]({
@@ -114,7 +114,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.openSliders.includes('newSaleSlider')) {
+        if (sliderState.openSliders.includes(SLIDERS.newSaleSlider)) {
             // setting focus towards the searchBar
             setSearchBarFocused(true);
             document.addEventListener('keydown', handleKeydown);
@@ -212,13 +212,13 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                             status={cartData.products.length > 0 ? 'default' : 'disabled'}
                             onClick={() => {
                                 if (
-                                    sliderState.openSliders.includes('newSaleSlider') &&
+                                    sliderState.openSliders.includes(SLIDERS.newSaleSlider) &&
                                     cartData.products.length > 0
                                 ) {
                                     dispatch(
                                         openSliderModal({
                                             autoFillData: null,
-                                            sliderName: 'checkoutSlider',
+                                            sliderName: SLIDERS.checkoutSlider,
                                         }),
                                     );
                                 }

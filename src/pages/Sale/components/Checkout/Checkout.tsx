@@ -1,10 +1,10 @@
 import cn from 'classnames';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import { closeSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
@@ -13,8 +13,8 @@ import styles from './checkout.module.scss';
 
 export interface ICheckoutProps {
     callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
     ];
 }
 export const Checkout = (props: ICheckoutProps): ReactElement => {
@@ -35,7 +35,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
             new Promise(() =>
                 dispatch(
                     closeSliderModal({
-                        sliderName: 'checkoutSlider',
+                        sliderName: SLIDERS.checkoutSlider,
                     }),
                 ),
             ),
@@ -53,7 +53,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     const handleCloseSlider = () => {
         dispatch(
             closeSliderModal({
-                sliderName: 'checkoutSlider',
+                sliderName: SLIDERS.checkoutSlider,
             }),
         );
         props.callBackStateTrack[1]({
@@ -71,7 +71,7 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.openSliders.includes('checkoutSlider')) {
+        if (sliderState.openSliders.includes(SLIDERS.checkoutSlider)) {
             // setting focus towards the searchBar
             setPaidFieldFocused(true);
         }

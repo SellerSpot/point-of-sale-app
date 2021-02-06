@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { stockUnitRequests } from 'requests';
-import { openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -43,7 +43,7 @@ export const StockUnitsHistory = (): JSX.Element => {
                             dispatch(
                                 openSliderModal({
                                     autoFillData: null,
-                                    sliderName: 'addStockUnitSlider',
+                                    sliderName: SLIDERS.addStockUnitSlider,
                                 }),
                             )
                         }
@@ -63,7 +63,7 @@ export const StockUnitsHistory = (): JSX.Element => {
                         dispatch(
                             openSliderModal({
                                 autoFillData,
-                                sliderName: 'addStockUnitSlider',
+                                sliderName: SLIDERS.addStockUnitSlider,
                             }),
                         );
                     }}

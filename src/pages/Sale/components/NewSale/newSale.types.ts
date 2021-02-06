@@ -1,4 +1,4 @@
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
 /**
@@ -7,8 +7,8 @@ import { pointOfSaleTypes } from '@sellerspot/universal-types';
  */
 export interface INewSaleProps {
     callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
     ];
 }
 

@@ -1,10 +1,10 @@
 import { useFormik } from 'formik';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taxBracketRequests } from 'requests';
-import { closeSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { COMMON_SYMBOLS } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
@@ -25,8 +25,8 @@ const formInitialValues: IAddTaxBracketFormSchema = {
  */
 export interface IAddTaxBracketProps {
     callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
     ];
 }
 export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
@@ -45,7 +45,7 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
     const handleCloseSlider = () => {
         dispatch(
             closeSliderModal({
-                sliderName: 'addTaxBracketSlider',
+                sliderName: SLIDERS.addTaxBracketSlider,
             }),
         );
         props.callBackStateTrack[1]({
@@ -78,13 +78,13 @@ export const AddTaxBracket = (props: IAddTaxBracketProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.openSliders.includes('addTaxBracketSlider')) {
+        if (sliderState.openSliders.includes(SLIDERS.addTaxBracketSlider)) {
             setFocusInputField(true);
             // checking if any autofill data is present
             if (!isNull(sliderState.sliders.addTaxBracketSlider.autoFillData)) {
                 const autoFillData = sliderState.sliders.addTaxBracketSlider.autoFillData;
                 // pushing data to formik state
-                formFormik.setValues(autoFillData);
+                formFormik.setValues(autoFillData as IAddTaxBracketFormSchema);
             }
         }
     }, [sliderState.openSliders]);

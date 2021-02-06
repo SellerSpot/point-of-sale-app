@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllProducts } from 'requests/product';
-import { openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
@@ -46,7 +46,7 @@ export const ProductsHistory = (): JSX.Element => {
                             dispatch(
                                 openSliderModal({
                                     autoFillData: null,
-                                    sliderName: 'addProductSlider',
+                                    sliderName: SLIDERS.addProductSlider,
                                 }),
                             );
                         }}
@@ -77,7 +77,7 @@ export const ProductsHistory = (): JSX.Element => {
                         dispatch(
                             openSliderModal({
                                 autoFillData,
-                                sliderName: 'addProductSlider',
+                                sliderName: SLIDERS.addProductSlider,
                             }),
                         );
                     }}

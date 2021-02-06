@@ -1,10 +1,10 @@
 import { Formik, useFormik } from 'formik';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { brandRequests, categoryRequests } from 'requests';
-import { closeSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
@@ -23,8 +23,8 @@ const formInitialValues: IAddCategoryFormSchema = {
  */
 export interface IAddCategoryProps {
     callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
+        TCallBackStateTrack,
+        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
     ];
 }
 export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
@@ -42,7 +42,7 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
     const handleCloseSlider = () => {
         dispatch(
             closeSliderModal({
-                sliderName: 'addCategorySlider',
+                sliderName: SLIDERS.addCategorySlider,
             }),
         );
         props.callBackStateTrack[1]({
@@ -75,13 +75,13 @@ export const AddCategory = (props: IAddCategoryProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.openSliders.includes('addCategorySlider')) {
+        if (sliderState.openSliders.includes(SLIDERS.addCategorySlider)) {
             setFocusInputField(true);
             // checking if any autofill data is present
             if (!isNull(sliderState.sliders.addCategorySlider.autoFillData)) {
                 const autoFillData = sliderState.sliders.addCategorySlider.autoFillData;
                 // pushing data to formik state
-                formFormik.setValues(autoFillData);
+                formFormik.setValues(autoFillData as IAddCategoryFormSchema);
             }
         }
     }, [sliderState.openSliders]);
