@@ -1,7 +1,7 @@
 import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
 import { find, isNull, isUndefined, merge } from 'lodash';
 import React from 'react';
-import { MdDelete, MdMoreVert } from 'react-icons/md';
+import { MdDelete, MdEdit, MdMoreVert } from 'react-icons/md';
 import {
     IInitialStateNewSale,
     initialStateNewSale,
@@ -116,7 +116,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.STRING_WITH_SPACE_BETWEEN.test(parserParams.newValue)
                     ? parserParams.newValue
@@ -130,7 +143,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
                     ? parserParams.newValue >= 0
@@ -146,7 +172,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
@@ -158,6 +197,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         {
             headerName: `Discount ( ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL} )`,
             field: 'itemDiscountPercent' as keyof INewSaleCartTableColumns,
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             sortable: true,
             filter: true,
             resizable: true,
@@ -187,9 +240,6 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         {
             headerName: `Actions`,
             field: 'itemActions' as keyof INewSaleCartTableColumns,
-            sortable: true,
-            filter: true,
-            resizable: true,
             width: 120,
             cellRendererFramework: getCartActionButtons,
         },
