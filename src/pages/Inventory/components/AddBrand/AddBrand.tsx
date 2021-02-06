@@ -2,7 +2,7 @@ import { Formik, useFormik } from 'formik';
 import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { brandRequests } from 'requests';
 import { closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
@@ -34,12 +34,14 @@ export const AddBrand = (props: IAddBrandProps): JSX.Element => {
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // state to manage the focus state of the first inputField
     const [focusInputField, setFocusInputField] = useState(false);
+    // store dispatch
+    const dispatch = useDispatch();
 
     //# CRITICAL FUCNTIONS
 
     // used to handle the closing of the sliderModal
     const handleCloseSlider = () => {
-        store.dispatch(
+        dispatch(
             closeSliderModal({
                 sliderName: 'addBrandSlider',
             }),

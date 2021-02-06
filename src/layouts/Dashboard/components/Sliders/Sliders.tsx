@@ -140,7 +140,7 @@ const Sliders = (): ReactElement => {
             <SliderModal
                 active={sliderState.openSliders.includes('newSaleSlider')}
                 sliderSize={'100%'}
-                zIndex={sliderState.openSliders.indexOf('newSaleSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('newSaleSlider') + 10 ?? 0}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
                         ...callBackStateTrack[0],
@@ -158,7 +158,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('addProductSlider')}
-                zIndex={sliderState.openSliders.indexOf('addProductSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('addProductSlider') + 10 ?? 0}
                 sliderSize={'40%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -177,7 +177,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('addBrandSlider')}
-                zIndex={sliderState.openSliders.indexOf('addBrandSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('addBrandSlider') + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -196,7 +196,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('addCategorySlider')}
-                zIndex={sliderState.openSliders.indexOf('addCategorySlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('addCategorySlider') + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -215,7 +215,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('addTaxBracketSlider')}
-                zIndex={sliderState.openSliders.indexOf('addTaxBracketSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('addTaxBracketSlider') + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -234,7 +234,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('addStockUnitSlider')}
-                zIndex={sliderState.openSliders.indexOf('addStockUnitSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('addStockUnitSlider') + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({
@@ -253,7 +253,7 @@ const Sliders = (): ReactElement => {
             </SliderModal>
             <SliderModal
                 active={sliderState.openSliders.includes('checkoutSlider')}
-                zIndex={sliderState.openSliders.indexOf('checkoutSlider') ?? 0}
+                zIndex={sliderState.openSliders.indexOf('checkoutSlider') + 10 ?? 0}
                 sliderSize={'80%'}
                 onClickBackdrop={() =>
                     callBackStateTrack[1]({

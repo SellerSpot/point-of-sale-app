@@ -59,7 +59,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
                 setSearchBarFocused(true);
                 const newSearchQuery = searchQuery + event.key;
-                store.dispatch(setSearchQuery(newSearchQuery));
+                dispatch(setSearchQuery(newSearchQuery));
                 // setting flag to inform that the input if from the event listener
                 setInputIsFromHandleKeyDown(true);
                 // call to send query to server to fetch suggestions
@@ -74,7 +74,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         debounce(async (query: string) => {
             if (query.length > 0) {
                 const searchedProducts = await productRequests.searchProduct(query);
-                store.dispatch(setSearchResults(searchedProducts));
+                dispatch(setSearchResults(searchedProducts));
             }
         }, 400),
         [],
@@ -90,14 +90,14 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         }
         // if search field is empty, clear the search results
         if (query.length === 0) {
-            store.dispatch(
+            dispatch(
                 setSearchResults({
                     queryType: 'name',
                     results: [],
                 }),
             );
         }
-        store.dispatch(setSearchQuery(query));
+        dispatch(setSearchQuery(query));
         // call to send query to server to fetch suggestions
         queryServer(query);
     };
