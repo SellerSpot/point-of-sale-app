@@ -187,7 +187,10 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
                     '  </div>' +
                     '</div>',
             },
-            valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
+            valueFormatter: (formatterParams) =>
+                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${parseInt(
+                    formatterParams.value.toString(),
+                ).toLocaleString()}`,
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
                     ? parserParams.newValue >= 0
@@ -236,7 +239,9 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             flex: 1,
 
             valueFormatter: (formatterParams) =>
-                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${formatterParams.value}`,
+                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${parseInt(
+                    formatterParams.value.toString(),
+                ).toLocaleString()}`,
         },
         {
             headerName: `Actions`,

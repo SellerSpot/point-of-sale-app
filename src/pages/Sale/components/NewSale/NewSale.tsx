@@ -212,17 +212,17 @@ export const NewSale = (): JSX.Element => {
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Taxes'}</span>
-                            <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalTax.toLocaleString()}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Discount'}</span>
-                            <span>{`₹ ${cartData.totals.grandTotalDiscount}`}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalDiscount.toLocaleString()}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
                             <span>{'Grand Total'}</span>
                             <span
                                 className={styles.orderTotalText}
-                            >{`₹ ${cartData.totals.grandTotal}`}</span>
+                            >{`₹ ${cartData.totals.grandTotal.toLocaleString()}`}</span>
                         </div>
                         <Button
                             label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}

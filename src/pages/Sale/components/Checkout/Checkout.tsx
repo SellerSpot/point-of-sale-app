@@ -85,16 +85,22 @@ export const Checkout = (): ReactElement => {
             <div className={cn(styles.checkoutBillingDetailsWrapper)}>
                 <div className={styles.calculationEntry}>
                     <div>{'Total Taxes'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalTax}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotalTax.toLocaleString()}`}</div>
                 </div>
 
                 <div className={styles.calculationEntry}>
                     <div>{'Total Discount'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalDiscount}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotalDiscount.toLocaleString()}`}</div>
                 </div>
                 <div className={styles.calculationEntry}>
                     <div>{'Order Total'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotal}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotal.toLocaleString()}`}</div>
                 </div>
                 <HorizontalRule
                     ruleWidth={'100%'}
