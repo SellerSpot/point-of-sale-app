@@ -1,4 +1,4 @@
-import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { find, isNull, isUndefined, merge } from 'lodash';
 import React from 'react';
 import { MdDelete, MdEdit, MdMoreVert } from 'react-icons/md';
@@ -9,6 +9,7 @@ import {
     setSearchQuery,
     setSearchResults,
 } from 'store/models/newSale';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import {
     computeGrandTotal,
@@ -241,29 +242,33 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             headerName: `Actions`,
             field: 'itemActions' as keyof INewSaleCartTableColumns,
             width: 120,
-            cellRendererFramework: getCartActionButtons,
+            cellRendererFramework: function customCellRenderer(params: ICellRendererParams) {
+                return (
+                    <div className={styles.cartActionButtonWrapper}>
+                        <Button
+                            className={styles.cartActionButton}
+                            key={'asdf'}
+                            label={<MdMoreVert size={20} />}
+                            onClick={(_) =>
+                                store.dispatch(
+                                    openSliderModal({
+                                        sliderName: SLIDERS.itemDetailSlider,
+                                        autoFillData: null,
+                                    }),
+                                )
+                            }
+                        />
+                        <Button
+                            className={styles.cartActionButton}
+                            key={'asdf'}
+                            label={<MdDelete size={20} />}
+                            onClick={(_) => alert('Delete')}
+                        />
+                    </div>
+                );
+            },
         },
     ];
-};
-
-//* used to get the action buttons for the cart table
-const getCartActionButtons = (params: unknown): JSX.Element => {
-    return (
-        <div className={styles.cartActionButtonWrapper}>
-            <Button
-                className={styles.cartActionButton}
-                key={'asdf'}
-                label={<MdMoreVert size={20} />}
-                onClick={(_) => alert('Edit')}
-            />
-            <Button
-                className={styles.cartActionButton}
-                key={'asdf'}
-                label={<MdDelete size={20} />}
-                onClick={(_) => alert('Delete')}
-            />
-        </div>
-    );
 };
 
 /**

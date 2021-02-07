@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
-import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,17 +41,7 @@ const formInitialValues: IAddProductFormSchema = {
     taxBrackets: [],
 };
 
-/**
- * * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface IAddProductProps {
-    callBackStateTrack: [
-        TCallBackStateTrack,
-        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
-    ];
-}
-export const AddProduct = (props: IAddProductProps): JSX.Element => {
+export const AddProduct = (): JSX.Element => {
     //# VALUE HOOKS
     // holds the available metadata for a product
     const [productMetaDataOptions, setProductMetaDataOptions] = useState<IProductMetaDataOptions>({
@@ -134,19 +123,20 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // to handle slider closing operations
     useEffect(() => {
-        if (props.callBackStateTrack[0].includes(SLIDERS.addProductSlider)) {
+        if (sliderState.callBackStateTrack.includes(SLIDERS.addProductSlider)) {
             // getting the topmost slider
             const topMostSlider = last(sliderState.openSliders);
+
             // only executing action if the top most slider is the current slider
             if (topMostSlider === SLIDERS.addProductSlider) {
                 handleCloseSlider({
-                    callBackStateTrack: props.callBackStateTrack,
+                    callBackStateTrack: sliderState.callBackStateTrack,
                     sliderState,
                     topMostSlider,
                 });
             }
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [sliderState.callBackStateTrack]);
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

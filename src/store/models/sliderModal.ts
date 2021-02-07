@@ -14,23 +14,32 @@ export enum SLIDERS {
     'addTaxBracketSlider' = 'addTaxBracketSlider',
     'addStockUnitSlider' = 'addStockUnitSlider',
     'checkoutSlider' = 'checkoutSlider',
+    'itemDetailSlider' = 'itemDetailSlider',
 }
+
+// type of autofill data for sliders
+export type TAutoFillData =
+    | IAddProductFormSchema
+    | IAddCategoryFormSchema
+    | IAddBrandFormSchema
+    | IAddTaxBracketFormSchema
+    | IAddStockUnitFormSchema;
 
 // type to compile the list of sliders
 export type TSliders = {
     [key in SLIDERS]: {
-        autoFillData:
-            | IAddProductFormSchema
-            | IAddCategoryFormSchema
-            | IAddBrandFormSchema
-            | IAddTaxBracketFormSchema
-            | IAddStockUnitFormSchema;
+        autoFillData: TAutoFillData;
     };
 };
+
+// type to compile the list of sliders for callback handling from Esc and backdrop click
+// slider is pushed into arra
+export type TCallBackStateTrack = (keyof TSliders)[];
 
 export interface ISliderModalInitialState {
     sliders: TSliders;
     openSliders: (keyof TSliders)[];
+    callBackStateTrack: TCallBackStateTrack;
 }
 
 const initialState: ISliderModalInitialState = {
@@ -56,8 +65,12 @@ const initialState: ISliderModalInitialState = {
         checkoutSlider: {
             autoFillData: null,
         },
+        itemDetailSlider: {
+            autoFillData: null,
+        },
     },
     openSliders: [],
+    callBackStateTrack: [],
 };
 
 const sliderModalSlice = createSlice({
@@ -103,6 +116,16 @@ const sliderModalSlice = createSlice({
                 state.sliders[payload.sliderName].autoFillData = null;
             }
         },
+        setCallBackStateTrack: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                callBackStateTrack: ISliderModalInitialState['callBackStateTrack'];
+            }>,
+        ) => {
+            state.callBackStateTrack = payload.callBackStateTrack;
+        },
     },
 });
 
@@ -110,7 +133,11 @@ const sliderModalSlice = createSlice({
 export default sliderModalSlice.reducer;
 
 // Exporting actions
-export const { openSliderModal, closeSliderModal } = sliderModalSlice.actions;
+export const {
+    openSliderModal,
+    closeSliderModal,
+    setCallBackStateTrack,
+} = sliderModalSlice.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
 export const sliderModalSelector: Selector<RootState, ISliderModalInitialState> = (

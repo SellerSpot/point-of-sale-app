@@ -8,9 +8,14 @@ import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
 import { SLIDERS, closeSliderModal, openSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { handleCloseSlider, introduceDelay } from 'utilities/general';
+import {
+    addSliderToCallBackStateTrack,
+    handleCloseSlider,
+    introduceDelay,
+} from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
-import { Button, InputField } from '@sellerspot/universal-components';
+import { Button, InputField, SliderModal } from '@sellerspot/universal-components';
+import { CartItemDetail } from './components/CartItemDetail/CartItemDetail';
 import {
     compileNewSaleCartTableRowData,
     compileNewSaleProductsTableRowData,
@@ -20,9 +25,8 @@ import {
     pushProductIntoCart,
 } from './newSale.actions';
 import styles from './newSale.module.scss';
-import { INewSaleProps } from './newSale.types';
 
-export const NewSale = (props: INewSaleProps): JSX.Element => {
+export const NewSale = (): JSX.Element => {
     //# VALUE HOOKS
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
@@ -112,19 +116,19 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
 
     //* used to handle the closing operations of the sliderModel
     useEffect(() => {
-        if (props.callBackStateTrack[0].includes(SLIDERS.newSaleSlider)) {
+        if (sliderState.callBackStateTrack.includes(SLIDERS.newSaleSlider)) {
             // getting the topmost slider
             const topMostSlider = last(sliderState.openSliders);
             // only executing action if the top most slider is the current slider
             if (topMostSlider === SLIDERS.newSaleSlider) {
                 handleCloseSlider({
-                    callBackStateTrack: props.callBackStateTrack,
+                    callBackStateTrack: sliderState.callBackStateTrack,
                     sliderState,
                     topMostSlider,
                 });
             }
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [sliderState.callBackStateTrack]);
 
     //* listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
@@ -160,6 +164,25 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
+                    <SliderModal
+                        active={sliderState.openSliders.includes(SLIDERS.itemDetailSlider)}
+                        sliderSize={'40%'}
+                        zIndex={10}
+                        onClickBackdrop={() =>
+                            addSliderToCallBackStateTrack({
+                                sliderName: SLIDERS.itemDetailSlider,
+                                sliderState,
+                            })
+                        }
+                        onClickEsc={() =>
+                            addSliderToCallBackStateTrack({
+                                sliderName: SLIDERS.itemDetailSlider,
+                                sliderState,
+                            })
+                        }
+                    >
+                        <CartItemDetail />
+                    </SliderModal>
                     <AgGridReact
                         suppressDragLeaveHidesColumns
                         suppressCellSelection
@@ -176,9 +199,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         }}
                         onGridReady={(event) => {
                             setCartTableGridApi(event.api);
-                        }}
-                        defaultColDef={{
-                            enableCellChangeFlash: true,
                         }}
                     />
                 </div>

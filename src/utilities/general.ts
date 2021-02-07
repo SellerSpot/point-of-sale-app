@@ -1,6 +1,12 @@
-import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
-import { last } from 'lodash';
-import { ISliderModalInitialState, SLIDERS, closeSliderModal } from 'store/models/sliderModal';
+import {
+    ISliderModalInitialState,
+    SLIDERS,
+    TAutoFillData,
+    TCallBackStateTrack,
+    closeSliderModal,
+    openSliderModal,
+    setCallBackStateTrack,
+} from 'store/models/sliderModal';
 import { store } from 'store/store';
 
 /**
@@ -47,14 +53,11 @@ export const GLOBAL_KEYBOARD_SHORTCUTS = {
 };
 
 /**
- * Used to handle closing the sliderModal (closes the topmost sliderModal in the queue)
+ * * Used to handle closing the sliderModal (closes the topmost sliderModal in the queue)
  */
 export const handleCloseSlider = (props: {
     sliderState: ISliderModalInitialState;
-    callBackStateTrack: [
-        TCallBackStateTrack,
-        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
-    ];
+    callBackStateTrack: TCallBackStateTrack;
     topMostSlider: SLIDERS;
 }): void => {
     // closing the topmost slidermodal
@@ -63,8 +66,44 @@ export const handleCloseSlider = (props: {
             sliderName: props.topMostSlider,
         }),
     );
-    // updating sliderModal flag state
-    const sliderModalFlagState = props.callBackStateTrack[0];
-    sliderModalFlagState.pop();
-    props.callBackStateTrack[1](sliderModalFlagState);
+    // updating callBackStateTrack
+    // creating a copy which we can then edit
+    const callBackStateTrack = [...props.callBackStateTrack];
+    // removing the top most slider
+    callBackStateTrack.pop();
+    // updating state
+    store.dispatch(
+        setCallBackStateTrack({
+            callBackStateTrack,
+        }),
+    );
+};
+
+/**
+ * * Used to handle opening the sliderModal
+ */
+export const handleOpenSlider = (props: {
+    sliderName: SLIDERS;
+    autoFillData: TAutoFillData;
+}): void => {
+    store.dispatch(
+        openSliderModal({
+            autoFillData: props.autoFillData,
+            sliderName: props.sliderName,
+        }),
+    );
+};
+
+/**
+ * * Used to handle adding the slider to the callBackStateTrack
+ */
+export const addSliderToCallBackStateTrack = (props: {
+    sliderName: SLIDERS;
+    sliderState: ISliderModalInitialState;
+}): void => {
+    store.dispatch(
+        setCallBackStateTrack({
+            callBackStateTrack: [...props.sliderState.callBackStateTrack, props.sliderName],
+        }),
+    );
 };

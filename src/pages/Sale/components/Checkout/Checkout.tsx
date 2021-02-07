@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { TCallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { last } from 'lodash';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
@@ -12,13 +11,7 @@ import { generalUtilities } from 'utilities/utilities';
 import { Button, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import styles from './checkout.module.scss';
 
-export interface ICheckoutProps {
-    callBackStateTrack: [
-        TCallBackStateTrack,
-        React.Dispatch<React.SetStateAction<TCallBackStateTrack>>,
-    ];
-}
-export const Checkout = (props: ICheckoutProps): ReactElement => {
+export const Checkout = (): ReactElement => {
     const dispatch = useDispatch();
     const billReference = useRef<HTMLDivElement>(null);
     // getting sliderState to listen to when the slider is invoked to autopopulate
@@ -50,20 +43,21 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         return 0;
     };
 
+    //* setting listener to listen to callbacks from slider
     useEffect(() => {
-        if (props.callBackStateTrack[0].includes(SLIDERS.checkoutSlider)) {
+        if (sliderState.callBackStateTrack.includes(SLIDERS.checkoutSlider)) {
             // getting the topmost slider
             const topMostSlider = last(sliderState.openSliders);
             // only executing action if the top most slider is the current slider
             if (topMostSlider === SLIDERS.checkoutSlider) {
                 handleCloseSlider({
-                    callBackStateTrack: props.callBackStateTrack,
+                    callBackStateTrack: sliderState.callBackStateTrack,
                     sliderState,
                     topMostSlider,
                 });
             }
         }
-    }, [props.callBackStateTrack[0]]);
+    }, [sliderState.callBackStateTrack]);
 
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
