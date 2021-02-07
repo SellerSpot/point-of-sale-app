@@ -53,6 +53,19 @@ export const GLOBAL_KEYBOARD_SHORTCUTS = {
 };
 
 /**
+ * Takes a number and returns the price representation with the symbol and commas
+ */
+export const formatPriceData = (price: number): string => {
+    return `${COMMON_SYMBOLS.RUPEE_SYMBOL}${price.toLocaleString()}`;
+};
+
+/**
+ * Takes a number and returns the percentage representation with the symbol
+ */
+export const formatPercentData = (percentage: number): string => {
+    return `${percentage}${COMMON_SYMBOLS.PERCENTAGE_SYMBOL}`;
+};
+/**
  * * Used to handle closing the sliderModal (closes the topmost sliderModal in the queue)
  */
 export const handleCloseSlider = (props: {

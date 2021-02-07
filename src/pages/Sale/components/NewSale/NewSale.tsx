@@ -166,7 +166,7 @@ export const NewSale = (): JSX.Element => {
                 <div className={'ag-theme-alpine'}>
                     <SliderModal
                         active={sliderState.openSliders.includes(SLIDERS.itemDetailSlider)}
-                        sliderSize={'40%'}
+                        sliderSize={'50%'}
                         zIndex={10}
                         onClickBackdrop={() =>
                             addSliderToCallBackStateTrack({

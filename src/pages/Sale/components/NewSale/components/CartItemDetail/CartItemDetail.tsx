@@ -42,7 +42,7 @@ export const CartItemDetail = (props: { cartData: INewSaleCart }): JSX.Element =
         }
     }, [sliderState.callBackStateTrack]);
 
-    return (
+    return props.cartData.productCartInformation.length > 0 ? (
         <div className={styles.pageWrapper}>
             <TabBar
                 tabs={[
@@ -60,5 +60,5 @@ export const CartItemDetail = (props: { cartData: INewSaleCart }): JSX.Element =
                 {selectedTab === 0 ? getDetailedCalculations(props.cartData, 0) : <div></div>}
             </div>
         </div>
-    );
+    ) : null;
 };
