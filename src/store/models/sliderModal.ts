@@ -23,7 +23,10 @@ export type TAutoFillData =
     | IAddCategoryFormSchema
     | IAddBrandFormSchema
     | IAddTaxBracketFormSchema
-    | IAddStockUnitFormSchema;
+    | IAddStockUnitFormSchema
+    | {
+          cartItemSelectedRowIndex: number;
+      };
 
 // type to compile the list of sliders
 export type TSliders = {
@@ -66,7 +69,9 @@ const initialState: ISliderModalInitialState = {
             autoFillData: null,
         },
         itemDetailSlider: {
-            autoFillData: null,
+            autoFillData: {
+                cartItemSelectedRowIndex: -1,
+            },
         },
     },
     openSliders: [],
@@ -83,11 +88,7 @@ const sliderModalSlice = createSlice({
                 payload,
             }: PayloadAction<{
                 sliderName: keyof ISliderModalInitialState['sliders'];
-                autoFillData:
-                    | IAddProductFormSchema
-                    | IAddCategoryFormSchema
-                    | IAddStockUnitFormSchema
-                    | IAddTaxBracketFormSchema;
+                autoFillData: TAutoFillData;
             }>,
         ) => {
             // checking if slidermodal already exists in the queue

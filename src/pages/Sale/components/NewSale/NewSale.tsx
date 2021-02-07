@@ -181,7 +181,7 @@ export const NewSale = (): JSX.Element => {
                             })
                         }
                     >
-                        <CartItemDetail />
+                        <CartItemDetail cartData={cartData} />
                     </SliderModal>
                     <AgGridReact
                         suppressDragLeaveHidesColumns

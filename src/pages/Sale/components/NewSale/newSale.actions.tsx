@@ -258,7 +258,9 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
                                 store.dispatch(
                                     openSliderModal({
                                         sliderName: SLIDERS.itemDetailSlider,
-                                        autoFillData: null,
+                                        autoFillData: {
+                                            cartItemSelectedRowIndex: params.rowIndex,
+                                        },
                                     }),
                                 )
                             }
