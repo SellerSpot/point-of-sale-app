@@ -46,7 +46,10 @@ export const SalesHistory = (): JSX.Element => {
                 ]}
             />
             <div className={cn('ag-theme-alpine', styles.tableWrapper)}>
-                <AgGridReact columnDefs={getSalesHistoryTableColDef()} />
+                <AgGridReact
+                    columnDefs={getSalesHistoryTableColDef()}
+                    rowData={compileSaleHistoryTableData(salesHistoryData)}
+                />
             </div>
         </div>
     );
