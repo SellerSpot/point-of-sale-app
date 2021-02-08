@@ -10,13 +10,24 @@ export interface INewSaleCart {
      */
     productCartInformation: {
         itemName: string;
-        itemDiscountPercent: number;
         itemPrice: number;
         itemQuantity: number;
+        itemSubTotalBeforeDiscounts: number;
+        itemDiscountPercent: number;
+        itemDiscountValue: number;
+        totalDiscountValue: number;
+        itemSubTotalAfterDiscounts: number;
+        taxes: {
+            taxBracketName: string;
+            taxPercent: number;
+            // computed tax amount for the current item
+            taxValue: number;
+        }[];
+        // total tax for single instance of the item
+        taxSum: number;
+        totalTax: number;
         itemTotal: number;
-        itemSubTotal: number;
-        itemTotalTax: number;
-        itemTotalDiscount: number;
+        grandTotal: number;
     }[];
     totals: {
         grandTotal: number;

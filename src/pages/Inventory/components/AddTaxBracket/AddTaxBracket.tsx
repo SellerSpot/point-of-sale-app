@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taxBracketRequests } from 'requests';
 import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
-import { RootState, store } from 'store/store';
+import { RootState } from 'store/store';
 import { COMMON_SYMBOLS, handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
-import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import styles from './addTaxBracket.module.scss';
 import { AddTaxBracketFormSchema, IAddTaxBracketFormSchema } from './addTaxBracket.types';
@@ -36,15 +35,32 @@ export const AddTaxBracket = (): JSX.Element => {
         validationSchema: AddTaxBracketFormSchema,
         onSubmit: async (values: IAddTaxBracketFormSchema) => {
             formFormik.setSubmitting(true);
-            const response = await taxBracketRequests.createTaxBracket(values);
-            if (response.status) {
-                showMessage('TaxBracket added to database!', 'success');
-                formFormik.resetForm();
-                setFocusInputField(true);
+
+            if (!isNull(sliderState.sliders.addTaxBracketSlider.autoFillData)) {
+                const response = await taxBracketRequests.updateTaxBracket(values);
+                if (response.status) {
+                    showMessage('Tax Bracket Updated!', 'success');
+                    dispatch(
+                        closeSliderModal({
+                            sliderName: SLIDERS.addTaxBracketSlider,
+                        }),
+                    );
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             } else {
-                response.error.map((error) => {
-                    formFormik.setFieldError(error.name, error.message);
-                });
+                const response = await taxBracketRequests.createTaxBracket(values);
+                if (response.status) {
+                    showMessage('TaxBracket added to database!', 'success');
+                    formFormik.resetForm();
+                    setFocusInputField(true);
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             }
             formFormik.setSubmitting(false);
         },
@@ -128,8 +144,15 @@ export const AddTaxBracket = (): JSX.Element => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
+                    onClick={(_) => {
+                        formFormik.submitForm();
+                    }}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add TaxBracket'}
+                    label={
+                        !isNull(sliderState.sliders.addTaxBracketSlider.autoFillData)
+                            ? 'Update Tax-Bracket'
+                            : 'Add Tax-Bracket'
+                    }
                     tabIndex={0}
                 />
                 <Button

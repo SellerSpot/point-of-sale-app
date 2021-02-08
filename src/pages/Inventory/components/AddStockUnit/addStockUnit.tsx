@@ -34,16 +34,34 @@ export const AddStockUnit = (): JSX.Element => {
         validationSchema: AddStockUnitFormSchema,
         onSubmit: async (values: IAddStockUnitFormSchema) => {
             formFormik.setSubmitting(true);
-            const response = await stockUnitRequests.createStockUnit(values);
-            if (response.status) {
-                showMessage('Stock Unit added to database!', 'success');
-                formFormik.resetForm();
-                setFocusInputField(true);
+
+            if (!isNull(sliderState.sliders.addStockUnitSlider.autoFillData)) {
+                const response = await stockUnitRequests.updateStockUnit(values);
+                if (response.status) {
+                    showMessage('Stock-Unit Updated!', 'success');
+                    dispatch(
+                        closeSliderModal({
+                            sliderName: SLIDERS.addStockUnitSlider,
+                        }),
+                    );
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             } else {
-                response.error.map((error) => {
-                    formFormik.setFieldError(error.name, error.message);
-                });
+                const response = await stockUnitRequests.createStockUnit(values);
+                if (response.status) {
+                    showMessage('Stock Unit added to database!', 'success');
+                    formFormik.resetForm();
+                    setFocusInputField(true);
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             }
+
             formFormik.setSubmitting(false);
         },
     });
@@ -107,8 +125,15 @@ export const AddStockUnit = (): JSX.Element => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
+                    onClick={(_) => {
+                        formFormik.submitForm();
+                    }}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Stock Unit'}
+                    label={
+                        !isNull(sliderState.sliders.addStockUnitSlider.autoFillData)
+                            ? 'Update Stock-Unit'
+                            : 'Add Stock-Unit'
+                    }
                     tabIndex={0}
                 />
                 <Button

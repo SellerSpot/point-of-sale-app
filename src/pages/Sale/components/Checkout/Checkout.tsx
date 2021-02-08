@@ -142,7 +142,7 @@ export const Checkout = (): ReactElement => {
                 </div>
                 <div className={styles.calculationEntry}>
                     <div>{'Balance'}</div>
-                    <div className={styles.balance}>{`- ${
+                    <div className={styles.balance}>{`${
                         generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
                     } ${calculateBalanceOwed().toString()}`}</div>
                 </div>

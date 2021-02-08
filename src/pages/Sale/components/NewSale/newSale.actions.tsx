@@ -12,6 +12,7 @@ import {
 import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import {
+    computeCartData,
     computeGrandTotal,
     computeGrandTotalDiscount,
     computeGrandTotalTax,
@@ -41,12 +42,15 @@ export const compileProductsTableBodyData = (
         // To hold the compiled table data
         const compiledData: JSX.Element[][] = [];
         productsData.results.map((product, index) => {
+            // typecasting
+            const currentBrand = product.brand as pointOfSaleTypes.brandResponseTypes.IGetBrand['data'];
+            const currentCategory = product.category as pointOfSaleTypes.categoryResponseTypes.IGetCategory['data'];
             compiledData.push([
                 <p key={index}>{index + 1}</p>,
                 <p key={product.name}>{product.name}</p>,
                 <p key={product.gtinNumber}>{product.gtinNumber}</p>,
-                <p key={product.brand._id}>{product.brand.name}</p>, // change types
-                <p key={product.category._id}>{product.category.name}</p>, // change types
+                <p key={currentBrand._id}>{currentBrand.name}</p>, // change types
+                <p key={currentCategory._id}>{currentCategory.name}</p>, // change types
                 <p key={product.stockInformation.availableStock}>
                     {product.stockInformation.availableStock}
                 </p>,
@@ -337,141 +341,38 @@ export const pushProductIntoCart = (
             rowIndex: indexIfProductAlreadyExistsInCart,
         });
     } else {
-        const itemQuantity = 1;
-        const itemDiscountPercent = 0;
-        // fetching required values
-        const itemTotalDiscount = computeItemTotalDiscount({
-            itemDiscountPercent,
+        // creating localcopy of currentCartData
+        let currentCartDataLocal = merge({}, currentCartData);
+        // adding product into object
+        currentCartDataLocal.products.push(product);
+        currentCartDataLocal.productCartInformation.push({
+            itemName: product.name,
             itemPrice: product.sellingPrice,
-            itemQuantity,
-        });
-        const itemSubTotal = computeItemSubtotal({
-            itemPrice: product.sellingPrice,
-            itemQuantity,
-        });
-        const itemPrice = computeItemPrice({
-            itemPrice: itemSubTotal,
-            itemTotalDiscount: itemTotalDiscount,
-            itemQuantity,
-        });
-        const itemTotalTax = computeItemTotalTax({
-            itemPrice: itemPrice,
-            itemQuantity,
-            itemTaxPercents: product.taxBracket.map((taxBracket) =>
-                parseInt(taxBracket.taxPercent),
-            ),
+            itemQuantity: 1,
+            itemDiscountPercent: 0,
+            itemDiscountValue: 0,
+            itemSubTotalAfterDiscounts: 0,
+            itemSubTotalBeforeDiscounts: 0,
+            itemTotal: 0,
+            taxSum: 0,
+            taxes: [],
+            totalDiscountValue: 0,
+            totalTax: 0,
+            grandTotal: 0,
         });
 
-        const itemTotal = computeItemTotal({
-            itemPrice: itemPrice,
-            itemQuantity,
-            itemTotalTax,
-        });
-        const grandTotal = computeGrandTotal({
-            itemTotals: [
-                ...currentCartData.productCartInformation.map((product) => product.itemTotal),
-                itemTotal,
-            ],
-        });
-        const grandTotalDiscount = computeGrandTotalDiscount({
-            itemTotalDiscounts: [
-                ...currentCartData.productCartInformation.map(
-                    (product) => product.itemTotalDiscount,
-                ),
-                itemTotalDiscount,
-            ],
-        });
-        const grandTotalTax = computeGrandTotalTax({
-            itemTotalTaxes: [
-                ...currentCartData.productCartInformation.map((product) => product.itemTotalTax),
-                itemTotalTax,
-            ],
+        // getting computed values
+        currentCartDataLocal = computeCartData({
+            cartData: currentCartDataLocal,
         });
 
         // pushing item to cart
-        store.dispatch(
-            setCartData({
-                products: [product, ...currentCartData.products],
-                productCartInformation: [
-                    {
-                        itemName: product.name,
-                        itemDiscountPercent,
-                        itemQuantity,
-                        itemPrice: product.sellingPrice,
-                        itemSubTotal,
-                        itemTotalTax,
-                        itemTotalDiscount,
-                        itemTotal,
-                    },
-                    ...currentCartData.productCartInformation,
-                ],
-                totals: {
-                    grandTotal,
-                    grandTotalDiscount,
-                    grandTotalTax,
-                },
-            }),
-        );
+        store.dispatch(setCartData(currentCartDataLocal));
     }
 
     // resetting the other fields
     store.dispatch(setSearchQuery(initialStateNewSale.searchQuery));
     store.dispatch(setSearchResults(initialStateNewSale.searchResults));
-};
-
-export const recomputeCartValues = (
-    cartData: IInitialStateNewSale['cartData'],
-    rowIndex: number,
-): void => {
-    // getting current item details
-    const currentProduct = cartData.products[rowIndex];
-    const currentCartInformation = cartData.productCartInformation[rowIndex];
-    // fetching required values
-    currentCartInformation.itemTotalDiscount = computeItemTotalDiscount({
-        itemDiscountPercent: currentCartInformation.itemDiscountPercent,
-        itemPrice: currentCartInformation.itemPrice,
-        itemQuantity: currentCartInformation.itemQuantity,
-    });
-    currentCartInformation.itemSubTotal = computeItemSubtotal({
-        itemPrice: currentCartInformation.itemPrice,
-        itemQuantity: currentCartInformation.itemQuantity,
-    });
-    // keeping price separate because it is affected by the discount
-    const itemPriceTemp = computeItemPrice({
-        itemPrice: currentCartInformation.itemPrice,
-        itemTotalDiscount: currentCartInformation.itemTotalDiscount,
-        itemQuantity: currentCartInformation.itemQuantity,
-    });
-    currentCartInformation.itemTotalTax = computeItemTotalTax({
-        itemPrice: itemPriceTemp,
-        itemQuantity: currentCartInformation.itemQuantity,
-        itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
-            parseInt(taxBracket.taxPercent),
-        ),
-    });
-
-    currentCartInformation.itemTotal = computeItemTotal({
-        itemPrice: itemPriceTemp,
-        itemQuantity: currentCartInformation.itemQuantity,
-        itemTotalTax: currentCartInformation.itemTotalTax,
-    });
-
-    // updating the object with new values
-    cartData.productCartInformation[rowIndex] = currentCartInformation;
-    // updating totals
-    cartData.totals.grandTotal = computeGrandTotal({
-        itemTotals: [...cartData.productCartInformation.map((product) => product.itemTotal)],
-    });
-    cartData.totals.grandTotalDiscount = computeGrandTotalDiscount({
-        itemTotalDiscounts: [
-            ...cartData.productCartInformation.map((product) => product.itemTotalDiscount),
-        ],
-    });
-    cartData.totals.grandTotalTax = computeGrandTotalTax({
-        itemTotalTaxes: [...cartData.productCartInformation.map((product) => product.itemTotalTax)],
-    });
-    // updating state
-    store.dispatch(setCartData(cartData));
 };
 
 /**
@@ -484,7 +385,7 @@ export const handleNewSaleCartTableCellValueChange = (
     event: CellValueChangedEvent,
 ): void => {
     // creating a clone to work with
-    const cartData: INewSaleCart = merge({}, currentCartData);
+    let cartData: INewSaleCart = merge({}, currentCartData);
     // updating the required value
     switch (event.column.getColId() as keyof INewSaleCartTableColumns) {
         case 'itemName':
@@ -503,7 +404,13 @@ export const handleNewSaleCartTableCellValueChange = (
             cartData.productCartInformation[event.rowIndex]['itemTotal'] = event.newValue;
             break;
     }
-    recomputeCartValues(cartData, event.rowIndex);
+    // getting computed values
+    cartData = computeCartData({
+        cartData,
+    });
+
+    // pushing item to cart
+    store.dispatch(setCartData(cartData));
 };
 
 /**
@@ -514,9 +421,15 @@ export const handleReAddProductToCart = (props: {
     rowIndex: number;
 }): void => {
     // creating a clone to work with
-    const cartData: INewSaleCart = merge({}, props.currentCartData);
+    let cartData: INewSaleCart = merge({}, props.currentCartData);
     const currentProductQuantityInCart =
         cartData.productCartInformation[props.rowIndex].itemQuantity;
     cartData.productCartInformation[props.rowIndex].itemQuantity = currentProductQuantityInCart + 1;
-    recomputeCartValues(cartData, props.rowIndex);
+    // getting computed values
+    cartData = computeCartData({
+        cartData,
+    });
+
+    // pushing item to cart
+    store.dispatch(setCartData(cartData));
 };

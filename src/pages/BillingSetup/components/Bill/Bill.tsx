@@ -40,7 +40,7 @@ export const Bill = (props: IBillProps): ReactElement => {
                     </div>
                 </div>
             </div>
-            <div className={style.billSubTitle}>TAX INVOICE</div>
+            {/* <div className={style.billSubTitle}>TAX INVOICE</div>
             <div className={style.dashedBorder}></div>
             <div className={style.customerDetailsWrapper}>
                 <div className={style.customerDetail}>
@@ -61,7 +61,7 @@ export const Bill = (props: IBillProps): ReactElement => {
                         12 A, New Raja Colony, Bheemanagar, Balajinagar, Trichy 1
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className={style.billSubTitle}>PURCHASE INVOICE</div>
             <div className={style.dashedBorder}></div>
             <div className={cn(style.billTableWrapper)}>

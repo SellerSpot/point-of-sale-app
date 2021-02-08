@@ -19,16 +19,8 @@ export const getProductsHistoryTableColDef = (): ColDef[] => {
             flex: 1,
         },
         {
-            headerName: 'GTIN Number',
+            headerName: 'Barcode Number',
             field: 'itemGTINNumber' as keyof IProductsHistoryTableColumns,
-            sortable: true,
-            filter: true,
-            resizable: true,
-            flex: 1,
-        },
-        {
-            headerName: 'Brand',
-            field: 'itemBrand' as keyof IProductsHistoryTableColumns,
             sortable: true,
             filter: true,
             resizable: true,
@@ -63,12 +55,13 @@ export const compileProductsHistoryTableBodyData = (
     if (productsData.length > 0) {
         return productsData.map(
             (product): IProductsHistoryTableColumns => {
+                // typecasting
+                const currentCategory = product.category as pointOfSaleTypes.categoryResponseTypes.IGetCategory['data'];
                 return {
                     itemName: product.name,
                     itemGTINNumber: product.gtinNumber,
                     itemPrice: product.sellingPrice.toString(),
-                    itemCategory: product.category.name,
-                    itemBrand: product.brand.name,
+                    itemCategory: currentCategory.name,
                 };
             },
         );

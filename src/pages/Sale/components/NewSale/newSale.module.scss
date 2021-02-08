@@ -15,11 +15,11 @@
     width: 100%;
     height: 100%;
 
-    gap: 10px;
     grid-template-columns: 1fr;
-    grid-template-rows: 60px 1fr;
+    grid-template-rows: 10% 1fr;
 }
 .rightPanel {
+    position: relative;
     display: grid;
     width: 100%;
     height: 100%;
@@ -28,6 +28,18 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 230px;
 }
+
+.rightPanelTop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.cartTable {
+    width: 100%;
+    height: 100%;
+}
+
 .rightPanelBottom {
     display: flex;
     align-items: center;

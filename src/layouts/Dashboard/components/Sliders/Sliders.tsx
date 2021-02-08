@@ -1,7 +1,7 @@
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
 import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
-import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/addStockUnit';
+import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/AddStockUnit';
 import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 import { Checkout } from 'pages/Sale/components/Checkout/Checkout';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
@@ -74,6 +74,8 @@ const Sliders = (): ReactElement => {
             }
             // checkoutSlider invoke
             else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT) {
+                console.log(newSaleState.cartData.products.length);
+
                 event.preventDefault();
                 // only enabling this slider if the new sale cart is not empty and the new sale slider is open
                 if (
@@ -98,7 +100,7 @@ const Sliders = (): ReactElement => {
         return () => {
             document.removeEventListener('keydown', handleSliderKeydownGlobal);
         };
-    }, []);
+    }, [newSaleState]);
 
     return (
         <>

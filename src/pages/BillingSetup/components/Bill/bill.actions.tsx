@@ -4,6 +4,7 @@ import { IInitialStateNewSale } from 'store/models/newSale';
 import commonStyle from 'styles/common.module.scss';
 import { xPercentOfY } from 'utilities/businessCalculations';
 import { generalUtilities } from 'utilities/utilities';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import style from './bill.module.scss';
 
 /**
@@ -36,11 +37,11 @@ export const compileProductListingInPurchaseInvoiceForBill = (
                     className={cn(commonStyle.textAlignRight)}
                 >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.products[i].sellingPrice}`}</div>
                 <div className={cn(commonStyle.textAlignRight)}>
-                    {`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.productCartInformation[i].itemTotalDiscount} @ ${saleData.productCartInformation[i].itemDiscountPercent}`}
+                    {`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.productCartInformation[i].totalDiscountValue} @ ${saleData.productCartInformation[i].itemDiscountPercent}`}
                 </div>
                 <div
                     className={cn(commonStyle.textAlignRight)}
-                >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.productCartInformation[i].itemTotalTax}`}</div>
+                >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.productCartInformation[i].totalTax}`}</div>
                 <div
                     className={cn(commonStyle.textAlignRight)}
                 >{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${saleData.productCartInformation[i].itemTotal}`}</div>
@@ -59,8 +60,12 @@ export const calculateTotalSavings = (saleData: IInitialStateNewSale['cartData']
     for (let i = 0; i < saleData.products.length; i++) {
         conventionalTotal += saleData.products[i].mrpPrice;
         for (let j = 0; j < saleData.products[i].taxBracket.length; j++) {
+            // typecasting
+            const currentTaxBracket = saleData.products[i].taxBracket[
+                j
+            ] as pointOfSaleTypes.taxBracketResponseTypes.IGetTaxBracket['data'];
             conventionalTotal += xPercentOfY({
-                x: parseInt(saleData.products[i].taxBracket[j].taxPercent),
+                x: parseInt(currentTaxBracket.taxPercent),
                 y: saleData.products[i].mrpPrice,
             });
         }

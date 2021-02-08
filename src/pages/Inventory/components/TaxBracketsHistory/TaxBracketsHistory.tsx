@@ -33,8 +33,8 @@ export const TaxBracketsHistory = (): JSX.Element => {
     return (
         <div className={styles.taxBracketWrapper}>
             <MetaCard
-                title="Sample Description"
-                secondaryText={'Sample Data'}
+                title="Tax-Brackets History"
+                secondaryText={'Holds all your tax-brackets'}
                 buttons={[
                     <Button
                         key={'addTaxBracket'}
@@ -58,6 +58,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
                     onRowClicked={(event) => {
                         // compiling data for autofill
                         const autoFillData: IAddTaxBracketFormSchema = {
+                            id: taxBracketsData[event.rowIndex]._id,
                             name: taxBracketsData[event.rowIndex].name,
                             taxPercent: taxBracketsData[event.rowIndex].taxPercent,
                         };

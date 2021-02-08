@@ -184,6 +184,7 @@ export const NewSale = (): JSX.Element => {
                     >
                         <CartItemDetail cartData={cartData} />
                     </SliderModal>
+
                     <AgGridReact
                         suppressDragLeaveHidesColumns
                         suppressCellSelection

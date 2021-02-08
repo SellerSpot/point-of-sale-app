@@ -35,3 +35,24 @@ export const createTaxBracket = async (
     );
     return response.data as pointOfSaleTypes.taxBracketResponseTypes.ICreateTaxBracket;
 };
+
+/**
+ * * Updates taxbrackets in database
+ */
+export const updateTaxBracket = async (
+    formData: IAddTaxBracketFormSchema,
+): Promise<pointOfSaleTypes.taxBracketResponseTypes.IUpdateTaxBracket> => {
+    // compiling data to update
+    const taxBracketToUpdate: pointOfSaleTypes.taxBracketRequestTypes.IUpdateTaxBracket = {
+        id: formData.id,
+        taxBracketData: {
+            name: formData.name,
+            taxPercent: formData.taxPercent,
+        },
+    };
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.TAX_BRACKET}/${pointOfSaleTypes.ROUTES.TAXBRACKET_UPDATE_TAXBRACKET}`,
+        taxBracketToUpdate,
+    );
+    return response.data as pointOfSaleTypes.taxBracketResponseTypes.IUpdateTaxBracket;
+};

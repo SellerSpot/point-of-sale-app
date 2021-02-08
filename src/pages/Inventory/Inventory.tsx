@@ -23,10 +23,6 @@ export const Inventory = (): JSX.Element => {
             route: ROUTES.INVENTORY_CATEGORIES,
         },
         {
-            name: 'Brands',
-            route: ROUTES.INVENTORY_BRANDS,
-        },
-        {
             name: 'Tax Brackets',
             route: ROUTES.INVENTORY_TAX_BRACKETS,
         },
@@ -55,9 +51,6 @@ export const Inventory = (): JSX.Element => {
                     </Route>
                     <Route path={ROUTES.INVENTORY_CATEGORIES}>
                         <CategoriesHistory />
-                    </Route>
-                    <Route path={ROUTES.INVENTORY_BRANDS}>
-                        <BrandsHistory />
                     </Route>
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />

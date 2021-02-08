@@ -15,6 +15,8 @@ export interface IProductMetaDataOptions {
  * * Interface for the AddProduct form
  */
 export interface IAddProductFormSchema {
+    // for product update purposes
+    productId?: string;
     name: string;
     gtinNumber: string;
     category: pointOfSaleTypes.categoryResponseTypes.IGetCategory['data'];

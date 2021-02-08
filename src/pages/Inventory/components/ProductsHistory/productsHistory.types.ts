@@ -4,7 +4,6 @@
 export interface IProductsHistoryTableColumns {
     itemName: string;
     itemGTINNumber: string;
-    itemBrand: string;
     itemCategory: string;
     itemPrice: string;
 }
