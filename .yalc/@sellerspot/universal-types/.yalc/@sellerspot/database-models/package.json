@@ -1,0 +1,44 @@
+{
+  "name": "@sellerspot/database-models",
+  "version": "10.5.0+de43f59f",
+  "description": "This Package contains all database models (will be consumed by all services) - keeping models in seperate repo will keep all the services in sync.",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "webpack --mode development --env development",
+    "build": "webpack --mode production --env production",
+    "build:dev": "webpack --mode development --env production && yalc push",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SellerSpot/database-models.git"
+  },
+  "keywords": [
+    "sellerspot",
+    "database-models"
+  ],
+  "author": "ThayalanGR",
+  "contributors": [
+    {
+      "name": "Rohit Raj",
+      "email": "rij7u7d@gmail.com",
+      "url": "https://github.com/RohitRajP"
+    },
+    {
+      "name": "ThayalanGR",
+      "email": "grthayalan18@gmail.com",
+      "url": "https://github.com/ThayalanGR"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SellerSpot/database-models/issues"
+  },
+  "homepage": "https://github.com/SellerSpot/database-models#readme",
+  "peerDependencies": {
+    "mongoose": "^5.11.14"
+  },
+  "dependencies": {},
+  "yalcSig": "de43f59fed32516cd692327c0ba343e4"
+}

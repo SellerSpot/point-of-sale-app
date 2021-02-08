@@ -6,87 +6,127 @@ import { IAddTaxBracketFormSchema } from 'pages/Inventory/components/AddTaxBrack
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 
+export enum SLIDERS {
+    'newSaleSlider' = 'newSaleSlider',
+    'addProductSlider' = 'addProductSlider',
+    'addCategorySlider' = 'addCategorySlider',
+    'addBrandSlider' = 'addBrandSlider',
+    'addTaxBracketSlider' = 'addTaxBracketSlider',
+    'addStockUnitSlider' = 'addStockUnitSlider',
+    'checkoutSlider' = 'checkoutSlider',
+    'itemDetailSlider' = 'itemDetailSlider',
+}
+
+// type of autofill data for sliders
+export type TAutoFillData =
+    | IAddProductFormSchema
+    | IAddCategoryFormSchema
+    | IAddBrandFormSchema
+    | IAddTaxBracketFormSchema
+    | IAddStockUnitFormSchema
+    | {
+          cartItemSelectedRowIndex: number;
+      };
+
+// type to compile the list of sliders
+export type TSliders = {
+    [key in SLIDERS]: {
+        autoFillData: TAutoFillData;
+    };
+};
+
+// type to compile the list of sliders for callback handling from Esc and backdrop click
+// slider is pushed into arra
+export type TCallBackStateTrack = (keyof TSliders)[];
+
 export interface ISliderModalInitialState {
-    newSaleSlider: {
-        show: boolean;
-        autoFillData?: null;
-    };
-    addProductSlider: {
-        show: boolean;
-        autoFillData?: IAddProductFormSchema;
-    };
-    addCategorySlider: {
-        show: boolean;
-        autoFillData?: IAddCategoryFormSchema;
-    };
-    addBrandSlider: {
-        show: boolean;
-        autoFillData?: IAddBrandFormSchema;
-    };
-    addTaxBracketSlider: {
-        show: boolean;
-        autoFillData?: IAddTaxBracketFormSchema;
-    };
-    addStockUnitSlider: {
-        show: boolean;
-        autoFillData?: IAddStockUnitFormSchema;
-    };
-    checkoutSlider: {
-        show: boolean;
-        autoFillData?: null;
-    };
+    sliders: TSliders;
+    openSliders: (keyof TSliders)[];
+    callBackStateTrack: TCallBackStateTrack;
 }
 
 const initialState: ISliderModalInitialState = {
-    newSaleSlider: {
-        show: false,
-        autoFillData: null,
+    sliders: {
+        newSaleSlider: {
+            autoFillData: null,
+        },
+        addProductSlider: {
+            autoFillData: null,
+        },
+        addCategorySlider: {
+            autoFillData: null,
+        },
+        addBrandSlider: {
+            autoFillData: null,
+        },
+        addTaxBracketSlider: {
+            autoFillData: null,
+        },
+        addStockUnitSlider: {
+            autoFillData: null,
+        },
+        checkoutSlider: {
+            autoFillData: null,
+        },
+        itemDetailSlider: {
+            autoFillData: {
+                cartItemSelectedRowIndex: -1,
+            },
+        },
     },
-    addProductSlider: {
-        show: false,
-        autoFillData: null,
-    },
-    addCategorySlider: {
-        show: false,
-        autoFillData: null,
-    },
-    addBrandSlider: {
-        show: false,
-        autoFillData: null,
-    },
-    addTaxBracketSlider: {
-        show: false,
-        autoFillData: null,
-    },
-    addStockUnitSlider: {
-        show: false,
-        autoFillData: null,
-    },
-    checkoutSlider: {
-        show: false,
-    },
+    openSliders: [],
+    callBackStateTrack: [],
 };
 
 const sliderModalSlice = createSlice({
     name: 'sliderModal',
     initialState,
     reducers: {
-        toggleSliderModal: (
+        openSliderModal: (
             state,
             {
                 payload,
             }: PayloadAction<{
-                sliderName: keyof ISliderModalInitialState;
-                active: boolean;
-                autoFillData:
-                    | IAddProductFormSchema
-                    | IAddCategoryFormSchema
-                    | IAddStockUnitFormSchema
-                    | IAddTaxBracketFormSchema;
+                sliderName: keyof ISliderModalInitialState['sliders'];
+                autoFillData: TAutoFillData;
             }>,
         ) => {
-            state[payload.sliderName].show = payload.active;
-            state[payload.sliderName].autoFillData = payload.autoFillData;
+            // checking if slidermodal already exists in the queue
+            const thisSliderModalPosition = state.openSliders.indexOf(payload.sliderName);
+            if (thisSliderModalPosition > -1) {
+                // slider modal is open, so popping all overlaying sliders
+                state.openSliders.length = thisSliderModalPosition + 1;
+            } else {
+                // slider not already open
+                state.openSliders.push(payload.sliderName);
+                state.sliders[payload.sliderName].autoFillData = payload.autoFillData;
+            }
+        },
+        closeSliderModal: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                sliderName: keyof ISliderModalInitialState['sliders'];
+            }>,
+        ) => {
+            // finding position of the sliderModal in the queue
+            const thisSliderModalPosition = state.openSliders.indexOf(payload.sliderName);
+            if (thisSliderModalPosition > -1) {
+                state.openSliders.splice(thisSliderModalPosition, 1);
+                state.sliders[payload.sliderName].autoFillData =
+                    initialState.sliders[payload.sliderName].autoFillData;
+            }
+        },
+        setCallBackStateTrack: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                callBackStateTrack: ISliderModalInitialState['callBackStateTrack'];
+            }>,
+        ) => {
+            state.callBackStateTrack = payload.callBackStateTrack;
         },
     },
 });
@@ -95,7 +135,11 @@ const sliderModalSlice = createSlice({
 export default sliderModalSlice.reducer;
 
 // Exporting actions
-export const { toggleSliderModal } = sliderModalSlice.actions;
+export const {
+    openSliderModal,
+    closeSliderModal,
+    setCallBackStateTrack,
+} = sliderModalSlice.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
 export const sliderModalSelector: Selector<RootState, ISliderModalInitialState> = (

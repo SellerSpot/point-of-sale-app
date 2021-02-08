@@ -4,7 +4,7 @@ import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { categoryRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, Table } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
@@ -41,10 +41,9 @@ export const CategoriesHistory = (): JSX.Element => {
                         label={`Add Category (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY})`}
                         onClick={() =>
                             dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addCategorySlider',
-                                    active: true,
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: SLIDERS.addCategorySlider,
                                 }),
                             )
                         }
@@ -62,10 +61,9 @@ export const CategoriesHistory = (): JSX.Element => {
                             name: categoriesData[event.rowIndex].name,
                         };
                         dispatch(
-                            toggleSliderModal({
-                                sliderName: 'addCategorySlider',
-                                active: true,
+                            openSliderModal({
                                 autoFillData,
+                                sliderName: SLIDERS.addCategorySlider,
                             }),
                         );
                     }}

@@ -5,174 +5,235 @@ import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/addStockUn
 import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 import { Checkout } from 'pages/Sale/components/Checkout/Checkout';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';
-import React, { ReactElement, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { sliderModalSelector } from 'store/models/sliderModal';
+import React, { ReactElement, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { newSaleSelector } from 'store/models/newSale';
+import { SLIDERS, sliderModalSelector } from 'store/models/sliderModal';
+import {
+    GLOBAL_KEYBOARD_SHORTCUTS,
+    addSliderToCallBackStateTrack,
+    handleOpenSlider,
+} from 'utilities/general';
 import { SliderModal } from '@sellerspot/universal-components';
 
-// Interface for callBackStateTrack
-export interface ICallBackStateTrack {
-    addProductSlider: boolean;
-    addCategorySlider: boolean;
-    checkoutSlider: boolean;
-    newSaleSlider: boolean;
-    addBrandSlider: boolean;
-    addTaxBracketSlider: boolean;
-    addStockUnitSlider: boolean;
-}
-
 const Sliders = (): ReactElement => {
-    const {
-        addProductSlider,
-        addCategorySlider,
-        checkoutSlider,
-        newSaleSlider,
-        addBrandSlider,
-        addTaxBracketSlider,
-        addStockUnitSlider,
-    } = useSelector(sliderModalSelector);
+    const sliderState = useSelector(sliderModalSelector);
+    const newSaleState = useSelector(newSaleSelector);
+    const dispatch = useDispatch();
 
-    // state used to track the callbacks from the sliderModal
-    // true - backdrop or esc event fired
-    // false - no event fired
-    const callBackStateTrack = useState<ICallBackStateTrack>({
-        addProductSlider: false,
-        addCategorySlider: false,
-        checkoutSlider: false,
-        newSaleSlider: false,
-        addBrandSlider: false,
-        addTaxBracketSlider: false,
-        addStockUnitSlider: false,
-    });
+    //* Used to handle the keydown events related to sliderModals
+    const handleSliderKeydownGlobal = useCallback(
+        (event: KeyboardEvent) => {
+            // newSaleSlider invoke
+            if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.newSaleSlider,
+                });
+            }
+            // addProductSlider invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.addProductSlider,
+                });
+            }
+            // addCategorySlider invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.ADD_CATEGORY) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.addCategorySlider,
+                });
+            }
+            // addBrandSlider invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.ADD_BRAND) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.addBrandSlider,
+                });
+            }
+            // addTaxBracket invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.ADD_TAXBRACKET) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.addTaxBracketSlider,
+                });
+            }
+            // addStockUnit invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.ADD_STOCKUNIT) {
+                event.preventDefault();
+                handleOpenSlider({
+                    autoFillData: null,
+                    sliderName: SLIDERS.addStockUnitSlider,
+                });
+            }
+            // checkoutSlider invoke
+            else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT) {
+                event.preventDefault();
+                // only enabling this slider if the new sale cart is not empty and the new sale slider is open
+                if (
+                    sliderState.openSliders.includes(SLIDERS.newSaleSlider) &&
+                    newSaleState.cartData.products.length > 0
+                ) {
+                    handleOpenSlider({
+                        autoFillData: null,
+                        sliderName: SLIDERS.checkoutSlider,
+                    });
+                }
+            }
+        },
+        [newSaleState],
+    );
+
+    //# Slider Modal Event Listener setup
+
+    // used to invoke and listen to sliderModal related keydown events
+    useEffect(() => {
+        document.addEventListener('keydown', handleSliderKeydownGlobal);
+        return () => {
+            document.removeEventListener('keydown', handleSliderKeydownGlobal);
+        };
+    }, []);
 
     return (
         <>
             <SliderModal
-                active={newSaleSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.newSaleSlider)}
                 sliderSize={'100%'}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.newSaleSlider) + 10 ?? 0}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        newSaleSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.newSaleSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        newSaleSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.newSaleSlider,
+                        sliderState,
                     })
                 }
             >
-                <NewSale callBackStateTrack={callBackStateTrack} />
+                <NewSale />
             </SliderModal>
             <SliderModal
-                active={addProductSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.addProductSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addProductSlider) + 10 ?? 0}
                 sliderSize={'40%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addProductSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addProductSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addProductSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addProductSlider,
+                        sliderState,
                     })
                 }
             >
-                <AddProduct callBackStateTrack={callBackStateTrack} />
+                <AddProduct />
             </SliderModal>
             <SliderModal
-                active={addBrandSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.addBrandSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addBrandSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addBrandSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addBrandSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addBrandSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addBrandSlider,
+                        sliderState,
                     })
                 }
             >
-                <AddBrand callBackStateTrack={callBackStateTrack} />
+                <AddBrand />
             </SliderModal>
-
             <SliderModal
-                active={addCategorySlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.addCategorySlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addCategorySlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addCategorySlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addCategorySlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addCategorySlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addCategorySlider,
+                        sliderState,
                     })
                 }
             >
-                <AddCategory callBackStateTrack={callBackStateTrack} />
+                <AddCategory />
             </SliderModal>
             <SliderModal
-                active={addTaxBracketSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.addTaxBracketSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addTaxBracketSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addTaxBracketSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addTaxBracketSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addTaxBracketSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addTaxBracketSlider,
+                        sliderState,
                     })
                 }
             >
-                <AddTaxBracket callBackStateTrack={callBackStateTrack} />
+                <AddTaxBracket />
             </SliderModal>
             <SliderModal
-                active={addStockUnitSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.addStockUnitSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.addStockUnitSlider) + 10 ?? 0}
                 sliderSize={'30%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addStockUnitSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addStockUnitSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        addStockUnitSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.addStockUnitSlider,
+                        sliderState,
                     })
                 }
             >
-                <AddStockUnit callBackStateTrack={callBackStateTrack} />
+                <AddStockUnit />
             </SliderModal>
             <SliderModal
-                active={checkoutSlider.show}
+                active={sliderState.openSliders.includes(SLIDERS.checkoutSlider)}
+                zIndex={sliderState.openSliders.indexOf(SLIDERS.checkoutSlider) + 10 ?? 0}
                 sliderSize={'80%'}
                 onClickBackdrop={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        checkoutSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.checkoutSlider,
+                        sliderState,
                     })
                 }
                 onClickEsc={() =>
-                    callBackStateTrack[1]({
-                        ...callBackStateTrack[0],
-                        checkoutSlider: true,
+                    addSliderToCallBackStateTrack({
+                        sliderName: SLIDERS.checkoutSlider,
+                        sliderState,
                     })
                 }
             >
-                <Checkout callBackStateTrack={callBackStateTrack} />
+                <Checkout />
             </SliderModal>
         </>
     );

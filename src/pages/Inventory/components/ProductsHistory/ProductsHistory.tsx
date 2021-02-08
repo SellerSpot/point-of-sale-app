@@ -2,8 +2,9 @@ import { AgGridReact } from 'ag-grid-react';
 import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getAllProducts } from 'requests/product';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
@@ -19,6 +20,8 @@ export const ProductsHistory = (): JSX.Element => {
     const [productsData, setProductsData] = useState<
         pointOfSaleTypes.productResponseTypes.IGetAllProducts['data']
     >([]);
+    // store dispatch
+    const dispatch = useDispatch();
 
     // getting all products
     useEffect(() => {
@@ -39,15 +42,14 @@ export const ProductsHistory = (): JSX.Element => {
                     <Button
                         key={'addProduct'}
                         label={`Add Product (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT})`}
-                        onClick={() =>
-                            store.dispatch(
-                                toggleSliderModal({
-                                    sliderName: 'addProductSlider',
-                                    active: true,
+                        onClick={() => {
+                            dispatch(
+                                openSliderModal({
                                     autoFillData: null,
+                                    sliderName: SLIDERS.addProductSlider,
                                 }),
-                            )
-                        }
+                            );
+                        }}
                     />,
                 ]}
             />
@@ -72,11 +74,10 @@ export const ProductsHistory = (): JSX.Element => {
                             stockUnit: productsData[event.rowIndex].stockInformation.stockUnit,
                             taxBrackets: productsData[event.rowIndex].taxBracket,
                         };
-                        store.dispatch(
-                            toggleSliderModal({
-                                sliderName: 'addProductSlider',
-                                active: true,
-                                autoFillData: autoFillData,
+                        dispatch(
+                            openSliderModal({
+                                autoFillData,
+                                sliderName: SLIDERS.addProductSlider,
                             }),
                         );
                     }}

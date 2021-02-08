@@ -1,16 +1,4 @@
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-
-/**
- * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface INewSaleProps {
-    callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
-    ];
-}
 
 /**
  * Interface for the cartData redux store in the New Sale Page
