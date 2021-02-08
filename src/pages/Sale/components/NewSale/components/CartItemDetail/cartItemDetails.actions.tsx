@@ -1,19 +1,13 @@
 import React from 'react';
-import { xPercentOfY } from 'utilities/businessCalculations';
 import { formatPercentData, formatPriceData } from 'utilities/general';
 import { HorizontalRule } from '@sellerspot/universal-components';
 import { INewSaleCart } from '../../newSale.types';
-import { IComputedData } from './CartItemDetail';
 import styles from './cartItemDetail.module.scss';
 
 /**
  * Used to get the detailed calculations for the cartItemDetails slider
  */
-export const getDetailedCalculations = (
-    cartData: INewSaleCart,
-    rowIndex: number,
-    computedData: IComputedData,
-): JSX.Element => {
+export const getDetailedCalculations = (cartData: INewSaleCart, rowIndex: number): JSX.Element => {
     // getting current instance of cart item
     const cartItem = cartData.productCartInformation[rowIndex];
 
@@ -41,7 +35,7 @@ export const getDetailedCalculations = (
                 <p>Item Sub-Total (Before-Discounts)</p>
                 <p>{`${cartItem.itemQuantity} x ${formatPriceData(
                     cartItem.itemPrice,
-                )} = ${formatPriceData(computedData.itemSubTotalBeforeDiscounts)}`}</p>
+                )} = ${formatPriceData(cartItem.itemSubTotalBeforeDiscounts)}`}</p>
             </div>
             <div className={styles.dcListing}>
                 <p>Discounts</p>
@@ -50,7 +44,7 @@ export const getDetailedCalculations = (
                 <p>Item Discount</p>
                 <p>{`${formatPercentData(cartItem.itemDiscountPercent)} of ${formatPriceData(
                     cartItem.itemPrice,
-                )} = ${formatPriceData(computedData.itemDiscount)}`}</p>
+                )} = ${formatPriceData(cartItem.itemDiscountValue)}`}</p>
             </div>
             <HorizontalRule
                 ruleWidth={'100%'}
@@ -64,28 +58,26 @@ export const getDetailedCalculations = (
             />
             <div className={styles.dcSubListing}>
                 <p>Total Discount</p>
-                <p>{`${formatPriceData(computedData.itemDiscount)} x ${
+                <p>{`${formatPriceData(cartItem.itemDiscountValue)} x ${
                     cartItem.itemQuantity
-                } = ${formatPriceData(computedData.totalDiscount)}`}</p>
+                } = ${formatPriceData(cartItem.totalDiscountValue)}`}</p>
             </div>
             <div className={styles.dcSubListing}>
                 <p>Item Sub-Total (After-Discounts)</p>
-                <p>{`${formatPriceData(
-                    computedData.itemSubTotalBeforeDiscounts,
-                )} - ${formatPriceData(computedData.totalDiscount)} = ${formatPriceData(
-                    computedData.itemSubTotalAfterDiscounts,
-                )}`}</p>
+                <p>{`${formatPriceData(cartItem.itemSubTotalBeforeDiscounts)} - ${formatPriceData(
+                    cartItem.totalDiscountValue,
+                )} = ${formatPriceData(cartItem.itemSubTotalAfterDiscounts)}`}</p>
             </div>
             <div className={styles.dcListing}>
                 <p>Tax Information</p>
             </div>
-            {computedData.taxes.map((itemTax, index) => {
+            {cartItem.taxes.map((itemTax, index) => {
                 return (
                     <div key={index + 'taxItemInfo'} className={styles.dcSubListing}>
                         <p>{itemTax.taxBracketName}</p>
                         <p>{`${formatPercentData(itemTax.taxPercent)} of ${formatPriceData(
-                            computedData.itemSubTotalAfterDiscounts,
-                        )} = ${formatPriceData(itemTax.taxForItem)}`}</p>
+                            cartItem.itemSubTotalAfterDiscounts,
+                        )} = ${formatPriceData(itemTax.taxValue)}`}</p>
                     </div>
                 );
             })}
@@ -101,16 +93,16 @@ export const getDetailedCalculations = (
             />
             <div className={styles.dcSubListing}>
                 <p>{'Total Tax'}</p>
-                <p>{`${formatPriceData(computedData.taxSum)} x ${
+                <p>{`${formatPriceData(cartItem.taxSum)} x ${
                     cartItem.itemQuantity
-                } = ${formatPriceData(computedData.totalTax)}`}</p>
+                } = ${formatPriceData(cartItem.totalTax)}`}</p>
             </div>
             <div className={styles.dcListing}>
                 <p>Totals</p>
             </div>
             <div className={styles.dcSubListing}>
                 <p>{'Item Total'}</p>
-                <p>{`${formatPriceData(computedData.itemTotal)}`}</p>
+                <p>{`${formatPriceData(cartItem.itemTotal)}`}</p>
             </div>
             <HorizontalRule
                 ruleWidth={'100%'}
@@ -124,7 +116,7 @@ export const getDetailedCalculations = (
             />
             <div className={styles.dcSubListing}>
                 <p>{'Grand Total'}</p>
-                <p>{`${formatPriceData(computedData.grandTotal)}`}</p>
+                <p>{`${formatPriceData(cartItem.grandTotal)}`}</p>
             </div>
         </div>
     );

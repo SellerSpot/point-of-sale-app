@@ -1,6 +1,6 @@
 {
   "name": "@sellerspot/database-models",
-  "version": "10.5.1+58f505f1",
+  "version": "10.5.1+f1d637a1",
   "description": "This Package contains all database models (will be consumed by all services) - keeping models in seperate repo will keep all the services in sync.",
   "main": "dist/index.js",
   "scripts": {
@@ -40,5 +40,5 @@
     "mongoose": "^5.11.14"
   },
   "dependencies": {},
-  "yalcSig": "58f505f194137b8b600d71cd80789c89"
+  "yalcSig": "f1d637a1d854dfe6fc419411342e1527"
 }

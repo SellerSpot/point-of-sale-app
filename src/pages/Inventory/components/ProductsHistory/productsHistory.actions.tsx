@@ -63,12 +63,15 @@ export const compileProductsHistoryTableBodyData = (
     if (productsData.length > 0) {
         return productsData.map(
             (product): IProductsHistoryTableColumns => {
+                // typecasting
+                const currentCategory = product.category as pointOfSaleTypes.categoryResponseTypes.IGetCategory['data'];
+                const currentBrand = product.category as pointOfSaleTypes.brandResponseTypes.IGetBrand['data'];
                 return {
                     itemName: product.name,
                     itemGTINNumber: product.gtinNumber,
                     itemPrice: product.sellingPrice.toString(),
-                    itemCategory: product.category.name,
-                    itemBrand: product.brand.name,
+                    itemCategory: currentCategory.name,
+                    itemBrand: currentBrand.name,
                 };
             },
         );

@@ -62,8 +62,10 @@ export const ProductsHistory = (): JSX.Element => {
                         // compiling data to push to page
                         const autoFillData: IAddProductFormSchema = {
                             name: productsData[event.rowIndex].name,
-                            brand: productsData[event.rowIndex].brand,
-                            category: productsData[event.rowIndex].category,
+                            brand: productsData[event.rowIndex]
+                                .brand as pointOfSaleTypes.brandResponseTypes.IGetBrand['data'],
+                            category: productsData[event.rowIndex]
+                                .category as pointOfSaleTypes.categoryResponseTypes.IGetCategory['data'],
                             gtinNumber: productsData[event.rowIndex].gtinNumber,
                             landingPrice: productsData[event.rowIndex].landingPrice,
                             availableStock:
@@ -71,8 +73,10 @@ export const ProductsHistory = (): JSX.Element => {
                             mrpPrice: productsData[event.rowIndex].mrpPrice,
                             profitPercent: productsData[event.rowIndex].profitPercent,
                             sellingPrice: productsData[event.rowIndex].sellingPrice,
-                            stockUnit: productsData[event.rowIndex].stockInformation.stockUnit,
-                            taxBrackets: productsData[event.rowIndex].taxBracket,
+                            stockUnit: productsData[event.rowIndex].stockInformation
+                                .stockUnit as pointOfSaleTypes.stockUnitResponseTypes.IGetStockUnit['data'],
+                            taxBrackets: productsData[event.rowIndex]
+                                .taxBracket as pointOfSaleTypes.taxBracketResponseTypes.IGetTaxBracket['data'][],
                         };
                         dispatch(
                             openSliderModal({

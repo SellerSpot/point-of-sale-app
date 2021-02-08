@@ -1,5 +1,6 @@
 //# GENERAL COMPUTATION FUNCTIONS
 
+import { merge } from 'lodash';
 import { IInitialStateNewSale } from 'store/models/newSale';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 
@@ -122,54 +123,67 @@ export const computeCartData = (props: {
     cartData: IInitialStateNewSale['cartData'];
 }): IInitialStateNewSale['cartData'] => {
     // creating local copy of the cartData
-    const cartDataLocal = { ...props.cartData };
+    const cartDataLocal = merge({}, props.cartData);
+    // clearing sale totals data
+    cartDataLocal.totals = {
+        grandTotal: 0,
+        grandTotalDiscount: 0,
+        grandTotalTax: 0,
+    };
     // iterating through the cart items
     for (let i = 0; i < cartDataLocal.productCartInformation.length; i++) {
-        // getting instance of current cart item
-        const currCartItem = cartDataLocal.productCartInformation[i];
-        // getting instance of current cart product
-        const currCartProduct = cartDataLocal.products[i];
+        // getting instance of currentent cart item
+        const currentCartItem = cartDataLocal.productCartInformation[i];
+        // getting instance of currentent cart product
+        const currentCartProduct = cartDataLocal.products[i];
         // computing itemSubtotalBeforeDiscounts
-        currCartItem.itemSubTotalBeforeDiscounts =
-            currCartItem.itemPrice * currCartItem.itemQuantity;
+        currentCartItem.itemSubTotalBeforeDiscounts =
+            currentCartItem.itemPrice * currentCartItem.itemQuantity;
         // computing the discount value for the item
-        currCartItem.itemDiscountValue = xPercentOfY({
-            x: currCartItem.itemDiscountPercent,
-            y: currCartItem.itemPrice,
+        currentCartItem.itemDiscountValue = xPercentOfY({
+            x: currentCartItem.itemDiscountPercent,
+            y: currentCartItem.itemPrice,
         });
-        // computing the total discount for the current item (will be useful when there are multiple discounts)
-        currCartItem.totalDiscountValue = currCartItem.itemDiscountValue;
+        // computing the total discount for the currentent item (will be useful when there are multiple discounts)
+        currentCartItem.totalDiscountValue = currentCartItem.itemDiscountValue;
+        // adding total discount to sale totals
+        cartDataLocal.totals.grandTotalDiscount += currentCartItem.totalDiscountValue;
         // computing itemSubTotalAfterDiscounts
-        currCartItem.itemSubTotalAfterDiscounts =
-            currCartItem.itemSubTotalBeforeDiscounts - currCartItem.totalDiscountValue;
+        currentCartItem.itemSubTotalAfterDiscounts =
+            currentCartItem.itemSubTotalBeforeDiscounts - currentCartItem.totalDiscountValue;
         // emptyping appendable values
-        currCartItem.taxes = [];
-        currCartItem.taxSum = 0;
+        currentCartItem.taxes = [];
+        currentCartItem.taxSum = 0;
         // computing taxes
-        for (let j = 0; j < currCartProduct.taxBracket.length; j++) {
-            const currTaxBracket = currCartProduct.taxBracket[
+        for (let j = 0; j < currentCartProduct.taxBracket.length; j++) {
+            const currentTaxBracket = currentCartProduct.taxBracket[
                 j
             ] as pointOfSaleTypes.taxBracketResponseTypes.IGetTaxBracket['data'];
             const taxValue = xPercentOfY({
-                x: parseInt(currTaxBracket.taxPercent),
-                y: currCartItem.itemSubTotalAfterDiscounts,
+                x: parseInt(currentTaxBracket.taxPercent),
+                y: currentCartItem.itemSubTotalAfterDiscounts,
             });
-            currCartItem.taxes.push({
-                taxBracketName: currTaxBracket.name,
-                taxPercent: parseInt(currTaxBracket.taxPercent),
+            currentCartItem.taxes.push({
+                taxBracketName: currentTaxBracket.name,
+                taxPercent: parseInt(currentTaxBracket.taxPercent),
                 taxValue,
             });
-            // adding current taxValue to get total tax sum
-            currCartItem.taxSum += taxValue;
+            // adding currentent taxValue to get total tax sum
+            currentCartItem.taxSum += taxValue;
         }
         // computing totalTax for item
-        currCartItem.totalTax = currCartItem.taxSum * currCartItem.itemQuantity;
+        currentCartItem.totalTax = currentCartItem.taxSum * currentCartItem.itemQuantity;
+        // adding total taxes to sale totals
+        cartDataLocal.totals.grandTotalTax += currentCartItem.totalTax;
         // computing itemTotal
-        currCartItem.itemTotal = currCartItem.itemSubTotalAfterDiscounts + currCartItem.totalTax;
+        currentCartItem.itemTotal =
+            currentCartItem.itemSubTotalAfterDiscounts + currentCartItem.totalTax;
         // computing grandTotal
-        currCartItem.grandTotal = currCartItem.itemTotal;
+        currentCartItem.grandTotal = currentCartItem.itemTotal;
+        // adding grandTotal to sale totals
+        cartDataLocal.totals.grandTotal += currentCartItem.grandTotal;
         // updating computed values in main object
-        cartDataLocal.productCartInformation[i] = currCartItem;
+        cartDataLocal.productCartInformation[i] = currentCartItem;
     }
     return cartDataLocal;
 };
