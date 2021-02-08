@@ -6,7 +6,10 @@ import { SLIDERS, sliderModalSelector } from 'store/models/sliderModal';
 import { handleCloseSlider } from 'utilities/general';
 import { INewSaleCart } from '../../newSale.types';
 import styles from './cartItemDetail.module.scss';
-import { getDetailedCalculations } from './cartItemDetails.actions';
+import {
+    getDetailedCalculationsSliderView,
+    getItemDetailsSliderView,
+} from './cartItemDetails.actions';
 
 export const CartItemDetail = (props: { cartData: INewSaleCart }): JSX.Element => {
     // getting slider state from redux store
@@ -56,11 +59,9 @@ export const CartItemDetail = (props: { cartData: INewSaleCart }): JSX.Element =
                 onSelect={(selectedIndex) => setSelectedTab(selectedIndex)}
             />
             <div>
-                {selectedTab === 0 ? (
-                    getDetailedCalculations(props.cartData, userSelectedRowIndex)
-                ) : (
-                    <div></div>
-                )}
+                {selectedTab === 0
+                    ? getDetailedCalculationsSliderView(props.cartData, userSelectedRowIndex)
+                    : getItemDetailsSliderView(props.cartData, userSelectedRowIndex)}
             </div>
         </div>
     ) : null;

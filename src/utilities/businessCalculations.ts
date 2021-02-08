@@ -145,7 +145,8 @@ export const computeCartData = (props: {
             y: currentCartItem.itemPrice,
         });
         // computing the total discount for the currentent item (will be useful when there are multiple discounts)
-        currentCartItem.totalDiscountValue = currentCartItem.itemDiscountValue;
+        currentCartItem.totalDiscountValue =
+            currentCartItem.itemDiscountValue * currentCartItem.itemQuantity;
         // adding total discount to sale totals
         cartDataLocal.totals.grandTotalDiscount += currentCartItem.totalDiscountValue;
         // computing itemSubTotalAfterDiscounts
