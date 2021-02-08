@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@sellerspot/universal-types": {
-      "signature": "1d0ce6f6341b450f004ef05b0e0b4ec6"
+      "signature": "34b8b5937d7d2b63019d81342ed77ef1"
     },
     "@sellerspot/database-models": {
       "signature": "f1d637a1d854dfe6fc419411342e1527"

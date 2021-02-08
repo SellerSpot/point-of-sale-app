@@ -19,7 +19,7 @@ export const getAllCategories = async (): Promise<
 };
 
 /**
- * Creates a new category in database
+ * * Creates a new category in database
  */
 export const createCategory = async (
     formData: IAddCategoryFormSchema,
@@ -33,4 +33,24 @@ export const createCategory = async (
         data,
     );
     return response.data as pointOfSaleTypes.categoryResponseTypes.ICreateCategory;
+};
+
+/**
+ * * Updates a category in database
+ */
+export const updateCategory = async (
+    formData: IAddCategoryFormSchema,
+): Promise<pointOfSaleTypes.categoryResponseTypes.IUpdateCategory> => {
+    // compiling data to update
+    const categoryToUpdate: pointOfSaleTypes.categoryRequestTypes.IUpdateCategory = {
+        id: formData.id,
+        categoryData: {
+            name: formData.name,
+        },
+    };
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.CATEGORY}/${pointOfSaleTypes.ROUTES.CATEGORY_UPDATE_CATEGORY}`,
+        categoryToUpdate,
+    );
+    return response.data as pointOfSaleTypes.categoryResponseTypes.IUpdateCategory;
 };

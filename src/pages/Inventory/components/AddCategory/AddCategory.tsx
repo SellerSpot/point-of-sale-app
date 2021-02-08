@@ -1,13 +1,12 @@
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { brandRequests, categoryRequests } from 'requests';
+import { categoryRequests } from 'requests';
 import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
-import { RootState, store } from 'store/store';
+import { RootState } from 'store/store';
 import { handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
-import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
 import styles from './addCategory.module.scss';
 import { AddCategoryFormSchema, IAddCategoryFormSchema } from './addCategory.types';
@@ -26,6 +25,7 @@ export const AddCategory = (): JSX.Element => {
     const [focusInputField, setFocusInputField] = useState(false);
     // store dispatch
     const dispatch = useDispatch();
+
     //# CRITICAL FUCNTIONS
 
     // getting formik instance to handle form operations
@@ -34,16 +34,34 @@ export const AddCategory = (): JSX.Element => {
         validationSchema: AddCategoryFormSchema,
         onSubmit: async (values: IAddCategoryFormSchema) => {
             formFormik.setSubmitting(true);
-            const response = await categoryRequests.createCategory(values);
-            if (response.status) {
-                showMessage('Category added to database!', 'success');
-                formFormik.resetForm();
-                setFocusInputField(true);
+
+            if (!isNull(sliderState.sliders.addCategorySlider.autoFillData)) {
+                const response = await categoryRequests.updateCategory(values);
+                if (response.status) {
+                    showMessage('Category Updated!', 'success');
+                    dispatch(
+                        closeSliderModal({
+                            sliderName: SLIDERS.addCategorySlider,
+                        }),
+                    );
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             } else {
-                response.error.map((error) => {
-                    formFormik.setFieldError(error.name, error.message);
-                });
+                const response = await categoryRequests.createCategory(values);
+                if (response.status) {
+                    showMessage('Category added to database!', 'success');
+                    formFormik.resetForm();
+                    setFocusInputField(true);
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             }
+
             formFormik.setSubmitting(false);
         },
     });
@@ -106,8 +124,16 @@ export const AddCategory = (): JSX.Element => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
+                    onClick={(_) => {
+                        formFormik.submitForm();
+                        console.log(formFormik.errors);
+                    }}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Category'}
+                    label={
+                        !isNull(sliderState.sliders.addCategorySlider.autoFillData)
+                            ? 'Update Category'
+                            : 'Add Category'
+                    }
                     tabIndex={0}
                 />
                 <Button

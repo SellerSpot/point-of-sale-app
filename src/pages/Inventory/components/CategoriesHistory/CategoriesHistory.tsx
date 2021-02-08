@@ -58,6 +58,7 @@ export const CategoriesHistory = (): JSX.Element => {
                     onRowClicked={(event) => {
                         // compiling data to push to page
                         const autoFillData: IAddCategoryFormSchema = {
+                            id: categoriesData[event.rowIndex]._id,
                             name: categoriesData[event.rowIndex].name,
                         };
                         dispatch(

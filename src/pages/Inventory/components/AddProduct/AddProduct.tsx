@@ -72,7 +72,6 @@ export const AddProduct = (): JSX.Element => {
             // checking if it is an update query
             if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
                 const response = await productRequests.updateProduct(values);
-                console.log(response.error);
                 if (response.status) {
                     showMessage('Product Updated!', 'success');
                     dispatch(
