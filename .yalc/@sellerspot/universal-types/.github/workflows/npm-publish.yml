@@ -1,0 +1,67 @@
+name: Sellerspot Universal Types Npm Package
+
+on:
+    workflow_dispatch: # for Run workflow button
+        inputs:
+            publishType:
+                description: 'Publish Type - ( major | minor | patch )'
+                required: true
+                default: 'patch'
+    push:
+        branches:
+            - master
+
+jobs:
+    publish:
+        name: Publish
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '@major') || contains(github.event.head_commit.message, '@minor') || contains(github.event.head_commit.message, '@patch')
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  persist-credentials: false
+
+            - name: Setup Node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+                  registry-url: https://registry.npmjs.org/
+
+            - name: Create Git Directory If Not Exists
+              continue-on-error: true
+              run: mkdir ~/.git
+
+            - name: Setting Up Git Identity
+              continue-on-error: true
+              run: |
+                  git config --global user.email "grthayalan18@gmail.com"
+                  git config --global user.name "ThayalanGR"
+
+            - name: Install and Build
+              run: |
+                  npm install
+                  npm run build
+
+            - name: Major Version
+              if: contains(github.event.head_commit.message, '@major') || github.event.inputs.publishType == 'major'
+              run: npm version major -m "version update ${{ github.event.head_commit.message }}"
+
+            - name: Minor Version
+              if: contains(github.event.head_commit.message, '@minor') || github.event.inputs.publishType == 'minor'
+              run: npm version minor -m "version update ${{ github.event.head_commit.message }}"
+
+            - name: Patch Version
+              if: contains(github.event.head_commit.message, '@patch') || github.event.inputs.publishType == 'patch'
+              run: npm version patch -m "version update ${{ github.event.head_commit.message }}"
+
+            - name: Publish Package
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+            - name: Push Changes to Master
+              run: |
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+                  git push origin master -f
+                  git push --tags
