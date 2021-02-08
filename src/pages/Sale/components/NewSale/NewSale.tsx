@@ -165,25 +165,27 @@ export const NewSale = (): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
-                    <SliderModal
-                        active={sliderState.openSliders.includes(SLIDERS.itemDetailSlider)}
-                        sliderSize={'50%'}
-                        zIndex={10}
-                        onClickBackdrop={() =>
-                            addSliderToCallBackStateTrack({
-                                sliderName: SLIDERS.itemDetailSlider,
-                                sliderState,
-                            })
-                        }
-                        onClickEsc={() =>
-                            addSliderToCallBackStateTrack({
-                                sliderName: SLIDERS.itemDetailSlider,
-                                sliderState,
-                            })
-                        }
-                    >
-                        <CartItemDetail cartData={cartData} />
-                    </SliderModal>
+                    <div className={styles.itemDetailSliderWrapper}>
+                        <SliderModal
+                            active={sliderState.openSliders.includes(SLIDERS.itemDetailSlider)}
+                            sliderSize={'50%'}
+                            zIndex={10}
+                            onClickBackdrop={() =>
+                                addSliderToCallBackStateTrack({
+                                    sliderName: SLIDERS.itemDetailSlider,
+                                    sliderState,
+                                })
+                            }
+                            onClickEsc={() =>
+                                addSliderToCallBackStateTrack({
+                                    sliderName: SLIDERS.itemDetailSlider,
+                                    sliderState,
+                                })
+                            }
+                        >
+                            <CartItemDetail cartData={cartData} />
+                        </SliderModal>
+                    </div>
                     <AgGridReact
                         suppressDragLeaveHidesColumns
                         suppressCellSelection

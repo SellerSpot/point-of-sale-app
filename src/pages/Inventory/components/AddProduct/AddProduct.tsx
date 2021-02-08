@@ -14,6 +14,7 @@ import {
     Dropdown,
     HorizontalRule,
     InputField,
+    Spinner,
 } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
 import { checkIfTaxItemIsSelected, compileProductSpecialOptions } from './addProduct.actions';
@@ -54,6 +55,8 @@ export const AddProduct = (): JSX.Element => {
     const [focusInputField, setFocusInputField] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // state to hold the loading state of the addProducts page
+    const [pageLoading, setPageLoading] = useState(true);
     // dispatch actions to store
     const dispatch = useDispatch();
 
@@ -65,7 +68,7 @@ export const AddProduct = (): JSX.Element => {
         validationSchema: AddProductFormSchema,
         onSubmit: async (values: IAddProductFormSchema) => {
             formFormik.setSubmitting(true);
-            debugger;
+            console.log('Started Submit');
             // checking if it is an update query
             if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
                 const response = await productRequests.updateProduct(values);
@@ -104,6 +107,7 @@ export const AddProduct = (): JSX.Element => {
     // * to manage focus for inputFields and autofill data
     useEffect(() => {
         if (sliderState.openSliders.includes(SLIDERS.addProductSlider)) {
+            populateProductSpecialOptions();
             setFocusInputField(true);
             // checking if any autofill data is present
             if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
@@ -117,32 +121,32 @@ export const AddProduct = (): JSX.Element => {
     }, [sliderState.openSliders]);
 
     // * to fetch all available special options for a product and update in state
-    useEffect(() => {
-        (async () => {
-            const specialProductOptions = await compileProductSpecialOptions();
-            setProductMetaDataOptions(specialProductOptions);
-            // compiling default values for special options
-            const defaultCategory: IAddProductFormSchema['category'] =
-                specialProductOptions.categories.length > 0
-                    ? specialProductOptions.categories[0]
-                    : null;
-            const defaultBrand: IAddProductFormSchema['brand'] =
-                specialProductOptions.brands.length > 0 ? specialProductOptions.brands[0] : null;
-            const defaultStockUnit: IAddProductFormSchema['stockUnit'] =
-                specialProductOptions.stockUnits.length > 0
-                    ? specialProductOptions.stockUnits[0]
-                    : null;
-            const defaultTaxBrackets: IAddProductFormSchema['taxBrackets'] = [];
-            // setting values to form store
-            formFormik.setFieldValue('brand' as keyof IAddProductFormSchema, defaultBrand);
-            formFormik.setFieldValue('category' as keyof IAddProductFormSchema, defaultCategory);
-            formFormik.setFieldValue('stockUnit' as keyof IAddProductFormSchema, defaultStockUnit);
-            formFormik.setFieldValue(
-                'taxBrackets' as keyof IAddProductFormSchema,
-                defaultTaxBrackets,
-            );
-        }).call(null);
-    }, []);
+    const populateProductSpecialOptions = async () => {
+        // setting page loading
+        setPageLoading(true);
+        // fetching all special options from server
+        const specialProductOptions = await compileProductSpecialOptions();
+        setProductMetaDataOptions(specialProductOptions);
+        // compiling default values for special options
+        const defaultCategory: IAddProductFormSchema['category'] =
+            specialProductOptions.categories.length > 0
+                ? specialProductOptions.categories[0]
+                : null;
+        const defaultBrand: IAddProductFormSchema['brand'] =
+            specialProductOptions.brands.length > 0 ? specialProductOptions.brands[0] : null;
+        const defaultStockUnit: IAddProductFormSchema['stockUnit'] =
+            specialProductOptions.stockUnits.length > 0
+                ? specialProductOptions.stockUnits[0]
+                : null;
+        const defaultTaxBrackets: IAddProductFormSchema['taxBrackets'] = [];
+        // setting values to form store
+        formFormik.setFieldValue('brand' as keyof IAddProductFormSchema, defaultBrand);
+        formFormik.setFieldValue('category' as keyof IAddProductFormSchema, defaultCategory);
+        formFormik.setFieldValue('stockUnit' as keyof IAddProductFormSchema, defaultStockUnit);
+        formFormik.setFieldValue('taxBrackets' as keyof IAddProductFormSchema, defaultTaxBrackets);
+        // setting page loading
+        setPageLoading(false);
+    };
 
     // to handle slider closing operations
     useEffect(() => {
@@ -162,6 +166,11 @@ export const AddProduct = (): JSX.Element => {
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
+            {pageLoading ? (
+                <div className={styles.loadingOverlay}>
+                    <Spinner size={'medium'} />
+                </div>
+            ) : null}
             <div className={styles.pageTitleBar}>Add Product</div>
             <div className={styles.pageBody}>
                 <div className={styles.formGroup}>
@@ -390,7 +399,11 @@ export const AddProduct = (): JSX.Element => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
-                    onClick={(_) => formFormik.submitForm()}
+                    onClick={(_) => {
+                        console.log('Button Clicked');
+                        formFormik.submitForm();
+                        console.log(formFormik.errors);
+                    }}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label={
                         !isNull(sliderState.sliders.addProductSlider.autoFillData)
