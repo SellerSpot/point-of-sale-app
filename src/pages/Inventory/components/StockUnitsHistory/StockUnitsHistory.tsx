@@ -13,7 +13,7 @@ import {
     compileStockUnitsHistoryTableBodyData,
     getStockUnitsHistoryTableColDef,
 } from './stockUnitsHistory.actions';
-import styles from './stockUnitshistory.module.scss';
+import styles from './stockUnitsHistory.module.scss';
 
 export const StockUnitsHistory = (): JSX.Element => {
     // To manage which tab is selected
