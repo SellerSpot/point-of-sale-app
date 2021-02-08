@@ -19,7 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@sellerspot/database-models": "^10.5.0",
+    "@sellerspot/database-models": "^10.5.2",
     "@types/classnames": "^2.2.11",
     "@types/ms": "^0.7.31",
     "@types/node": "^14.14.14",
@@ -63,8 +63,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
-    "@sellerspot/universal-components": "^1.14.0",
-    "@sellerspot/universal-types": "^1.5.2",
+    "@sellerspot/universal-components": "^1.14.1",
+    "@sellerspot/universal-types": "^1.6.0",
     "ag-grid-community": "^25.0.1",
     "ag-grid-react": "^25.0.1",
     "axios": "^0.21.1",
