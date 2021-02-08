@@ -53,38 +53,6 @@ export const CartItemDetail = (props: { cartData: INewSaleCart }): JSX.Element =
 
     // used to compute the values for the itemDetails page
     const computeValues = (rowIndex: number) => {
-        // getting current instance of cart item
-        const cartItem = props.cartData.productCartInformation[rowIndex];
-        const computedDataValues: IComputedData = computedDataInitialState;
-        computedDataValues.itemSubTotalBeforeDiscounts = cartItem.itemPrice * cartItem.itemQuantity;
-        computedDataValues.itemDiscount = xPercentOfY({
-            x: cartItem.itemDiscountPercent,
-            y: cartItem.itemPrice,
-        });
-        computedDataValues.totalDiscount = computedDataValues.itemDiscount;
-        computedDataValues.itemSubTotalAfterDiscounts =
-            computedDataValues.itemSubTotalBeforeDiscounts - computedDataValues.totalDiscount;
-        computedDataValues.taxes = [];
-        // adding tax informaiton
-        for (let i = 0; i < props.cartData.products[rowIndex].taxBracket.length; i++) {
-            const taxForItem = xPercentOfY({
-                x: parseInt(props.cartData.products[rowIndex].taxBracket[i].taxPercent),
-                y: computedDataValues.itemSubTotalAfterDiscounts,
-            });
-            computedDataValues.taxes.push({
-                taxBracketName: props.cartData.products[rowIndex].taxBracket[i].name,
-                taxPercent: parseInt(props.cartData.products[rowIndex].taxBracket[i].taxPercent),
-                taxForItem,
-            });
-            computedDataValues.taxSum += taxForItem;
-        }
-        console.log(computedDataValues.taxes.length);
-
-        // multipying total tax by quantity
-        computedDataValues.totalTax = computedDataValues.taxSum * cartItem.itemQuantity;
-        computedDataValues.itemTotal =
-            computedDataValues.itemSubTotalAfterDiscounts + computedDataValues.totalTax;
-        computedDataValues.grandTotal = computedDataValues.itemTotal;
         // setting computed data
         setComputedData(computedDataValues);
     };

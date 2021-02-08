@@ -349,13 +349,15 @@ export const pushProductIntoCart = (
             itemPrice: product.sellingPrice,
             itemQuantity,
         });
-        const itemPrice = computeItemPrice({
-            itemPrice: itemSubTotal,
+        const itemSubtotalAfterDiscounts = computeItemPrice({
+            itemSubTotal,
             itemTotalDiscount: itemTotalDiscount,
             itemQuantity,
         });
+        console.log('ItemPrice:', itemSubtotalAfterDiscounts);
+
         const itemTotalTax = computeItemTotalTax({
-            itemPrice: itemPrice,
+            itemSubtotalAfterDiscounts,
             itemQuantity,
             itemTaxPercents: product.taxBracket.map((taxBracket) =>
                 parseInt(taxBracket.taxPercent),
@@ -363,7 +365,7 @@ export const pushProductIntoCart = (
         });
 
         const itemTotal = computeItemTotal({
-            itemPrice: itemPrice,
+            itemSubtotalAfterDiscounts,
             itemQuantity,
             itemTotalTax,
         });
@@ -437,21 +439,23 @@ export const recomputeCartValues = (
         itemQuantity: currentCartInformation.itemQuantity,
     });
     // keeping price separate because it is affected by the discount
-    const itemPriceTemp = computeItemPrice({
-        itemPrice: currentCartInformation.itemPrice,
+    const itemSubtotalAfterDiscounts = computeItemPrice({
+        itemSubTotal: currentCartInformation.itemSubTotal,
         itemTotalDiscount: currentCartInformation.itemTotalDiscount,
         itemQuantity: currentCartInformation.itemQuantity,
     });
     currentCartInformation.itemTotalTax = computeItemTotalTax({
-        itemPrice: itemPriceTemp,
+        itemSubtotalAfterDiscounts,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTaxPercents: currentProduct.taxBracket.map((taxBracket) =>
             parseInt(taxBracket.taxPercent),
         ),
     });
+    console.log('Total Subtotal after discount: ' + itemSubtotalAfterDiscounts);
+    console.log('Total Tax: ' + currentCartInformation.itemTotalTax);
 
     currentCartInformation.itemTotal = computeItemTotal({
-        itemPrice: itemPriceTemp,
+        itemSubtotalAfterDiscounts,
         itemQuantity: currentCartInformation.itemQuantity,
         itemTotalTax: currentCartInformation.itemTotalTax,
     });

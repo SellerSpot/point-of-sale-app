@@ -1,5 +1,8 @@
 //# GENERAL COMPUTATION FUNCTIONS
 
+import { IInitialStateNewSale } from 'store/models/newSale';
+import { pointOfSaleTypes } from '@sellerspot/universal-types';
+
 /**
  * * Computes x % of y
  */
@@ -12,11 +15,11 @@ export const xPercentOfY = (props: { x: number; y: number }): number =>
  * * ITEM_PRICE - Compute the item price after applying discount
  */
 export const computeItemPrice = (props: {
-    itemPrice: number;
+    itemSubTotal: number;
     itemTotalDiscount: number;
     itemQuantity: number;
 }): number => {
-    return props.itemPrice * props.itemQuantity - props.itemTotalDiscount;
+    return props.itemSubTotal * props.itemQuantity - props.itemTotalDiscount;
 };
 
 /**
@@ -30,11 +33,13 @@ export const computeItemSubtotal = (props: { itemPrice: number; itemQuantity: nu
  * * ITEM_TOTAL - Complete cost of item with every charge included
  */
 export const computeItemTotal = (props: {
-    itemPrice: number;
+    itemSubtotalAfterDiscounts: number;
     itemTotalTax: number;
     itemQuantity: number;
 }): number => {
-    return parseInt(((props.itemPrice + props.itemTotalTax) * props.itemQuantity).toFixed(2));
+    return parseInt(
+        ((props.itemSubtotalAfterDiscounts + props.itemTotalTax) * props.itemQuantity).toFixed(2),
+    );
 };
 
 /**
@@ -42,14 +47,14 @@ export const computeItemTotal = (props: {
  */
 export const computeItemTotalTax = (props: {
     itemTaxPercents: number[];
-    itemPrice: number;
+    itemSubtotalAfterDiscounts: number;
     itemQuantity: number;
 }): number => {
     let itemTotalTax = 0;
     for (let index = 0; index < props.itemTaxPercents.length; index++) {
         itemTotalTax += xPercentOfY({
             x: props.itemTaxPercents[index],
-            y: props.itemPrice,
+            y: props.itemSubtotalAfterDiscounts,
         });
     }
 
@@ -108,4 +113,63 @@ export const computeGrandTotalDiscount = (props: { itemTotalDiscounts: number[] 
         grandTotalDiscount += props.itemTotalDiscounts[index];
     }
     return parseInt(grandTotalDiscount.toFixed(2));
+};
+
+/**
+ * * Used to perform all cart related computations
+ */
+export const computeCartData = (props: {
+    cartData: IInitialStateNewSale['cartData'];
+}): IInitialStateNewSale['cartData'] => {
+    // creating local copy of the cartData
+    const cartDataLocal = { ...props.cartData };
+    // iterating through the cart items
+    for (let i = 0; i < cartDataLocal.productCartInformation.length; i++) {
+        // getting instance of current cart item
+        const currCartItem = cartDataLocal.productCartInformation[i];
+        // getting instance of current cart product
+        const currCartProduct = cartDataLocal.products[i];
+        // computing itemSubtotalBeforeDiscounts
+        currCartItem.itemSubTotalBeforeDiscounts =
+            currCartItem.itemPrice * currCartItem.itemQuantity;
+        // computing the discount value for the item
+        currCartItem.itemDiscountValue = xPercentOfY({
+            x: currCartItem.itemDiscountPercent,
+            y: currCartItem.itemPrice,
+        });
+        // computing the total discount for the current item (will be useful when there are multiple discounts)
+        currCartItem.totalDiscountValue = currCartItem.itemDiscountValue;
+        // computing itemSubTotalAfterDiscounts
+        currCartItem.itemSubTotalAfterDiscounts =
+            currCartItem.itemSubTotalBeforeDiscounts - currCartItem.totalDiscountValue;
+        // emptyping appendable values
+        currCartItem.taxes = [];
+        currCartItem.taxSum = 0;
+        // computing taxes
+        for (let j = 0; j < currCartProduct.taxBracket.length; j++) {
+            const currTaxBracket = currCartProduct.taxBracket[
+                j
+            ] as pointOfSaleTypes.taxBracketResponseTypes.IGetTaxBracket['data'];
+            const taxValue = xPercentOfY({
+                x: parseInt(currTaxBracket.taxPercent),
+                y: currCartItem.itemSubTotalAfterDiscounts,
+            });
+            currCartItem.taxes.push({
+                taxBracketName: currTaxBracket.name,
+                taxPercent: parseInt(currTaxBracket.taxPercent),
+                taxValue,
+            });
+            // adding current taxValue to get total tax sum
+            currCartItem.taxSum += taxValue;
+        }
+        // computing totalTax for item
+        currCartItem.totalTax = currCartItem.taxSum * currCartItem.itemQuantity;
+        // computing itemTotal
+        currCartItem.itemTotal = currCartItem.itemSubTotalAfterDiscounts + currCartItem.totalTax;
+        // computing grandTotal
+        currCartItem.grandTotal = currCartItem.itemTotal;
+        // updating computed values in main object
+        cartDataLocal.productCartInformation[i] = currCartItem;
+    }
+    return cartDataLocal;
 };
