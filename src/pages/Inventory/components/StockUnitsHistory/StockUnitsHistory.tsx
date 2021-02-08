@@ -58,6 +58,7 @@ export const StockUnitsHistory = (): JSX.Element => {
                     onRowClicked={(event) => {
                         // compiling data for autofill
                         const autoFillData: IAddStockUnitFormSchema = {
+                            id: stockUnitsData[event.rowIndex]._id,
                             name: stockUnitsData[event.rowIndex].name,
                         };
                         dispatch(

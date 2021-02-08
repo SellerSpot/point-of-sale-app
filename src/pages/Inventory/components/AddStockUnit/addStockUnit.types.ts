@@ -4,6 +4,7 @@ import * as Yup from 'yup';
  * Interface for the AddStockUnit form
  */
 export interface IAddStockUnitFormSchema {
+    id?: string;
     name: string;
 }
 

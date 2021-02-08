@@ -1,7 +1,7 @@
 import { AddBrand } from 'pages/Inventory/components/AddBrand/AddBrand';
 import { AddCategory } from 'pages/Inventory/components/AddCategory/AddCategory';
 import { AddProduct } from 'pages/Inventory/components/AddProduct/AddProduct';
-import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/addStockUnit';
+import { AddStockUnit } from 'pages/Inventory/components/AddStockUnit/AddStockUnit';
 import { AddTaxBracket } from 'pages/Inventory/components/AddTaxBracket/AddTaxBracket';
 import { Checkout } from 'pages/Sale/components/Checkout/Checkout';
 import { NewSale } from 'pages/Sale/components/NewSale/NewSale';

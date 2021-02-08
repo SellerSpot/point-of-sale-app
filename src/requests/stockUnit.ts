@@ -34,3 +34,23 @@ export const createStockUnit = async (
     );
     return response.data as pointOfSaleTypes.stockUnitResponseTypes.ICreateStockUnit;
 };
+
+/**
+ * * Updates stockUnit in database
+ */
+export const updateStockUnit = async (
+    formData: IAddStockUnitFormSchema,
+): Promise<pointOfSaleTypes.stockUnitResponseTypes.IUpdateStockUnit> => {
+    // compiling data to update
+    const stockUnitToUpdate: pointOfSaleTypes.stockUnitRequestTypes.IUpdateStockUnit = {
+        id: formData.id,
+        stockUnitData: {
+            name: formData.name,
+        },
+    };
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.STOCK_UNIT}/${pointOfSaleTypes.ROUTES.STOCKUNIT_UPDATE_STOCKUNIT}`,
+        stockUnitToUpdate,
+    );
+    return response.data as pointOfSaleTypes.stockUnitResponseTypes.IUpdateStockUnit;
+};
