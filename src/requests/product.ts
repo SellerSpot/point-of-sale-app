@@ -42,7 +42,7 @@ export const searchProduct = async (
 };
 
 /**
- * Used to create a new product
+ * * Used to create a new product
  */
 export const createProduct = async (
     data: IAddProductFormSchema,
@@ -68,4 +68,37 @@ export const createProduct = async (
         productToAdd,
     );
     return response.data as pointOfSaleTypes.productResponseTypes.ICreateProduct;
+};
+
+/**
+ * * Used to update product information
+ */
+export const updateProduct = async (
+    productData: IAddProductFormSchema,
+): Promise<pointOfSaleTypes.productResponseTypes.IUpdateProduct> => {
+    // compiling data to send to server
+    const productToUpdate: pointOfSaleTypes.productRequestTypes.IUpdateProduct = {
+        id: productData.productId,
+        productData: {
+            brand: productData.brand._id,
+            category: productData.category._id,
+            name: productData.name,
+            sellingPrice: productData.sellingPrice,
+            stockInformation: {
+                availableStock: productData.availableStock,
+                stockUnit: productData.stockUnit._id,
+            },
+            taxBracket: productData.taxBrackets.map((taxBracket) => taxBracket._id),
+            gtinNumber: productData.gtinNumber,
+            landingPrice: productData.landingPrice,
+            mrpPrice: productData.mrpPrice,
+            profitPercent: productData.profitPercent,
+        },
+    };
+
+    const response = await apiService.post(
+        `${pointOfSaleTypes.ROUTES.PROUDCT}/${pointOfSaleTypes.ROUTES.PRODUCT_UPDATE_PRODUCT}`,
+        productToUpdate,
+    );
+    return response.data as pointOfSaleTypes.productResponseTypes.IUpdateProduct;
 };

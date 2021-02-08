@@ -61,6 +61,7 @@ export const ProductsHistory = (): JSX.Element => {
                     onRowClicked={(event) => {
                         // compiling data to push to page
                         const autoFillData: IAddProductFormSchema = {
+                            productId: productsData[event.rowIndex]._id,
                             name: productsData[event.rowIndex].name,
                             brand: productsData[event.rowIndex]
                                 .brand as pointOfSaleTypes.brandResponseTypes.IGetBrand['data'],

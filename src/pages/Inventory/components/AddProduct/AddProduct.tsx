@@ -54,33 +54,54 @@ export const AddProduct = (): JSX.Element => {
     const [focusInputField, setFocusInputField] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
+    // dispatch actions to store
+    const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
 
-    // getting formik instance to handle form operations
+    // * getting formik instance to handle form operations
     const formFormik = useFormik({
         initialValues: formInitialValues,
         validationSchema: AddProductFormSchema,
         onSubmit: async (values: IAddProductFormSchema) => {
             formFormik.setSubmitting(true);
-
-            const response = await productRequests.createProduct(values);
-            if (response.status) {
-                showMessage('Product added to database!', 'success');
-                formFormik.resetForm();
-                setFocusInputField(true);
+            debugger;
+            // checking if it is an update query
+            if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
+                const response = await productRequests.updateProduct(values);
+                console.log(response.error);
+                if (response.status) {
+                    showMessage('Product Updated!', 'success');
+                    dispatch(
+                        closeSliderModal({
+                            sliderName: SLIDERS.addProductSlider,
+                        }),
+                    );
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             } else {
-                response.error.map((error) => {
-                    formFormik.setFieldError(error.name, error.message);
-                });
+                const response = await productRequests.createProduct(values);
+                if (response.status) {
+                    showMessage('Product added to database!', 'success');
+                    formFormik.resetForm();
+                    setFocusInputField(true);
+                } else {
+                    response.error.map((error) => {
+                        formFormik.setFieldError(error.name, error.message);
+                    });
+                }
             }
+
             formFormik.setSubmitting(false);
         },
     });
 
-    //# HOOKS
+    //# HOOK FUNCTIONS
 
-    // * to manage focus for inputFields
+    // * to manage focus for inputFields and autofill data
     useEffect(() => {
         if (sliderState.openSliders.includes(SLIDERS.addProductSlider)) {
             setFocusInputField(true);
@@ -90,6 +111,8 @@ export const AddProduct = (): JSX.Element => {
                 // pushing data to formik state
                 formFormik.setValues(autoFillData as IAddProductFormSchema);
             }
+        } else {
+            formFormik.resetForm();
         }
     }, [sliderState.openSliders]);
 
@@ -126,7 +149,6 @@ export const AddProduct = (): JSX.Element => {
         if (sliderState.callBackStateTrack.includes(SLIDERS.addProductSlider)) {
             // getting the topmost slider
             const topMostSlider = last(sliderState.openSliders);
-
             // only executing action if the top most slider is the current slider
             if (topMostSlider === SLIDERS.addProductSlider) {
                 handleCloseSlider({
@@ -368,8 +390,13 @@ export const AddProduct = (): JSX.Element => {
             <div className={styles.pageFooter}>
                 <Button
                     type="submit"
+                    onClick={(_) => formFormik.submitForm()}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
-                    label={'Add Product'}
+                    label={
+                        !isNull(sliderState.sliders.addProductSlider.autoFillData)
+                            ? 'Update Product'
+                            : 'Add Product'
+                    }
                     tabIndex={0}
                 />
                 <Button
