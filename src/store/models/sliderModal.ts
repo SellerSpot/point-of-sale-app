@@ -114,7 +114,8 @@ const sliderModalSlice = createSlice({
             const thisSliderModalPosition = state.openSliders.indexOf(payload.sliderName);
             if (thisSliderModalPosition > -1) {
                 state.openSliders.splice(thisSliderModalPosition, 1);
-                state.sliders[payload.sliderName].autoFillData = null;
+                state.sliders[payload.sliderName].autoFillData =
+                    initialState.sliders[payload.sliderName].autoFillData;
             }
         },
         setCallBackStateTrack: (

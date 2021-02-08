@@ -31,7 +31,7 @@ export const NewSale = (): JSX.Element => {
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
     // state to handle the focus state of the searchBar
-    const [searchBarFocused, setSearchBarFocused] = useState(true);
+    const [searchBarFocused, setSearchBarFocused] = useState(false);
     // used to help identify if the input is from direct input or using eventListeners (to prevent double input bug)
     const [inputIsFromHandleKeydown, setInputIsFromHandleKeyDown] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
@@ -111,6 +111,7 @@ export const NewSale = (): JSX.Element => {
             document.addEventListener('keydown', handleKeydown);
         } else {
             document.removeEventListener('keydown', handleKeydown);
+            setSearchBarFocused(false);
         }
     }, [sliderState.openSliders]);
 

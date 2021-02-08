@@ -252,7 +252,7 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
                     <div className={styles.cartActionButtonWrapper}>
                         <Button
                             className={styles.cartActionButton}
-                            key={'asdf'}
+                            key={params.rowIndex + 'edit'}
                             label={<MdMoreVert size={20} />}
                             onClick={(_) =>
                                 store.dispatch(
@@ -267,9 +267,9 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
                         />
                         <Button
                             className={styles.cartActionButton}
-                            key={'asdf'}
+                            key={params.rowIndex + 'delete'}
                             label={<MdDelete size={20} />}
-                            onClick={(_) => alert('Delete')}
+                            onClick={(_) => alert('Delete ' + params.rowIndex)}
                         />
                     </div>
                 );
