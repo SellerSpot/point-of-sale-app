@@ -33,8 +33,8 @@ export const StockUnitsHistory = (): JSX.Element => {
     return (
         <div className={styles.stockUnitsWrapper}>
             <MetaCard
-                title="Sample Description"
-                secondaryText={'Sample Data'}
+                title="Stock-Units History"
+                secondaryText={'Holds all your stock-units'}
                 buttons={[
                     <Button
                         key={'addStockUnits'}

@@ -43,8 +43,8 @@ export const ProductsHistory = (): JSX.Element => {
     return (
         <div className={styles.productsWrapper}>
             <MetaCard
-                title="Sample Description"
-                secondaryText={'Sample Data'}
+                title="Products History"
+                secondaryText={'Holds all your products and their details'}
                 buttons={[
                     <Button
                         key={'addProduct'}

@@ -33,8 +33,8 @@ export const CategoriesHistory = (): JSX.Element => {
     return (
         <div className={styles.categoriesWrapper}>
             <MetaCard
-                title="Sample Description"
-                secondaryText={'Sample Data'}
+                title="Categories History"
+                secondaryText={'Holds all your categories data'}
                 buttons={[
                     <Button
                         key={'addCategory'}

@@ -27,8 +27,8 @@ export const SalesHistory = (): JSX.Element => {
     return (
         <div className={styles.salesHistoryWrapper}>
             <MetaCard
-                title="Sample Description"
-                secondaryText={'Sample Data'}
+                title="Sales History"
+                secondaryText={'Holds all pending and completed sales data'}
                 buttons={[
                     <Button
                         key={'newSaleBtn'}
