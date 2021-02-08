@@ -126,7 +126,6 @@ export const AddCategory = (): JSX.Element => {
                     type="submit"
                     onClick={(_) => {
                         formFormik.submitForm();
-                        console.log(formFormik.errors);
                     }}
                     status={formFormik.isSubmitting ? 'disabledLoading' : 'default'}
                     label={

@@ -58,6 +58,7 @@ export const TaxBracketsHistory = (): JSX.Element => {
                     onRowClicked={(event) => {
                         // compiling data for autofill
                         const autoFillData: IAddTaxBracketFormSchema = {
+                            id: taxBracketsData[event.rowIndex]._id,
                             name: taxBracketsData[event.rowIndex].name,
                             taxPercent: taxBracketsData[event.rowIndex].taxPercent,
                         };

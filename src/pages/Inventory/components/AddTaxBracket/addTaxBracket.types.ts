@@ -4,6 +4,7 @@ import * as Yup from 'yup';
  * Interface for the AddTaxBracket form
  */
 export interface IAddTaxBracketFormSchema {
+    id?: string;
     name: string;
     taxPercent: string;
 }
