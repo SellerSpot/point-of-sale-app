@@ -2,9 +2,9 @@ import { AgGridReact } from 'ag-grid-react';
 import classNames from 'classnames';
 import { MetaCard } from 'components/MetaCard/MetaCard';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from 'requests/product';
-import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal, sliderModalSelector } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import { generalUtilities } from 'utilities/utilities';
 import { Button } from '@sellerspot/universal-components';
@@ -20,18 +20,25 @@ export const ProductsHistory = (): JSX.Element => {
     const [productsData, setProductsData] = useState<
         pointOfSaleTypes.productResponseTypes.IGetAllProducts['data']
     >([]);
+    // fetching sliderState so that the table can refresh when needed
+    const sliderState = useSelector(sliderModalSelector);
     // store dispatch
     const dispatch = useDispatch();
 
-    // getting all products
+    // fetches product data from server
+    const updateProductData = async () => {
+        // To populate the table
+        const productsData = await getAllProducts();
+        // updating local state
+        setProductsData(productsData);
+    };
+
+    // refreshing loaded product data when special conditions are met
     useEffect(() => {
-        (async () => {
-            // To populate the table
-            const productsData = await getAllProducts();
-            // updating local state
-            setProductsData(productsData);
-        }).call(null);
-    }, []);
+        if (!sliderState.openSliders.includes(SLIDERS.addProductSlider)) {
+            updateProductData();
+        }
+    }, [sliderState.openSliders]);
 
     return (
         <div className={styles.productsWrapper}>

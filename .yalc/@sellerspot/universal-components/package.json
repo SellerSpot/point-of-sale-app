@@ -1,6 +1,6 @@
 {
     "name": "@sellerspot/universal-components",
-    "version": "1.13.1+67da587b",
+    "version": "1.13.1+eddd938c",
     "description": "Universal Components for sellerspot eco-system.",
     "main": "dist/index.js",
     "scripts": {
@@ -45,5 +45,5 @@
     },
     "homepage": "https://github.com/SellerSpot/universal-components#readme",
     "dependencies": {},
-    "yalcSig": "67da587ba7b09cb1d42dcc17b2ea8ac7"
+    "yalcSig": "eddd938c836ef93b45c12f5aec50d838"
 }

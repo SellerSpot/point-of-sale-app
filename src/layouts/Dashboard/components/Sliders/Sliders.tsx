@@ -74,6 +74,8 @@ const Sliders = (): ReactElement => {
             }
             // checkoutSlider invoke
             else if (event.key === GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT) {
+                console.log(newSaleState.cartData.products.length);
+
                 event.preventDefault();
                 // only enabling this slider if the new sale cart is not empty and the new sale slider is open
                 if (
@@ -98,7 +100,7 @@ const Sliders = (): ReactElement => {
         return () => {
             document.removeEventListener('keydown', handleSliderKeydownGlobal);
         };
-    }, []);
+    }, [newSaleState]);
 
     return (
         <>
