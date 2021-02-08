@@ -1,0 +1,41 @@
+{
+    "name": "@sellerspot/universal-types",
+    "version": "1.5.1+d3030386",
+    "description": "Contains all common type definitions shared across all applications in the SellerSpot suite.",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "webpack --mode development --env development",
+        "build": "webpack --mode production --env production",
+        "build:dev": "webpack --mode development --env production && yalc push",
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SellerSpot/universal-types.git"
+    },
+    "keywords": [
+        "sellerspot",
+        "universal-types"
+    ],
+    "author": "RohitRajP",
+    "contributors": [
+        {
+            "name": "Rohit Raj",
+            "email": "rij7u7d@gmail.com",
+            "url": "https://github.com/RohitRajP"
+        },
+        {
+            "name": "ThayalanGR",
+            "email": "grthayalan18@gmail.com",
+            "url": "https://github.com/ThayalanGR"
+        }
+    ],
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/SellerSpot/universal-types/issues"
+    },
+    "homepage": "https://github.com/SellerSpot/universal-types#readme",
+    "dependencies": {},
+    "yalcSig": "d303038618303d0dd435843645d8124b"
+}

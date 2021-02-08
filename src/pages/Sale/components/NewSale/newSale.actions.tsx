@@ -1,6 +1,7 @@
-import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { find, isNull, isUndefined, merge } from 'lodash';
 import React from 'react';
+import { MdDelete, MdEdit, MdMoreVert } from 'react-icons/md';
 import {
     IInitialStateNewSale,
     initialStateNewSale,
@@ -8,7 +9,7 @@ import {
     setSearchQuery,
     setSearchResults,
 } from 'store/models/newSale';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, openSliderModal } from 'store/models/sliderModal';
 import { store } from 'store/store';
 import {
     computeGrandTotal,
@@ -21,7 +22,9 @@ import {
     computeItemTotalTax,
 } from 'utilities/businessCalculations';
 import { COMMON_REGEXPS, COMMON_SYMBOLS } from 'utilities/general';
+import { Button } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
+import styles from './newSale.module.scss';
 import {
     INewSaleCart,
     INewSaleCartTableColumns,
@@ -114,7 +117,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.STRING_WITH_SPACE_BETWEEN.test(parserParams.newValue)
                     ? parserParams.newValue
@@ -128,7 +144,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
                     ? parserParams.newValue >= 0
@@ -144,8 +173,24 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             resizable: true,
             editable: true,
             flex: 1,
-
-            valueFormatter: (value) => `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${value.value}`,
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
+            valueFormatter: (formatterParams) =>
+                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${parseInt(
+                    formatterParams.value.toString(),
+                ).toLocaleString()}`,
             valueParser: (parserParams) =>
                 COMMON_REGEXPS.ONLY_NUMBERS.test(parserParams.newValue)
                     ? parserParams.newValue >= 0
@@ -156,6 +201,20 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
         {
             headerName: `Discount ( ${COMMON_SYMBOLS.PERCENTAGE_SYMBOL} )`,
             field: 'itemDiscountPercent' as keyof INewSaleCartTableColumns,
+            headerComponentParams: {
+                template:
+                    '<div class="ag-cell-label-container" role="presentation">' +
+                    '  <span ref="eMenu" class="ag-header-icon ag-header-cell-menu-button"></span>' +
+                    '  <div ref="eLabel" class="ag-header-cell-label" role="presentation">' +
+                    '    <span ref="eSortOrder" class="ag-header-icon ag-sort-order"></span>' +
+                    '    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
+                    '    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
+                    '    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
+                    '    <span ref="eText" class="ag-header-cell-text" role="columnheader"></span>&nbsp*' +
+                    '    <i ref="eFilter" class="ag-header-icon ag-filter-icon"></i>' +
+                    '  </div>' +
+                    '</div>',
+            },
             sortable: true,
             filter: true,
             resizable: true,
@@ -180,7 +239,41 @@ export const getNewSaleCartTableColDef = (): ColDef[] => {
             flex: 1,
 
             valueFormatter: (formatterParams) =>
-                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${formatterParams.value}`,
+                `${COMMON_SYMBOLS.RUPEE_SYMBOL} ${parseInt(
+                    formatterParams.value.toString(),
+                ).toLocaleString()}`,
+        },
+        {
+            headerName: `Actions`,
+            field: 'itemActions' as keyof INewSaleCartTableColumns,
+            width: 120,
+            cellRendererFramework: function customCellRenderer(params: ICellRendererParams) {
+                return (
+                    <div className={styles.cartActionButtonWrapper}>
+                        <Button
+                            className={styles.cartActionButton}
+                            key={params.rowIndex + 'edit'}
+                            label={<MdMoreVert size={20} />}
+                            onClick={(_) =>
+                                store.dispatch(
+                                    openSliderModal({
+                                        sliderName: SLIDERS.itemDetailSlider,
+                                        autoFillData: {
+                                            cartItemSelectedRowIndex: params.rowIndex,
+                                        },
+                                    }),
+                                )
+                            }
+                        />
+                        <Button
+                            className={styles.cartActionButton}
+                            key={params.rowIndex + 'delete'}
+                            label={<MdDelete size={20} />}
+                            onClick={(_) => alert('Delete ' + params.rowIndex)}
+                        />
+                    </div>
+                );
+            },
         },
     ];
 };

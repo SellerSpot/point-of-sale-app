@@ -1,0 +1,49 @@
+{
+    "name": "@sellerspot/universal-components",
+    "version": "1.13.1+67da587b",
+    "description": "Universal Components for sellerspot eco-system.",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "webpack --mode development --env development",
+        "build": "webpack --mode production --env production",
+        "build:dev": "webpack --mode development --env production && yalc push",
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SellerSpot/universal-components.git"
+    },
+    "keywords": [
+        "sellerspot",
+        "react-universal-components"
+    ],
+    "author": "ThayalanGR",
+    "contributors": [
+        {
+            "name": "Rohit Raj",
+            "email": "rij7u7d@gmail.com",
+            "url": "https://github.com/RohitRajP"
+        },
+        {
+            "name": "ThayalanGR",
+            "email": "grthayalan18@gmail.com",
+            "url": "https://github.com/ThayalanGR"
+        }
+    ],
+    "license": "ISC",
+    "peerDependencies": {
+        "@emotion/css": "^11.1.3",
+        "lodash": "^4.17.20",
+        "react": "^17.0.1",
+        "react-icons": "^3.11.0"
+    },
+    "bugs": {
+        "url": "https://github.com/SellerSpot/universal-components/issues"
+    },
+    "homepage": "https://github.com/SellerSpot/universal-components#readme",
+    "dependencies": {},
+    "yalcSig": "67da587ba7b09cb1d42dcc17b2ea8ac7"
+}

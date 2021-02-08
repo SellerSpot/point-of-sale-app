@@ -1,24 +1,17 @@
 import cn from 'classnames';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
+import { last } from 'lodash';
 import { Bill } from 'pages/BillingSetup/components/Bill/Bill';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { GLOBAL_KEYBOARD_SHORTCUTS } from 'utilities/general';
+import { GLOBAL_KEYBOARD_SHORTCUTS, handleCloseSlider } from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, HorizontalRule, InputField } from '@sellerspot/universal-components';
 import styles from './checkout.module.scss';
 
-export interface ICheckoutProps {
-    callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
-    ];
-}
-export const Checkout = (props: ICheckoutProps): ReactElement => {
+export const Checkout = (): ReactElement => {
     const dispatch = useDispatch();
     const billReference = useRef<HTMLDivElement>(null);
     // getting sliderState to listen to when the slider is invoked to autopopulate
@@ -35,10 +28,8 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         onAfterPrint: () =>
             new Promise(() =>
                 dispatch(
-                    toggleSliderModal({
-                        sliderName: 'checkoutSlider',
-                        active: false,
-                        autoFillData: null,
+                    closeSliderModal({
+                        sliderName: SLIDERS.checkoutSlider,
                     }),
                 ),
             ),
@@ -52,55 +43,30 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
         return 0;
     };
 
-    // used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        dispatch(
-            toggleSliderModal({
-                sliderName: 'checkoutSlider',
-                active: false,
-                autoFillData: null,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            checkoutSlider: false,
-        });
-    };
-
+    //* setting listener to listen to callbacks from slider
     useEffect(() => {
-        if (props.callBackStateTrack[0].checkoutSlider) {
-            handleCloseSlider();
+        if (sliderState.callBackStateTrack.includes(SLIDERS.checkoutSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.checkoutSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: sliderState.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].checkoutSlider]);
+    }, [sliderState.callBackStateTrack]);
 
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.checkoutSlider.show) {
+        if (sliderState.openSliders.includes(SLIDERS.checkoutSlider)) {
             // setting focus towards the searchBar
             setPaidFieldFocused(true);
         }
-    }, [sliderState.checkoutSlider.show]);
-
-    //* listening for the new sale shortcut call
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT,
-        (event) => {
-            event.preventDefault();
-            if (sliderState.newSaleSlider.show && newSaleState.cartData.products.length > 0) {
-                store.dispatch(
-                    toggleSliderModal({
-                        sliderName: 'checkoutSlider',
-                        active: true,
-                        autoFillData: null,
-                    }),
-                );
-            }
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
+    }, [sliderState.openSliders]);
 
     return (
         <div className={cn(styles.checkoutWrapper)}>
@@ -119,16 +85,22 @@ export const Checkout = (props: ICheckoutProps): ReactElement => {
             <div className={cn(styles.checkoutBillingDetailsWrapper)}>
                 <div className={styles.calculationEntry}>
                     <div>{'Total Taxes'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalTax}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotalTax.toLocaleString()}`}</div>
                 </div>
 
                 <div className={styles.calculationEntry}>
                     <div>{'Total Discount'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotalDiscount}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotalDiscount.toLocaleString()}`}</div>
                 </div>
                 <div className={styles.calculationEntry}>
                     <div>{'Order Total'}</div>
-                    <div>{`${generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL} ${newSaleState.cartData.totals.grandTotal}`}</div>
+                    <div>{`${
+                        generalUtilities.COMMON_SYMBOLS.RUPEE_SYMBOL
+                    } ${newSaleState.cartData.totals.grandTotal.toLocaleString()}`}</div>
                 </div>
                 <HorizontalRule
                     ruleWidth={'100%'}

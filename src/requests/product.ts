@@ -31,6 +31,7 @@ export const searchProduct = async (
         },
     );
     const responseData = response.data as pointOfSaleTypes.productResponseTypes.ISearchProduct;
+
     if (responseData.status) {
         return responseData.data;
     }

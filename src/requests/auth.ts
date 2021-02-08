@@ -1,5 +1,5 @@
 import { apiService } from 'services';
-import { pointOfSaleTypes, STATUS_CODES } from '@sellerspot/universal-types';
+import { STATUS_CODES, pointOfSaleTypes } from '@sellerspot/universal-types';
 
 export const authorizeTenant = async (
     domainName: string,
@@ -10,9 +10,9 @@ export const authorizeTenant = async (
         error: 'Bad Request',
     };
     try {
-        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHORIZE, <
-            pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest
-        >{ domainName });
+        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHORIZE, {
+            domainName,
+        } as pointOfSaleTypes.authRequestTypes.IAuthorizeTenantRequest);
         const responseData = response.data as pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse;
 
         if (responseData.status && responseData.data) {
@@ -41,9 +41,10 @@ export const authenticateUser = async ({
         error: 'Bad Request',
     };
     try {
-        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHENTICATE, <
-            pointOfSaleTypes.authRequestTypes.IAuthenticateUserRequest
-        >{ email, password });
+        const response = await apiService.post(pointOfSaleTypes.ROUTES.AUTHENTICATE, {
+            email,
+            password,
+        } as pointOfSaleTypes.authRequestTypes.IAuthenticateUserRequest);
         const responseData = response.data as pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse;
         if (responseData.status && responseData.data) {
             resultResponse = responseData;
@@ -56,6 +57,25 @@ export const authenticateUser = async ({
         } else {
             resultResponse.error = error.message ?? error;
         }
+    } finally {
+        return Promise.resolve(resultResponse);
+    }
+};
+
+export const verifyToken = async (): Promise<boolean> => {
+    let resultResponse: boolean;
+    try {
+        const response = await apiService.post(pointOfSaleTypes.ROUTES.VERIFY_TOKEN);
+        const responseData = response.data as pointOfSaleTypes.authResponseTypes.IVerifyTokenResponse;
+
+        if (responseData.status && responseData.data) {
+            resultResponse = true;
+        } else {
+            throw response;
+        }
+    } catch (error) {
+        resultResponse = false;
+        console.error(error);
     } finally {
         return Promise.resolve(resultResponse);
     }

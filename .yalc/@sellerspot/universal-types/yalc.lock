@@ -1,0 +1,8 @@
+{
+  "version": "v1",
+  "packages": {
+    "@sellerspot/database-models": {
+      "signature": "de43f59fed32516cd692327c0ba343e4"
+    }
+  }
+}

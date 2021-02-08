@@ -1,17 +1,21 @@
 import { GridApi, RowClickedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import cn from 'classnames';
-import { debounce } from 'lodash';
+import { debounce, last } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
 import { newSaleSelector, setSearchQuery, setSearchResults } from 'store/models/newSale';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal, openSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
-import { introduceDelay } from 'utilities/general';
+import {
+    addSliderToCallBackStateTrack,
+    handleCloseSlider,
+    introduceDelay,
+} from 'utilities/general';
 import { generalUtilities } from 'utilities/utilities';
-import { Button, InputField } from '@sellerspot/universal-components';
+import { Button, InputField, SliderModal } from '@sellerspot/universal-components';
+import { CartItemDetail } from './components/CartItemDetail/CartItemDetail';
 import {
     compileNewSaleCartTableRowData,
     compileNewSaleProductsTableRowData,
@@ -21,37 +25,23 @@ import {
     pushProductIntoCart,
 } from './newSale.actions';
 import styles from './newSale.module.scss';
-import { INewSaleProps } from './newSale.types';
 
-export const NewSale = (props: INewSaleProps): JSX.Element => {
+export const NewSale = (): JSX.Element => {
     //# VALUE HOOKS
     // subscribing to state
     const { cartData, searchQuery, searchResults } = useSelector(newSaleSelector);
     // state to handle the focus state of the searchBar
-    const [searchBarFocused, setSearchBarFocused] = useState(true);
+    const [searchBarFocused, setSearchBarFocused] = useState(false);
     // used to help identify if the input is from direct input or using eventListeners (to prevent double input bug)
     const [inputIsFromHandleKeydown, setInputIsFromHandleKeyDown] = useState(false);
     // getting sliderState to listen to when the slider is invoked to autopopulate if needed
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // holds the GridApi for the cart table
     const [cartTableGridApi, setCartTableGridApi] = useState<GridApi>(null);
+    // store dispatch
+    const dispatch = useDispatch();
 
     //# CRITICAL FUNCTIONS
-
-    //* handles the closing of the sliderModal
-    const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'newSaleSlider',
-                active: false,
-                autoFillData: null,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            newSaleSlider: false,
-        });
-    };
 
     //* handles ANYWHERE keydown event to focus it to inputField
     const handleKeydown = useCallback(
@@ -60,7 +50,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             if (/^.$/u.test(event.key) && !(event.target instanceof HTMLInputElement)) {
                 setSearchBarFocused(true);
                 const newSearchQuery = searchQuery + event.key;
-                store.dispatch(setSearchQuery(newSearchQuery));
+                dispatch(setSearchQuery(newSearchQuery));
                 // setting flag to inform that the input if from the event listener
                 setInputIsFromHandleKeyDown(true);
                 // call to send query to server to fetch suggestions
@@ -75,7 +65,7 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         debounce(async (query: string) => {
             if (query.length > 0) {
                 const searchedProducts = await productRequests.searchProduct(query);
-                store.dispatch(setSearchResults(searchedProducts));
+                dispatch(setSearchResults(searchedProducts));
             }
         }, 400),
         [],
@@ -91,14 +81,14 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
         }
         // if search field is empty, clear the search results
         if (query.length === 0) {
-            store.dispatch(
+            dispatch(
                 setSearchResults({
                     queryType: 'name',
                     results: [],
                 }),
             );
         }
-        store.dispatch(setSearchQuery(query));
+        dispatch(setSearchQuery(query));
         // call to send query to server to fetch suggestions
         queryServer(query);
     };
@@ -115,21 +105,31 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
     //* used to handle searchbar refocussing procedure
     useEffect(() => {
         // calling default focus
-        if (sliderState.newSaleSlider.show) {
+        if (sliderState.openSliders.includes(SLIDERS.newSaleSlider)) {
             // setting focus towards the searchBar
             setSearchBarFocused(true);
             document.addEventListener('keydown', handleKeydown);
         } else {
             document.removeEventListener('keydown', handleKeydown);
+            setSearchBarFocused(false);
         }
-    }, [sliderState.newSaleSlider.show]);
+    }, [sliderState.openSliders]);
 
     //* used to handle the closing operations of the sliderModel
     useEffect(() => {
-        if (props.callBackStateTrack[0].newSaleSlider) {
-            handleCloseSlider();
+        if (sliderState.callBackStateTrack.includes(SLIDERS.newSaleSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.newSaleSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: sliderState.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].newSaleSlider]);
+    }, [sliderState.callBackStateTrack]);
 
     //* listening to the search result to push the barcode products directory to the cart
     useEffect(() => {
@@ -137,24 +137,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             pushProductIntoCart(cartData, searchResults.results[0], cartTableGridApi);
         }
     }, [searchResults]);
-
-    //* listening for the new sale shortcut call
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.NEW_SALE,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'newSaleSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
 
     return (
         <div className={styles.newSaleWrapper}>
@@ -183,8 +165,28 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
             </div>
             <div className={styles.rightPanel}>
                 <div className={'ag-theme-alpine'}>
+                    <SliderModal
+                        active={sliderState.openSliders.includes(SLIDERS.itemDetailSlider)}
+                        sliderSize={'50%'}
+                        zIndex={10}
+                        onClickBackdrop={() =>
+                            addSliderToCallBackStateTrack({
+                                sliderName: SLIDERS.itemDetailSlider,
+                                sliderState,
+                            })
+                        }
+                        onClickEsc={() =>
+                            addSliderToCallBackStateTrack({
+                                sliderName: SLIDERS.itemDetailSlider,
+                                sliderState,
+                            })
+                        }
+                    >
+                        <CartItemDetail cartData={cartData} />
+                    </SliderModal>
                     <AgGridReact
                         suppressDragLeaveHidesColumns
+                        suppressCellSelection
                         columnDefs={getNewSaleCartTableColDef()}
                         rowData={compileNewSaleCartTableRowData(cartData)}
                         overlayNoRowsTemplate={
@@ -199,9 +201,6 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                         onGridReady={(event) => {
                             setCartTableGridApi(event.api);
                         }}
-                        defaultColDef={{
-                            enableCellChangeFlash: true,
-                        }}
                     />
                 </div>
                 <div className={styles.rightPanelBottom}>
@@ -214,30 +213,34 @@ export const NewSale = (props: INewSaleProps): JSX.Element => {
                     <div className={styles.calculationCard}>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Taxes'}</span>
-                            <span>{`₹ ${cartData.totals.grandTotalTax}`}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalTax.toLocaleString()}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
                             <span>{'Total Discount'}</span>
-                            <span>{`₹ ${cartData.totals.grandTotalDiscount}`}</span>
+                            <span>{`₹ ${cartData.totals.grandTotalDiscount.toLocaleString()}`}</span>
                         </div>
                         <div className={styles.calculationEntry}>
                             <span>{'Grand Total'}</span>
                             <span
                                 className={styles.orderTotalText}
-                            >{`₹ ${cartData.totals.grandTotal}`}</span>
+                            >{`₹ ${cartData.totals.grandTotal.toLocaleString()}`}</span>
                         </div>
                         <Button
                             label={`CHECKOUT (${generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.CHECKOUT})`}
                             status={cartData.products.length > 0 ? 'default' : 'disabled'}
-                            onClick={() =>
-                                store.dispatch(
-                                    toggleSliderModal({
-                                        sliderName: 'checkoutSlider',
-                                        active: true,
-                                        autoFillData: null,
-                                    }),
-                                )
-                            }
+                            onClick={() => {
+                                if (
+                                    sliderState.openSliders.includes(SLIDERS.newSaleSlider) &&
+                                    cartData.products.length > 0
+                                ) {
+                                    dispatch(
+                                        openSliderModal({
+                                            autoFillData: null,
+                                            sliderName: SLIDERS.checkoutSlider,
+                                        }),
+                                    );
+                                }
+                            }}
                         />
                     </div>
                 </div>

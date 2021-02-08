@@ -1,16 +1,13 @@
 import classNames from 'classnames';
 import { useFormik } from 'formik';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { productRequests } from 'requests';
-import { showNotify } from 'store/models/notify';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
-import { generalUtilities } from 'utilities/utilities';
 import {
     Button,
     Checkbox,
@@ -44,17 +41,7 @@ const formInitialValues: IAddProductFormSchema = {
     taxBrackets: [],
 };
 
-/**
- * * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface IAddProductProps {
-    callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
-    ];
-}
-export const AddProduct = (props: IAddProductProps): JSX.Element => {
+export const AddProduct = (): JSX.Element => {
     //# VALUE HOOKS
     // holds the available metadata for a product
     const [productMetaDataOptions, setProductMetaDataOptions] = useState<IProductMetaDataOptions>({
@@ -69,20 +56,6 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
     const sliderState = useSelector((state: RootState) => state.sliderModal);
 
     //# CRITICAL FUNCTIONS
-    // * used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'addProductSlider',
-                active: false,
-                autoFillData: null,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            addProductSlider: false,
-        });
-    };
 
     // getting formik instance to handle form operations
     const formFormik = useFormik({
@@ -109,16 +82,16 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // * to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addProductSlider.show) {
+        if (sliderState.openSliders.includes(SLIDERS.addProductSlider)) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addProductSlider.autoFillData)) {
-                const autoFillData = sliderState.addProductSlider.autoFillData;
+            if (!isNull(sliderState.sliders.addProductSlider.autoFillData)) {
+                const autoFillData = sliderState.sliders.addProductSlider.autoFillData;
                 // pushing data to formik state
-                formFormik.setValues(autoFillData);
+                formFormik.setValues(autoFillData as IAddProductFormSchema);
             }
         }
-    }, [sliderState.addProductSlider.show]);
+    }, [sliderState.openSliders]);
 
     // * to fetch all available special options for a product and update in state
     useEffect(() => {
@@ -150,27 +123,21 @@ export const AddProduct = (props: IAddProductProps): JSX.Element => {
 
     // to handle slider closing operations
     useEffect(() => {
-        if (props.callBackStateTrack[0].addProductSlider) {
-            handleCloseSlider();
-        }
-    }, [props.callBackStateTrack[0].addProductSlider]);
+        if (sliderState.callBackStateTrack.includes(SLIDERS.addProductSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
 
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_PRODUCT,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'addProductSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.addProductSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: sliderState.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
+        }
+    }, [sliderState.callBackStateTrack]);
+
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>
             <div className={styles.pageTitleBar}>Add Product</div>

@@ -1,12 +1,11 @@
 import { Formik, useFormik } from 'formik';
-import { ICallBackStateTrack } from 'layouts/Dashboard/components/Sliders/Sliders';
-import { isNull, isUndefined } from 'lodash';
+import { isNull, isUndefined, last } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { brandRequests, categoryRequests, stockUnitRequests } from 'requests';
-import { toggleSliderModal } from 'store/models/sliderModal';
+import { SLIDERS, closeSliderModal } from 'store/models/sliderModal';
 import { RootState, store } from 'store/store';
+import { handleCloseSlider } from 'utilities/general';
 import { showMessage } from 'utilities/notify';
 import { generalUtilities } from 'utilities/utilities';
 import { Button, InputField } from '@sellerspot/universal-components';
@@ -18,40 +17,16 @@ const formInitialValues: IAddStockUnitFormSchema = {
     name: '',
 };
 
-/**
- * Interface for props to recieve the state values which are operated by the callbacks from the slider modal
- * Callbacks operating the props state - onEscClick & onBackdropClick
- */
-export interface IAddStockUnitProps {
-    callBackStateTrack: [
-        ICallBackStateTrack,
-        React.Dispatch<React.SetStateAction<ICallBackStateTrack>>,
-    ];
-}
-export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
+export const AddStockUnit = (): JSX.Element => {
     //# VALUE HOOKS
 
     // getting sliderState to listen to when the slider is invoked
     const sliderState = useSelector((state: RootState) => state.sliderModal);
     // state to manage the focus state of the first inputField
     const [focusInputField, setFocusInputField] = useState(false);
-
+    // store dispatch
+    const dispatch = useDispatch();
     //# CRITICAL FUCNTIONS
-
-    //* used to handle the closing of the sliderModal
-    const handleCloseSlider = () => {
-        store.dispatch(
-            toggleSliderModal({
-                sliderName: 'addStockUnitSlider',
-                active: false,
-                autoFillData: null,
-            }),
-        );
-        props.callBackStateTrack[1]({
-            ...props.callBackStateTrack[0],
-            addStockUnitSlider: false,
-        });
-    };
 
     //* getting formik instance to handle form operations
     const formFormik = useFormik({
@@ -77,41 +52,32 @@ export const AddStockUnit = (props: IAddStockUnitProps): JSX.Element => {
 
     //* to manage focus for inputFields
     useEffect(() => {
-        if (sliderState.addStockUnitSlider.show) {
+        if (sliderState.openSliders.includes(SLIDERS.addStockUnitSlider)) {
             setFocusInputField(true);
             // checking if any autofill data is present
-            if (!isNull(sliderState.addStockUnitSlider.autoFillData)) {
-                const autoFillData = sliderState.addStockUnitSlider.autoFillData;
+            if (!isNull(sliderState.sliders.addStockUnitSlider.autoFillData)) {
+                const autoFillData = sliderState.sliders.addStockUnitSlider.autoFillData;
                 // pushing data to formik state
-                formFormik.setValues(autoFillData);
+                formFormik.setValues(autoFillData as IAddStockUnitFormSchema);
             }
         }
-    }, [sliderState.addStockUnitSlider.show]);
+    }, [sliderState.openSliders]);
 
     //* callback to close the slider
     useEffect(() => {
-        if (props.callBackStateTrack[0].addStockUnitSlider) {
-            handleCloseSlider();
+        if (sliderState.callBackStateTrack.includes(SLIDERS.addStockUnitSlider)) {
+            // getting the topmost slider
+            const topMostSlider = last(sliderState.openSliders);
+            // only executing action if the top most slider is the current slider
+            if (topMostSlider === SLIDERS.addStockUnitSlider) {
+                handleCloseSlider({
+                    callBackStateTrack: sliderState.callBackStateTrack,
+                    sliderState,
+                    topMostSlider,
+                });
+            }
         }
-    }, [props.callBackStateTrack[0].addStockUnitSlider]);
-
-    //* Used to contol slider models visibility
-    useHotkeys(
-        generalUtilities.GLOBAL_KEYBOARD_SHORTCUTS.ADD_STOCKUNIT,
-        (event) => {
-            event.preventDefault();
-            store.dispatch(
-                toggleSliderModal({
-                    sliderName: 'addStockUnitSlider',
-                    active: true,
-                    autoFillData: null,
-                }),
-            );
-        },
-        {
-            enableOnTags: ['INPUT', 'SELECT', 'TEXTAREA'],
-        },
-    );
+    }, [sliderState.callBackStateTrack]);
 
     return (
         <form onSubmit={formFormik.handleSubmit} className={styles.pageWrapper} noValidate>

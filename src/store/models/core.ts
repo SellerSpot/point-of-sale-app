@@ -1,13 +1,14 @@
+import { CONFIG } from 'config/config';
 import { RootState } from 'store/store';
 import { PayloadAction, Selector, createSlice } from '@reduxjs/toolkit';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { CONFIG } from 'config/config';
 
 interface ICoreState {
     isLoading: boolean;
     isAuthenticated: boolean;
     isAuthorized: boolean;
     tenant: pointOfSaleTypes.authResponseTypes.IAuthorizeTenantResponse['data'];
+    currentAppLocation: string;
 }
 
 const actualInitialState: ICoreState = {
@@ -21,6 +22,7 @@ const actualInitialState: ICoreState = {
         token: '',
         auth: null,
     },
+    currentAppLocation: '/',
 };
 
 const getInitialState = (): ICoreState => {
@@ -35,7 +37,7 @@ const getInitialState = (): ICoreState => {
             ) {
                 return hydratedAuthState;
             } else {
-                throw 'Ivalid Localstore authState';
+                throw 'Invalid Localstore authState';
             }
         }
     } catch (error) {
@@ -70,6 +72,10 @@ const coreSlice = createSlice({
             localStorage.setItem(CONFIG.REUDX_CORE_STATE, JSON.stringify(state));
             // refresh token to cut down the auth payload from token (hence token will only contain authorizatin details) // that should be done on logout component itself
         },
+        // used to store the current app location
+        storeCurrentAppLocation: (state, { payload }: PayloadAction<string>) => {
+            state.currentAppLocation = payload;
+        },
     },
 });
 
@@ -77,7 +83,12 @@ const coreSlice = createSlice({
 export default coreSlice.reducer;
 
 // Exporting actions
-export const { updateLoading, updateTenant, logoutUser } = coreSlice.actions;
+export const {
+    updateLoading,
+    updateTenant,
+    logoutUser,
+    storeCurrentAppLocation,
+} = coreSlice.actions;
 
 // Exporting selector - useful when using it in components to select particular state from global store
 export const coreSelector: Selector<RootState, ICoreState> = (state: RootState) => state.core;
