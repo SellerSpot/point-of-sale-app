@@ -17,7 +17,12 @@ import {
     Spinner,
 } from '@sellerspot/universal-components';
 import { pointOfSaleTypes } from '@sellerspot/universal-types';
-import { checkIfTaxItemIsSelected, compileProductSpecialOptions } from './addProduct.actions';
+import {
+    checkIfTaxItemIsSelected,
+    compileProductSpecialOptions,
+    computeProfitPercentageAddProductPage,
+    computeSellingPriceAddProductPage,
+} from './addProduct.actions';
 import styles from './addProduct.module.scss';
 import {
     AddProductFormSchema,
@@ -33,10 +38,10 @@ const formInitialValues: IAddProductFormSchema = {
     gtinNumber: '',
     category: null,
     brand: null,
-    landingPrice: 0,
-    profitPercent: 0,
-    sellingPrice: 0,
-    mrpPrice: 0,
+    landingPrice: null,
+    profitPercent: null,
+    sellingPrice: null,
+    mrpPrice: null,
     availableStock: 0,
     stockUnit: null,
     taxBrackets: [],
@@ -255,7 +260,19 @@ export const AddProduct = (): JSX.Element => {
                         required={true}
                         value={formFormik.values.landingPrice?.toString()}
                         onBlur={formFormik.handleBlur}
-                        onChange={formFormik.handleChange}
+                        onChange={(event) => {
+                            formFormik.handleChange(event);
+                            // checking for landing price to automate selling price computation
+                            if (!isNull(formFormik.values.profitPercent)) {
+                                formFormik.setFieldValue(
+                                    'sellingPrice',
+                                    computeSellingPriceAddProductPage({
+                                        landingPrice: parseInt(event.target.value),
+                                        profitPercentage: formFormik.values.profitPercent,
+                                    }),
+                                );
+                            }
+                        }}
                         error={{
                             errorMessage: formFormik.errors.landingPrice ?? '',
                             showError:
@@ -271,7 +288,19 @@ export const AddProduct = (): JSX.Element => {
                         suffix={<p>%</p>}
                         value={formFormik.values.profitPercent?.toString()}
                         onBlur={formFormik.handleBlur}
-                        onChange={formFormik.handleChange}
+                        onChange={(event) => {
+                            formFormik.handleChange(event);
+                            // checking for landing price to automate selling price computation
+                            if (!isNull(formFormik.values.landingPrice)) {
+                                formFormik.setFieldValue(
+                                    'sellingPrice',
+                                    computeSellingPriceAddProductPage({
+                                        landingPrice: formFormik.values.landingPrice,
+                                        profitPercentage: parseInt(event.target.value),
+                                    }),
+                                );
+                            }
+                        }}
                         error={{
                             errorMessage: formFormik.errors.profitPercent ?? '',
                             showError:
@@ -293,7 +322,7 @@ export const AddProduct = (): JSX.Element => {
                                 !isUndefined(formFormik.errors.mrpPrice) &&
                                 formFormik.touched.mrpPrice,
                         }}
-                        value={formFormik.values.mrpPrice.toString()}
+                        value={formFormik.values.mrpPrice?.toString()}
                         onBlur={formFormik.handleBlur}
                         onChange={formFormik.handleChange}
                     />
@@ -309,9 +338,21 @@ export const AddProduct = (): JSX.Element => {
                                 !isUndefined(formFormik.errors.sellingPrice) &&
                                 formFormik.touched.sellingPrice,
                         }}
-                        value={formFormik.values.sellingPrice.toString()}
+                        value={formFormik.values.sellingPrice?.toString()}
                         onBlur={formFormik.handleBlur}
-                        onChange={formFormik.handleChange}
+                        onChange={(event) => {
+                            formFormik.handleChange(event);
+                            // checking for landing price to automate selling price computation
+                            if (formFormik.values.landingPrice !== 0) {
+                                formFormik.setFieldValue(
+                                    'profitPercent',
+                                    computeProfitPercentageAddProductPage({
+                                        landingPrice: formFormik.values.landingPrice,
+                                        sellingPrice: parseInt(event.target.value),
+                                    }),
+                                );
+                            }
+                        }}
                     />
                 </div>
                 <HorizontalRule
@@ -336,10 +377,10 @@ export const AddProduct = (): JSX.Element => {
                             )
                         }
                         error={{
-                            errorMessage: formFormik.errors.sellingPrice ?? '',
+                            errorMessage: formFormik.errors.availableStock ?? '',
                             showError:
-                                !isUndefined(formFormik.errors.sellingPrice) &&
-                                formFormik.touched.sellingPrice,
+                                !isUndefined(formFormik.errors.availableStock) &&
+                                formFormik.touched.availableStock,
                         }}
                     />
                     <Dropdown
