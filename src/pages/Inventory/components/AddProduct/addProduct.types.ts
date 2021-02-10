@@ -36,27 +36,35 @@ export interface IAddProductFormSchema {
 export const AddProductFormSchema = Yup.object().shape({
     name: Yup.string().required('Product name is a required field'),
     gtinNumber: Yup.string(),
-    category: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-    brand: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
+    category: Yup.object()
+        .shape({
+            name: Yup.string(),
+            _id: Yup.string(),
+        })
+        .nullable(),
+    brand: Yup.object()
+        .shape({
+            name: Yup.string(),
+            _id: Yup.string(),
+        })
+        .nullable(),
     landingPrice: Yup.number().required('Landing price is a required field'),
     profitPercent: Yup.number(),
     sellingPrice: Yup.number().required('Selling price is a required field'),
     mrpPrice: Yup.number(),
     availableStock: Yup.number(),
-    stockUnit: Yup.object().shape({
-        name: Yup.string(),
-        _id: Yup.string(),
-    }),
-    taxBracket: Yup.array().of(
-        Yup.object().shape({
+    stockUnit: Yup.object()
+        .shape({
             name: Yup.string(),
             _id: Yup.string(),
-        }),
-    ),
+        })
+        .nullable(),
+    taxBracket: Yup.array()
+        .of(
+            Yup.object().shape({
+                name: Yup.string(),
+                _id: Yup.string(),
+            }),
+        )
+        .nullable(),
 });

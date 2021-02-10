@@ -19,6 +19,10 @@ export const Inventory = (): JSX.Element => {
             route: ROUTES.INVENTORY_PRODUCTS,
         },
         {
+            name: 'Brands',
+            route: ROUTES.INVENTORY_BRANDS,
+        },
+        {
             name: 'Categories',
             route: ROUTES.INVENTORY_CATEGORIES,
         },
@@ -54,6 +58,9 @@ export const Inventory = (): JSX.Element => {
                     </Route>
                     <Route path={ROUTES.INVENTORY_TAX_BRACKETS}>
                         <TaxBracketsHistory />
+                    </Route>
+                    <Route path={ROUTES.INVENTORY_BRANDS}>
+                        <BrandsHistory />
                     </Route>
                     {/* '/' route hence should be placed atlast */}
                     <Route path={ROUTES.INVENTORY_PRODUCTS}>

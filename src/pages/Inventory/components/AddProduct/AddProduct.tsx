@@ -229,7 +229,7 @@ export const AddProduct = (): JSX.Element => {
                         }}
                     />
                     <Dropdown
-                        label={'Product'}
+                        label={'Brand'}
                         options={productMetaDataOptions.brands.map((brand, index) => {
                             return <p key={index}>{brand.name}</p>;
                         })}
