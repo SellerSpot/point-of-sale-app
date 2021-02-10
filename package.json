@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
-    "@sellerspot/universal-components": "^1.14.1",
+    "@sellerspot/universal-components": "^1.14.2",
     "@sellerspot/universal-types": "^1.6.0",
     "ag-grid-community": "^25.0.1",
     "ag-grid-react": "^25.0.1",
